@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Champion {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  title       String
+  role        String   // Top, Jungle, Mid, ADC, Support
+  tier        String   // S, A, B, C, D
+  winRate     Float    // e.g. 52.3
+  pickRate    Float    // e.g. 8.5
+  banRate     Float    // e.g. 3.2
+  image       String   @default("") // splash art URL placeholder
+  aiInsight   String   @default("")
+  build       String   @default("") // recommended build JSON string
+  runes       String   @default("") // recommended runes JSON string
+  counters    String   @default("") // counter champions JSON string
+  synergies   String   @default("") // synergy champions JSON string
+  patch       String   @default("14.8")
+  game        String   @default("LoL") // LoL or WildRift
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PatchNote {
+  id          Int      @id @default(autoincrement())
+  version     String
+  title       String
+  summary     String   @default("")
+  digest      String   @default("") // AI-digested summary
+  date        DateTime @default(now())
+  sourceGame  String   @default("LoL")
+}
+
+model AiInsight {
+  id          Int      @id @default(autoincrement())
+  champion    String
+  category    String   // tier-change, buff, nerf, meta, counter, synergy
+  content     String
+  confidence  Float    @default(0.8)
+  date        DateTime @default(now())
+}
+
+model TaskQueue {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @default("")
+  status      String   @default("pending") // pending, running, done
+  pointer     Int      @default(0) // circular queue pointer
+  interval    Int      @default(30) // minutes
+}
