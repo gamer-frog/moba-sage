@@ -72,6 +72,16 @@ export interface ProPick {
   patch: string;
 }
 
+export interface BrokenCombo {
+  id: number;
+  name: string;
+  champions: string[];      // champion names
+  description: string;      // why it's broken
+  winRate: number;
+  game: string;             // 'LoL' or 'WR'
+  difficulty: 'facil' | 'media' | 'dificil';
+}
+
 // ============================================================
 // EMBEDDED DATA (fallback when Prisma/SQLite isn't available)
 // ============================================================
@@ -609,4 +619,48 @@ export function getProPicks(region?: string): ProPick[] {
   let data = proPicksWithIds;
   if (region) data = data.filter(p => p.region === region);
   return data.sort((a, b) => b.pickRate - a.pickRate);
+}
+
+// ============================================================
+// COMBOS DATA
+// ============================================================
+
+const COMBOS_DATA: BrokenCombo[] = [
+  // Duos (2 champs) - LoL
+  { id: 1, name: 'Invulnerabilidad Infinita', champions: ['Master Yi', 'Taric'], description: 'Taric R + Yi Q = invulnerabilidad durante teamfights completas. Sin counterplay.', winRate: 58.2, game: 'LoL', difficulty: 'facil' },
+  { id: 2, name: 'Enganche + Hypercarry', champions: ['Jinx', 'Thresh'], description: 'Thresh engancha, Jinx elimina. La bot lane más tóxica del parche.', winRate: 56.8, game: 'LoL', difficulty: 'facil' },
+  { id: 3, name: 'Wall Combo', champions: ['Yasuo', 'Taliyah'], description: 'Taliyah E + Yasuo R = knockup teamwide garantizado.', winRate: 55.1, game: 'LoL', difficulty: 'media' },
+  { id: 4, name: 'Ball Delivery', champions: ['Darius', 'Orianna'], description: 'Orianna ball en Darius → R entrega daño masivo + engage.', winRate: 54.3, game: 'LoL', difficulty: 'media' },
+
+  // Trios (3 champs) - LoL
+  { id: 5, name: 'Triple Protect', champions: ['Master Yi', 'Taric', 'Lulu'], description: 'Taric R + Lulu R + Yi Q = triple inmunidad. Yi es literalmente inmortal.', winRate: 60.1, game: 'LoL', difficulty: 'facil' },
+  { id: 6, name: 'Protect the Queen', champions: ['Jinx', 'Thresh', 'Lulu'], description: 'Peel triple para Jinx. Enganchar, polymorph, ult protect. Jinx limpia.', winRate: 57.5, game: 'LoL', difficulty: 'media' },
+  { id: 7, name: 'Chain Engage', champions: ['Lee Sin', 'Ahri', 'Orianna'], description: 'Lee Sin insec → Ahri charm follow-up → Orianna R shockwave. Chain engage letal.', winRate: 55.8, game: 'LoL', difficulty: 'dificil' },
+  { id: 8, name: 'Dunk Squad', champions: ['Darius', 'Jarvan IV', 'Orianna'], description: 'Jarvan cataclysm atrapa → Darius dunk → Orianna ball delivery. Sin escape.', winRate: 54.9, game: 'LoL', difficulty: 'media' },
+
+  // Quad (4 champs) - LoL
+  { id: 9, name: 'Deathball Protect', champions: ['Jinx', 'Thresh', 'Lulu', 'Orianna'], description: '4 protectores para 1 hypercarry. Peel infinito + engage seguro.', winRate: 56.2, game: 'LoL', difficulty: 'media' },
+  { id: 10, name: 'Knockup Chain', champions: ['Yasuo', 'Taliyah', 'Lee Sin', 'Ahri'], description: '4 knockups/CC chain. Yasuo R se activa cada teamfight sin esfuerzo.', winRate: 53.7, game: 'LoL', difficulty: 'dificil' },
+
+  // Full Team (5 champs) - LoL
+  { id: 11, name: 'Inmortal Carry', champions: ['Master Yi', 'Taric', 'Jinx', 'Thresh', 'Darius'], description: 'Top bruiser + Jungle inmortal + Bot hypercarry con peel completo.', winRate: 58.5, game: 'LoL', difficulty: 'facil' },
+  { id: 12, name: 'Knockup Machine', champions: ['Yasuo', 'Taliyah', 'Ahri', 'Lee Sin', 'Braum'], description: '5 campeones con knockup/CC. Yasuo R en CD = teamwipe.', winRate: 54.1, game: 'LoL', difficulty: 'dificil' },
+
+  // WR Duos
+  { id: 13, name: 'Invulnerabilidad Móvil', champions: ['Master Yi', 'Taric'], description: 'En Wild Rift el mapa chico amplifica la sinergia Yi+Taric. Aún más tóxico.', winRate: 61.2, game: 'WR', difficulty: 'facil' },
+  { id: 14, name: 'Hook & Spray', champions: ['Jinx', 'Thresh'], description: 'Enganchar + eliminar en el mapa compacto de Wild Rift.', winRate: 57.8, game: 'WR', difficulty: 'facil' },
+
+  // WR Trios
+  { id: 15, name: 'Triple Inmune', champions: ['Master Yi', 'Taric', 'Yuumi'], description: 'Yuumi + Taric + Yi = 3 capas de protección. Yi no puede morir.', winRate: 63.5, game: 'WR', difficulty: 'facil' },
+
+  // WR Full Team
+  { id: 16, name: 'WR Meta Comp', champions: ['Master Yi', 'Ahri', 'Darius', 'Thresh', 'Jinx'], description: 'La composición definitiva de Wild Rift. Engage + peel + hypercarry.', winRate: 57.2, game: 'WR', difficulty: 'media' },
+];
+
+export function getCombos(game?: string): BrokenCombo[] {
+  let combos = COMBOS_DATA;
+  if (game) {
+    combos = combos.filter(c => c.game === game);
+  }
+  return combos.sort((a, b) => b.winRate - a.winRate);
 }
