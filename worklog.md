@@ -50,3 +50,24 @@
 
 ## Lint Status: ✅ Pass (0 errors, 0 warnings)
 ## Dev Server: ✅ Compiling successfully
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Combos Rotos tab + Champion Modal icons + Assets improvements
+
+Work Log:
+- Read full codebase: data.ts (612 lines) and page.tsx (2098 lines monolith)
+- Added BrokenCombo interface and 16 hardcoded combos (duos, trios, quads, full teams) to data.ts
+- Created /api/combos/route.ts endpoint with game filter
+- Added Flame icon import, BrokenCombo type, combos state to page.tsx
+- Added "Combos" tab to TAB_ITEMS navigation
+- Created CombosTab component with size filters, champion icons, difficulty badges, framer-motion
+- Updated ChampionModal to show TinyChampionIcon for counters and synergies (not just text)
+- Added CombosTab rendering to both LoL and WR game sections
+- Pushed as commit 1268ba0, Vercel verified 200 OK
+
+Stage Summary:
+- New Combos Rotos tab with 16 combos across LoL/WR, filterable by size (2-5 champs)
+- Champion modal now shows champion ICONS for counters/synergies
+- All changes pushed to GitHub, deployed on Vercel

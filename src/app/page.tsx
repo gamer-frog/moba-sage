@@ -322,6 +322,7 @@ function RoadmapStatusBadge({ status }: { status: string }) {
     done: { color: '#0fba81', label: 'Completado' },
     progress: { color: '#0acbe6', label: 'En progreso' },
     planned: { color: '#5b5a56', label: 'Planificado' },
+    cancelled: { color: '#e84057', label: 'CANCELADO' },
   };
   const c = cfg[status] || cfg.planned;
   return (
@@ -1646,29 +1647,29 @@ export default function Home() {
         title: 'Datos & APIs', icon: Database, items: [
           { name: 'Conexión Riot API completa', status: 'progress', desc: 'API key configurada, datos reales de invocadores, ranked, historial' },
           { name: 'Datos en tiempo real (U.GG / Mobalytics)', status: 'planned', desc: 'Conectar APIs de terceros para estadísticas actualizadas automáticamente' },
-          { name: 'Wild Rift - Datos completos', status: 'planned', desc: 'Tier lists, campeones, ranked, insights para Wild Rift' },
-          { name: 'Community Dragon Assets', status: 'progress', desc: 'CDN de imágenes y assets de la comunidad' },
+          { name: 'Wild Rift - Datos completos', status: 'done', desc: '18 campeones con tier list, builds, counters, sinergias e IA' },
+          { name: 'Community Dragon Assets', status: 'done', desc: 'CDN Data Dragon para iconos de campeones, items y splash arts' },
         ]
       },
       {
         title: 'IA & Analytics', icon: Brain, items: [
-          { name: 'Auto-análisis IA (sin botón)', status: 'progress', desc: 'La IA analiza automáticamente y muestra conclusiones pre-escritas' },
-          { name: 'Coach IA (Chatbot)', status: 'planned', desc: 'Chat con IA especializado en coaching de LoL' },
-          { name: 'Análisis de VODs', status: 'planned', desc: 'Subir replay/VOD y obtener análisis con IA' },
-          { name: 'Team Comp Analyzer', status: 'planned', desc: 'Ingresar 5 campeones y obtener análisis de synergias' },
-          { name: 'Predicción de patches', status: 'planned', desc: 'IA predice cambios de balance antes del parche' },
+          { name: 'Auto-análisis IA (sin botón)', status: 'done', desc: 'La IA analiza automáticamente y muestra conclusiones pre-escritas' },
+          { name: 'Coach IA (Chatbot)', status: 'cancelled', desc: 'Chat con IA especializado en coaching de LoL' },
+          { name: 'Análisis de VODs', status: 'cancelled', desc: 'Subir replay/VOD y obtener análisis con IA' },
+          { name: 'Team Comp Analyzer', status: 'cancelled', desc: 'Reemplazado por Combos Rotos' },
+          { name: 'Predicción de patches', status: 'cancelled', desc: 'IA predice cambios de balance antes del parche' },
         ]
       },
       {
         title: 'Competitivo', icon: Trophy, items: [
-          { name: 'Campeones Pro (LCK/LPL/LEC/LCS)', status: 'planned', desc: 'Listado de campeones más usados en esports profesionales' },
-          { name: 'Ban/Pick Analysis Pro', status: 'planned', desc: 'Análisis de bans y picks en series profesionales' },
+          { name: 'Campeones Pro (LCK/LPL/LEC/LCS)', status: 'done', desc: 'Listado de campeones más usados en esports profesionales' },
+          { name: 'Ban/Pick Analysis Pro', status: 'cancelled', desc: 'Análisis de bans y picks en series profesionales' },
           { name: 'Meta regional', status: 'planned', desc: 'Diferencias de meta entre regiones (KR vs NA vs EU)' },
         ]
       },
       {
         title: 'Builds & Runas', icon: Wrench, items: [
-          { name: 'Builds recomendados', status: 'progress', desc: '1-2 builds rotas para cada campeón S/A' },
+          { name: 'Builds recomendados', status: 'done', desc: '1-2 builds rotas para cada campeón S/A con iconos de items' },
           { name: 'Runas óptimas', status: 'planned', desc: 'Runas recomendadas por campeon y rol' },
           { name: 'Item build paths', status: 'planned', desc: 'Order de compra de items optimizado' },
           { name: 'Counter builds', status: 'planned', desc: 'Items específicos contra cada campeon' },
@@ -1676,24 +1677,32 @@ export default function Home() {
       },
       {
         title: 'Social & Usuarios', icon: Users, items: [
-          { name: 'Autenticación Riot OAuth2', status: 'planned', desc: 'Login con cuenta de Riot Games' },
-          { name: 'Perfiles guardados', status: 'planned', desc: 'Guardar favoritos, tier lists personalizadas' },
-          { name: 'Comunidad', status: 'planned', desc: 'Compartir análisis, votar tier lists' },
-          { name: 'Discord Bot', status: 'planned', desc: 'Notificaciones de meta en canales de Discord' },
+          { name: 'Autenticación Riot OAuth2', status: 'cancelled', desc: 'Login con cuenta de Riot Games' },
+          { name: 'Perfiles guardados', status: 'cancelled', desc: 'Guardar favoritos, tier lists personalizadas' },
+          { name: 'Comunidad', status: 'cancelled', desc: 'Compartir análisis, votar tier lists' },
+          { name: 'Discord Bot', status: 'cancelled', desc: 'Notificaciones de meta en canales de Discord' },
         ]
       },
       {
         title: 'Plataforma', icon: Smartphone, items: [
-          { name: 'PWA completa', status: 'planned', desc: 'Service worker, offline, installable' },
-          { name: 'Notificaciones Push', status: 'planned', desc: 'Alertas de buffs/nerfs de campeones principales' },
-          { name: 'Multi-idioma', status: 'planned', desc: 'Español, inglés, portugués, más' },
-          { name: 'Tema claro/oscuro', status: 'planned', desc: 'Toggle entre temas' },
+          { name: 'PWA completa', status: 'cancelled', desc: 'Service worker, offline, installable' },
+          { name: 'Notificaciones Push', status: 'cancelled', desc: 'Alertas de buffs/nerfs de campeones principales' },
+          { name: 'Multi-idioma', status: 'cancelled', desc: 'Español, inglés, portugués, más' },
+          { name: 'Tema claro/oscuro', status: 'cancelled', desc: 'Toggle entre temas' },
+        ]
+      },
+      {
+        title: 'Combos Rotos', icon: Zap, items: [
+          { name: 'Combos de 2 campeones (Dúos)', status: 'done', desc: 'Sinergias rotas entre 2 campeones con win rate y dificultad' },
+          { name: 'Combos de 3 campeones (Tríos)', status: 'done', desc: 'Tríos de campeones con gran sinergia en mapa' },
+          { name: 'Combos de 4 campeones', status: 'done', desc: 'Composiciones de 4 con objetivo claro' },
+          { name: 'Combos de 5 campeones (Equipos)', status: 'done', desc: 'Team comps completas rotas para ranked' },
         ]
       },
       {
         title: 'Assets & Data que podemos agregar', icon: ImageIcon, items: [
           { name: 'Spell icons (Q/W/E/R)', status: 'planned', desc: 'Iconos de habilidades de cada campeón' },
-          { name: 'Item icons', status: 'planned', desc: 'Imágenes de items del juego' },
+          { name: 'Item icons', status: 'done', desc: 'Imágenes de items del juego en builds' },
           { name: 'Rune icons', status: 'planned', desc: 'Iconos de runas (Precisión, Dominación, etc.)' },
           { name: 'Mapa de visión', status: 'planned', desc: 'Visualización de ward spots óptimos' },
           { name: 'Splash arts de skins', status: 'planned', desc: 'Galería de skins alternativas' },
