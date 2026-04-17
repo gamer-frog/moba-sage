@@ -40,6 +40,8 @@ interface Champion {
   synergy?: string;
   aiAnalysis?: string;
   proPickRate?: number;
+  brokenThings?: string[];
+  buildLinks?: { label: string; url: string }[];
 }
 
 interface PatchNote {
@@ -135,22 +137,7 @@ const CATEGORY_CONFIG: Record<string, { color: string; label: string; icon: type
 const ROLES = ['Todos', 'Top', 'Jungle', 'Mid', 'ADC', 'Support'];
 
 const REGIONS = [
-  { value: 'NA', label: 'NA' },
-  { value: 'EUW', label: 'EUW' },
-  { value: 'EUNE', label: 'EUNE' },
-  { value: 'KR', label: 'KR' },
-  { value: 'JP', label: 'JP' },
-  { value: 'BR', label: 'BR' },
-  { value: 'LAN', label: 'LAN' },
   { value: 'LAS', label: 'LAS' },
-  { value: 'OCE', label: 'OCE' },
-  { value: 'TR', label: 'TR' },
-  { value: 'RU', label: 'RU' },
-  { value: 'PH', label: 'PH' },
-  { value: 'SG', label: 'SG' },
-  { value: 'TH', label: 'TH' },
-  { value: 'TW', label: 'TW' },
-  { value: 'VN', label: 'VN' },
 ];
 
 const TOURNAMENT_REGIONS = [
@@ -195,6 +182,42 @@ function getChampionImageUrl(name: string): string {
     .replace(/\./g, '')
     .replace(/&/g, '');
   return `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${normalized}.png`;
+}
+
+// ============ ITEM ICON HELPERS ============
+const ITEM_NAME_MAP: Record<string, string> = {
+  'Filo de la Noche': '6672', 'Eclipse': '6692', 'Hidra Titánica': '3748',
+  'Fuerza de la Trinidad': '3071', 'Filo Infinito': '3031', 'Huracán de Runaan': '3085',
+  'Bailarín Espectral': '3124', 'Sed de Sangre': '6333', 'Botas de Berserker': '3006',
+  'Sombrero de Rabadon': '3089', 'Reloj de Zhonya': '3157', 'Llamasomo': '3116',
+  'Morellonomicon': '3165', 'Botas del Vacío': '3020', 'El Colector': '6676',
+  'Última Piedad': '3036', 'Cosechador Nocturno': '6694', 'Poder de Kraken Slayer': '6673',
+  'La Séptima': '6671', 'Muramana': '3004', 'Hielo Eterno': '6662', 'Colmillo Infinito': '6673',
+  'Redención': '3107', 'Convergencia de Zeke': '3190', 'Medallón de los Solari de Hierro': '3194',
+  'Mikael': '3222', 'Botas de Mercurio': '3111', 'Botas de Movilidad': '3009',
+  'Botas de CD': '3158', 'Roca del Eclipse': '6693', 'Guardián Angel': '3026',
+  'El Protegido': '3193', 'Pozo de la Noche': '6695', 'Filo Divino': '6696',
+  'Resistencia Divina': '3065', 'Mandato Imperial': '6632', 'Cetro de Rylai': '3116',
+  'Guja Botadora': '3153', 'Centro de Gravedad': '6664', 'Hydratación Letal': '3074',
+};
+
+function getItemIconUrl(itemName: string): string | null {
+  const id = ITEM_NAME_MAP[itemName];
+  if (id) return `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/item/${id}.png`;
+  return null;
+}
+
+function parseBuildItems(itemsStr: string): string[] {
+  return itemsStr.split(/[→,\n]/).map(s => s.replace(/[→]/g, '').trim()).filter(Boolean);
+}
+
+function getBuildExternalUrl(champName: string): { ugg: string; mobalytics: string; opgg: string } {
+  const safe = champName.toLowerCase().replace(/ /g, '').replace(/'/g, '');
+  return {
+    ugg: `https://u.gg/lol/champions/${safe}/build`,
+    mobalytics: `https://www.mobalytics.com/lol/champions/${safe}`,
+    opgg: `https://www.op.gg/champions/${safe}`,
+  };
 }
 
 // ============ TAB ICONS ============
@@ -473,90 +496,203 @@ function ChampionRow({ champion, onClick }: { champion: Champion; onClick: () =>
   );
 }
 
-// ============ CHAMPION DETAILS PANEL ============
-function ChampionDetailsPanel({ champion }: { champion: Champion }) {
-  const isS = champion.tier === 'S';
+// ============ CHAMPION MODAL (full card overlay) ============
+function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () => void }) {
+  const cfg = TIER_CONFIG[champion.tier];
+  const extUrls = getBuildExternalUrl(champion.name);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      exit={{ opacity: 0, height: 0 }}
-      className="overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+      style={{ backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
     >
-      <div className="px-4 py-4 rounded-b-lg space-y-4" style={{ background: 'rgba(10, 14, 26, 0.6)', border: '1px solid rgba(120,90,40,0.15)', borderTop: '1px solid rgba(200,170,110,0.15)' }}>
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl"
+        style={{
+          background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
+          border: `1.5px solid ${cfg.color}40`,
+          boxShadow: `0 0 60px ${cfg.color}15, 0 25px 50px rgba(0,0,0,0.5)`,
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header with splash art */}
+        <div className="relative p-5 pb-4" style={{ borderBottom: `1px solid ${cfg.color}20` }}>
+          {/* Close button */}
+          <button onClick={onClose} className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors z-10">
+            <span className="text-[#a09b8c] text-lg font-light">×</span>
+          </button>
 
-        {/* Builds */}
-        {champion.builds && champion.builds.length > 0 && (
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Wrench className="w-3.5 h-3.5 text-[#c8aa6e]" />
-              <h4 className="text-[11px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Builds Rotas</h4>
+          {/* Splash art background */}
+          <div className="absolute inset-0 opacity-10">
+            {!imgError ? (
+              <img src={getChampionImageUrl(champion.name)} alt="" className="w-full h-full object-cover" onError={() => setImgError(true)} />
+            ) : null}
+          </div>
+
+          <div className="relative flex items-start gap-4">
+            {/* Champion icon */}
+            <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0" style={{ border: `3px solid ${cfg.color}`, boxShadow: `0 0 20px ${cfg.color}30` }}>
+              <SplashArtIcon name={champion.name} />
             </div>
-            <div className="space-y-2">
-              {champion.builds.map((build, i) => (
-                <div key={i} className="rounded-lg p-3" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.1)' }}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-semibold text-[#f0e6d2]">{build.name}</span>
-                    <span className="text-[10px] font-mono" style={{ color: build.winRate >= 53 ? '#0acbe6' : '#a09b8c' }}>
-                      WR {build.winRate}%
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-[#a09b8c] leading-relaxed">{build.items}</p>
-                </div>
-              ))}
+            <div className="flex-1 min-w-0 pt-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-xl font-black text-[#f0e6d2]">{champion.name}</h2>
+                <span className="px-2 py-0.5 rounded text-[10px] font-black" style={{ backgroundColor: cfg.color, color: '#0a0e1a' }}>{champion.tier}</span>
+              </div>
+              <p className="text-xs text-[#a09b8c] mb-2 italic">{champion.title}</p>
+              <div className="flex items-center gap-3">
+                <RoleBadge role={champion.role} />
+                <span className="text-[10px] text-[#5b5a56]">Patch {champion.patch}</span>
+              </div>
             </div>
           </div>
-        )}
 
-        {/* Counter & Synergy */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {champion.counterPick && (
-            <div className="rounded-lg p-3" style={{ background: 'rgba(232,64,87,0.06)', border: '1px solid rgba(232,64,87,0.15)' }}>
-              <div className="flex items-center gap-1.5 mb-1">
-                <Crosshair className="w-3 h-3 text-[#e84057]" />
-                <h4 className="text-[10px] font-semibold text-[#e84057] uppercase tracking-wider">Counters</h4>
+          {/* Stats bar */}
+          <div className="flex items-center gap-4 mt-4">
+            {[
+              { label: 'WR', value: champion.winRate, good: champion.winRate >= 52, color: '#0acbe6' },
+              { label: 'Pick', value: champion.pickRate, good: champion.pickRate >= 10, color: '#f0c646' },
+              { label: 'Ban', value: champion.banRate, good: champion.banRate > 5, color: '#e84057' },
+            ].map(stat => (
+              <div key={stat.label} className="flex-1 text-center">
+                <p className="text-lg font-mono font-bold" style={{ color: stat.value >= (stat.good ? 52 : 5) || stat.label === 'Pick' ? stat.color : '#a09b8c' }}>
+                  {stat.value}%
+                </p>
+                <p className="text-[9px] text-[#5b5a56] uppercase tracking-wider">{stat.label}</p>
               </div>
-              <p className="text-[10px] text-[#a09b8c]">{champion.counterPick}</p>
+            ))}
+            {champion.proPickRate && (
+              <div className="text-center">
+                <p className="text-lg font-mono font-bold text-[#f0c646]">{champion.proPickRate}%</p>
+                <p className="text-[9px] text-[#5b5a56] uppercase tracking-wider">Pro</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="p-5 space-y-4">
+          {/* Broken Things */}
+          {champion.brokenThings && champion.brokenThings.length > 0 && (
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <AlertTriangle className="w-4 h-4 text-[#e84057]" />
+                <h4 className="text-xs font-semibold text-[#e84057] uppercase tracking-wider">Cosas Rotas</h4>
+              </div>
+              <div className="space-y-1.5">
+                {champion.brokenThings.map((thing, i) => (
+                  <div key={i} className="flex items-start gap-2 text-[11px]">
+                    <span className="text-[#e84057] mt-0.5">▸</span>
+                    <span className="text-[#a09b8c]">{thing}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
-          {champion.synergy && (
-            <div className="rounded-lg p-3" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.15)' }}>
-              <div className="flex items-center gap-1.5 mb-1">
-                <Users className="w-3 h-3 text-[#0acbe6]" />
-                <h4 className="text-[10px] font-semibold text-[#0acbe6] uppercase tracking-wider">Sinergia</h4>
+
+          {/* Builds with item icons */}
+          {champion.builds && champion.builds.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Wrench className="w-4 h-4 text-[#c8aa6e]" />
+                <h4 className="text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Builds</h4>
               </div>
-              <p className="text-[10px] text-[#a09b8c]">{champion.synergy}</p>
+              <div className="space-y-2">
+                {champion.builds.map((build, i) => {
+                  const items = parseBuildItems(build.items);
+                  return (
+                    <div key={i} className="rounded-lg p-3" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.1)' }}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold text-[#f0e6d2]">{build.name}</span>
+                        <span className="text-[10px] font-mono" style={{ color: build.winRate >= 53 ? '#0acbe6' : '#a09b8c' }}>
+                          {build.winRate}% WR
+                        </span>
+                      </div>
+                      {/* Item icons row */}
+                      <div className="flex items-center gap-1.5 mb-2">
+                        {items.map((item, j) => {
+                          const iconUrl = getItemIconUrl(item);
+                          return (
+                            <div key={j} className="relative group" title={item}>
+                              {iconUrl ? (
+                                <img src={iconUrl} alt={item} className="w-7 h-7 rounded" style={{ border: '1px solid rgba(200,170,110,0.2)' }} loading="lazy" />
+                              ) : (
+                                <div className="w-7 h-7 rounded bg-[#1e2328] flex items-center justify-center text-[8px] text-[#5b5a56] border border-[#785a28]/20">
+                                  {item[0]}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {/* External links */}
+                      <div className="flex items-center gap-2">
+                        <a href={extUrls.ugg} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                          <ExternalLink className="w-2.5 h-2.5" /> U.GG
+                        </a>
+                        <a href={extUrls.mobalytics} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                          <ExternalLink className="w-2.5 h-2.5" /> Mobalytics
+                        </a>
+                        <a href={extUrls.opgg} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                          <ExternalLink className="w-2.5 h-2.5" /> OP.GG
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Counter + Synergy */}
+          <div className="grid grid-cols-2 gap-3">
+            {champion.counterPick && (
+              <div className="rounded-lg p-3" style={{ background: 'rgba(232,64,87,0.06)', border: '1px solid rgba(232,64,87,0.15)' }}>
+                <Crosshair className="w-3.5 h-3.5 text-[#e84057] mb-1" />
+                <h4 className="text-[10px] font-semibold text-[#e84057] uppercase tracking-wider mb-1">Counters</h4>
+                <p className="text-[10px] text-[#a09b8c]">{champion.counterPick}</p>
+              </div>
+            )}
+            {champion.synergy && (
+              <div className="rounded-lg p-3" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.15)' }}>
+                <Users className="w-3.5 h-3.5 text-[#0acbe6] mb-1" />
+                <h4 className="text-[10px] font-semibold text-[#0acbe6] uppercase tracking-wider mb-1">Sinergia</h4>
+                <p className="text-[10px] text-[#a09b8c]">{champion.synergy}</p>
+              </div>
+            )}
+          </div>
+
+          {/* AI Analysis */}
+          {champion.aiAnalysis && (
+            <div className="rounded-lg p-4" style={{ background: 'rgba(200,170,110,0.05)', border: '1px solid rgba(200,170,110,0.15)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-4 h-4 text-[#c8aa6e]" />
+                <h4 className="text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Análisis IA</h4>
+              </div>
+              <p className="text-[11px] text-[#a09b8c] leading-relaxed whitespace-pre-wrap">{champion.aiAnalysis}</p>
             </div>
           )}
         </div>
-
-        {/* Pro Pick Rate (S-tier) */}
-        {champion.proPickRate && (
-          <div className="flex items-center gap-3">
-            <Crown className="w-3.5 h-3.5 text-[#f0c646]" />
-            <span className="text-[10px] text-[#a09b8c]">Pro Pick Rate:</span>
-            <span className="text-xs font-mono font-semibold text-[#f0c646]">{champion.proPickRate}%</span>
-          </div>
-        )}
-
-        {/* AI Analysis */}
-        {champion.aiAnalysis ? (
-          <div className="rounded-lg p-4" style={{ background: 'rgba(200,170,110,0.05)', border: '1px solid rgba(200,170,110,0.15)' }}>
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-[#c8aa6e]" />
-              <h4 className="text-[11px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Análisis IA</h4>
-            </div>
-            <p className="text-xs text-[#a09b8c] leading-relaxed whitespace-pre-wrap">{champion.aiAnalysis}</p>
-          </div>
-        ) : !isS ? (
-          <div className="text-center py-3">
-            <p className="text-[10px] text-[#5b5a56] italic">Sin análisis detallado disponible</p>
-          </div>
-        ) : null}
-      </div>
+      </motion.div>
     </motion.div>
   );
+}
+
+// ============ ITEM ICON (for builds) ============
+function ItemIcon({ name }: { name: string }) {
+  const url = getItemIconUrl(name);
+  const [err, setErr] = useState(false);
+  if (!url || err) return <div className="w-6 h-6 rounded bg-[#1e2328] flex items-center justify-center text-[8px] text-[#5b5a56] border border-[#785a28]/20 shrink-0">{name[0]}</div>;
+  return <img src={url} alt={name} className="w-6 h-6 rounded shrink-0" style={{ border: '1px solid rgba(200,170,110,0.15)' }} loading="lazy" onError={() => setErr(true)} />;
 }
 
 // ============ TIER SECTION ============
@@ -931,12 +1067,12 @@ export default function Home() {
   const [roleFilter, setRoleFilter] = useState('Todos');
   const [proRegionFilter, setProRegionFilter] = useState('');
 
-  // Expanded champion
-  const [expandedChampionId, setExpandedChampionId] = useState<number | null>(null);
+  // Expanded champion → now a full modal
+  const [selectedChampion, setSelectedChampion] = useState<Champion | null>(null);
 
   // Summoner profile state
   const [summonerName, setSummonerName] = useState('');
-  const [summonerRegion, setSummonerRegion] = useState('NA');
+  const [summonerRegion, setSummonerRegion] = useState('LAS');
   const [summonerData, setSummonerData] = useState<SummonerData | null>(null);
   const [summonerLoading, setSummonerLoading] = useState(false);
   const [summonerError, setSummonerError] = useState('');
@@ -1002,9 +1138,9 @@ export default function Home() {
     if (tierChamps.length > 0) groupedChampions[tier] = tierChamps;
   });
 
-  // ============ CHAMPION EXPAND ============
+  // ============ CHAMPION SELECT (opens modal) ============
   const handleToggleChampion = (champion: Champion) => {
-    setExpandedChampionId(prev => prev === champion.id ? null : champion.id);
+    setSelectedChampion(prev => prev?.id === champion.id ? null : champion);
   };
 
   // ============ SUMMONER SEARCH ============
@@ -1096,23 +1232,11 @@ export default function Home() {
           ))
         )}
 
-        {/* Expanded Champion Details */}
+        {/* Expanded Champion Details → now a Modal */}
         <AnimatePresence>
-          {expandedChampionId && (() => {
-            const champ = champions.find(c => c.id === expandedChampionId);
-            if (!champ) return null;
-            return (
-              <motion.div
-                key={`detail-${champ.id}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="mb-4"
-              >
-                <ChampionDetailsPanel champion={champ} />
-              </motion.div>
-            );
-          })()}
+          {selectedChampion && (
+            <ChampionModal champion={selectedChampion} onClose={() => setSelectedChampion(null)} />
+          )}
         </AnimatePresence>
 
         {!loading && filteredChampions.length === 0 && (
@@ -1894,6 +2018,9 @@ export default function Home() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#0acbe6] mr-1.5 animate-pulse" />
               En vivo
             </Badge>
+            <span className="hidden sm:inline text-[9px] text-[#5b5a56] ml-1">
+              Update: 18 Abr 01:00
+            </span>
           </div>
         </div>
       </header>
@@ -1959,7 +2086,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-[#785a28]/15 py-4 mt-auto" style={{ backgroundColor: 'rgba(10, 14, 26, 0.6)' }}>
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-[#785a28]">
-          <span>MOBA SAGE © 2024</span>
+          <span>MOBA SAGE © 2026</span>
           <span className="flex items-center gap-1">
             <Brain className="w-3 h-3" />
             Powered by IA
