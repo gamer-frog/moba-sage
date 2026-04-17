@@ -1,14 +1,22 @@
 # DASHBOARD — MOBA SAGE
-> Actualizado: 2026-04-17 17:44 BA | Tick #1
+> Actualizado: 2026-04-18 01:47 BA | Tick #2
 
 ## Estado
 | Campo | Valor |
 |-------|-------|
-| Tareas activas | 8 |
+| Tareas activas | 5 |
 | Estado | ACTIVO |
 | Deploy | Vercel (moba-sage.vercel.app) |
 | Repo | github.com/gamer-frog/moba-sage |
 | Branch | main |
+| CRONS activas | 3 |
+
+## CRONS Configuradas
+| Cron | Frecuencia | Job ID | Descripción |
+|------|-----------|--------|-------------|
+| Pipeline Circular | Cada 2 horas | 101230 | Ejecuta 14 tareas automáticas del pipeline |
+| Mantenimiento | Cada 6 horas | 101243 | Lee TASKS.md, ejecuta tarea, actualiza DASHBOARD |
+| Verificar Deploy | Diario 12:00 BA | 101244 | Verifica que Vercel responda 200 |
 
 ## Que hago
 - Pipeline de TAREAS circular (14 tareas automáticas)
@@ -56,3 +64,5 @@
 - [2026-04-17] Iconos de campeones en Cosas Rotas
 - [2026-04-17] Banner de transparencia en landing (fuentes, update, beneficios)
 - [2026-04-17] DASHBOARD.md + TASKS.md creados
+- [2026-04-18] CRONS configuradas (Pipeline 2h, Mantenimiento 6h, Deploy check diario)
+- [2026-04-18] Git push de todas las features acumuladas
