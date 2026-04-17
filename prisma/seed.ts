@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const champions = [
-  // Tier S
+  // Tier S — Dioses del Meta (8 champions)
   { name: 'Ahri', title: 'the Nine-Tailed Fox', role: 'Mid', tier: 'S', winRate: 53.2, pickRate: 8.1, banRate: 2.8 },
   { name: 'Jinx', title: 'the Loose Cannon', role: 'ADC', tier: 'S', winRate: 54.1, pickRate: 12.3, banRate: 5.1 },
   { name: 'Lee Sin', title: 'the Blind Monk', role: 'Jungle', tier: 'S', winRate: 52.8, pickRate: 10.5, banRate: 6.2 },
@@ -13,7 +13,7 @@ const champions = [
   { name: 'Yasuo', title: 'the Unforgiven', role: 'Mid', tier: 'S', winRate: 51.8, pickRate: 11.2, banRate: 4.7 },
   { name: 'Caitlyn', title: 'the Sheriff of Piltover', role: 'ADC', tier: 'S', winRate: 52.5, pickRate: 9.6, banRate: 2.1 },
 
-  // Tier A
+  // Tier A — Fuertes (39 champions — original A + promoted B/C/D)
   { name: 'Orianna', title: 'the Lady of Clockwork', role: 'Mid', tier: 'A', winRate: 51.2, pickRate: 6.3, banRate: 0.8 },
   { name: 'Vi', title: 'the Piltover Enforcer', role: 'Jungle', tier: 'A', winRate: 50.8, pickRate: 5.2, banRate: 1.2 },
   { name: 'Ezreal', title: 'the Prodigal Explorer', role: 'ADC', tier: 'A', winRate: 49.5, pickRate: 8.9, banRate: 0.5 },
@@ -31,34 +31,34 @@ const champions = [
   { name: 'Camille', title: 'the Steel Shadow', role: 'Top', tier: 'A', winRate: 49.9, pickRate: 5.1, banRate: 2.0 },
   { name: 'Diana', title: 'Scorn of the Moon', role: 'Jungle', tier: 'A', winRate: 50.2, pickRate: 4.8, banRate: 1.4 },
 
-  // Tier B
-  { name: 'Lux', title: 'the Lady of Luminosity', role: 'Mid', tier: 'B', winRate: 48.5, pickRate: 9.2, banRate: 0.6 },
-  { name: 'Nami', title: 'the Tidecaller', role: 'Support', tier: 'B', winRate: 49.1, pickRate: 5.3, banRate: 0.2 },
-  { name: 'Wukong', title: 'the Monkey King', role: 'Top', tier: 'B', winRate: 48.8, pickRate: 4.2, banRate: 0.8 },
-  { name: 'Volibear', title: 'the Relentless Storm', role: 'Top', tier: 'B', winRate: 47.9, pickRate: 3.8, banRate: 0.5 },
-  { name: 'Twisted Fate', title: 'the Card Master', role: 'Mid', tier: 'B', winRate: 48.2, pickRate: 4.5, banRate: 1.1 },
-  { name: 'Ashe', title: 'the Frost Archer', role: 'ADC', tier: 'B', winRate: 49.3, pickRate: 6.4, banRate: 0.3 },
-  { name: 'Rakan', title: 'the Charmer', role: 'Support', tier: 'B', winRate: 48.1, pickRate: 4.7, banRate: 0.2 },
-  { name: 'Xin Zhao', title: 'the Seneschal of Demacia', role: 'Jungle', tier: 'B', winRate: 48.7, pickRate: 3.9, banRate: 0.4 },
-  { name: 'Tristana', title: 'the Yordle Gunner', role: 'ADC', tier: 'B', winRate: 48.9, pickRate: 5.1, banRate: 0.5 },
-  { name: 'Shen', title: 'the Eye of Twilight', role: 'Top', tier: 'B', winRate: 47.5, pickRate: 3.2, banRate: 0.7 },
-  { name: 'Syndra', title: 'the Dark Sovereign', role: 'Mid', tier: 'B', winRate: 47.8, pickRate: 4.1, banRate: 0.9 },
+  // Promoted from B to A
+  { name: 'Lux', title: 'the Lady of Luminosity', role: 'Mid', tier: 'A', winRate: 48.5, pickRate: 9.2, banRate: 0.6 },
+  { name: 'Nami', title: 'the Tidecaller', role: 'Support', tier: 'A', winRate: 49.1, pickRate: 5.3, banRate: 0.2 },
+  { name: 'Wukong', title: 'the Monkey King', role: 'Top', tier: 'A', winRate: 48.8, pickRate: 4.2, banRate: 0.8 },
+  { name: 'Volibear', title: 'the Relentless Storm', role: 'Top', tier: 'A', winRate: 47.9, pickRate: 3.8, banRate: 0.5 },
+  { name: 'Twisted Fate', title: 'the Card Master', role: 'Mid', tier: 'A', winRate: 48.2, pickRate: 4.5, banRate: 1.1 },
+  { name: 'Ashe', title: 'the Frost Archer', role: 'ADC', tier: 'A', winRate: 49.3, pickRate: 6.4, banRate: 0.3 },
+  { name: 'Rakan', title: 'the Charmer', role: 'Support', tier: 'A', winRate: 48.1, pickRate: 4.7, banRate: 0.2 },
+  { name: 'Xin Zhao', title: 'the Seneschal of Demacia', role: 'Jungle', tier: 'A', winRate: 48.7, pickRate: 3.9, banRate: 0.4 },
+  { name: 'Tristana', title: 'the Yordle Gunner', role: 'ADC', tier: 'A', winRate: 48.9, pickRate: 5.1, banRate: 0.5 },
+  { name: 'Shen', title: 'the Eye of Twilight', role: 'Top', tier: 'A', winRate: 47.5, pickRate: 3.2, banRate: 0.7 },
+  { name: 'Syndra', title: 'the Dark Sovereign', role: 'Mid', tier: 'A', winRate: 47.8, pickRate: 4.1, banRate: 0.9 },
 
-  // Tier C
-  { name: 'Yorick', title: 'Shepherd of Souls', role: 'Top', tier: 'C', winRate: 46.2, pickRate: 2.1, banRate: 0.3 },
-  { name: 'Ivern', title: 'the Green Father', role: 'Jungle', tier: 'C', winRate: 45.8, pickRate: 1.5, banRate: 0.1 },
-  { name: 'Nidalee', title: 'the Bestial Huntress', role: 'Jungle', tier: 'C', winRate: 46.5, pickRate: 2.3, banRate: 0.4 },
-  { name: 'Kalista', title: 'the Spear of Vengeance', role: 'ADC', tier: 'C', winRate: 45.5, pickRate: 1.8, banRate: 0.2 },
-  { name: 'Braum', title: 'the Heart of the Freljord', role: 'Support', tier: 'C', winRate: 46.8, pickRate: 2.5, banRate: 0.1 },
-  { name: "Vel'Koz", title: 'the Eye of the Void', role: 'Mid', tier: 'C', winRate: 46.0, pickRate: 1.9, banRate: 0.3 },
-  { name: 'Mordekaiser', title: 'the Iron Revenant', role: 'Top', tier: 'C', winRate: 45.2, pickRate: 2.7, banRate: 0.6 },
-  { name: 'Taliyah', title: 'the Stoneweaver', role: 'Mid', tier: 'C', winRate: 46.3, pickRate: 2.0, banRate: 0.2 },
+  // Promoted from C to A
+  { name: 'Yorick', title: 'Shepherd of Souls', role: 'Top', tier: 'A', winRate: 46.2, pickRate: 2.1, banRate: 0.3 },
+  { name: 'Ivern', title: 'the Green Father', role: 'Jungle', tier: 'A', winRate: 45.8, pickRate: 1.5, banRate: 0.1 },
+  { name: 'Nidalee', title: 'the Bestial Huntress', role: 'Jungle', tier: 'A', winRate: 46.5, pickRate: 2.3, banRate: 0.4 },
+  { name: 'Kalista', title: 'the Spear of Vengeance', role: 'ADC', tier: 'A', winRate: 45.5, pickRate: 1.8, banRate: 0.2 },
+  { name: 'Braum', title: 'the Heart of the Freljord', role: 'Support', tier: 'A', winRate: 46.8, pickRate: 2.5, banRate: 0.1 },
+  { name: "Vel'Koz", title: 'the Eye of the Void', role: 'Mid', tier: 'A', winRate: 46.0, pickRate: 1.9, banRate: 0.3 },
+  { name: 'Mordekaiser', title: 'the Iron Revenant', role: 'Top', tier: 'A', winRate: 45.2, pickRate: 2.7, banRate: 0.6 },
+  { name: 'Taliyah', title: 'the Stoneweaver', role: 'Mid', tier: 'A', winRate: 46.3, pickRate: 2.0, banRate: 0.2 },
 
-  // Tier D
-  { name: 'Bard', title: 'the Wandering Caretaker', role: 'Support', tier: 'D', winRate: 43.5, pickRate: 1.2, banRate: 0.1 },
-  { name: 'Skarner', title: 'the Crystal Vanguard', role: 'Jungle', tier: 'D', winRate: 44.1, pickRate: 0.8, banRate: 0.1 },
-  { name: 'Azir', title: 'the Emperor of the Sands', role: 'Mid', tier: 'D', winRate: 43.8, pickRate: 1.0, banRate: 0.2 },
-  { name: 'Urgot', title: 'the Dreadnought', role: 'Top', tier: 'D', winRate: 44.5, pickRate: 1.4, banRate: 0.3 },
+  // Promoted from D to A
+  { name: 'Bard', title: 'the Wandering Caretaker', role: 'Support', tier: 'A', winRate: 43.5, pickRate: 1.2, banRate: 0.1 },
+  { name: 'Skarner', title: 'the Crystal Vanguard', role: 'Jungle', tier: 'A', winRate: 44.1, pickRate: 0.8, banRate: 0.1 },
+  { name: 'Azir', title: 'the Emperor of the Sands', role: 'Mid', tier: 'A', winRate: 43.8, pickRate: 1.0, banRate: 0.2 },
+  { name: 'Urgot', title: 'the Dreadnought', role: 'Top', tier: 'A', winRate: 44.5, pickRate: 1.4, banRate: 0.3 },
 ];
 
 const patchNotes = [

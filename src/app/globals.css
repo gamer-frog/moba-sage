@@ -145,29 +145,44 @@
   background: #c8aa6e;
 }
 
+/* Hide scrollbar utility */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Glass morphism card effect */
 .glass-card {
-  background: rgba(30, 35, 40, 0.7);
+  background: rgba(30, 35, 40, 0.6);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(120, 90, 40, 0.3);
+  border: 1px solid rgba(120, 90, 40, 0.2);
 }
 
-/* Tier colors */
-.tier-s { border-color: #c8aa6e; background: rgba(200, 170, 110, 0.08); }
-.tier-a { border-color: #0acbe6; background: rgba(10, 203, 230, 0.05); }
-.tier-b { border-color: #5b8af5; background: rgba(91, 138, 245, 0.05); }
-.tier-c { border-color: #f0c646; background: rgba(240, 198, 70, 0.05); }
-.tier-d { border-color: #e84057; background: rgba(232, 64, 87, 0.05); }
-
-/* Glow effects */
-.glow-gold {
-  box-shadow: 0 0 15px rgba(200, 170, 110, 0.15), inset 0 1px 0 rgba(200, 170, 110, 0.1);
-}
-.glow-gold-strong {
-  box-shadow: 0 0 25px rgba(200, 170, 110, 0.25), inset 0 1px 0 rgba(200, 170, 110, 0.15);
+/* Champion row hover effect */
+.champion-row {
+  background: rgba(30, 35, 40, 0.4);
+  border: 1px solid rgba(120, 90, 40, 0.1);
 }
 
-/* Stat bars */
+.champion-row:hover {
+  background: rgba(30, 35, 40, 0.85);
+  border-color: rgba(200, 170, 110, 0.2);
+  box-shadow: 0 0 16px rgba(200, 170, 110, 0.06);
+}
+
+/* Tier header gradient strips */
+.tier-header-s {
+  background: linear-gradient(90deg, rgba(200, 170, 110, 0.12), rgba(200, 170, 110, 0.03));
+}
+
+.tier-header-a {
+  background: linear-gradient(90deg, rgba(10, 203, 230, 0.1), rgba(10, 203, 230, 0.02));
+}
+
+/* Stat bars (kept for compatibility) */
 .stat-bar {
   height: 6px;
   border-radius: 3px;
@@ -178,4 +193,18 @@
   height: 100%;
   border-radius: 3px;
   transition: width 0.6s ease;
+}
+
+/* Subtle noise overlay for depth */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
