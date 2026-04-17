@@ -1,47 +1,52 @@
----
-Task ID: 1
-Agent: Main Agent
-Task: Create github-manager skill using skill-creator
+# MOBA Sage — Massive Feature Update Worklog
 
-Work Log:
-- Analyzed existing github-repo and github-sync skills for reference
-- Designed comprehensive skill combining git CLI + GitHub REST API
-- Created `scripts/git_operations.py` — full git CLI wrapper (clone, pull, push, add, commit, branch management, merge, log, diff, stash, tags, config, remote management)
-- Created `scripts/github_api.py` — extended GitHub REST API client (file CRUD, repo info, issues, PRs, releases, commit history, search)
-- Wrote comprehensive `SKILL.md` with all reference docs, workflow examples, and configuration guide
-- Verified all imports and tested with real git repo
-- Packaged skill to `/home/z/my-project/download/github-manager.skill`
-
-Stage Summary:
-- Skill `github-manager` created successfully at `/home/z/my-project/skills/github-manager/`
-- Packaged as `github-manager.skill` in `/home/z/my-project/download/`
-- Covers: clone, pull, push, commit, branch, merge, log, diff, stash, tags, file CRUD via API, issues, PRs, releases, search
-- Zero external dependencies (uses only stdlib urllib + subprocess for git CLI)
+**Date**: 2026-04-18
+**Scope**: 3 files changed, 1 new file created
 
 ---
-Task ID: 2
-Agent: Main Agent
-Task: Add Game Selector Landing Page + Player Profile Scanner to MOBA Sage
 
-Work Log:
-- Read and analyzed all existing project files (page.tsx, data.ts, globals.css, layout.tsx, package.json, api routes)
-- Created `/src/app/api/summoner/route.ts` — new API endpoint that returns demo/mock summoner data (or real Riot API data if RIOT_API_KEY env var is set)
-- Completely rewrote `/src/app/page.tsx` to add:
-  1. **Game Selector Landing Page** — cinematic full-viewport landing with two massive game cards (League of Legends with gold theme, Wild Rift with cyan theme), framer-motion animations, glass-morphism styling, hover glow effects
-  2. **Wild Rift Coming Soon Page** — elegant placeholder with animated ring, feature hints (Tier Lists, IA Insights, Meta Tracker), and back button
-  3. **Player Profile Scanner Tab ("Perfil")** — 5th tab added with summoner name input, region dropdown (16 regions), search button, profile display (icon, name, level), ranked info (Solo/Duo and Flex with tier colors, LP, W/L, win rate), most played champions with champion images from Data Dragon
-  4. **Logo back navigation** — clicking the MOBA SAGE logo/header returns to game selector when a game is selected
-  5. **`selectedGame` state management** — null shows game selector, 'lol' shows existing tabs, 'wildrift' shows coming soon
-  6. **`SmallChampionIcon` component** — extracted for proper React hook usage in the profile tab
-- Fixed React Hook lint error (useState inside map callback) by extracting component
-- All existing functionality preserved (Tier List, Parches, Cosas Rotas, Tareas tabs, AI dialog)
-- Lint passes with zero errors
-- Dev server compiles and runs successfully
+## Files Changed
 
-Stage Summary:
-- Files changed:
-  - `src/app/page.tsx` — major rewrite with game selector, profile tab, Wild Rift page, all existing tabs preserved
-  - `src/app/api/summoner/route.ts` — new file, summoner lookup API with demo data
-- Dark LoL theme maintained throughout (#0a0e1a, #c8aa6e, #0acbe6)
-- Framer-motion animations for all page transitions
-- Responsive design (mobile-first with sm/md/lg breakpoints)
+### 1. `src/lib/data.ts` (Updated)
+- Added `ProPick` interface with champion, role, tournament, region, pickRate, banRate, winRate, patch
+- Extended `Champion` interface with optional fields: `builds`, `counterPick`, `synergy`, `aiAnalysis`, `proPickRate`
+- Added `builds` data for all 8 S-tier champions and 6 A-tier champions (Orianna, Vi, Ezreal, Lulu, Garen, Katarina, Vayne, Jhin) with realistic Spanish item names
+- Added `counterPick` and `synergy` fields for all 8 S-tier champions
+- Added `aiAnalysis` (3-5 paragraph Spanish analysis) for all 8 S-tier champions
+- Added `proPickRate` for all 8 S-tier champions
+- Added `PRO_PICKS_DATA` array (16 entries across LCK/LPL/LEC/LCS)
+- Added `getProPicks(region?)` function
+
+### 2. `src/app/page.tsx` (Rewritten)
+- **Added imports**: `Map`, `Database`, `Wrench`, `ImageIcon` from lucide-react; removed unused `Dialog`/`DialogContent`/`DialogHeader`/`DialogTitle`/`DialogDescription` imports
+- **Added interfaces**: `ChampionBuild`, `ProPick`, extended `Champion` with builds/counterPick/synergy/aiAnalysis/proPickRate
+- **Added `TOURNAMENT_REGIONS`** constant for competitive tab filter
+- **Fixed BrokenStuffTab**: Added `TinyChampionIcon` component; each insight now shows circular splash art icon before champion name
+- **Added RoadmapTab**: 7 categories (Datos & APIs, IA & Analytics, Competitivo, Builds & Runas, Social & Usuarios, Plataforma, Assets) with status badges (done/progress/planned)
+- **Added CompetitiveTab**: Region filter (Todos/LCK/LPL/LEC/LCS), pro picks list with splash art icons, role/tournament badges, pick/ban/win rates
+- **Added ChampionDetailsPanel**: Shows builds, counter pick, synergy, pro pick rate, and AI analysis inline when champion is clicked
+- **Made champion rows expandable**: Click a champion row to expand details inline (no dialog)
+- **Removed AiDialog component entirely**: No more AI dialog popup; analysis shown inline
+- **Added info section below game cards**: 3-column grid (Fuentes de Datos, Última Actualización, Beneficios) with Database, Clock, Shield icons
+- **Updated tab order**: Tier List → Parches → Cosas Rotas → Tareas → Roadmap → Competitivo → Perfil
+- **Added `RoadmapStatusBadge` component** for roadmap items
+- **Added `TournamentBadge` component** for competitive tab
+- **Added `TinyChampionIcon` component** for Broken Stuff and Competitive tabs
+
+### 3. `src/app/api/pro-picks/route.ts` (New)
+- GET endpoint that accepts optional `region` query param
+- Returns filtered pro picks sorted by pickRate descending
+
+---
+
+## Tab Order (Final)
+1. Tier List (Trophy)
+2. Parches (ScrollText)
+3. Cosas Rotas (AlertTriangle) — FIXED with champion icons
+4. Tareas (ListTodo)
+5. Roadmap (Map) — NEW
+6. Competitivo (Crown) — NEW
+7. Perfil (User)
+
+## Lint Status: ✅ Pass (0 errors, 0 warnings)
+## Dev Server: ✅ Compiling successfully
