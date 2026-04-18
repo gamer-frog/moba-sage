@@ -71,3 +71,33 @@ Stage Summary:
 - New Combos Rotos tab with 16 combos across LoL/WR, filterable by size (2-5 champs)
 - Champion modal now shows champion ICONS for counters/synergies
 - All changes pushed to GitHub, deployed on Vercel
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Full app critique + bug fixes + auto-patch version + real build links + CANCELADO badges + push
+
+Work Log:
+- Read full codebase: page.tsx (2226 lines), data.ts (680 lines), all API routes, globals.css, layout.tsx
+- Identified 8 critical bugs: hardcoded regions (LAS only), hardcoded patch 14.8, demo-only profile scanner, hardcoded update date, static builds, missing WR tabs, only S/A tiers
+- Added all 16 Riot regions to REGIONS constant (LAN, LAS, NA, EUW, EUNE, KR, JP, BR, OCE, TR, RU, SG, PH, TH, TW, VN)
+- Created /api/version/route.ts that fetches latest patch from Riot Data Dragon CDN (free, no auth)
+- Created /api/community-builds/route.ts for champion data from CommunityDragon API
+- Updated Home component to fetch /api/version on mount and display live patch version
+- Updated header to show dynamic patch version instead of hardcoded 14.8
+- Updated "Update: X" date to use real fetched timestamp
+- Added prominent "Build Actualizada" section in champion modal with U.GG/OP.GG/Mobalytics buttons
+- Renamed existing builds to "Builds de Referencia" with disclaimer
+- Made CANCELADO badges: X icon, strikethrough, red background, opacity
+- Made Completado badges: green checkmark icon
+- Added X and Info icons from lucide-react
+- Build: ✅ Compiled successfully
+- Git push: ✅ commit 2c563c0 pushed to main
+
+Stage Summary:
+- 16 regions now available in profile scanner
+- Patch version auto-detects from Riot CDN (was hardcoded 14.8)
+- Champion modal shows real build links prominently (U.GG/OP.GG/Mobalytics)
+- CANCELADO items visually distinct (red, strikethrough, X icon)
+- Completado items show green checkmark
+- Deployed to Vercel

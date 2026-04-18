@@ -122,11 +122,12 @@ interface SummonerData {
 // ============ CONSTANTS ============
 type GameSelection = null | 'lol' | 'wildrift';
 
-const TIERS = ['S', 'A'] as const;
+const TIERS = ['S', 'A', 'B'] as const;
 
 const TIER_CONFIG: Record<string, { color: string; label: string }> = {
   S: { color: '#c8aa6e', label: 'Dioses del Meta' },
   A: { color: '#0acbe6', label: 'Fuertes' },
+  B: { color: '#0fba81', label: 'Jugables' },
 };
 
 const ROLE_CONFIG: Record<string, { color: string; label: string; icon: typeof Sword }> = {
@@ -965,7 +966,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
               <p className="text-sm text-[#5b5a56] tracking-wide">PC Analytics</p>
             </div>
             <div className="flex items-center gap-1 text-xs text-[#785a28] group-hover:text-[#c8aa6e] transition-colors">
-              <span>Tier List &bull; Meta &bull; Insights</span>
+              <span>74 Campeones &bull; Tier List &bull; Meta</span>
               <ChevronRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
@@ -1019,7 +1020,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
               <p className="text-sm text-[#5b5a56] tracking-wide">Mobile Analytics</p>
             </div>
             <div className="flex items-center gap-1 text-xs text-[#5b5a56] group-hover:text-[#0acbe6] transition-colors">
-              <span>Tier List &bull; Meta &bull; Builds</span>
+              <span>20 Campeones &bull; Tier List &bull; Builds</span>
               <ChevronRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
@@ -1034,17 +1035,17 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
           <div className="glass-card rounded-xl p-4 text-center">
             <Database className="w-6 h-6 text-[#c8aa6e] mx-auto mb-2" />
             <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">Fuentes de Datos</h4>
-            <p className="text-[10px] text-[#5b5a56]">Riot Data Dragon CDN<br/>IA Generativa (GLM)<br/>Estadísticas del Meta</p>
+            <p className="text-[10px] text-[#5b5a56]">Riot Data Dragon<br/>U.GG / OP.GG / Mobalytics<br/>CommunityDragon API</p>
           </div>
           <div className="glass-card rounded-xl p-4 text-center">
             <Clock className="w-6 h-6 text-[#0acbe6] mx-auto mb-2" />
-            <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">Última Actualización</h4>
-            <p className="text-[10px] text-[#5b5a56]">Datos del meta actual<br/>Builds actualizadas<br/>Pipeline: 14 tareas activas</p>
+            <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">Datos del Meta</h4>
+            <p className="text-[10px] text-[#5b5a56]">74 Campeones (S/A/B)<br/>Builds con iconos<br/>Combos Rotos</p>
           </div>
           <div className="glass-card rounded-xl p-4 text-center">
             <Shield className="w-6 h-6 text-[#f0c646] mx-auto mb-2" />
-            <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">Beneficios</h4>
-            <p className="text-[10px] text-[#5b5a56]">Tier Lists con IA<br/>Análisis de Campeones<br/>Scout de Invocadores</p>
+            <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">8 Pestañas</h4>
+            <p className="text-[10px] text-[#5b5a56]">Tier List &bull; Parches<br/>Cosas Rotas &bull; Combos<br/>Competitivo &bull; Perfil</p>
           </div>
         </div>
       </motion.div>
@@ -1056,7 +1057,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
-        Powered by IA &bull; Datos actualizados al meta actual
+        Powered by IA &bull; Datos del meta actual
       </motion.p>
     </motion.div>
   );
@@ -1361,7 +1362,8 @@ export default function Home() {
   function BrokenStuffTab() {
     const metaInsights = insights.filter(i => i.category === 'meta' || i.category === 'buff');
     const sTierChamps = champions.filter(c => c.tier === 'S');
-    const aTierChamps = champions.filter(c => c.tier === 'A').slice(0, 8);
+    const aTierChamps = champions.filter(c => c.tier === 'A').slice(0, 12);
+    const bTierChamps = champions.filter(c => c.tier === 'B');
 
     return (
       <div className="space-y-6">
@@ -1496,6 +1498,36 @@ export default function Home() {
                     <p className="text-[10px] font-mono font-semibold" style={{ color: champ.winRate >= 51 ? '#0acbe6' : '#a09b8c' }}>
                       {champ.winRate}%
                     </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ===== B-TIER PLAYABLE ===== */}
+        {!loading && bTierChamps.length > 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-black tracking-wider" style={{ color: '#0fba81', textShadow: '0 0 10px rgba(15,186,129,0.3)' }}>B TIER</span>
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(15,186,129,0.3), transparent)' }} />
+              <span className="text-[10px] text-[#5b5a56]">Jugables</span>
+            </div>
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
+              {bTierChamps.map(champ => (
+                <motion.div
+                  key={champ.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-1.5 p-2 rounded-lg"
+                  style={{ background: 'rgba(15,186,129,0.03)', border: '1px solid rgba(15,186,129,0.1)' }}
+                >
+                  <div className="w-7 h-7 rounded-full overflow-hidden shrink-0" style={{ border: '1.5px solid #0fba8150' }}>
+                    <TinyChampionIcon name={champ.name} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-medium text-[#f0e6d2] truncate">{champ.name}</p>
+                    <p className="text-[9px] text-[#5b5a56] font-mono">{champ.winRate}%</p>
                   </div>
                 </motion.div>
               ))}
@@ -2241,10 +2273,12 @@ export default function Home() {
             <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
               <WildRiftHeader />
               {activeTab === 'tierlist' && <TierListTab />}
+              {activeTab === 'patches' && <PatchesTab />}
               {activeTab === 'broken' && <BrokenStuffTab />}
               {activeTab === 'tasks' && <TasksTab />}
               {activeTab === 'roadmap' && <RoadmapTab />}
               {activeTab === 'combos' && <CombosTab />}
+              {activeTab === 'competitive' && <CompetitiveTab />}
               {activeTab === 'profile' && <ProfileTab />}
             </motion.div>
           ) : (
