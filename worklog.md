@@ -147,3 +147,30 @@ Stage Summary:
 - BRAINSTORM.md creado con backlog completo de 48 ideas + 15 quick wins
 - Quick wins propuestos al usuario para decisión
 - Sin cambios de código — solo análisis y documentación
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Implement 11 quick wins batch
+
+Work Log:
+- Added GoldParticles component (25 floating particles, CSS-only animation)
+- Added Beaufort font (@font-face from Riot CDN) for .lol-heading class
+- Added CollapsibleSection component (max-height transition)
+- Added CopyBuildButton component (clipboard API with feedback)
+- Added search autocomplete dropdown (shows 5 matching champions)
+- Added Favorites system (localStorage persistence, star icon in rows)
+- Added "★ Favoritos" filter button in tier list
+- Added "NUEVO PARCHE" badge with green pulse animation (localStorage patch tracking)
+- Added gold/cyan flash overlay on game switch (LoL ↔ WR)
+- Updated Data Dragon URLs to use dynamic version from /api/version
+- Updated ChampionModal sections to use CollapsibleSection (Broken Things, Builds, Runas, Analysis)
+- Updated landing page heading to use lol-heading class
+- Updated header MOBA SAGE to use lol-heading class
+- Added Star, Copy, Check, Bell imports from lucide-react
+
+Stage Summary:
+- 11 quick wins implemented in single commit
+- Build: Compiled successfully, 0 errors
+- Push: commit 4c5f7d0 → deployed to Vercel
+- Files changed: page.tsx (+496/-42 lines), globals.css, BRAINSTORM.md, worklog.md
