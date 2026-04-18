@@ -9,7 +9,7 @@ import {
   ArrowUpCircle, ArrowDownCircle, Users, Sparkles, Trophy,
   User, Smartphone, ArrowLeft, ChevronDown, Crown, Gamepad2,
   Monitor, MapPin, ExternalLink, Map, Database, Wrench, Image as ImageIcon,
-  Flame
+  Flame, X, Info
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -149,7 +149,22 @@ const CATEGORY_CONFIG: Record<string, { color: string; label: string; icon: type
 const ROLES = ['Todos', 'Top', 'Jungle', 'Mid', 'ADC', 'Support'];
 
 const REGIONS = [
+  { value: 'LAN', label: 'LAN' },
   { value: 'LAS', label: 'LAS' },
+  { value: 'NA', label: 'NA' },
+  { value: 'EUW', label: 'EUW' },
+  { value: 'EUNE', label: 'EUNE' },
+  { value: 'KR', label: 'KR' },
+  { value: 'JP', label: 'JP' },
+  { value: 'BR', label: 'BR' },
+  { value: 'OCE', label: 'OCE' },
+  { value: 'TR', label: 'TR' },
+  { value: 'RU', label: 'RU' },
+  { value: 'SG', label: 'SG' },
+  { value: 'PH', label: 'PH' },
+  { value: 'TH', label: 'TH' },
+  { value: 'TW', label: 'TW' },
+  { value: 'VN', label: 'VN' },
 ];
 
 const TOURNAMENT_REGIONS = [
@@ -326,15 +341,18 @@ function RoadmapStatusBadge({ status }: { status: string }) {
     cancelled: { color: '#e84057', label: 'CANCELADO' },
   };
   const c = cfg[status] || cfg.planned;
+  const isCancelled = status === 'cancelled';
   return (
     <span
-      className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border"
+      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${isCancelled ? 'line-through opacity-70' : ''}`}
       style={{
-        backgroundColor: `${c.color}12`,
+        backgroundColor: isCancelled ? 'rgba(232,64,87,0.15)' : `${c.color}12`,
         color: c.color,
-        borderColor: `${c.color}25`,
+        borderColor: isCancelled ? 'rgba(232,64,87,0.4)' : `${c.color}25`,
       }}
     >
+      {status === 'done' && <CheckCircle2 className="w-3 h-3 mr-1" />}
+      {status === 'cancelled' && <X className="w-3 h-3 mr-1" />}
       {c.label}
     </span>
   );
@@ -595,6 +613,26 @@ function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () 
 
         {/* Body */}
         <div className="p-5 space-y-4">
+          {/* PROMINENT: Real build links */}
+          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <Info className="w-4 h-4 text-[#c8aa6e]" />
+              <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Build Actualizada</span>
+            </div>
+            <p className="text-[10px] text-[#785a28] mb-2.5">Para builds siempre actualizadas al meta, revisá estas fuentes:</p>
+            <div className="flex items-center gap-2 flex-wrap">
+              <a href={extUrls.ugg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,203,230,0.1)', border: '1px solid rgba(0,203,230,0.3)', color: '#0acbe6' }}>
+                <ExternalLink className="w-3 h-3" /> U.GG
+              </a>
+              <a href={extUrls.opgg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}>
+                <ExternalLink className="w-3 h-3" /> OP.GG
+              </a>
+              <a href={extUrls.mobalytics} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(232,64,87,0.1)', border: '1px solid rgba(232,64,87,0.3)', color: '#e84057' }}>
+                <ExternalLink className="w-3 h-3" /> Mobalytics
+              </a>
+            </div>
+          </div>
+
           {/* Broken Things */}
           {champion.brokenThings && champion.brokenThings.length > 0 && (
             <div>
@@ -613,12 +651,13 @@ function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () 
             </div>
           )}
 
-          {/* Builds with item icons */}
+          {/* Builds with item icons (Reference) */}
           {champion.builds && champion.builds.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Wrench className="w-4 h-4 text-[#c8aa6e]" />
-                <h4 className="text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Builds</h4>
+                <h4 className="text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Builds de Referencia</h4>
+                <span className="text-[9px] text-[#5b5a56] ml-auto">Revisá arriba para la build actualizada</span>
               </div>
               <div className="space-y-2">
                 {champion.builds.map((build, i) => {
@@ -1000,7 +1039,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
           <div className="glass-card rounded-xl p-4 text-center">
             <Clock className="w-6 h-6 text-[#0acbe6] mx-auto mb-2" />
             <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">Última Actualización</h4>
-            <p className="text-[10px] text-[#5b5a56]">Patch 14.8<br/>18 Abril, 2026<br/>Pipeline: 14 tareas activas</p>
+            <p className="text-[10px] text-[#5b5a56]">Datos del meta actual<br/>Builds actualizadas<br/>Pipeline: 14 tareas activas</p>
           </div>
           <div className="glass-card rounded-xl p-4 text-center">
             <Shield className="w-6 h-6 text-[#f0c646] mx-auto mb-2" />
@@ -1076,25 +1115,31 @@ export default function Home() {
   const [summonerLoading, setSummonerLoading] = useState(false);
   const [summonerError, setSummonerError] = useState('');
 
+  // Live version state
+  const [liveVersions, setLiveVersions] = useState<{ lol: string; wr: string }>({ lol: '', wr: '' });
+  const [lastUpdate, setLastUpdate] = useState('');
+
   // ============ FETCH DATA ============
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const [champsRes, patchesRes, insightsRes, tasksRes, proRes, combosRes] = await Promise.all([
+      const [champsRes, patchesRes, insightsRes, tasksRes, proRes, combosRes, versionRes] = await Promise.all([
         fetch('/api/champions'),
         fetch('/api/patches'),
         fetch('/api/insights'),
         fetch('/api/tasks'),
         fetch('/api/pro-picks'),
         fetch('/api/combos'),
+        fetch('/api/version'),
       ]);
-      const [champsData, patchesData, insightsData, tasksData, proData, combosData] = await Promise.all([
+      const [champsData, patchesData, insightsData, tasksData, proData, combosData, versionData] = await Promise.all([
         champsRes.json(),
         patchesRes.json(),
         insightsRes.json(),
         tasksRes.json(),
         proRes.json(),
         combosRes.json(),
+        versionRes.json(),
       ]);
       setChampions(champsData);
       setPatches(patchesData);
@@ -1102,6 +1147,14 @@ export default function Home() {
       setTasks(tasksData);
       setProPicks(proData);
       setCombos(combosData);
+      if (versionData?.lol) {
+        setLiveVersions({ lol: versionData.lol.split('.').slice(0, 2).join('.'), wr: versionData.wr || '6.4' });
+      }
+      if (versionData?.fetchedAt) {
+        const d = new Date(versionData.fetchedAt);
+        const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        setLastUpdate(`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`);
+      }
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -2137,13 +2190,13 @@ export default function Home() {
             {selectedGame === 'wildrift' && (
               <Badge variant="outline" className="text-[10px] border-[#0acbe6]/30 text-[#0acbe6]">Wild Rift</Badge>
             )}
-            <Badge variant="outline" className="text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? 'Patch 6.4' : 'Patch 14.8'}</Badge>
+            <Badge variant="outline" className="text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? `Patch ${liveVersions.wr || '6.4'}` : `Patch ${liveVersions.lol || '25.6'}`}</Badge>
             <Badge className="bg-[#c8aa6e]/10 text-[#c8aa6e] border border-[#c8aa6e]/25 text-[10px]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] mr-1.5 animate-pulse" />
               En vivo
             </Badge>
             <span className="hidden sm:inline text-[9px] text-[#5b5a56] ml-1">
-              Update: 18 Abr 2026
+              Update: {lastUpdate || 'Cargando...'}
             </span>
           </div>
         </div>
