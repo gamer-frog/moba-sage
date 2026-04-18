@@ -1,13 +1,8 @@
 # TASKS — MOBA SAGE
 
-## TICK ACTUAL: #2
+## TICK ACTUAL: #3
 
 ## TAREAS PENDIENTES
-
-### [ ] T2: Fix y push de cambios staged
-- Descripción: Hay 3 archivos staged (pro-picks route, page.tsx, data.ts). Commit + push.
-- Prioridad: ALTA
-- Notas: Los cambios ya están en staging area desde la sesión anterior.
 
 ### [ ] T3: Documentar pipeline TAREAS
 - Descripción: Escribir documentación completa del sistema de tareas circulares
@@ -46,3 +41,4 @@
 
 ## TAREAS COMPLETADAS
 - [x] T1: Setup inicial CHECKLIST (DASHBOARD.md + TASKS.md)
+- [x] T2: Fix y push de cambios staged — Sync con remote + patch update 14.8→16.8

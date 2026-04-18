@@ -14,12 +14,12 @@ interface PatchEntry {
 const FALLBACK_PATCHES: PatchEntry[] = [
   {
     id: 1,
-    version: '14.8',
-    title: 'Patch 14.8 — Ajustes de Mid Season',
-    date: '2024-04-17',
-    summary: 'Ajustes de champions para preparación de mid-season invicta. Buffs a junglers como Master Yi y Lee Sin, ajustes a ADCs de alta movilidad.',
-    digest: 'Esta patch trae cambios significativos al meta de mid-season. Se buffean campeones de jungla como Master Yi y Lee Sin, mientras se ajustan ADCs de alta movilidad. Jinx recibe un ligero nerf en su rango de W pero compensa con más daño en su pasiva. Thresh mantiene su dominio en la bot lane con pequeñas mejoras de calidad de vida.',
-    url: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-14-8-notes/',
+    version: '16.8',
+    title: 'Patch 16.8 — Ajustes de Temporada',
+    date: '2025-04-17',
+    summary: 'Ajustes de balance para la temporada 2025. Cambios a items mythic, ajustes de jungle, y reworks parciales.',
+    digest: 'Patch 16.8 trae cambios significativos al meta actual. Se ajustan items mythic y objetos legendarios, se modifican las ratios de la jungla, y varios campeones reciben buffs y nerfs de balance. El meta evoluciona con nuevas composiciones viables en todas las roles.',
+    url: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-16-8-notes/',
     sourceGame: 'LoL',
   },
   {
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
         // Take the latest 10 patches
         const latestPatches = cdData.patches.slice(0, 10);
         latestPatches.forEach((patch: { id?: string; name?: string; patch?: string; title?: string; date?: string; banner?: string; notes?: string }, index: number) => {
-          const version = patch.id || patch.name || patch.patch || `14.${8 - index}`;
+          const version = patch.id || patch.name || patch.patch || `16.${8 - index}`;
           const title = patch.title || `Patch ${version}`;
           const date = patch.date || new Date(Date.now() - index * 14 * 86400000).toISOString().split('T')[0];
           const url = patch.banner

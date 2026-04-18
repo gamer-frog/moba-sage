@@ -110,7 +110,7 @@ export function ProfileTab({
           <div className="glass-card rounded-xl p-5">
             <div className="flex items-center gap-4">
               <div className="w-20 h-20 rounded-full overflow-hidden shrink-0 relative" style={{ border: '3px solid #c8aa6e', boxShadow: '0 0 20px rgba(200,170,110,0.2)' }}>
-                <Image src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/profileicon/${summonerData.profileIconId}.png`} alt={summonerData.name} fill className="object-cover" />
+                <Image src={`https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/${summonerData.profileIconId}.png`} alt={summonerData.name} fill className="object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-xl font-bold text-[#f0e6d2] truncate">{summonerData.name}</h3>
