@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle } from 'lucide-react';
 import { TIER_CONFIG } from './constants';
 import { getChampionImageUrl, getBuildExternalUrl, getItemIconUrl, parseBuildItems } from './helpers';
+import { RuneIcon } from './rune-icon';
 import { ChampionIcon, SplashArtIcon, TinyChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
 import { CollapsibleSection } from './collapsible-section';
@@ -180,16 +181,18 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
           {champion.runes && (
             <CollapsibleSection title="Runas" icon={Sparkles} color="#f0c646" defaultOpen={false}>
               <div className="rounded-lg p-3 space-y-2" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.12)' }}>
-                <div className="flex items-start gap-2">
-                  <span className="text-[10px] font-semibold text-[#c8aa6e] shrink-0 w-16 uppercase">Ruta 1</span>
+                <div className="flex items-center gap-2.5">
+                  <RuneIcon runeName={champion.runes.primary} size={20} />
                   <span className="text-[11px] text-[#a09b8c]">{champion.runes.primary}</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-[10px] font-semibold text-[#c8aa6e] shrink-0 w-16 uppercase">Ruta 2</span>
+                <div className="flex items-center gap-2.5">
+                  <RuneIcon runeName={champion.runes.secondary} size={20} />
                   <span className="text-[11px] text-[#a09b8c]">{champion.runes.secondary}</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-[10px] font-semibold text-[#c8aa6e] shrink-0 w-16 uppercase">Fragments</span>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded shrink-0 flex items-center justify-center" style={{ background: 'rgba(240,198,70,0.15)', border: '1px solid rgba(240,198,70,0.3)' }}>
+                    <span className="text-[8px] text-[#f0c646] font-bold">F</span>
+                  </div>
                   <span className="text-[11px] text-[#a09b8c]">{champion.runes.shards}</span>
                 </div>
               </div>

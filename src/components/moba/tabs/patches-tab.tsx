@@ -1,10 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ScrollText, Clock, Brain } from 'lucide-react';
+import { ScrollText, Clock, Brain, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { PatchNote, GameSelection } from '../types';
+
+function getPatchNotesUrl(patch: PatchNote): string {
+  const v = patch.version.replace(/\./g, '-');
+  if (patch.sourceGame === 'WR') {
+    return `https://www.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-${v}-notes/`;
+  }
+  return `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${v}-notes/`;
+}
 
 export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchNote[]; loading: boolean; selectedGame: GameSelection }) {
   const filteredPatches = patches.filter(p => {
@@ -43,6 +51,9 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
                   <Clock className="w-3 h-3" />
                   <span>{new Date(patch.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                   <Badge variant="outline" className="text-[10px] border-[#785a28]/40 text-[#5b5a56]">{patch.sourceGame}</Badge>
+                  <a href={getPatchNotesUrl(patch)} target="_blank" rel="noopener" className="ml-auto inline-flex items-center gap-1 text-[10px] text-[#c8aa6e] hover:text-[#f0e6d2] transition-colors">
+                    Notas Oficiales <ExternalLink className="w-2.5 h-2.5" />
+                  </a>
                 </div>
               </div>
             </div>

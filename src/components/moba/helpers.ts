@@ -74,6 +74,57 @@ export function parseBuildItems(itemsStr: string): string[] {
   return itemsStr.split(/[→,\n]/).map(s => s.replace(/[→]/g, '').trim()).filter(Boolean);
 }
 
+// ============================================================
+// Rune Icon Helper
+// ============================================================
+
+const RUNE_ICON_MAP: Record<string, string> = {
+  // Precision Keystones
+  'Pies Veloces': '7201_Precision/FleetFootwork/FleetFootwork.png',
+  'Conquistador': '7201_Precision/Conqueror/Conqueror.png',
+  'Lethal Tempo': '7201_Precision/LethalTempo/LethalTempoTemp.png',
+  'Sabor a Sangre': '8100_Domination/HailOfBlades/HailOfBlades.png',
+  // Sorcery Keystones
+  'Cometa Arcano': '8200_Sorcery/ArcaneComet/ArcaneComet.png',
+  'Invocar Aery': '8200_Sorcery/SummonAery/SummonAery.png',
+  'Phase Rush': '8200_Sorcery/PhaseRush/PhaseRush.png',
+  // Domination Keystones
+  'Electrocutar': '8100_Domination/Electrocute/Electrocute.png',
+  'Oscuro Colhar': '8100_Domination/DarkHarvest/DarkHarvest.png',
+  // Resolve Keystones
+  'Guardián': '8400_Resolve/Guardian/Guardian.png',
+  'Demolir': '8400_Resolve/Demolish/Demolish.png',
+  'Fuente de Vida': '8400_Resolve/Revitalize/Revitalize.png',
+  // Inspiration Keystones
+  'Viento Favorable': '8300_Inspiration/GlacialAugment/GlacialAugment.png',
+};
+
+const RUNE_COLOR_MAP: Record<string, string> = {
+  'Precisión': '#c8aa6e',
+  'Brujería': '#1b998b',
+  'Dominación': '#d44444',
+  'Determinación': '#f9c74f',
+  'Inspiración': '#e8e8e8',
+};
+
+export function getRuneIconUrl(runeName: string): { url: string; color: string } | null {
+  for (const [key, path] of Object.entries(RUNE_ICON_MAP)) {
+    if (runeName.includes(key)) {
+      return {
+        url: `https://ddragon.leagueoflegends.com/cdn/${_ddVersion}/img/perk-images/Styles/${path}`,
+        color: RUNE_COLOR_MAP[Object.keys(RUNE_COLOR_MAP).find(k => runeName.includes(k)) || 'Precisión'] || '#c8aa6e',
+      };
+    }
+  }
+  // Check for path name in rune
+  for (const [path, color] of Object.entries(RUNE_COLOR_MAP)) {
+    if (runeName.includes(path)) {
+      return { url: '', color };
+    }
+  }
+  return null;
+}
+
 export function getBuildExternalUrl(champName: string): { ugg: string; mobalytics: string; opgg: string } {
   const safe = champName.toLowerCase().replace(/ /g, '').replace(/'/g, '');
   return {
