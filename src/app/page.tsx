@@ -43,6 +43,7 @@ interface Champion {
   proPickRate?: number;
   brokenThings?: string[];
   buildLinks?: { label: string; url: string }[];
+  runes?: { primary: string; secondary: string; shards: string };
 }
 
 interface PatchNote {
@@ -662,6 +663,30 @@ function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () 
                     </div>
                   );
                 })}
+              </div>
+            </div>
+          )}
+
+          {/* Runas */}
+          {champion.runes && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-4 h-4 text-[#f0c646]" />
+                <h4 className="text-xs font-semibold text-[#f0c646] uppercase tracking-wider">Runas</h4>
+              </div>
+              <div className="rounded-lg p-3 space-y-2" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.12)' }}>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold text-[#c8aa6e] shrink-0 w-16 uppercase">Ruta 1</span>
+                  <span className="text-[11px] text-[#a09b8c]">{champion.runes.primary}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold text-[#c8aa6e] shrink-0 w-16 uppercase">Ruta 2</span>
+                  <span className="text-[11px] text-[#a09b8c]">{champion.runes.secondary}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-semibold text-[#c8aa6e] shrink-0 w-16 uppercase">Fragments</span>
+                  <span className="text-[11px] text-[#a09b8c]">{champion.runes.shards}</span>
+                </div>
               </div>
             </div>
           )}

@@ -30,6 +30,7 @@ export interface Champion {
   proPickRate?: number;
   brokenThings?: string[];
   buildLinks?: { label: string; url: string }[];
+  runes?: { primary: string; secondary: string; shards: string };
 }
 
 export interface PatchNote {
@@ -100,6 +101,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Taric, Master Yi + Taric es la composición más tóxica del juego actualmente',
     aiAnalysis: 'Master Yi es actualmente el jungler más dominante del meta. Su Q "Alpha Strike" permite reseteos rápidos tras eliminaciones, generando snowballs devastadoras en partidas de soloQ. Con un win rate del 55.2%, supera a todos los demás jungleres.\n\nBuild recomendado: Filo de la Noche into Eclipse maximiza su burst. La sinergia con Taric sigue siendo una de las composiciones más tóxicas del juego.\n\nConsejo principal: Prioriza farmeo temprano y busca invasiones en la jungla enemiga tras el level 3. Evita teamfights sin tu ultimate listo.',
     proPickRate: 5.2,
+    runes: { primary: 'Precisión — Pies Veloces', secondary: 'Brujería — Colección de Ojos', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Jinx', title: 'la Cañón Suelto', role: 'ADC', tier: 'S', winRate: 54.1, pickRate: 12.3, banRate: 5.1, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -113,6 +115,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Thresh, Lulu — Thresh para enganchar y lanzar, Lulu para protege',
     aiAnalysis: 'Jinx mantiene su dominio absoluto como ADC en el meta actual. Su pasiva "¡Prepárense!" le permite snowballar teamfights tras una sola eliminación. El buff reciente en su W aumentó su rango de seguridad, haciendo que su fase de lanes sea más fuerte.\n\nEl build de Kraken Slayer maximiza su daño sostenido en teamfights. La sinergia con Thresh es estadísticamente la mejor del parche con un 55%+ de win rate combinado.\n\nConsejo principal: Mantén posicionamiento agresivo en la fase de líneas para abusar de tu rango. En teamfights, busca la primera eliminación para activar tu pasiva y limpiar.',
     proPickRate: 22.1,
+    runes: { primary: 'Precisión — Pies Veloces', secondary: 'Inspiración — Calzado Mágico', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Lee Sin', title: 'el Monje Ciego', role: 'Jungle', tier: 'S', winRate: 52.8, pickRate: 10.5, banRate: 6.2, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -125,6 +128,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Ahri, Orianna — Buen follow-up para engages y roam',
     aiAnalysis: 'Lee Sin sigue siendo el jungler más popular en ranked alto y competitivo. Su presión temprana con Q + W es inigualable, permitiéndole controlar ambos lados del mapa desde minuto 3. Aunque su win rate de 52.8% parece modesto, su impacto en el juego es masivo.\n\nEl build de Eclipse maximiza su burst en ganks tempranos. La transición a bruiser con Hidra Titánica le permite escalar correctamente.\n\nConsejo principal: Practica las combo de insec (Q → R → Flash) para ser un factor diferenciante. Controla vision en la jungla enemiga constantemente.',
     proPickRate: 15.3,
+    runes: { primary: 'Precisión — Conquistador', secondary: 'Dominación — Golpe de Gracia', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Thresh', title: 'el Guardián de Cadenas', role: 'Support', tier: 'S', winRate: 51.9, pickRate: 15.2, banRate: 1.5, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -137,6 +141,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Jinx, Vayne, Caitlyn — Cualquier ADC de hypercarry',
     aiAnalysis: 'Thresh es el soporte más versátil del meta. Su kit completo (enganche, escudo, lantern pull, peel con E) lo hace útil en cualquier composición. Con el pick rate más alto entre supports (15.2%), es el pick más seguro para la bot lane.\n\nLa sinergia Thresh + Jinx es la más fuerte del parche. El lantern permite repositioning instantáneo de Jinx para teamfights.\n\nConsejo principal: Usa tu E (Flail) para interrumpir engages enemigos. No tengas miedo de usar el lantern ofensivamente para lanzar a tu ADC hacia el enemigo.',
     proPickRate: 25.6,
+    runes: { primary: 'Determinación — Guardian', secondary: 'Brujería — Frailidad', shards: 'Armadura + Fuerza + Resistencia' },
   },
   {
     name: 'Darius', title: 'la Mano de Noxus', role: 'Top', tier: 'S', winRate: 53.5, pickRate: 7.8, banRate: 8.3, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -149,6 +154,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Jarvan IV, Orianna — Comps con engage y follow-up',
     aiAnalysis: 'Darius es el top laner más temido del meta. Su Q decimatadora con el heal reciente lo convierte en una máquina de trading en lane. Con un ban rate del 8.3%, es uno de los campeones más evitados en draft.\n\nEl meta actual de bruisers le favorece enormemente. La reducción de defensas mágicas en varios items significa que su Q y passive son más letales que nunca.\n\nConsejo principal: Abusa de tu passive de hemorragia para ganar trades extendidos. Busca anchor con tu E bajo torre para resultados garantizados.',
     proPickRate: 10.3,
+    runes: { primary: 'Precisión — Conquistador', secondary: 'Determinación — Segunda Vida', shards: 'Adaptativo + Velocidad + Resistencia' },
   },
   {
     name: 'Ahri', title: 'el Zorro de Nueve Colas', role: 'Mid', tier: 'S', winRate: 53.2, pickRate: 8.1, banRate: 2.8, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -161,6 +167,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Thresh, Lee Sin — Buen follow-up para engage',
     aiAnalysis: 'Ahri asciende a Tier S gracias a los buffs en su E (Charm). El aumento de rango base le permite atrapar objetivos desde posiciones más seguras. Con un win rate del 53.2%, es la mid laner más consistente del meta.\n\nSu movilidad con ultimate le da un roaming excelente, permitiéndole impactar todas las lanes. El build de Rabadon maximiza su burst para one-shot carries enemigos.\n\nConsejo principal: Usa tu E para castigar errores de posicionamiento. Tras level 6, roam constantemente con tu ultimate para generar ventajas en otras lanes.',
     proPickRate: 18.5,
+    runes: { primary: 'Brujería — Cometa Arcano', secondary: 'Precisión — Golpe de Gracia', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Yasuo', title: 'el Imperdonable', role: 'Mid', tier: 'S', winRate: 51.8, pickRate: 11.2, banRate: 4.7, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -174,6 +181,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Taliyah, Yasuo + Taliyah wall combo; Gragas, engages con knock-up',
     aiAnalysis: 'Yasuo se mantiene en Tier S a pesar del nerf a su muro de viento (W). Su kit de reseteo con Q en tornado sigue siendo devastador en teamfights, especialmente con compositions que garantizan knock-ups.\n\nEl nerf al W (0.75s menos) lo hace más vulnerable contra habilidades de projectile, pero no afecta su capacidad de teamfight masiva con ultimate.\n\nConsejo principal: No fuerces plays agresivos sin tornado cargado. En la lane phase, usa E inteligentemente para farmar y esquivar habilidades al mismo tiempo.',
     proPickRate: 8.5,
+    runes: { primary: 'Precisión — Pies Veloces', secondary: 'Determinación — Sobrecrecimiento', shards: 'Adaptativo + Velocidad + Resistencia' },
   },
   {
     name: 'Caitlyn', title: 'el Sheriff de Piltover', role: 'ADC', tier: 'S', winRate: 52.5, pickRate: 9.6, banRate: 2.1, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -186,6 +194,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Morgana, Lux — Poke lanes con root para trampas',
     aiAnalysis: 'Caitlyn domina el early game en la bot lane gracias a su rango superior. Su combo de trampa + headshot puede eliminar a ADCs frágiles en el level 2. El buff a Kraken Slayer mejoró significativamente su scaling.\n\nEs especialmente fuerte contraADCs sin gap closer como Jinx en la fase de líneas. Sus trampas de W proporcionan control de mapa invaluable.\n\nConsejo principal: Coloca trampas estratégicamente en los arbustos de la bot lane para controlar la zona. En teamfights, mantén la distancia máxima con tu rango de 650.',
     proPickRate: 20.5,
+    runes: { primary: 'Brujería — Cometa Arcano', secondary: 'Precisión — Presencia de Campeón', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   // Tier A — Fuertes
   { name: 'Orianna', title: 'la Dama de Relojería', role: 'Mid', tier: 'A', winRate: 51.2, pickRate: 6.3, banRate: 0.8, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
@@ -354,6 +363,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Taric, Yuumi — Composición invencible en bot lane',
     aiAnalysis: 'Master Yi es el jungler más dominante de Wild Rift. Su Alpha Strike con los ajustes de móvil lo convierten en una máquina de snowball. El rango reducido del mapa y los tiempos de respawn más cortos amplifican su capacidad de reseteo.\n\nEl build de Eclipse maximiza burst en ganks tempranos. En Wild Rift, los juegos son más cortos, lo que favorece enormemente su estilo de carry agresivo.\n\nConsejo: Prioriza Dragon y Herald. Los objetivos aparecen más rápido en WR, y Master Yi puede controlarlos fácilmente.',
     proPickRate: 8.2,
+    runes: { primary: 'Precisión — Pies Veloces', secondary: 'Brujería — Colección de Ojos', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Jinx', title: 'la Cañón Suelto', role: 'ADC', tier: 'S', winRate: 55.1, pickRate: 14.8, banRate: 6.3, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
@@ -367,6 +377,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Thresh, Nautilus — Engage fuerte para activar pasiva',
     aiAnalysis: 'Jinx domina la bot lane de Wild Rift. Su pasiva se activa con más frecuencia gracias al ritmo más rápido del juego móvil. El buff reciente a su W aumentó el rango, haciéndola aún más segura en lane.\n\nEn Wild Rift, los teamfights son más frecuentes y en espacios más cerrados, lo que maximiza el AoE de su ultimate Zap!. Su scaling es devastador desde minuto 8.\n\nConsejo: Tras level 5, busca robar Herald con tu ultimate. Es game-changing en WR.',
     proPickRate: 25.3,
+    runes: { primary: 'Precisión — Pies Veloces', secondary: 'Brujería — Frailidad', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Lee Sin', title: 'el Monje Ciego', role: 'Jungle', tier: 'S', winRate: 53.5, pickRate: 12.1, banRate: 8.5, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
@@ -379,6 +390,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Ahri, Yasuo — Buen follow-up para combos',
     aiAnalysis: 'Lee Sin en Wild Rift es aún más fuerte que en PC. El mapa más chico significa que sus ganks llegan más rápido, y el flash con menor cooldown permite más plays con su combo de insec. Su win rate de 53.5% lo pone como top 3 jungler.\n\nEl build bruiser es el más consistente. La transición de ganker temprano a bruiser de teamfight es natural.\n\nConsejo: En WR, practica las combos de Q + Flash + R. El mapa chico hace que cada gank cuente el doble.',
     proPickRate: 18.7,
+    runes: { primary: 'Precisión — Conquistador', secondary: 'Dominación — Golpe de Gracia', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Ahri', title: 'el Zorro de Nueve Colas', role: 'Mid', tier: 'S', winRate: 54.2, pickRate: 11.5, banRate: 4.2, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
@@ -391,6 +403,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Lee Sin, Jarvan IV — Engage + follow-up mortal',
     aiAnalysis: 'Ahri es la mid laner más versátil de Wild Rift. Su Charm (E) con el rango ajustado para móvil es más fácil de landing, y su ultimate con 3 cargas le da roaming excepcional. Con el mapa más chico, puede impactar todas las lanes rápidamente.\n\nEl build de Rabadon maximiza burst para one-shot carries. Es especialmente fuerte en el meta actual de partidas rápidas.\n\nConsejo: Roam constantemente tras level 5. En WR, la distancia entre mid y bot/top es menor, aprovecha eso.',
     proPickRate: 20.1,
+    runes: { primary: 'Brujería — Cometa Arcano', secondary: 'Precisión — Golpe de Gracia', shards: 'Adaptativo + Fuerza + Resistencia' },
   },
   {
     name: 'Darius', title: 'la Mano de Noxus', role: 'Top', tier: 'S', winRate: 54.5, pickRate: 9.8, banRate: 10.1, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
@@ -404,6 +417,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Jarvan IV, Orianna — Comps con engage masivo',
     aiAnalysis: 'Darius en Wild Rift es un terror en top lane. Su Q con el heal ajustado y el pasiva de hemorragía lo convierten en el mejor trader del meta. Con un ban rate del 10.1%, es el campeón más evitado en draft.\n\nEl meta de bruisers en WR es aún más fuerte que en PC porque los juegos son más cortos y los teamfights más frecuentes.\n\nConsejo: Abusa de tu E para anchor bajo torre. En WR, las torres son más débiles, así que el dive es más riesgoso para el enemigo.',
     proPickRate: 12.4,
+    runes: { primary: 'Precisión — Conquistador', secondary: 'Determinación — Segunda Vida', shards: 'Adaptativo + Velocidad + Resistencia' },
   },
   {
     name: 'Thresh', title: 'el Guardián de Cadenas', role: 'Support', tier: 'S', winRate: 52.8, pickRate: 16.5, banRate: 2.1, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
@@ -416,6 +430,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     synergy: 'Jinx, Vayne, Caitlyn — Cualquier ADC de hypercarry',
     aiAnalysis: 'Thresh es el soporte más versátil de Wild Rift. Su lantern con el target adjustado para móvil es más fácil de usar, y su capacidad de peel en el mapa más chico es invaluable. Con el pick rate más alto entre supports, es el pick más seguro.\n\nEn WR, los ganks de jungler son más frecuentes, y Thresh es el mejor soporte para jugar contra ganks con su E y lantern.\n\nConsejo: Usa el lantern ofensivamente para lanzar a tu ADC. En el mapa chico de WR, esto es aún más efectivo.',
     proPickRate: 27.8,
+    runes: { primary: 'Determinación — Guardian', secondary: 'Brujería — Frailidad', shards: 'Armadura + Fuerza + Resistencia' },
   },
   // Tier A — Fuertes (Wild Rift)
   { name: 'Ezreal', title: 'el Explorador Pródigo', role: 'ADC', tier: 'A', winRate: 50.8, pickRate: 10.2, banRate: 0.8, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
