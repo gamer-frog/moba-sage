@@ -208,3 +208,73 @@ body::before {
   z-index: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
+
+/* LoL Gold decorative corners */
+.lol-corner-tl::before,
+.lol-corner-br::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(200, 170, 110, 0.3);
+}
+.lol-corner-tl::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.lol-corner-br::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* LoL decorative divider */
+.lol-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,170,110,0.3), transparent);
+}
+
+/* LoL glowing gold text */
+.lol-glow-text {
+  text-shadow: 0 0 20px rgba(200,170,110,0.3), 0 0 40px rgba(200,170,110,0.1);
+}
+
+/* LoL card hover with gold glow */
+.lol-card-hover {
+  transition: all 0.3s ease;
+}
+.lol-card-hover:hover {
+  border-color: rgba(200, 170, 110, 0.35);
+  box-shadow: 0 0 20px rgba(200,170,110,0.08), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+/* Enhanced glass card with subtle gold tint */
+.glass-card-lol {
+  background: linear-gradient(135deg, rgba(30, 35, 40, 0.7), rgba(20, 24, 30, 0.5));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(120, 90, 40, 0.2);
+}
+
+/* LoL badge style */
+.lol-badge {
+  background: linear-gradient(135deg, rgba(200,170,110,0.15), rgba(200,170,110,0.05));
+  border: 1px solid rgba(200,170,110,0.25);
+  color: #c8aa6e;
+}
+
+/* Scrollbar - gold themed */
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #0a0e1a, #0d1220);
+}
+
+/* Pulse animation for "En vivo" */
+@keyframes lol-pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 170, 110, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(200, 170, 110, 0); }
+}
+.lol-pulse {
+  animation: lol-pulse-gold 2s ease-in-out infinite;
+}

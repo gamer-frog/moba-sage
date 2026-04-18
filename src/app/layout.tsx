@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MOBA SAGE — Analytics con IA",
-  description: "Análisis de meta, tier lists y insights con IA para League of Legends.",
-  keywords: ["MOBA", "League of Legends", "Tier List", "Meta", "Analytics", "IA"],
+  title: "MOBA SAGE — League of Legends Analytics con IA",
+  description: "Tier lists, meta analysis, builds y combos rotos para League of Legends y Wild Rift. Datos actualizados al meta actual.",
+  keywords: ["MOBA", "League of Legends", "Wild Rift", "Tier List", "Builds", "Meta", "Analytics", "IA", "Combos Rotos"],
   authors: [{ name: "MOBA Sage Team" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",

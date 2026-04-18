@@ -104,7 +104,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   {
     name: 'Jinx', title: 'la Cañón Suelto', role: 'ADC', tier: 'S', winRate: 54.1, pickRate: 12.3, banRate: 5.1, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
     brokenThings: ['Pasiva 1 kill = limpia teamfight', 'W rango buff → poke sin respuesta', 'Kraken + Runaan = AoE masivo'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/jinx/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/jinx"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/jinx"}],
     builds: [
       { name: 'Build Hypercarry', items: 'Filo Infinito → Huracán de Runaan → Bailarín Espectral → Sed de Sangre → El Final', winRate: 55.3 },
       { name: 'Build Early Power', items: 'Poder de Kraken Slayer → La Séptima → Infinito → Bailarín Espectral → Botas de Berserker', winRate: 53.1 },
@@ -122,7 +122,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
       { name: 'Build Full CD', items: 'Conquistador → Eclipse → Hidra → Fuerza de la Trinidad → Botas de CD', winRate: 51.8 },
     ],
     counterPick: 'Nidalee, Elise, Kindred',
-    synergy: 'Ahri, Orianna —良好 synergy con campeones de control',
+    synergy: 'Ahri, Orianna — Buen follow-up para engages y roam',
     aiAnalysis: 'Lee Sin sigue siendo el jungler más popular en ranked alto y competitivo. Su presión temprana con Q + W es inigualable, permitiéndole controlar ambos lados del mapa desde minuto 3. Aunque su win rate de 52.8% parece modesto, su impacto en el juego es masivo.\n\nEl build de Eclipse maximiza su burst en ganks tempranos. La transición a bruiser con Hidra Titánica le permite escalar correctamente.\n\nConsejo principal: Practica las combo de insec (Q → R → Flash) para ser un factor diferenciante. Controla vision en la jungla enemiga constantemente.',
     proPickRate: 15.3,
   },
@@ -146,7 +146,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
       { name: 'Build Anti-Tank', items: 'Pozo de la Noche → Filo Divino → Hidra → Mandato Imperial → Botas de Placas', winRate: 52.7 },
     ],
     counterPick: 'Teemo, Vayne, Gwen',
-    synergy: 'Jarvan IV, Orianna — Comps con engage yfollow-up',
+    synergy: 'Jarvan IV, Orianna — Comps con engage y follow-up',
     aiAnalysis: 'Darius es el top laner más temido del meta. Su Q decimatadora con el heal reciente lo convierte en una máquina de trading en lane. Con un ban rate del 8.3%, es uno de los campeones más evitados en draft.\n\nEl meta actual de bruisers le favorece enormemente. La reducción de defensas mágicas en varios items significa que su Q y passive son más letales que nunca.\n\nConsejo principal: Abusa de tu passive de hemorragia para ganar trades extendidos. Busca anchor con tu E bajo torre para resultados garantizados.',
     proPickRate: 10.3,
   },
@@ -165,7 +165,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   {
     name: 'Yasuo', title: 'el Imperdonable', role: 'Mid', tier: 'S', winRate: 51.8, pickRate: 11.2, banRate: 4.7, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
     brokenThings: ['Q tornado R teamwide → engage masivo', 'Wall bloquea todo AoE enemigo', 'Reset system → snowball sin límite'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/yasuo/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/yasuo"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/yasuo"}],
     builds: [
       { name: 'Build Crit', items: 'Filo de la Noche → Colmillo Infinito → Bailarín Espectral → Sed de Sangre → Botas de Berserker', winRate: 52.3 },
       { name: 'Build Lethality', items: 'Filo de la Noche → Eclipse → El Colector → Última Piedad → Botas de Movilidad', winRate: 50.8 },
@@ -226,8 +226,8 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
   { name: 'Graves', title: 'el Proscrito', role: 'Jungle', tier: 'A', winRate: 49.8, pickRate: 4.5, banRate: 0.6, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL', builds: [] },
   { name: 'Vayne', title: 'la Cazadora Nocturna', role: 'ADC', tier: 'A', winRate: 50.6, pickRate: 5.8, banRate: 0.4, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL',
-    brokenThings: ['Auto cone → clear jungle más rápido', 'E reload → trading sin cooldown', 'Bruiser tanky que hace daño ADC'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    brokenThings: ['W % true damage → mata tanks', 'Q tumble → impossible hit skillshots', 'R burst desde stealth'],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/vayne/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/vayne"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/vayne"}],
     builds: [
       { name: 'Build On-Hit', items: 'Guja Botadora → Frenesí de Runaan → Bailarín Espectral → Última Piedad → Botas de Berserker', winRate: 51.2 },
     ],
@@ -252,8 +252,8 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
   { name: 'Morgana', title: 'la Caída', role: 'Support', tier: 'A', winRate: 50.5, pickRate: 8.8, banRate: 1.3, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL', builds: [] },
   { name: 'Camille', title: 'la Sombra de Acero', role: 'Top', tier: 'A', winRate: 49.9, pickRate: 5.1, banRate: 2.0, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL', builds: [],
-    brokenThings: ['E black shield → anula CC', 'Q root 3 seg → lockdown garantizado', 'R teamwide CC → peel y engage'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildcrit/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildcrit"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildcrit"}],
+    brokenThings: ['Q true damage → trade en 1v1', 'E wall jump → engage + escape', 'R lock → elimina target en teamfight'],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/camille/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/camille"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/camille"}],
   },
   { name: 'Diana', title: 'el Desprecio de la Luna', role: 'Jungle', tier: 'A', winRate: 50.2, pickRate: 4.8, banRate: 1.4, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '14.8', game: 'LoL', builds: [],
     brokenThings: ['R dash AoE → engage AP instant', 'Shield + burst → trades favorables', 'Assassin jungle meta timing'],
@@ -345,7 +345,6 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   {
     name: 'Master Yi', title: 'el Buscador de Wuju', role: 'Jungle', tier: 'S', winRate: 56.8, pickRate: 16.3, banRate: 15.2, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['Q resetea en kills → snowball infinito', 'Combo Yi+Taric invulnerable → sin interacción', 'Alpha Strike dodgea habilidades intargetable'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/urgot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/urgot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/urgot"}],
     buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/masteryi/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/masteryi"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/masteryi"}],
     builds: [
       { name: 'Build Oneshot', items: 'Filo de la Noche → Eclipse → Roca del Eclipse → Última Piedad → Botas de Mercurio', winRate: 56.1 },
@@ -359,7 +358,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   {
     name: 'Jinx', title: 'la Cañón Suelto', role: 'ADC', tier: 'S', winRate: 55.1, pickRate: 14.8, banRate: 6.3, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['Pasiva 1 kill = limpia teamfight', 'W rango buff → poke sin respuesta', 'Kraken + Runaan = AoE masivo'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/jinx/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/jinx"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/jinx"}],
     builds: [
       { name: 'Build Hypercarry', items: 'Filo Infinito → Huracán de Runaan → Bailarín Espectral → Sed de Sangre → Botas de Berserker', winRate: 55.8 },
       { name: 'Build Lethality', items: 'Filo de la Noche → Última Piedad → El Colector → Sed de Sangre → Botas de Movilidad', winRate: 53.2 },
@@ -396,7 +395,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   {
     name: 'Darius', title: 'la Mano de Noxus', role: 'Top', tier: 'S', winRate: 54.5, pickRate: 9.8, banRate: 10.1, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['Q heal + hemorragia → gana todos los trades', 'E anchor bajo torre → dive gratis', 'Ban rate 10%+ → nadie quiere facing'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/darius/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/darius"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/darius"}],
     builds: [
       { name: 'Build Bruiser', items: 'Fuerza de Trinidad → Eclipse → Hidra Titánica → Mandato Imperial → Botas de Mercurio', winRate: 55.1 },
       { name: 'Build Anti-Tank', items: 'Pozo de la Noche → Filo Divino → Hidra → Mandato Imperial → Botas de Placas', winRate: 53.3 },
@@ -428,7 +427,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
   { name: 'Garen', title: 'el Poder de Demacia', role: 'Top', tier: 'A', winRate: 52.1, pickRate: 8.3, banRate: 1.5, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['E CD reducido → más spins más daño', 'Passive sustain → nunca backea', 'Villain → punish carries sin esfuerzo'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/garen/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/garen"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/garen"}],
     builds: [{ name: 'Build Bruiser', items: 'Fuerza de Trinidad → Eclipse → Hidra → Resistencia Divina → Botas de Placas', winRate: 52.8 }],
   },
   { name: 'Katarina', title: 'la Hoja Siniestra', role: 'Mid', tier: 'A', winRate: 50.6, pickRate: 7.8, banRate: 2.8, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
@@ -436,17 +435,17 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
   { name: 'Vi', title: 'el Ejecutor de Piltover', role: 'Jungle', tier: 'A', winRate: 51.5, pickRate: 6.8, banRate: 1.8, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['R point-click → no se puede dodge', 'Eclipse bruiser → tanque y daño', 'Q gap closer → ganks lvl 2 garantizados'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildoneshot/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildoneshot"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildoneshot"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/vi/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/vi"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/vi"}],
     builds: [{ name: 'Build Bruiser', items: 'Cosechador Nocturno → Eclipse → Hidra Titánica → Fuerza de la Trinidad → Botas de Mercurio', winRate: 51.2 }],
   },
   { name: 'Lulu', title: 'la Hechicera Fada', role: 'Support', tier: 'A', winRate: 50.9, pickRate: 8.1, banRate: 0.5, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['R peeling → protege carry completamente', 'W polymorph → shutdown carries', 'Meta estable → siempre relevante'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildbruiser/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildbruiser"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildbruiser"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/lulu/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/lulu"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/lulu"}],
     builds: [{ name: 'Build Enchanter', items: 'Redención → Convergencia de Zeke → Mikael → Medallón → Botas de CD', winRate: 51.4 }],
   },
   { name: 'Vayne', title: 'la Cazadora Nocturna', role: 'ADC', tier: 'A', winRate: 51.2, pickRate: 5.5, banRate: 0.6, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR',
     brokenThings: ['W % true damage → mata tanks', 'Q tumble → impossible hit skillshots', 'R burst desde stealth'],
-    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/buildenchanter/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/buildenchanter"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/buildenchanter"}],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/vayne/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/vayne"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/vayne"}],
     builds: [{ name: 'Build On-Hit', items: 'Guja Botadora → Frenesí de Runaan → Bailarín Espectral → Última Piedad → Botas de Berserker', winRate: 51.8 }],
   },
   { name: 'Camille', title: 'la Sombra de Acero', role: 'Top', tier: 'A', winRate: 50.4, pickRate: 6.2, banRate: 2.5, image: '', aiInsight: '', build: '', runes: '', counters: '', synergies: '', patch: '6.4', game: 'WR', builds: [] },

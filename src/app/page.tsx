@@ -200,10 +200,10 @@ const ITEM_NAME_MAP: Record<string, string> = {
   'Filo de la Noche': '6672', 'Eclipse': '6692', 'Hidra Titánica': '3748',
   'Fuerza de la Trinidad': '3071', 'Filo Infinito': '3031', 'Huracán de Runaan': '3085',
   'Bailarín Espectral': '3124', 'Sed de Sangre': '6333', 'Botas de Berserker': '3006',
-  'Sombrero de Rabadon': '3089', 'Reloj de Zhonya': '3157', 'Llamasomo': '3116',
+  'Sombrero de Rabadon': '3089', 'Reloj de Zhonya': '3157', 'Llamasomo': '3166',
   'Morellonomicon': '3165', 'Botas del Vacío': '3020', 'El Colector': '6676',
   'Última Piedad': '3036', 'Cosechador Nocturno': '6694', 'Poder de Kraken Slayer': '6673',
-  'La Séptima': '6671', 'Muramana': '3004', 'Hielo Eterno': '6662', 'Colmillo Infinito': '6673',
+  'La Séptima': '6671', 'Muramana': '3004', 'Hielo Eterno': '6662',
   'Redención': '3107', 'Convergencia de Zeke': '3190', 'Medallón de los Solari de Hierro': '3194',
   'Mikael': '3222', 'Botas de Mercurio': '3111', 'Botas de Movilidad': '3009',
   'Botas de CD': '3158', 'Roca del Eclipse': '6693', 'Guardián Angel': '3026',
@@ -842,7 +842,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
           className="text-4xl sm:text-5xl font-black tracking-[0.15em] mb-3"
           style={{
             color: '#c8aa6e',
-            textShadow: '0 0 40px rgba(200,170,110,0.3), 0 0 80px rgba(200,170,110,0.1)',
+            textShadow: '0 0 40px rgba(200,170,110,0.4), 0 0 80px rgba(200,170,110,0.15), 0 2px 8px rgba(0,0,0,0.8)',
           }}
         >
           ELIGE TU JUEGO
@@ -893,7 +893,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
             >
               <Sword className="w-8 h-8 sm:w-10 sm:h-10" style={{ color: '#c8aa6e' }} />
             </motion.div>
-            <h3 className="text-xl sm:text-2xl font-black tracking-wider mb-2" style={{ color: '#c8aa6e' }}>
+            <h3 className="text-xl sm:text-2xl font-black tracking-[0.2em] mb-2" style={{ color: '#c8aa6e', textShadow: '0 0 20px rgba(200,170,110,0.3)' }}>
               LEAGUE OF LEGENDS
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -947,7 +947,7 @@ function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: GameSelect
             >
               <Smartphone className="w-8 h-8 sm:w-10 sm:h-10" style={{ color: '#0acbe6' }} />
             </motion.div>
-            <h3 className="text-xl sm:text-2xl font-black tracking-wider mb-2" style={{ color: '#0acbe6' }}>
+            <h3 className="text-xl sm:text-2xl font-black tracking-[0.2em] mb-2" style={{ color: '#0acbe6', textShadow: '0 0 20px rgba(10,203,230,0.3)' }}>
               WILD RIFT
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -1024,71 +1024,7 @@ function WildRiftHeader() {
   );
 }
 
-// ============ WILD RIFT COMING SOON (deprecated, replaced by real content) ============
-function WildRiftComingSoon({ onBack }: { onBack: () => void }) {
-  return (
-    <motion.div
-      className="min-h-[calc(100vh-57px)] flex flex-col items-center justify-center px-4 py-12"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <motion.div
-        className="text-center max-w-lg"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-      >
-        <motion.div
-          className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-8 relative"
-          style={{
-            background: 'linear-gradient(135deg, rgba(10,203,230,0.1), rgba(10,203,230,0.03))',
-            border: '2px solid rgba(10,203,230,0.25)',
-          }}
-          animate={{
-            boxShadow: [
-              '0 0 20px rgba(10,203,230,0.1)',
-              '0 0 40px rgba(10,203,230,0.2)',
-              '0 0 20px rgba(10,203,230,0.1)',
-            ],
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
-          <Smartphone className="w-12 h-12" style={{ color: '#0acbe6' }} />
-        </motion.div>
 
-        <h2 className="text-3xl sm:text-4xl font-black tracking-[0.15em] mb-4" style={{ color: '#0acbe6', textShadow: '0 0 30px rgba(10,203,230,0.3)' }}>
-          WILD RIFT
-        </h2>
-        <p className="text-lg text-[#f0e6d2] font-semibold mb-2">Próximamente</p>
-        <p className="text-sm text-[#5b5a56] leading-relaxed mb-8 max-w-sm mx-auto">
-          Estamos preparando análisis completos de Wild Rift. Tier lists, meta insights, 
-          builds óptimos y mucho más para la versión móvil de League of Legends.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          {[
-            { icon: Trophy, label: 'Tier Lists', desc: 'Los mejores campeones' },
-            { icon: Brain, label: 'IA Insights', desc: 'Análisis inteligente' },
-            { icon: TrendingUp, label: 'Meta Tracker', desc: 'Seguimiento del meta' },
-          ].map((feature, i) => (
-            <motion.div key={feature.label} className="glass-card rounded-xl p-4" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.1 }}>
-              <feature.icon className="w-6 h-6 mx-auto mb-2" style={{ color: '#0acbe6', opacity: 0.7 }} />
-              <p className="text-xs font-semibold text-[#f0e6d2]">{feature.label}</p>
-              <p className="text-[10px] text-[#5b5a56] mt-0.5">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <Button onClick={onBack} variant="outline" className="border-[#0acbe6]/30 text-[#0acbe6] hover:bg-[#0acbe6]/10 hover:border-[#0acbe6]/50 gap-2">
-          <ArrowLeft className="w-4 h-4" />
-          Volver al selector
-        </Button>
-      </motion.div>
-    </motion.div>
-  );
-}
 
 // ============ MAIN APP ============
 export default function Home() {
@@ -2150,17 +2086,17 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#0a0e1a' }}>
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-[#785a28]/20" style={{ backgroundColor: 'rgba(10, 14, 26, 0.94)', backdropFilter: 'blur(20px) saturate(1.2)' }}>
+      <header className="sticky top-0 z-40 border-b-2 border-[#785a28]/30" style={{ backgroundColor: 'rgba(10, 14, 26, 0.94)', backdropFilter: 'blur(20px) saturate(1.2)' }}>
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
             onClick={selectedGame ? handleBackToSelector : undefined}
             className={`flex items-center gap-2 ${selectedGame ? 'cursor-pointer group' : ''}`}
           >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #c8aa6e, #9a7b4f)' }}>
+            <div className="w-8 h-8 rounded flex items-center justify-center lol-pulse" style={{ background: 'linear-gradient(135deg, #c8aa6e, #785a28)', boxShadow: '0 0 15px rgba(200,170,110,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
               <Sword className="w-4 h-4 text-[#0a0e1a]" />
             </div>
             <div>
-              <h1 className="text-lg font-black tracking-wider leading-none" style={{ color: '#c8aa6e', textShadow: '0 0 20px rgba(200,170,110,0.25)' }}>MOBA SAGE</h1>
+              <h1 className="text-lg font-black tracking-[0.2em] leading-none" style={{ color: '#c8aa6e', textShadow: '0 0 30px rgba(200,170,110,0.4), 0 2px 4px rgba(0,0,0,0.8)' }}>MOBA SAGE</h1>
               <p className="text-[9px] text-[#5b5a56] tracking-[0.2em] uppercase leading-none mt-0.5">Analytics con IA</p>
             </div>
             {selectedGame && (
@@ -2177,12 +2113,12 @@ export default function Home() {
               <Badge variant="outline" className="text-[10px] border-[#0acbe6]/30 text-[#0acbe6]">Wild Rift</Badge>
             )}
             <Badge variant="outline" className="text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? 'Patch 6.4' : 'Patch 14.8'}</Badge>
-            <Badge className="bg-[#0acbe6]/15 text-[#0acbe6] border border-[#0acbe6]/25 text-[10px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0acbe6] mr-1.5 animate-pulse" />
+            <Badge className="bg-[#c8aa6e]/10 text-[#c8aa6e] border border-[#c8aa6e]/25 text-[10px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] mr-1.5 animate-pulse" />
               En vivo
             </Badge>
             <span className="hidden sm:inline text-[9px] text-[#5b5a56] ml-1">
-              Update: 18 Abr 01:00
+              Update: 18 Abr 2026
             </span>
           </div>
         </div>
@@ -2247,6 +2183,8 @@ export default function Home() {
           )}
         </AnimatePresence>
       </main>
+
+      <div className="lol-divider" />
 
       {/* Footer */}
       <footer className="border-t border-[#785a28]/15 py-4 mt-auto" style={{ backgroundColor: 'rgba(10, 14, 26, 0.6)' }}>
