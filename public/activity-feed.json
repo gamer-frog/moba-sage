@@ -8,7 +8,7 @@
       "title": "QA Scan: acentos, conteo tabs, nombres items corregidos",
       "description": "(1) Homepage: '8 Pestañas' → '10 Pestañas' con lista completa de tabs actualizada (Novedades, Ideas, Roadmap, Tareas faltaban). (2) Sidebar: 'ANALISIS' → 'ANÁLISIS' (tilde faltante visible en toda la app). (3) Acentos masivos corregidos: facil→fácil, dificil→difícil (combos), Sombrero de Rabadon→Rabadón, Guardian→Guardián (runa), proteccion→protección, Fuerza de Trinidad→Fuerza de la Trinidad (estandarizado). Build OK.",
       "timestamp": "2026-04-22T09:10:00Z",
-      "commit": "pending",
+      "commit": "b237fe4",
       "category": "fix"
     },
     {
