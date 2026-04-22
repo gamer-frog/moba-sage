@@ -1,6 +1,6 @@
 # TICKS — MOBA SAGE
 > Auto-maintenance tasks executed by cron jobs
-> Last run: 2026-04-22 02:55 BA | Next run: 2026-04-22 03:10 BA (cada 15 min)
+> Last run: 2026-04-22 05:40 BA | Next run: 2026-04-22 05:55 BA (cada 15 min)
 
 ## CRON JOBS CONFIGURED
 | Job | ID | Schedule | Descripción |
@@ -47,3 +47,4 @@
 - [2026-04-22 03:01 BA] Ralph Loop QA + Competitor Scan + 3 Fixes: (1) Nombres items corruptos: Llamasomo→Llamarada Sombría (24 instancias en data.ts + helpers.ts), Botas de CD→Botas de Celeridad. (2) Skin labels genéricas→nombres reales DDragon para 24 campeones (Katarina "Kitty Cat", Jinx "Star Guardian", Yasuo "PROJECT:", etc). (3) Sidebar patch badge: badge "26.8" con dot pulsante en footer de sidebar. Competidores analizados: Mobalytics (sidebar), OP.GG (sidebar), Blitz (top nav), U.GG (sidebar). Build OK. Commit 308ab2b.
 - [2026-04-22 03:55 BA] Ralph Loop QA + 3 Fixes: (1) Spell key overrides expandidos de ~25 a 60+ campeones con keys Q/W/E/R completos para todo el tier list (LoL + WR). (2) Popup Novedades reescrito: AnimatePresence corregido (mode wait→default), card z-index separado del overlay, mounted flag para session tracking. (3) Fallback mejorado para spell icons: cuando icono DDragon falla, muestra nombre abreviado de skill (Alpha, Wuju, Shunpo, etc) en vez de solo la letra. Scan completo: 10 tabs OK, Tareas tab funciona (falso positivo del scan previo). Build OK.
 - [2026-04-22 04:28 BA] Ralph Loop CEO + Competitor Research + 3 Fixes: (1) WR Patch 6.8 expandido con contenido real — summary detallado con buffs de Master Yi, Lee Sin, Ahri, Darius + digest con WRs y meta analysis. (2) Fix parseBuildItems: items con apostrofe (Jak'Sho, K'Sante) ya no se rompen — parseBuildItems solo splitea en `→` (no en `,`). Items faltantes agregados a ITEM_NAME_MAP: Jak'Sho (6665), Stridebreaker (6631), Experimental Hexplate (6664). (3) 7 ideas de competencia agregadas al tab Ideas basadas en research de OP.GG, Mobalytics, U.GG, Blitz.gg, iTero, Porofessor, LoLalytics. Build OK. Commit a6cfe6a.
+- [2026-04-22 05:40 BA] Ralph Loop QA + 3 Fixes: (1) Sección 'Build Meta Live' oculta cuando no hay datos (antes mostraba 'No Disponible' engañoso para todos los S-tier). (2) Rune tree 'Determinación' corregido a 'Valor' en 38 instancias (data.ts + helpers.ts — el tree Resolve en LoL español es Valor). (3) Tab Competitivo WR: reemplazado mensaje confuso + filtros LoL (LCK/LPL/LEC/LCS) con 'Coming Soon' limpio. Scan completo 10 tabs OK. Build OK.

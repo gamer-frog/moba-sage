@@ -121,7 +121,7 @@ const RUNE_COLOR_MAP: Record<string, string> = {
   'Precisión': '#c8aa6e',
   'Brujería': '#1b998b',
   'Dominación': '#d44444',
-  'Determinación': '#f9c74f',
+  'Valor': '#f9c74f',
   'Inspiración': '#e8e8e8',
 };
 

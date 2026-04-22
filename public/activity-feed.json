@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T07:28:00Z",
+  "lastUpdated": "2026-04-22T08:40:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-010",
+      "type": "fix",
+      "title": "3 Fixes: BUILD META LIVE muerto + rune tree Valor + WR Competitivo",
+      "description": "(1) Sección 'Build Meta Live' ahora solo se muestra cuando hay datos reales disponibles — antes mostraba 'No Disponible' con texto engañoso para todos los S-tier. (2) Nombre de rune tree corregido: 'Determinación' → 'Valor' (38 instancias en data.ts + helpers.ts — el tree 'Resolve' en LoL español es 'Valor', no 'Determinación'). (3) Tab Competitivo en modo WR: reemplazado el mensaje confuso + filtros LoL (LCK/LPL/LEC/LCS) con un 'Coming Soon' limpio. Scan completo 10 tabs realizado.",
+      "timestamp": "2026-04-22T08:40:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-009",
       "type": "improvement",

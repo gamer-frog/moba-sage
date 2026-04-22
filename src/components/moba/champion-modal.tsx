@@ -69,12 +69,10 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
   const [activeSkin, setActiveSkin] = useState(0);
   const [failedSkins, setFailedSkins] = useState<Set<number>>(new Set());
   const [metaBuild, setMetaBuild] = useState<any>(null);
-  const [buildLoading, setBuildLoading] = useState(false);
 
   // Fetch live meta builds for S-tier champions
   useEffect(() => {
     if (champion.tier !== 'S') return;
-    setBuildLoading(true);
     fetch('/api/meta-builds?refresh=false')
       .then(res => res.json())
       .then(data => {
@@ -82,8 +80,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
           setMetaBuild(data.builds[champion.name]);
         }
       })
-      .catch(() => {})
-      .finally(() => setBuildLoading(false));
+      .catch(() => {});
   }, [champion.name, champion.tier]);
 
   const handleSkinError = (skinNum: number) => {
@@ -280,54 +277,44 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
             </div>
           </div>
 
-          {/* Build Section — Shows live scraped data for S-tier */}
-          {champion.tier === 'S' && (
+          {/* Build Section — Only shows live scraped data when available */}
+          {champion.tier === 'S' && metaBuild && metaBuild.coreItems && metaBuild.coreItems.length > 0 && (
             <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(15,186,129,0.08), rgba(15,186,129,0.02))', border: '1px solid rgba(15,186,129,0.2)' }}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[#0fba81]" />
                   <span className="text-[10px] font-semibold text-[#0fba81] uppercase tracking-wider">Build Meta Live</span>
                 </div>
-                {metaBuild ? (
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] animate-pulse" />
-                    <span className="text-[9px] text-[#0fba81] font-medium">
-                      {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'Live'}
-                    </span>
-                  </div>
-                ) : buildLoading ? (
-                  <span className="text-[9px] text-[#5b5a56]">Cargando...</span>
-                ) : (
-                  <span className="text-[9px] text-[#5b5a56]">No disponible</span>
-                )}
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] animate-pulse" />
+                  <span className="text-[9px] text-[#0fba81] font-medium">
+                    {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'Live'}
+                  </span>
+                </div>
               </div>
-              {metaBuild && metaBuild.coreItems && metaBuild.coreItems.length > 0 ? (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {metaBuild.boots && (
-                      <span className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.2)', color: '#0fba81' }}>
-                        {metaBuild.boots}
-                      </span>
-                    )}
-                    {metaBuild.coreItems.map((item: string, i: number) => (
-                      <span key={i} className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)', color: '#c8aa6e' }}>
-                        {item}
-                      </span>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {metaBuild.boots && (
+                    <span className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.2)', color: '#0fba81' }}>
+                      {metaBuild.boots}
+                    </span>
+                  )}
+                  {metaBuild.coreItems.map((item: string, i: number) => (
+                    <span key={i} className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)', color: '#c8aa6e' }}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+                {metaBuild.runes && metaBuild.runes.length > 0 && (
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[9px] text-[#5b5a56]">Runas:</span>
+                    {metaBuild.runes.map((rune: string, i: number) => (
+                      <span key={i} className="text-[9px] text-[#0fba81]">{rune}</span>
                     ))}
                   </div>
-                  {metaBuild.runes && metaBuild.runes.length > 0 && (
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[9px] text-[#5b5a56]">Runas:</span>
-                      {metaBuild.runes.map((rune: string, i: number) => (
-                        <span key={i} className="text-[9px] text-[#0fba81]">{rune}</span>
-                      ))}
-                    </div>
-                  )}
-                  <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
-                </div>
-              ) : (
-                <p className="text-[10px] text-[#785a28] italic">Builds en proceso de recopilación — volvé más tarde</p>
-              )}
+                )}
+                <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
+              </div>
             </div>
           )}
 
