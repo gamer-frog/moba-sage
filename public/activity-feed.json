@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T03:10:00Z",
+  "lastUpdated": "2026-04-22T04:30:00Z",
   "entries": [
     {
       "id": "deploy-001",
@@ -39,6 +39,15 @@
       "category": "feature"
     },
     {
+      "id": "fix-001",
+      "type": "fix",
+      "title": "Fix Popup + Ralph Loop 15 min",
+      "description": "Fix botones X/Entendido del popup. Eliminados crons semanales, creado loop auto-mejora cada 15 min (ID 111446).",
+      "timestamp": "2026-04-22T04:23:00Z",
+      "commit": "e0a3df1",
+      "category": "fix"
+    },
+    {
       "id": "audit-001",
       "type": "audit",
       "title": "Auditoría Completa de la App",
@@ -49,10 +58,12 @@
   ],
   "highlights": [
     "88 campeones con builds, runas y análisis IA",
-    "8 pestañas funcionales con datos en vivo",
+    "10 pestañas funcionales con datos en vivo",
     "Iconos DDragon para items y campeones",
     "Splash Art Gallery con 5 skins por campeón",
     "Mapa de Visión interactivo por rol",
-    "Activity feed + popup de novedades"
+    "Activity feed + popup de novedades",
+    "Ralph Loop auto-mejora cada 15 minutos",
+    "Tabs separadas: Juego (oro) vs Dev (cyan)"
   ]
 }
