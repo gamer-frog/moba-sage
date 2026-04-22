@@ -2,7 +2,7 @@
 // MOBA SAGE — Helper Functions
 // ============================================================
 
-let _ddVersion = '26.8.1';
+let _ddVersion = '16.8.1';
 export function updateDdVersion(v: string) { _ddVersion = v; }
 export function getDdVersion() { return _ddVersion; }
 
@@ -53,7 +53,7 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Pozo de la Noche': '6695', 'Roca del Eclipse': '6693', 'Poder de Kraken Slayer': '6673',
   'La Séptima': '6671', 'El Coleccionista': '6676', 'El Colector': '6676',
   'Filo Divino': '6696', 'Mandato Imperial': '6632', 'Hydratación Letal': '3074',
-  'Stridebreaker': '6631', 'Experimental Hexplate': '6664',
+  'Stridebreaker': '6631', 'Pisotón Brutal': '6631', 'Experimental Hexplate': '6664', 'Placa Hexagonal Experimental': '6664',
   "Jak'Sho": '6665', "Jak'Sho, el Proteico": '6665', 'JakSho': '6665',
   // Luchador / Tanque
   'Hidra Titánica': '3748', 'Hidra': '3748', 'Fuerza de la Trinidad': '3078',

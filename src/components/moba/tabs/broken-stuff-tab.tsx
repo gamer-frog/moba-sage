@@ -44,7 +44,7 @@ export function BrokenStuffTab({
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(200,170,110,0.3), transparent)' }} />
             <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[10px]">
               <AlertTriangle className="w-3 h-3 mr-1" />
-              ROTOP
+              ROTO OP
             </Badge>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -87,7 +87,7 @@ export function BrokenStuffTab({
                         <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Build Roto</span>
                         <span className="text-[9px] font-mono text-[#0acbe6] ml-auto">{mainBuild.winRate}% WR</span>
                       </div>
-                      <div className="flex items-center gap-1.5 flex-wrap overflow-hidden max-h-[52px">
+                      <div className="flex items-center gap-1.5 flex-wrap overflow-hidden max-h-[52px]">
                         {buildItems.map((item, i) => (
                           <div key={i} className="flex items-center gap-1">
                             <ItemIcon name={item} />
@@ -103,15 +103,15 @@ export function BrokenStuffTab({
                   {(champ.counterPick || champ.synergy) && (
                     <div className="grid grid-cols-2 gap-2 px-4 py-2" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
                       {champ.counterPick && (
-                        <div>
+                        <div className="min-w-0">
                           <span className="text-[9px] text-[#e84057] uppercase tracking-wider font-medium">Counters</span>
                           <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.counterPick}>{champ.counterPick}</p>
                         </div>
                       )}
                       {champ.synergy && (
-                        <div>
+                        <div className="min-w-0">
                           <span className="text-[9px] text-[#0acbe6] uppercase tracking-wider font-medium">Sinergia</span>
-                          <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.synergy}">{champ.synergy}</p>
+                          <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.synergy}>{champ.synergy}</p>
                         </div>
                       )}
                     </div>
@@ -199,7 +199,7 @@ export function BrokenStuffTab({
                       {insight.category === 'meta' && (
                         <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[10px]">
                           <AlertTriangle className="w-3 h-3 mr-1" />
-                          ROTOP
+                          ROTO OP
                         </Badge>
                       )}
                     </div>

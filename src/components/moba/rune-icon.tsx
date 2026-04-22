@@ -25,6 +25,7 @@ export function RuneIcon({ runeName, size = 24, className = '' }: RuneIconProps)
         style={{ border: '1px solid rgba(200,170,110,0.2)' }}
         onError={() => setImgError(true)}
         loading="lazy"
+        unoptimized
       />
     );
   }

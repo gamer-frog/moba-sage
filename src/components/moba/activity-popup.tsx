@@ -90,6 +90,7 @@ export function ActivityPopup() {
   const timeAgo = (ts: string) => {
     const diff = Date.now() - new Date(ts).getTime();
     const mins = Math.floor(diff / 60000);
+    if (mins <= 0) return 'ahora';
     if (mins < 60) return `${mins}m`;
     const hours = Math.floor(mins / 60);
     if (hours < 24) return `${hours}h`;

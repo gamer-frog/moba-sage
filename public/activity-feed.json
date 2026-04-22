@@ -1,7 +1,34 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T10:06:00Z",
+  "lastUpdated": "2026-04-22T17:40:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-015",
+      "type": "fix",
+      "title": "3 Fixes: 25 imágenes rotas + versión DDragon + timeAgo negativo",
+      "description": "(1) CRÍTICO: 25/79 imágenes de campeones rotas (B-tier y below) — champion-icon.tsx sin prop unoptimized causaba timeout del proxy Next.js Image Optimization al cargar 79 imágenes concurrentes. Fix: unoptimized en 4 variantes (ChampionIcon, SmallChampionIcon, SplashArtIcon, TinyChampionIcon) + RuneIcon + profile-tab. (2) Default _ddVersion '26.8.1' (no existe) corregido a '16.8.1' (versión real DDragon) en helpers.ts — evita rotura de imágenes si la API de versión falla. (3) timeAgo mostraba valores negativos ('hace -434m') en Novedades cuando timestamps estaban en el futuro — fix con clamp a 'ahora' si mins <= 0 en 3 archivos (activity-tab, activity-popup, champion-modal). Build OK.",
+      "timestamp": "2026-04-22T17:40:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
+    {
+      "id": "ralph-loop-014",
+      "type": "fix",
+      "title": "3 Fixes: typo ROTO OP + acentos Roadmap + items en español",
+      "description": "(1) Badge 'ROTOP' corregido a 'ROTO OP' en Cosas Rotas e Insights (2 instancias). (2) Acentos masivos en Roadmap: Estética, Partículas, títulos, vía, Transición, más, Animación, visión, clásico, líneas, edición, dinámico, automático, Versión, etc. (~25 correcciones). (3) Items en inglés traducidos: Stridebreaker→Pisotón Brutal, Experimental Hexplate→Placa Hexagonal Experimental (data.ts + helpers.ts). Palabras en inglés corregidas: maximize→maximizar, protege→proteger. Build OK.",
+      "timestamp": "2026-04-22T17:05:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
+    {
+      "id": "ralph-loop-013",
+      "type": "fix",
+      "title": "3 Fixes: sidebar footer mobile + texto truncado + build items overflow",
+      "description": "(1) Sidebar footer 'MOBA SAGE v2.0' cortado por bottom nav en mobile — padding mb-16→mb-20 (80px > 77px del bottom nav). (2) Cosas Rotas: counters y sinergia con texto truncado sin ellipsis — agregado truncate + min-w-0 + title tooltip. (3) Build items: overflow control con max-h para evitar que items desborden la card. Scan VLM con análisis visual profundo de screenshots desktop + mobile.",
+      "timestamp": "2026-04-22T17:25:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-012",
       "type": "fix",
