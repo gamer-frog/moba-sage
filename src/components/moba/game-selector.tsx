@@ -193,8 +193,8 @@ export function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: Gam
           </div>
           <div className="glass-card rounded-xl p-4 text-center">
             <Shield className="w-6 h-6 text-[#f0c646] mx-auto mb-2" />
-            <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">8 Pestañas</h4>
-            <p className="text-[10px] text-[#5b5a56]">Tier List &bull; Parches<br/>Cosas Rotas &bull; Combos<br/>Competitivo &bull; Perfil</p>
+            <h4 className="text-xs font-semibold text-[#f0e6d2] mb-1">10 Pestañas</h4>
+            <p className="text-[10px] text-[#5b5a56]">Tier List &bull; Parches<br/>Cosas Rotas &bull; Combos<br/>Competitivo &bull; Perfil<br/>Novedades &bull; Ideas<br/>Roadmap &bull; Tareas</p>
           </div>
         </div>
       </motion.div>

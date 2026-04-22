@@ -97,14 +97,14 @@ function getChampionImageUrl(name: string): string {
   };
   const mapped = nameMap[name];
   if (mapped) {
-    return `https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/${mapped}.png`;
+    return `https://ddragon.leagueoflegends.com/cdn/26.8.1/img/champion/${mapped}.png`;
   }
   const normalized = name
     .replace(/'/g, '')
     .replace(/ /g, '')
     .replace(/\./g, '')
     .replace(/&/g, '');
-  return `https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/${normalized}.png`;
+  return `https://ddragon.leagueoflegends.com/cdn/26.8.1/img/champion/${normalized}.png`;
 }
 
 export async function GET(request: NextRequest) {

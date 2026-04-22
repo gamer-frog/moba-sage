@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle, Eye } from 'lucide-react';
+import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle, Eye, RefreshCw, ShieldCheck } from 'lucide-react';
 import { TIER_CONFIG } from './constants';
 import { getChampionImageUrl, getBuildExternalUrl, getItemIconUrl, parseBuildItems, getChampionSplashUrl } from './helpers';
 import { RuneIcon } from './rune-icon';
@@ -17,12 +17,71 @@ import type { Champion } from './types';
 
 const SKIN_VARIANTS = [0, 1, 2, 3, 4];
 
+// Nombres reales de skins del DDragon para campeones populares
+// Formato: skinIndex -> nombre. 0 = 'Clásica' por defecto.
+const SKIN_NAMES: Record<string, Record<number, string>> = {
+  'Jinx':          { 0: 'Clásica', 1: 'Crimson Delirium', 2: 'Zombie Slayer', 3: 'Star Guardian', 4: 'Mafia', 5: 'Firecracker', 6: 'Battlecast', 7: 'Lux', 8: 'Arcane', 9: 'Spirit Blossom' },
+  'Ahri':          { 0: 'Clásica', 1: 'Dinámica', 2: 'Foxfire', 3: 'Popstar', 4: 'Academy', 5: 'Challenger', 6: 'Midnight', 7: 'Dawnbringer', 8: 'Elderwood', 9: 'K/DA', 10: 'K/DA ALL OUT', 11: 'Arcade', 12: 'Empyrean' },
+  'Master Yi':     { 0: 'Clásica', 1: 'Chosen', 2: 'Ionia', 3: 'Samurai', 4: 'Assassin', 5: 'Headhunter', 6: 'PROJECT:', 7: 'Cosmic', 8: 'Gun Goddess', 9: 'True Damage', 10: 'Midnight' },
+  'Lee Sin':       { 0: 'Clásica', 1: 'Traditional', 2: 'Martial Arts', 3: 'Dragon Fist', 4: 'Pool Party', 5: 'Muay Thai', 6: 'SKT T1', 7: 'God Fist', 8: 'Prestige' },
+  'Yasuo':         { 0: 'Clásica', 1: 'High Noon', 2: 'PROJECT:', 3: 'Blood Moon', 4: 'Nightblade', 5: 'True Damage', 6: 'Spirit Blossom', 7: 'Battle Bunny', 8: 'Yone' },
+  'Thresh':        { 0: 'Clásica', 1: 'Deep Terror', 2: 'Championship', 3: 'Blood Moon', 4: 'SSW', 5: 'Lancer', 6: 'High Noon', 7: 'Pulsefire', 8: 'Elderwood' },
+  'Darius':        { 0: 'Clásica', 1: 'Bioforge', 2: 'Lord', 3: 'Woad King', 4: 'Nova', 5: 'Dunkmaster', 6: 'Academy', 7: 'God-King', 8: 'Beast Hunter' },
+  'Caitlyn':       { 0: 'Clásica', 1: 'Resistance', 2: 'Sheriff', 3: 'Safari', 4: 'Arctic Ops', 5: 'Headmistress', 6: 'Pulsefire', 7: 'Arcade', 8: 'Prestige Arcade', 9: 'Battle Academia', 10: 'Star Guardian' },
+  'Katarina':      { 0: 'Clásica', 1: 'Mercenary', 2: 'Kitty Cat', 3: 'High Command', 4: 'Bilgewater', 5: 'Red Card', 6: 'Warring Kingdoms', 7: 'PROJECT:', 8: 'Battle Queen', 9: 'K/DA', 10: 'K/DA ALL OUT' },
+  'Malphite':      { 0: 'Clásica', 1: 'Shamrock', 2: 'Coral Reef', 3: 'Obsidian', 4: 'Marble', 5: 'Ironside', 6: 'Glacial', 7: 'Lava Worn', 8: 'Mecha', 9: 'Dark Star' },
+  'Nautilus':      { 0: 'Clásica', 1: 'Abyssal', 2: 'Subterranean', 3: 'Astronaut', 4: 'World Breaker', 5: 'Warden', 6: 'Pool Party', 7: 'Oceanus' },
+  'Diana':         { 0: 'Clásica', 1: 'Dark Valkyrie', 2: 'Lunar Goddess', 3: 'Infernal', 4: 'Blood Moon', 5: 'Elderwood', 6: 'Battle Queen', 7: 'Prestige Lunar Goddess' },
+  'Brand':         { 0: 'Clásica', 1: 'Apocalyptic', 2: 'Vandal', 3: 'Cryocore', 4: 'Zombie', 5: 'Spirit Fire', 6: 'KINDRED', 7: 'Elderwood' },
+  'Garen':         { 0: 'Clásica', 1: 'Sanguine', 2: 'Dreadknight', 3: 'Commando', 4: 'Mecha', 5: 'Rugged', 6: 'Demacia Vice', 7: 'God-King', 8: 'Battlecast', 9: 'Prestige' },
+  'Ashe':          { 0: 'Clásica', 1: 'Freljord', 2: 'Sherwood Forest', 3: 'Queen', 4: 'Amethyst', 5: 'Heartseeker', 6: 'Project', 7: 'Wildfire', 8: 'Prestige', 9: 'Elementalist' },
+  'Ornn':          { 0: 'Clásica', 1: 'Thunder Lord', 2: 'Elderwood', 3: 'Badlands' },
+  'Briar':         { 0: 'Clásica', 1: 'Bewitching', 2: 'Heartbreaker' },
+  'Aurelion Sol':  { 0: 'Clásica', 1: 'Ashen Lord', 2: 'Prestige Ashen Lord' },
+  'Veigar':        { 0: 'Clásica', 1: 'White Mage', 2: 'Curling', 3: 'Superb Villain', 4: 'Lunar Revel', 5: 'Battle Boss', 6: 'Star Guardian', 7: 'Arclight', 8: 'Prestige FX' },
+  'Nilah':         { 0: 'Clásica', 1: 'Sea Glass', 2: 'BEYOND THE WAVE' },
+  'Soraka':        { 0: 'Clásica', 1: 'Dryad', 2: 'Divine', 3: 'Teacher', 4: 'Celestine', 5: 'Order of the Banana', 6: 'Program', 7: 'Star Guardian', 8: 'Prestige' },
+  'Zyra':          { 0: 'Clásica', 1: 'Wildfire', 2: 'Haunted', 3: 'SKT T1', 4: 'Battlecast', 5: 'Dragon Sorceress', 6: 'Psi Ops' },
+  'Kennen':        { 0: 'Clásica', 1: 'Deadly Kennen', 2: 'Karan', 3: 'Swamp Master', 4: 'Ninja', 5: 'Arctic', 6: 'Giant', 7: 'PROJECT:' },
+};
+
+function getSkinLabel(championName: string, skinNum: number): string {
+  if (skinNum === 0) return 'Clásica';
+  const champSkins = SKIN_NAMES[championName];
+  if (champSkins && champSkins[skinNum]) return champSkins[skinNum];
+  return `Skin ${skinNum}`;
+}
+
+function timeAgoMeta(ts: string): string {
+  const diff = Date.now() - new Date(ts).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `hace ${mins}m`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `hace ${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `hace ${days}d`;
+}
+
 export function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () => void }) {
   const cfg = TIER_CONFIG[champion.tier];
   const extUrls = getBuildExternalUrl(champion.name);
   const [imgError, setImgError] = useState(false);
   const [activeSkin, setActiveSkin] = useState(0);
   const [failedSkins, setFailedSkins] = useState<Set<number>>(new Set());
+  const [metaBuild, setMetaBuild] = useState<any>(null);
+
+  // Fetch live meta builds for S-tier champions
+  useEffect(() => {
+    if (champion.tier !== 'S') return;
+    fetch('/api/meta-builds?refresh=false')
+      .then(res => res.json())
+      .then(data => {
+        if (data.builds && data.builds[champion.name]) {
+          setMetaBuild(data.builds[champion.name]);
+        }
+      })
+      .catch(() => {});
+  }, [champion.name, champion.tier]);
 
   const handleSkinError = (skinNum: number) => {
     setFailedSkins(prev => new Set(prev).add(skinNum));
@@ -141,7 +200,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     disabled={isFailed}
-                    aria-label={`Skin ${skinNum === 0 ? 'Clásica' : skinNum}`}
+                    aria-label={getSkinLabel(champion.name, skinNum)}
                   >
                     {!isFailed ? (
                       <div
@@ -163,8 +222,8 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                     {/* Glass overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     {/* Skin number label */}
-                    <span className="absolute bottom-1 left-1.5 text-[8px] text-[#a09b8c] font-medium">
-                      {skinNum === 0 ? 'Clásica' : `Skin ${skinNum}`}
+                    <span className="absolute bottom-1 left-1.5 text-[8px] text-[#a09b8c] font-medium truncate max-w-[110px]">
+                      {getSkinLabel(champion.name, skinNum)}
                     </span>
                     {/* Active indicator */}
                     {isActive && (
@@ -218,20 +277,71 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
             </div>
           </div>
 
-          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
-            <div className="flex items-center gap-2 mb-2">
-              <Info className="w-4 h-4 text-[#c8aa6e]" />
-              <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Build Actualizada</span>
+          {/* Build Section — Only shows live scraped data when available */}
+          {champion.tier === 'S' && metaBuild && metaBuild.coreItems && metaBuild.coreItems.length > 0 && (
+            <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(15,186,129,0.08), rgba(15,186,129,0.02))', border: '1px solid rgba(15,186,129,0.2)' }}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#0fba81]" />
+                  <span className="text-[10px] font-semibold text-[#0fba81] uppercase tracking-wider">Build Meta Live</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] animate-pulse" />
+                  <span className="text-[9px] text-[#0fba81] font-medium">
+                    {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'Live'}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {metaBuild.boots && (
+                    <span className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.2)', color: '#0fba81' }}>
+                      {metaBuild.boots}
+                    </span>
+                  )}
+                  {metaBuild.coreItems.map((item: string, i: number) => (
+                    <span key={i} className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)', color: '#c8aa6e' }}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+                {metaBuild.runes && metaBuild.runes.length > 0 && (
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[9px] text-[#5b5a56]">Runas:</span>
+                    {metaBuild.runes.map((rune: string, i: number) => (
+                      <span key={i} className="text-[9px] text-[#0fba81]">{rune}</span>
+                    ))}
+                  </div>
+                )}
+                <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
+              </div>
             </div>
-            <p className="text-[10px] text-[#785a28] mb-2.5">Para builds siempre actualizadas al meta, revisá estas fuentes:</p>
+          )}
+
+          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-[#c8aa6e]" />
+                <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">
+                  Builds de Referencia
+                  {champion.tier !== 'S' && <span className="ml-1.5 text-[#5b5a56] font-normal normal-case">— Patch {champion.patch}</span>}
+                </span>
+              </div>
+              {champion.tier !== 'S' && (
+                <span className="text-[8px] px-1.5 py-0.5 rounded text-[#785a28] font-medium" style={{ background: 'rgba(120,90,40,0.1)', border: '1px solid rgba(120,90,40,0.15)' }}>
+                  Datos estáticos
+                </span>
+              )}
+            </div>
+            <p className="text-[10px] text-[#785a28] mb-2.5">Fuentes externas con builds siempre actualizadas:</p>
             <div className="flex items-center gap-2 flex-wrap">
-              <a href={extUrls.ugg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,203,230,0.1)', border: '1px solid rgba(0,203,230,0.3)', color: '#0acbe6' }}>
+              <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,203,230,0.1)', border: '1px solid rgba(0,203,230,0.3)', color: '#0acbe6' }}>
                 <ExternalLink className="w-3 h-3" /> U.GG
               </a>
-              <a href={extUrls.opgg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}>
+              <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}>
                 <ExternalLink className="w-3 h-3" /> OP.GG
               </a>
-              <a href={extUrls.mobalytics} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(232,64,87,0.1)', border: '1px solid rgba(232,64,87,0.3)', color: '#e84057' }}>
+              <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(232,64,87,0.1)', border: '1px solid rgba(232,64,87,0.3)', color: '#e84057' }}>
                 <ExternalLink className="w-3 h-3" /> Mobalytics
               </a>
             </div>
@@ -284,13 +394,13 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                         })}
                       </div>
                       <div className="flex items-center gap-2">
-                        <a href={extUrls.ugg} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                        <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
                           <ExternalLink className="w-2.5 h-2.5" /> U.GG
                         </a>
-                        <a href={extUrls.mobalytics} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                        <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
                           <ExternalLink className="w-2.5 h-2.5" /> Mobalytics
                         </a>
-                        <a href={extUrls.opgg} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                        <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
                           <ExternalLink className="w-2.5 h-2.5" /> OP.GG
                         </a>
                       </div>

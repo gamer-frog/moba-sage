@@ -2,7 +2,7 @@
 // MOBA SAGE — Helper Functions
 // ============================================================
 
-let _ddVersion = '16.8.1';
+let _ddVersion = '26.8.1';
 export function updateDdVersion(v: string) { _ddVersion = v; }
 export function getDdVersion() { return _ddVersion; }
 
@@ -49,10 +49,12 @@ export function getChampionSplashUrl(name: string, skinNum = 0): string {
 
 export const ITEM_NAME_MAP: Record<string, string> = {
   // Miticas
-  'Filo de la Noche': '6672', 'Eclipse': '6692', 'Cosechador Nocturno': '6694',
+  'Filo de la Noche': '6672', 'Eclipse': '6692', 'Cosechador Nocturno': '6676',
   'Pozo de la Noche': '6695', 'Roca del Eclipse': '6693', 'Poder de Kraken Slayer': '6673',
   'La Séptima': '6671', 'El Coleccionista': '6676', 'El Colector': '6676',
   'Filo Divino': '6696', 'Mandato Imperial': '6632', 'Hydratación Letal': '3074',
+  'Stridebreaker': '6631', 'Experimental Hexplate': '6664',
+  "Jak'Sho": '6665', "Jak'Sho, el Proteico": '6665', 'JakSho': '6665',
   // Luchador / Tanque
   'Hidra Titánica': '3748', 'Hidra': '3748', 'Fuerza de la Trinidad': '3078',
   'Fuerza de Trinidad': '3078', 'Filo de la Trinidad': '3071', 'Guja Botadora': '3153',
@@ -62,9 +64,10 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Huracán de Runaan': '3085', 'Frenesí de Runaan': '3085',
   'Bailarín Espectral': '3124', 'Botas de Berserker': '3006',
   // AP / Mago
-  'Sombrero de Rabadon': '3089', 'Reloj de Zhonya': '3157', 'Reloj de Arena de Zhonya': '3157',
-  'Llamasomo': '6653', 'Morellonomicon': '3165', 'Cetro de Rylai': '3116',
-  'Cetro de Cristal de Rylai': '3116', 'Centro de Gravedad': '6664',
+  'Sombrero de Rabadón': '3089', 'Reloj de Zhonya': '3157', 'Reloj de Arena de Zhonya': '3157',
+  'Llamarada Sombría': '6653', 'Llamarada SombrÃ­a': '6653', 'Llamasomo': '6653',
+  'Morellonomicon': '3165', 'Cetro de Rylai': '3116',
+  'Cetro de Cristal de Rylai': '3116',
   'Botas del Vacío': '3020', 'Hielo Eterno': '6662',
   // Support
   'Redención': '3107', 'Convergencia de Zeke': '3190',
@@ -72,7 +75,7 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Mikael': '3222',
   // Botas
   'Botas de Mercurio': '3111', 'Botas de Movilidad': '3009',
-  'Botas de CD': '3158', 'Botas de Placas': '3047',
+  'Botas de Celeridad': '3158', 'Botas de CD': '3158', 'Botas de Placas': '3047',
   // Otros
   'Última Piedad': '3036', 'Muramana': '3004',
   'Guardián Angel': '3026', 'Guardián de Angel': '3026',
@@ -86,7 +89,7 @@ export function getItemIconUrl(itemName: string): string | null {
 }
 
 export function parseBuildItems(itemsStr: string): string[] {
-  return itemsStr.split(/[→,\n]/).map(s => s.replace(/[→]/g, '').trim()).filter(Boolean);
+  return itemsStr.split(/[→\n]/).map(s => s.replace(/[→,]/g, '').trim()).filter(Boolean);
 }
 
 // ============================================================
@@ -118,7 +121,7 @@ const RUNE_COLOR_MAP: Record<string, string> = {
   'Precisión': '#c8aa6e',
   'Brujería': '#1b998b',
   'Dominación': '#d44444',
-  'Determinación': '#f9c74f',
+  'Valor': '#f9c74f',
   'Inspiración': '#e8e8e8',
 };
 

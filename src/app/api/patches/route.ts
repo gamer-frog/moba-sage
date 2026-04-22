@@ -14,22 +14,22 @@ interface PatchEntry {
 const FALLBACK_PATCHES: PatchEntry[] = [
   {
     id: 1,
-    version: '16.8',
-    title: 'Patch 16.8 — Ajustes de Temporada',
-    date: '2025-04-17',
-    summary: 'Ajustes de balance para la temporada 2025. Cambios a items mythic, ajustes de jungle, y reworks parciales.',
-    digest: 'Patch 16.8 trae cambios significativos al meta actual. Se ajustan items mythic y objetos legendarios, se modifican las ratios de la jungla, y varios campeones reciben buffs y nerfs de balance. El meta evoluciona con nuevas composiciones viables en todas las roles.',
-    url: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-16-8-notes/',
+    version: '26.8',
+    title: 'Patch 26.8 — Ajustes de Temporada',
+    date: '2026-04-17',
+    summary: 'Ajustes de balance para la temporada 2026. Meta estable pre-Season 2. Cambios a Ornn, Garen, Nocturne y varios bruisers.',
+    digest: 'Patch 26.8 trae cambios significativos al meta actual. Se ajustan items mythic y objetos legendarios, se modifican las ratios de la jungla, y varios campeones reciben buffs y nerfs de balance. El meta evoluciona con nuevas composiciones viables en todas las roles.',
+    url: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-8-notes/',
     sourceGame: 'LoL',
   },
   {
     id: 2,
-    version: '6.4',
-    title: 'Patch 6.4 — Wild Rift Mid Season',
-    date: '2024-04-15',
+    version: '6.8',
+    title: 'Patch 6.8 — Wild Rift Mid Season',
+    date: '2026-04-15',
     summary: 'Ajustes de balance para Wild Rift mid-season. Buffs a Master Yi, Lee Sin. Ahri y Darius se consolidan.',
-    digest: 'Patch 6.4 de Wild Rift trae ajustes significativos al meta móvil. Master Yi recibe buffs en su Alpha Strike, Lee Sin tiene mejor scaling con items bruiser. Ahri y Darius se consolidan como los dominadores de mid y top respectivamente.',
-    url: 'https://www.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-6-4-notes/',
+    digest: 'Patch 6.8 de Wild Rift trae ajustes significativos al meta móvil. Master Yi recibe buffs en su Alpha Strike, Lee Sin tiene mejor scaling con items bruiser. Ahri y Darius se consolidan como los dominadores de mid y top respectivamente.',
+    url: 'https://www.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-6-8-notes/',
     sourceGame: 'WR',
   },
 ];
@@ -76,12 +76,12 @@ export async function GET(request: NextRequest) {
       // Add WR fallback
       patches.push({
         id: patches.length + 1,
-        version: '6.4',
-        title: 'Patch 6.4 — Wild Rift Mid Season',
-        date: '2024-04-15',
+        version: '6.8',
+        title: 'Patch 6.8 — Wild Rift Mid Season',
+        date: '2026-04-15',
         summary: 'Ajustes de balance para Wild Rift mid-season. Buffs a Master Yi, Lee Sin.',
-        digest: 'Patch 6.4 de Wild Rift trae ajustes significativos al meta móvil. Master Yi recibe buffs en su Alpha Strike, Lee Sin tiene mejor scaling con items bruiser. Ahri y Darius se consolidan como los dominadores de mid y top respectivamente.',
-        url: 'https://www.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-6-4-notes/',
+        digest: 'Patch 6.8 de Wild Rift trae ajustes significativos al meta móvil. Master Yi recibe buffs en su Alpha Strike, Lee Sin tiene mejor scaling con items bruiser. Ahri y Darius se consolidan como los dominadores de mid y top respectivamente.',
+        url: 'https://www.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-6-8-notes/',
         sourceGame: 'WR',
       });
 

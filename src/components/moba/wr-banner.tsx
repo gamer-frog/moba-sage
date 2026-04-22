@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Smartphone } from 'lucide-react';
 
-export function WildRiftHeader() {
+export function WildRiftHeader({ version }: { version?: string }) {
   return (
     <motion.div
       className="mb-4 rounded-xl p-4"
@@ -20,7 +20,7 @@ export function WildRiftHeader() {
           <Smartphone className="w-5 h-5" style={{ color: '#0acbe6' }} />
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-bold" style={{ color: '#0acbe6' }}>WILD RIFT — Patch 6.4</h3>
+          <h3 className="text-sm font-bold" style={{ color: '#0acbe6' }}>WILD RIFT — Patch {version || '6.4'}</h3>
           <p className="text-[10px] text-[#5b5a56]">Mobile Analytics — Campeones S/A/B tier con builds y análisis</p>
         </div>
         <Badge variant="outline" className="text-[10px] border-[#0acbe6]/30 text-[#0acbe6]">WR</Badge>

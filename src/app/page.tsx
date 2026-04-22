@@ -12,7 +12,8 @@ import type {
 // Components
 import { GoldParticles } from '@/components/moba/gold-particles';
 import { AppHeader } from '@/components/moba/app-header';
-import { TabNav } from '@/components/moba/tab-nav';
+import { SidebarNav } from '@/components/moba/sidebar-nav';
+import { BottomNav } from '@/components/moba/bottom-nav';
 import { GameSelectorLanding } from '@/components/moba/game-selector';
 import { WildRiftHeader } from '@/components/moba/wr-banner';
 import { ChampionModal } from '@/components/moba/champion-modal';
@@ -29,6 +30,56 @@ import { IdeasTab } from '@/components/moba/tabs/ideas-tab';
 import { CombosTab } from '@/components/moba/tabs/combos-tab';
 import { CompetitiveTab } from '@/components/moba/tabs/competitive-tab';
 import { ProfileTab } from '@/components/moba/tabs/profile-tab';
+import { ActivityTab } from '@/components/moba/tabs/activity-tab';
+import { ActivityPopup } from '@/components/moba/activity-popup';
+
+// ============ TAB CONTENT RENDERER ============
+function TabContent({
+  activeTab, selectedGame, champions, loading, patches, insights, tasks, combos, proPicks,
+  searchQuery, onSearchChange, roleFilter, onRoleFilterChange, favorites, onToggleFavorite,
+  onChampionClick, summonerName, onSummonerNameChange, summonerRegion, onSummonerRegionChange,
+  summonerData, summonerLoading, summonerError, onSearchSummoner, liveVersions, fetchData,
+  proRegionFilter, onProRegionFilterChange, handleToggleTask,
+}: {
+  activeTab: string; selectedGame: GameSelection; champions: Champion[];
+  loading: boolean; patches: PatchNote[]; insights: AiInsight[];
+  tasks: TaskItem[]; combos: BrokenCombo[]; proPicks: ProPick[];
+  searchQuery: string; onSearchChange: (q: string) => void;
+  roleFilter: string; onRoleFilterChange: (r: string) => void;
+  favorites: Set<number>; onToggleFavorite: (id: number) => void;
+  onChampionClick: (c: Champion) => void;
+  summonerName: string; onSummonerNameChange: (n: string) => void;
+  summonerRegion: string; onSummonerRegionChange: (r: string) => void;
+  summonerData: SummonerData | null; summonerLoading: boolean;
+  summonerError: string; onSearchSummoner: () => void;
+  liveVersions: { lol: string; wr: string; gamePatch: string; metaLastUpdated: string };
+  fetchData: () => void;
+  proRegionFilter: string; onProRegionFilterChange: (r: string) => void;
+  handleToggleTask: (t: TaskItem) => void;
+}) {
+  const renderTab = () => {
+    switch (activeTab) {
+      case 'tierlist': return <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={onSearchChange} roleFilter={roleFilter} onRoleFilterChange={onRoleFilterChange} favorites={favorites} onToggleFavorite={onToggleFavorite} onChampionClick={onChampionClick} metaLastUpdated={liveVersions.metaLastUpdated} />;
+      case 'patches': return <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />;
+      case 'broken': return <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />;
+      case 'combos': return <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />;
+      case 'competitive': return <CompetitiveTab proPicks={proPicks} loading={loading} selectedGame={selectedGame} proRegionFilter={proRegionFilter} onProRegionFilterChange={onProRegionFilterChange} />;
+      case 'profile': return <ProfileTab summonerName={summonerName} onSummonerNameChange={onSummonerNameChange} summonerRegion={summonerRegion} onSummonerRegionChange={onSummonerRegionChange} summonerData={summonerData} summonerLoading={summonerLoading} summonerError={summonerError} onSearchSummoner={onSearchSummoner} />;
+      case 'novedades': return <ActivityTab />;
+      case 'ideas': return <IdeasTab />;
+      case 'roadmap': return <RoadmapTab />;
+      case 'tasks': return <TasksTab tasks={tasks} loading={loading} onRefresh={fetchData} onToggleTask={handleToggleTask} />;
+      default: return <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={onSearchChange} roleFilter={roleFilter} onRoleFilterChange={onRoleFilterChange} favorites={favorites} onToggleFavorite={onToggleFavorite} onChampionClick={onChampionClick} metaLastUpdated={liveVersions.metaLastUpdated} />;
+    }
+  };
+
+  return (
+    <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
+      {selectedGame === 'wildrift' && <WildRiftHeader version={liveVersions.wr} />}
+      {renderTab()}
+    </motion.div>
+  );
+}
 
 // ============ MAIN APP ============
 export default function Home() {
@@ -57,7 +108,7 @@ export default function Home() {
   const [summonerError, setSummonerError] = useState('');
 
   // Live version state
-  const [liveVersions, setLiveVersions] = useState<{ lol: string; wr: string }>({ lol: '', wr: '' });
+  const [liveVersions, setLiveVersions] = useState<{ lol: string; wr: string; gamePatch: string; metaLastUpdated: string }>({ lol: '', wr: '', gamePatch: '', metaLastUpdated: '' });
   const [lastUpdate, setLastUpdate] = useState('');
   const [isNewPatch, setIsNewPatch] = useState(false);
 
@@ -74,6 +125,9 @@ export default function Home() {
 
   // Game transition flash
   const [flashColor, setFlashColor] = useState<string | null>(null);
+
+  // Mobile sidebar drawer state
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // ============ FETCH DATA ============
   const fetchData = useCallback(async () => {
@@ -105,7 +159,12 @@ export default function Home() {
       setCombos(combosData);
       if (versionData?.lol) {
         const fullVer = versionData.lol;
-        setLiveVersions({ lol: fullVer.split('.').slice(0, 2).join('.'), wr: versionData.wr || '6.4' });
+        setLiveVersions({
+          lol: fullVer.split('.').slice(0, 2).join('.'),
+          wr: versionData.wr || '6.4',
+          gamePatch: versionData.gamePatch || fullVer.split('.').slice(0, 2).join('.'),
+          metaLastUpdated: versionData.metaLastUpdated || '',
+        });
         updateDdVersion(fullVer);
         const prevPatch = localStorage.getItem('moba-sage-last-patch');
         const currentPatch = fullVer.split('.').slice(0, 2).join('.');
@@ -208,6 +267,9 @@ export default function Home() {
         {!initialLoadDone && <LoadingScreen />}
       </AnimatePresence>
 
+      {/* Activity Popup (once per session) */}
+      <ActivityPopup />
+
       {/* Gold Particles */}
       <GoldParticles />
 
@@ -232,61 +294,72 @@ export default function Home() {
         isNewPatch={isNewPatch}
         onBackToSelector={handleBackToSelector}
         onDismissPatch={() => setIsNewPatch(false)}
+        onMenuToggle={() => setSidebarOpen(prev => !prev)}
       />
 
-      {/* Tab Navigation */}
-      {selectedGame && (
-        <TabNav activeTab={activeTab} onTabChange={setActiveTab} />
-      )}
+      {/* Sidebar Navigation — desktop fixed + mobile drawer */}
+      {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
 
-      {/* Content */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
-        <AnimatePresence mode="wait">
-          {!selectedGame ? (
-            <GameSelectorLanding onSelectGame={handleSelectGame} key="selector" />
-          ) : selectedGame === 'wildrift' ? (
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
-              <WildRiftHeader />
-              {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} />}
-              {activeTab === 'patches' && <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />}
-              {activeTab === 'broken' && <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />}
-              {activeTab === 'tasks' && <TasksTab tasks={tasks} loading={loading} onRefresh={fetchData} onToggleTask={handleToggleTask} />}
-              {activeTab === 'ideas' && <IdeasTab />}
-              {activeTab === 'roadmap' && <RoadmapTab />}
-              {activeTab === 'combos' && <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />}
-              {activeTab === 'competitive' && <CompetitiveTab proPicks={proPicks} loading={loading} selectedGame={selectedGame} proRegionFilter={proRegionFilter} onProRegionFilterChange={setProRegionFilter} />}
-              {activeTab === 'profile' && <ProfileTab summonerName={summonerName} onSummonerNameChange={setSummonerName} summonerRegion={summonerRegion} onSummonerRegionChange={setSummonerRegion} summonerData={summonerData} summonerLoading={summonerLoading} summonerError={summonerError} onSearchSummoner={handleSearchSummoner} />}
-            </motion.div>
-          ) : (
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
-              {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} />}
-              {activeTab === 'patches' && <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />}
-              {activeTab === 'broken' && <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />}
-              {activeTab === 'tasks' && <TasksTab tasks={tasks} loading={loading} onRefresh={fetchData} onToggleTask={handleToggleTask} />}
-              {activeTab === 'ideas' && <IdeasTab />}
-              {activeTab === 'roadmap' && <RoadmapTab />}
-              {activeTab === 'combos' && <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />}
-              {activeTab === 'competitive' && <CompetitiveTab proPicks={proPicks} loading={loading} selectedGame={selectedGame} proRegionFilter={proRegionFilter} onProRegionFilterChange={setProRegionFilter} />}
-              {activeTab === 'profile' && <ProfileTab summonerName={summonerName} onSummonerNameChange={setSummonerName} summonerRegion={summonerRegion} onSummonerRegionChange={setSummonerRegion} summonerData={summonerData} summonerLoading={summonerLoading} summonerError={summonerError} onSearchSummoner={handleSearchSummoner} />}
-            </motion.div>
-          )}
-        </AnimatePresence>
+      {/* Content — offset for sidebar on desktop, bottom nav on mobile */}
+      <main className={`flex-1 w-full px-4 py-6 transition-all duration-300 ${selectedGame ? 'lg:ml-[220px] pb-24 lg:pb-6' : ''}`}>
+        <div className={selectedGame ? 'max-w-5xl mx-auto' : ''}>
+          <AnimatePresence mode="popLayout">
+            {!selectedGame ? (
+              <GameSelectorLanding onSelectGame={handleSelectGame} key="selector" />
+            ) : (
+              <TabContent
+                activeTab={activeTab}
+                selectedGame={selectedGame}
+                champions={champions}
+                loading={loading}
+                patches={patches}
+                insights={insights}
+                tasks={tasks}
+                combos={combos}
+                proPicks={proPicks}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                roleFilter={roleFilter}
+                onRoleFilterChange={setRoleFilter}
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
+                onChampionClick={handleToggleChampion}
+                summonerName={summonerName}
+                onSummonerNameChange={setSummonerName}
+                summonerRegion={summonerRegion}
+                onSummonerRegionChange={setSummonerRegion}
+                summonerData={summonerData}
+                summonerLoading={summonerLoading}
+                summonerError={summonerError}
+                onSearchSummoner={handleSearchSummoner}
+                liveVersions={liveVersions}
+                fetchData={fetchData}
+                proRegionFilter={proRegionFilter}
+                onProRegionFilterChange={setProRegionFilter}
+                handleToggleTask={handleToggleTask}
+              />
+            )}
+          </AnimatePresence>
+        </div>
       </main>
 
       {/* Champion Modal */}
       <AnimatePresence>
         {selectedChampion && (
-          <ChampionModal champion={selectedChampion} onClose={() => setSelectedChampion(null)} />
+          <ChampionModal key={selectedChampion.id} champion={selectedChampion} onClose={() => setSelectedChampion(null)} />
         )}
       </AnimatePresence>
 
       {/* Minimap Decoration - only on landing page */}
       {!selectedGame && <MinimapDecoration />}
 
+      {/* Bottom Navigation — mobile only */}
+      {selectedGame && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} onOpenSidebar={() => setSidebarOpen(true)} />}
+
       <div className="lol-divider" />
 
-      {/* Footer */}
-      <footer className="border-t border-[#785a28]/15 py-4 mt-auto" style={{ backgroundColor: 'rgba(10, 14, 26, 0.6)' }}>
+      {/* Footer — hidden on mobile (sidebar covers it) */}
+      <footer className={`border-t border-[#785a28]/15 py-4 mt-auto ${selectedGame ? 'hidden lg:block' : ''}`} style={{ backgroundColor: 'rgba(10, 14, 26, 0.6)' }}>
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-[#785a28]">
           <span>MOBA SAGE © 2026</span>
           <span className="flex items-center gap-1">

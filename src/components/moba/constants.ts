@@ -3,9 +3,10 @@
 // ============================================================
 
 import {
-  Search, Filter, Sword, ScrollText, AlertTriangle, ListTodo,
-  Brain, ChevronRight, Zap, Shield, Target, Crosshair,
+  Sword, ScrollText, AlertTriangle,
+  ChevronRight, Zap, Shield, Target, Crosshair,
   Trophy, User, Flame, Map, Crown, Sparkles, Lightbulb,
+  Rocket, Wrench, Settings,
 } from 'lucide-react';
 
 export const TIERS = ['S', 'A', 'B'] as const;
@@ -62,16 +63,28 @@ export const TOURNAMENT_REGIONS = [
   { value: 'NA', label: 'LCS' },
 ];
 
-export const TAB_ITEMS = [
+// Game tabs — LoL / Wild Rift content
+export const GAME_TAB_ITEMS = [
   { id: 'tierlist', label: 'Tier List', icon: Trophy },
   { id: 'patches', label: 'Parches', icon: ScrollText },
   { id: 'broken', label: 'Cosas Rotas', icon: AlertTriangle },
   { id: 'combos', label: 'Combos', icon: Flame },
   { id: 'competitive', label: 'Competitivo', icon: Crown },
-  { id: 'ideas', label: 'Ideas', icon: Lightbulb },
-  { id: 'roadmap', label: 'Roadmap', icon: Map },
   { id: 'profile', label: 'Perfil', icon: User },
 ];
+
+// Dev tabs — app development & maintenance
+export const DEV_TAB_ITEMS = [
+  { id: 'novedades', label: 'Novedades', icon: Rocket },
+  { id: 'ideas', label: 'Ideas', icon: Lightbulb },
+  { id: 'roadmap', label: 'Roadmap', icon: Map },
+  { id: 'tasks', label: 'Tareas', icon: Wrench },
+];
+
+// All tabs combined (for tab navigation)
+export const TAB_ITEMS = [...GAME_TAB_ITEMS, ...DEV_TAB_ITEMS];
+
+export const DEV_TAB_IDS = new Set(DEV_TAB_ITEMS.map(t => t.id));
 
 export const TIER_COLORS: Record<string, string> = {
   Iron: '#5b5a56',
