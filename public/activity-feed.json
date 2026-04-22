@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T04:30:00Z",
+  "lastUpdated": "2026-04-22T04:45:00Z",
   "entries": [
+    {
+      "id": "fix-002",
+      "type": "fix",
+      "title": "Ralph Loop QA Scan — 3 Fixes",
+      "description": "Popup reescrito (AnimatePresence mode=wait, useCallback, type=button). Botón clear X en búsqueda. QA completo de 10 tabs.",
+      "timestamp": "2026-04-22T04:45:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "deploy-001",
       "type": "deploy",

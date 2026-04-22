@@ -1,6 +1,6 @@
 # TICKS — MOBA SAGE
 > Auto-maintenance tasks executed by cron jobs
-> Last run: 2026-04-22 01:40 BA | Next run: 2026-04-22 01:55 BA (cada 15 min)
+> Last run: 2026-04-22 01:45 BA | Next run: 2026-04-22 02:00 BA (cada 15 min)
 
 ## CRON JOBS CONFIGURED
 | Job | ID | Schedule | Descripción |
@@ -35,4 +35,5 @@
 ## LOG
 - [2026-04-22 00:45 BA] Setup inicial: 3 crons configurados (diaria + 2 Ralph Loop). Popup + tabs separadas deployadas y verificadas en Vercel. Commit 1a46a28.
 - [2026-04-22 01:23 BA] Refactor crons: eliminados Ralph Loops semanales (111408, 111409). Creado Ralph Loop auto-mejora cada 15 min (111446). Fix popup close bug (eliminado estado `dismissed` que mataba AnimatePresence).
-- [2026-04-22 01:40 BA] Feature: Meta-builds scraper API (/api/meta-builds). Scrapea builds live via web-search para 8 campeones S-tier. UI muestra badge verde "Build Meta Live" con timestamp "hace Xm/h/d" en modal de campeones S-tier. A/B tier muestra badge "Datos estáticos" para distinguir. Commit c15326f.
+- [2026-04-22 01:40 BA] Feature: Meta-builds scraper API (/api/meta-builds). Commit c15326f.
+- [2026-04-22 01:45 BA] Ralph Loop QA: Scan completo 10 tabs. Bugs: popup no cierra (CRITICAL), search no limpia (MAJOR). Fixes: popup reescrito (AnimatePresence mode=wait, useCallback, type=button), botón clear X en búsqueda. Build OK.

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Rocket, Sparkles, Clock,
@@ -42,39 +42,33 @@ const TYPE_ICONS: Record<string, typeof Rocket> = {
 
 export function ActivityPopup() {
   const [feed, setFeed] = useState<ActivityFeed | null>(null);
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [show, setShow] = useState(false);
+
+  const handleDismiss = useCallback(() => {
+    setShow(false);
+    sessionStorage.setItem('moba-sage-popup-seen', 'true');
+  }, []);
 
   useEffect(() => {
-    const sessionKey = 'moba-sage-popup-seen';
-    if (sessionStorage.getItem(sessionKey)) {
-      setLoading(false);
-      return;
-    }
+    if (sessionStorage.getItem('moba-sage-popup-seen')) return;
 
-    async function loadFeed() {
+    let cancelled = false;
+    (async () => {
       try {
         const res = await fetch('/activity-feed.json');
-        if (res.ok) {
+        if (res.ok && !cancelled) {
           const data = await res.json();
           setFeed(data);
-          setTimeout(() => setVisible(true), 800);
+          setTimeout(() => { if (!cancelled) setShow(true); }, 800);
         }
       } catch (err) {
         console.error('Failed to load activity feed for popup:', err);
-      } finally {
-        setLoading(false);
       }
-    }
-    loadFeed();
+    })();
+    return () => { cancelled = true; };
   }, []);
 
-  const handleDismiss = () => {
-    setVisible(false);
-    sessionStorage.setItem('moba-sage-popup-seen', 'true');
-  };
-
-  if (loading || !feed) return null;
+  if (!feed) return null;
 
   const recentEntries = feed.entries
     .slice()
@@ -92,22 +86,25 @@ export function ActivityPopup() {
   };
 
   return (
-    <AnimatePresence>
-      {visible && (
+    <AnimatePresence mode="wait">
+      {show ? (
         <motion.div
+          key="activity-popup-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           className="fixed inset-0 z-[200] flex items-center justify-center p-4"
           onClick={handleDismiss}
           style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
         >
           <motion.div
+            key="activity-popup-card"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); }}
             className="w-full max-w-md rounded-2xl overflow-hidden"
             style={{
               background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
@@ -116,8 +113,13 @@ export function ActivityPopup() {
             }}
           >
             <div className="relative p-5 pb-3" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
-              <button onClick={handleDismiss} className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Cerrar novedades">
-                <X className="text-[#a09b8c] text-sm" />
+              <button
+                type="button"
+                onClick={handleDismiss}
+                className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer z-10"
+                aria-label="Cerrar novedades"
+              >
+                <X className="text-[#a09b8c] text-base" />
               </button>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(200,170,110,0.15)', border: '1px solid rgba(200,170,110,0.3)' }}>
@@ -171,13 +173,18 @@ export function ActivityPopup() {
             </div>
 
             <div className="px-5 pb-4">
-              <button onClick={handleDismiss} className="w-full py-2.5 rounded-xl text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(200,170,110,0.1))', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}>
+              <button
+                type="button"
+                onClick={handleDismiss}
+                className="w-full py-2.5 rounded-xl text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(200,170,110,0.1))', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}
+              >
                 Entendido
               </button>
             </div>
           </motion.div>
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }
