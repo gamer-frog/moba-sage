@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T05:35:00Z",
+  "lastUpdated": "2026-04-22T05:31:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-005",
+      "type": "improvement",
+      "title": "Meta 26.8 completo — web scrape datos reales",
+      "description": "Tier list actualizada con datos de Blitz.gg, U.GG, Mobalytics, Metabot.gg. +7 nuevos campeones S-tier: Ornn, Briar, Aurelion Sol, Veigar, Nilah, Soraka, Zyra. Demotidos: Thresh, Darius, Caitlyn, K'Sante, Graves, Blitzcrank, Viego (pulled del parche). Campo metaUpdated + metaSources en cada campeón para distinguir datos frescos vs stale.",
+      "timestamp": "2026-04-22T05:31:00Z",
+      "commit": "pending",
+      "category": "improvement"
+    },
     {
       "id": "ralph-loop-004",
       "type": "improvement",
@@ -59,8 +68,8 @@
   ],
   "highlights": [
     "83 campeones con builds, runas y análisis IA",
-    "13 campeones S-tier con datos reales actualizados",
-    "Indicador de frescura de datos con fuentes citadas",
+    "20 campeones S-tier con datos verificados (metaUpdated + metaSources)",
+    "Web scrape real: Blitz.gg, U.GG, Mobalytics, Metabot.gg",
     "10 pestañas funcionales con datos en vivo",
     "Iconos DDragon para items y campeones",
     "Ralph Loop auto-mejora cada 15 minutos",
