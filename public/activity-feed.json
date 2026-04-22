@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-04-22T03:10:00Z",
+  "entries": [
+    {
+      "id": "deploy-001",
+      "type": "deploy",
+      "title": "Cleanup v2 deployado",
+      "description": "Eliminación de 3 API routes muertas, Prisma, examples/, skills/. 391 líneas eliminadas.",
+      "timestamp": "2026-04-22T03:00:00Z",
+      "commit": "24d69f5",
+      "category": "maintenance"
+    },
+    {
+      "id": "feature-001",
+      "type": "feature",
+      "title": "Iconos de Items DDragon",
+      "description": "51 items mapeados con imágenes de Data Dragon CDN en builds de campeones.",
+      "timestamp": "2026-04-22T00:30:00Z",
+      "commit": "1b02c91",
+      "category": "feature"
+    },
+    {
+      "id": "feature-002",
+      "type": "feature",
+      "title": "Roadmap Tab desde BRAINSTORM.md",
+      "description": "50 ideas organizadas en 4 categorías con progreso visual 62% completado.",
+      "timestamp": "2026-04-21T23:00:00Z",
+      "commit": "ab7e120",
+      "category": "feature"
+    },
+    {
+      "id": "feature-003",
+      "type": "feature",
+      "title": "Tab Novedades + Popup",
+      "description": "Activity feed con timeline de deploys y popup al abrir la app. Separación de tabs Juego vs Dev.",
+      "timestamp": "2026-04-22T03:20:00Z",
+      "commit": "58008c6",
+      "category": "feature"
+    },
+    {
+      "id": "audit-001",
+      "type": "audit",
+      "title": "Auditoría Completa de la App",
+      "description": "Revisión crítica: WR usa datos LoL, 22 champs sin brokenThings, SEO muerto, deps muertas. 23 findings totales.",
+      "timestamp": "2026-04-22T03:10:00Z",
+      "category": "audit"
+    }
+  ],
+  "highlights": [
+    "88 campeones con builds, runas y análisis IA",
+    "8 pestañas funcionales con datos en vivo",
+    "Iconos DDragon para items y campeones",
+    "Splash Art Gallery con 5 skins por campeón",
+    "Mapa de Visión interactivo por rol",
+    "Activity feed + popup de novedades"
+  ]
+}

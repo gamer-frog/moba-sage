@@ -29,6 +29,8 @@ import { IdeasTab } from '@/components/moba/tabs/ideas-tab';
 import { CombosTab } from '@/components/moba/tabs/combos-tab';
 import { CompetitiveTab } from '@/components/moba/tabs/competitive-tab';
 import { ProfileTab } from '@/components/moba/tabs/profile-tab';
+import { ActivityTab } from '@/components/moba/tabs/activity-tab';
+import { ActivityPopup } from '@/components/moba/activity-popup';
 
 // ============ MAIN APP ============
 export default function Home() {
@@ -208,6 +210,9 @@ export default function Home() {
         {!initialLoadDone && <LoadingScreen />}
       </AnimatePresence>
 
+      {/* Activity Popup (once per session) */}
+      <ActivityPopup />
+
       {/* Gold Particles */}
       <GoldParticles />
 
@@ -247,6 +252,7 @@ export default function Home() {
           ) : selectedGame === 'wildrift' ? (
             <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
               <WildRiftHeader />
+              {activeTab === 'novedades' && <ActivityTab />}
               {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} />}
               {activeTab === 'patches' && <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />}
               {activeTab === 'broken' && <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />}
@@ -259,6 +265,7 @@ export default function Home() {
             </motion.div>
           ) : (
             <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
+              {activeTab === 'novedades' && <ActivityTab />}
               {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} />}
               {activeTab === 'patches' && <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />}
               {activeTab === 'broken' && <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />}
