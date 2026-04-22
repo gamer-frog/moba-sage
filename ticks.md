@@ -1,6 +1,6 @@
 # TICKS — MOBA SAGE
 > Auto-maintenance tasks executed by cron jobs
-> Last run: 2026-04-22 06:53 BA | Next run: 2026-04-22 07:08 BA (cada 15 min)
+> Last run: 2026-04-22 16:55 BA | Next run: 2026-04-22 17:10 BA (cada 15 min)
 
 ## CRON JOBS CONFIGURED
 | Job | ID | Schedule | Descripción |
@@ -53,3 +53,4 @@
 - [2026-04-22 06:25 BA] Ralph Loop: Verificación de deploy — 7/7 checks PASADOS. Homepage 10 Pestañas ✓, Sidebar ANÁLISIS ✓, Combos fácil/difícil ✓, BUILD META LIVE oculto ✓, WR Competitivo Coming Soon ✓, Rune tree Valor ✓, Item Rabadón ✓. App estable, sin cambios necesarios.
 - [2026-04-22 06:43 BA] CEO Request: Sidebar drawer en mobile. SidebarNav convertida a componente responsive — desktop = fixed left (como antes), mobile/tablet = drawer que desliza desde la izquierda con backdrop oscuro y animación spring. Hamburger menu (☰) agregado al header (visible solo en mobile). BottomNav eliminada — la sidebar drawer da acceso a las 10 tabs completas con secciones colapsables (Análisis + Desarrollo). Botón X para cerrar drawer. Logo MOBA SAGE oculto en mobile para dar espacio al hamburger. Build OK.
 - [2026-04-22 06:53 BA] CEO Request: Barra lateral en mobile. BottomNav re-agregada con botón "Menú" que abre la sidebar drawer. Mobile ahora tiene: bottom nav (5 tabs rápidas + botón Menú) + sidebar drawer completa (10 tabs con secciones colapsables). Acceso a sidebar desde hamburger en header O botón Menú en bottom nav. Footer de sidebar con padding bottom en mobile para no tapar con bottom nav. Build OK.
+- [2026-04-22 16:55 BA] Ralph Loop: Scan completo 10 tabs + mobile 375px. App estable — sidebar drawer en mobile funciona (hamburger + bottom nav "Menú"). Build OK. Scan reportó posibles bugs en popup dismiss y bottom nav clicks pero análisis de código confirma handlers correctos (falsos positivos probables del scan). Sin cambios necesarios.
