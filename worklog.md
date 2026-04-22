@@ -63,3 +63,23 @@ Stage Summary:
 - All rune tree names now correct ("Valor" instead of fabricated "Determinación")
 - WR Competitivo tab no longer shows irrelevant LoL region filters
 - 10/10 tabs functional
+---
+Task ID: ralph-loop-011
+Agent: Ralph Loop (Main)
+Task: QA scan + 3 accent/content fixes
+
+Work Log:
+- Browser scan: All 10 tabs functional. Found: Homepage "8 Pestañas" outdated, Sidebar "ANALISIS" missing accent, combo difficulties "facil"/"dificil" missing accents, "Sombrero de Rabadon" missing accent, rune "Guardian" should be "Guardián", "proteccion" missing accent, "Fuerza de Trinidad" inconsistent (missing "la")
+- Fix 1: game-selector.tsx — "8 Pestañas" → "10 Pestañas", added missing tabs to list (Novedades, Ideas, Roadmap, Tareas). sidebar-nav.tsx — "Analisis" → "Análisis"
+- Fix 2: data.ts + combos-tab.tsx — difficulty type `facil`→`fácil`, `dificil`→`difícil` (type definition + 10 data instances + display colors)
+- Fix 3: data.ts + helpers.ts — "Sombrero de Rabadon"→"Rabadón" (30+ build strings + ITEM_NAME_MAP key), "Guardian"→"Guardián" rune (16 instances), "proteccion"→"protección", "Fuerza de Trinidad"→"Fuerza de la Trinidad" (standardized)
+- Updated activity-feed.json with ralph-loop-011 entry
+- Updated ticks.md with run log
+- Build: OK
+- Push: b237fe4 → main (27ecdb4 with hash update)
+
+Stage Summary:
+- All Spanish text now has correct accents
+- Homepage tab count matches actual app (10 tabs)
+- Sidebar section header correctly accented
+- Item and rune names standardized to LoL Spanish client
