@@ -1,0 +1,164 @@
+{
+  "lastScraped": "2026-04-22T04:35:00Z",
+  "source": "OP.GG",
+  "patch": "16.08",
+  "champions": {
+    "masteryi": {
+      "error": "[Errno 2] No such file or directory: '/home/z/my-project/moba-sage/scrape-masteryi.json'"
+    },
+    "jinx": {
+      "wr": 52.82,
+      "core_items": [
+        "Switcheroo!",
+        "Super Mega Death Rocket!",
+        "Legend: Bloodline",
+        "Hextech Flashtraption",
+        "Cosmic Insight",
+        "Doran's Blade"
+      ],
+      "boots": [
+        "Berserker's Greaves"
+      ],
+      "runes": [
+        "Precision",
+        "Lethal Tempo",
+        "Inspiration",
+        "Fleet Footwork",
+        "Conqueror"
+      ],
+      "skill_order": null
+    },
+    "leesin": {
+      "wr": 50.55,
+      "core_items": [
+        "Legend: Bloodline",
+        "Hextech Flashtraption",
+        "Cosmic Insight",
+        "Eclipse",
+        "Sundered Sky",
+        "Death's Dance"
+      ],
+      "boots": [
+        "Plated Steelcaps"
+      ],
+      "runes": [
+        "Precision",
+        "Conqueror",
+        "Inspiration",
+        "Lethal Tempo",
+        "Fleet Footwork"
+      ],
+      "skill_order": null
+    },
+    "thresh": {
+      "wr": 51.76,
+      "core_items": [
+        "Death Sentence",
+        "Guardian",
+        "Hextech Flashtraption",
+        "Cosmic Insight",
+        "Glacial Augment",
+        "Locket of the Iron Solari"
+      ],
+      "boots": [
+        "Boots of Swiftness"
+      ],
+      "runes": [
+        "Resolve",
+        "Aftershock",
+        "Inspiration",
+        "Grasp of the Undying",
+        "Guardian"
+      ],
+      "skill_order": null
+    },
+    "darius": {
+      "wr": 50.12,
+      "core_items": [
+        "Legend: Bloodline",
+        "Axiom Arcanist",
+        "Absolute Focus",
+        "Doran's Blade",
+        "Youmuu's Ghostblade",
+        "Dead Man's Plate"
+      ],
+      "boots": [
+        "Plated Steelcaps"
+      ],
+      "runes": [
+        "Precision",
+        "Conqueror",
+        "Sorcery",
+        "Lethal Tempo",
+        "Fleet Footwork"
+      ],
+      "skill_order": null
+    },
+    "ahri": {
+      "wr": 51.51,
+      "core_items": [
+        "Spirit Rush",
+        "Hail of Blades",
+        "Axiom Arcanist",
+        "Absolute Focus",
+        "Malignance",
+        "Shadowflame"
+      ],
+      "boots": [
+        "Sorcerer's Shoes"
+      ],
+      "runes": [
+        "Domination",
+        "Electrocute",
+        "Sorcery",
+        "Dark Harvest",
+        "Hail of Blades"
+      ],
+      "skill_order": null
+    },
+    "yasuo": {
+      "wr": 49.74,
+      "core_items": [
+        "Sweeping Blade",
+        "Legend: Bloodline",
+        "Doran's Blade",
+        "Blade of The Ruined King",
+        "Immortal Shieldbow",
+        "Infinity Edge"
+      ],
+      "boots": [
+        "Berserker's Greaves"
+      ],
+      "runes": [
+        "Precision",
+        "Lethal Tempo",
+        "Resolve",
+        "Fleet Footwork",
+        "Conqueror"
+      ],
+      "skill_order": null
+    },
+    "caitlyn": {
+      "wr": 50.24,
+      "core_items": [
+        "Legend: Bloodline",
+        "Axiom Arcanist",
+        "Absolute Focus",
+        "Doran's Blade",
+        "Infinity Edge",
+        "Rapid Firecannon"
+      ],
+      "boots": [
+        "Berserker's Greaves"
+      ],
+      "runes": [
+        "Precision",
+        "Lethal Tempo",
+        "Sorcery",
+        "Fleet Footwork",
+        "Conqueror"
+      ],
+      "skill_order": null
+    }
+  }
+}

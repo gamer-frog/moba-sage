@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle, Eye } from 'lucide-react';
+import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle, Eye, RefreshCw, ShieldCheck } from 'lucide-react';
 import { TIER_CONFIG } from './constants';
 import { getChampionImageUrl, getBuildExternalUrl, getItemIconUrl, parseBuildItems, getChampionSplashUrl } from './helpers';
 import { RuneIcon } from './rune-icon';
@@ -17,12 +17,39 @@ import type { Champion } from './types';
 
 const SKIN_VARIANTS = [0, 1, 2, 3, 4];
 
+function timeAgoMeta(ts: string): string {
+  const diff = Date.now() - new Date(ts).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `hace ${mins}m`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `hace ${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `hace ${days}d`;
+}
+
 export function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () => void }) {
   const cfg = TIER_CONFIG[champion.tier];
   const extUrls = getBuildExternalUrl(champion.name);
   const [imgError, setImgError] = useState(false);
   const [activeSkin, setActiveSkin] = useState(0);
   const [failedSkins, setFailedSkins] = useState<Set<number>>(new Set());
+  const [metaBuild, setMetaBuild] = useState<any>(null);
+  const [buildLoading, setBuildLoading] = useState(false);
+
+  // Fetch live meta builds for S-tier champions
+  useEffect(() => {
+    if (champion.tier !== 'S') return;
+    setBuildLoading(true);
+    fetch('/api/meta-builds?refresh=false')
+      .then(res => res.json())
+      .then(data => {
+        if (data.builds && data.builds[champion.name]) {
+          setMetaBuild(data.builds[champion.name]);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setBuildLoading(false));
+  }, [champion.name, champion.tier]);
 
   const handleSkinError = (skinNum: number) => {
     setFailedSkins(prev => new Set(prev).add(skinNum));
@@ -218,12 +245,73 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
             </div>
           </div>
 
-          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
-            <div className="flex items-center gap-2 mb-2">
-              <Info className="w-4 h-4 text-[#c8aa6e]" />
-              <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Build Actualizada</span>
+          {/* Build Section — Shows live scraped data for S-tier */}
+          {champion.tier === 'S' && (
+            <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(15,186,129,0.08), rgba(15,186,129,0.02))', border: '1px solid rgba(15,186,129,0.2)' }}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#0fba81]" />
+                  <span className="text-[10px] font-semibold text-[#0fba81] uppercase tracking-wider">Build Meta Live</span>
+                </div>
+                {metaBuild ? (
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] animate-pulse" />
+                    <span className="text-[9px] text-[#0fba81] font-medium">
+                      {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'Live'}
+                    </span>
+                  </div>
+                ) : buildLoading ? (
+                  <span className="text-[9px] text-[#5b5a56]">Cargando...</span>
+                ) : (
+                  <span className="text-[9px] text-[#5b5a56]">No disponible</span>
+                )}
+              </div>
+              {metaBuild && metaBuild.coreItems && metaBuild.coreItems.length > 0 ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {metaBuild.boots && (
+                      <span className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.2)', color: '#0fba81' }}>
+                        {metaBuild.boots}
+                      </span>
+                    )}
+                    {metaBuild.coreItems.map((item: string, i: number) => (
+                      <span key={i} className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)', color: '#c8aa6e' }}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  {metaBuild.runes && metaBuild.runes.length > 0 && (
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[9px] text-[#5b5a56]">Runas:</span>
+                      {metaBuild.runes.map((rune: string, i: number) => (
+                        <span key={i} className="text-[9px] text-[#0fba81]">{rune}</span>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
+                </div>
+              ) : (
+                <p className="text-[10px] text-[#5b5a56]">Scrapeando builds del meta actual...</p>
+              )}
             </div>
-            <p className="text-[10px] text-[#785a28] mb-2.5">Para builds siempre actualizadas al meta, revisá estas fuentes:</p>
+          )}
+
+          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-[#c8aa6e]" />
+                <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">
+                  Builds de Referencia
+                  {champion.tier !== 'S' && <span className="ml-1.5 text-[#5b5a56] font-normal normal-case">— Patch {champion.patch}</span>}
+                </span>
+              </div>
+              {champion.tier !== 'S' && (
+                <span className="text-[8px] px-1.5 py-0.5 rounded text-[#785a28] font-medium" style={{ background: 'rgba(120,90,40,0.1)', border: '1px solid rgba(120,90,40,0.15)' }}>
+                  Datos estáticos
+                </span>
+              )}
+            </div>
+            <p className="text-[10px] text-[#785a28] mb-2.5">Fuentes externas con builds siempre actualizadas:</p>
             <div className="flex items-center gap-2 flex-wrap">
               <a href={extUrls.ugg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,203,230,0.1)', border: '1px solid rgba(0,203,230,0.3)', color: '#0acbe6' }}>
                 <ExternalLink className="w-3 h-3" /> U.GG
