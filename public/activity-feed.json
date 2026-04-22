@@ -8,7 +8,7 @@
       "title": "3 Fixes: 25 imágenes rotas + versión DDragon + timeAgo negativo",
       "description": "(1) CRÍTICO: 25/79 imágenes de campeones rotas (B-tier y below) — champion-icon.tsx sin prop unoptimized causaba timeout del proxy Next.js Image Optimization al cargar 79 imágenes concurrentes. Fix: unoptimized en 4 variantes (ChampionIcon, SmallChampionIcon, SplashArtIcon, TinyChampionIcon) + RuneIcon + profile-tab. (2) Default _ddVersion '26.8.1' (no existe) corregido a '16.8.1' (versión real DDragon) en helpers.ts — evita rotura de imágenes si la API de versión falla. (3) timeAgo mostraba valores negativos ('hace -434m') en Novedades cuando timestamps estaban en el futuro — fix con clamp a 'ahora' si mins <= 0 en 3 archivos (activity-tab, activity-popup, champion-modal). Build OK.",
       "timestamp": "2026-04-22T17:40:00Z",
-      "commit": "pending",
+      "commit": "2fb2dcb",
       "category": "fix"
     },
     {
@@ -17,7 +17,7 @@
       "title": "3 Fixes: typo ROTO OP + acentos Roadmap + items en español",
       "description": "(1) Badge 'ROTOP' corregido a 'ROTO OP' en Cosas Rotas e Insights (2 instancias). (2) Acentos masivos en Roadmap: Estética, Partículas, títulos, vía, Transición, más, Animación, visión, clásico, líneas, edición, dinámico, automático, Versión, etc. (~25 correcciones). (3) Items en inglés traducidos: Stridebreaker→Pisotón Brutal, Experimental Hexplate→Placa Hexagonal Experimental (data.ts + helpers.ts). Palabras en inglés corregidas: maximize→maximizar, protege→proteger. Build OK.",
       "timestamp": "2026-04-22T17:05:00Z",
-      "commit": "pending",
+      "commit": "7cfc767",
       "category": "fix"
     },
     {
@@ -26,7 +26,7 @@
       "title": "3 Fixes: sidebar footer mobile + texto truncado + build items overflow",
       "description": "(1) Sidebar footer 'MOBA SAGE v2.0' cortado por bottom nav en mobile — padding mb-16→mb-20 (80px > 77px del bottom nav). (2) Cosas Rotas: counters y sinergia con texto truncado sin ellipsis — agregado truncate + min-w-0 + title tooltip. (3) Build items: overflow control con max-h para evitar que items desborden la card. Scan VLM con análisis visual profundo de screenshots desktop + mobile.",
       "timestamp": "2026-04-22T17:25:00Z",
-      "commit": "pending",
+      "commit": "b6fa4de",
       "category": "fix"
     },
     {
@@ -35,7 +35,7 @@
       "title": "3 Fixes: modal key + spell keys + noreferrer",
       "description": "(1) Modal campeón no abría para algunos campeones (Master Yi, Ahri) — fix: key={selectedChampion.id} en AnimatePresence para que React distinga enter/exit de modales diferentes. (2) Spell icons rotos para 14+ campeones — getSpellKey() ahora busca por display name Y por DDragon key (antes solo display name, pero muchas overrides usaban keys DDragon como 'MasterYi', 'LeeSin', etc). Corregidos: Jinx E ('JinxE'→'JinxEMine'), Katarina W/R completos, Ahri keys correctas. (3) Links externos: rel='noopener noreferrer' en todos los <a> target=_blank (security best practice vs window.opener exploit). Build OK.",
       "timestamp": "2026-04-22T10:06:00Z",
-      "commit": "pending",
+      "commit": "a217fed",
       "category": "fix"
     },
     {
@@ -80,7 +80,7 @@
       "title": "3 Fixes: spell icons 60+ campeones + popup Novedades + fallback mejorado",
       "description": "Spell key overrides expandidos a 60+ campeones (antes ~25) con keys Q/W/E/R completos para todos los del tier list. Fallback mejorado: cuando icono falla muestra nombre de skill abreviado (Alpha, Wuju, Shunpo, etc). Popup Novedades reescrito: AnimatePresence corregido (mode wait→default), z-index card fijo, session tracking con mounted flag. Scan completo 10 tabs realizado.",
       "timestamp": "2026-04-22T06:55:00Z",
-      "commit": "pending",
+      "commit": "a6cfe6a",
       "category": "fix"
     },
     {
@@ -107,7 +107,7 @@
       "title": "Meta 26.8 refresh — 3 promociones + 1 democión (6 fuentes)",
       "description": "Malphite B→S (anti-AD dominante, Buildzcrank S + PropelRC S + Blitz.gg). Nautilus B→S (engage consistente, Amber.gg S + Mobalytics S). Diana A→S (AP burst jungle, PropelRC S+ + Blitz.gg). Kennen B→A (U.GG #1 Mid 52.1%). Brand S→A (fuera de listas S). Fuentes expandidas a 6: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg.",
       "timestamp": "2026-04-22T05:40:00Z",
-      "commit": "pending",
+      "commit": "a6cfe6a",
       "category": "improvement"
     },
     {
@@ -116,7 +116,7 @@
       "title": "Meta 26.8 completo — web scrape datos reales",
       "description": "Tier list actualizada con datos de Blitz.gg, U.GG, Mobalytics, Metabot.gg. +7 nuevos campeones S-tier: Ornn, Briar, Aurelion Sol, Veigar, Nilah, Soraka, Zyra. Demotidos: Thresh, Darius, Caitlyn, K'Sante, Graves, Blitzcrank, Viego (pulled del parche). Campo metaUpdated + metaSources en cada campeón para distinguir datos frescos vs stale.",
       "timestamp": "2026-04-22T05:31:00Z",
-      "commit": "pending",
+      "commit": "a6cfe6a",
       "category": "improvement"
     },
     {
@@ -125,7 +125,7 @@
       "title": "Meta freshness indicator + version API gamePatch",
       "description": "Version API ahora retorna gamePatch separado de CDN version. Banner muestra parche correcto. Tier List indica fecha de última actualización de datos con fuentes (Mobalytics, U.GG, PropelRC).",
       "timestamp": "2026-04-22T05:35:00Z",
-      "commit": "pending",
+      "commit": "a6cfe6a"
       "category": "improvement"
     },
     {
