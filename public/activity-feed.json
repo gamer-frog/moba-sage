@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T05:40:00Z",
+  "lastUpdated": "2026-04-22T06:05:00Z",
   "entries": [
+    {
+      "id": "nav-refactor-001",
+      "type": "improvement",
+      "title": "Sidebar + Bottom Nav — refactor navegación completo",
+      "description": "Eliminado TabNav horizontal (10 tabs en scroll). Nuevo SidebarNav desktop con secciones Game + Dev colapsable (active indicator animado con Framer Motion). Nuevo BottomNav mobile con 5 tabs principales + sheet 'Mas' para tabs secundarias. Header limpiado (badges ocultos en mobile). Footer oculto en mobile. TabContent refactorizado con switch/case para eliminar duplicación LoL/WR.",
+      "timestamp": "2026-04-22T06:05:00Z",
+      "commit": "162880f",
+      "category": "improvement"
+    },
     {
       "id": "ralph-loop-006",
       "type": "improvement",
@@ -80,6 +89,8 @@
     "metaUpdated + metaSources distinguen datos frescos vs stale",
     "Web scrape real: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg",
     "10 pestañas funcionales con datos en vivo",
+    "Sidebar desktop + Bottom Nav mobile (responsive)",
+    "Dev tabs colapsables en sidebar",
     "Iconos DDragon para items y campeones",
     "Ralph Loop auto-mejora cada 15 minutos",
     "Tabs separadas: Juego (oro) vs Dev (cyan)"
