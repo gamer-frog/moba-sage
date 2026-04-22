@@ -106,6 +106,13 @@ const ideas: { category: string; icon: typeof Lightbulb; color: string; items: I
       { id: 'C6', title: 'Tier lists comunitarios', desc: 'Usuarios crean y publican tier lists propias. Votación y comparación vs tier list data-driven. Inspirado por TierMaker.', status: 'pending', category: 'Competencia' },
       { id: 'C7', title: 'Meta Tracker parche a parche', desc: 'Gráfico de evolución WR del campeón a lo largo de parches (LoLalytics tiene patch history graphs). Trend arrows.', status: 'pending', category: 'Competencia' },
       { id: 'C8', title: 'Matchup stats con significancia', desc: 'WR de matchups con flags de significancia estadística y sample sizes. Distintivo de LoLalytics vs competidores.', status: 'pending', category: 'Competencia' },
+      { id: 'C9', title: 'Cards compartibles (Social)', desc: 'Generar imágenes PNG de rank/profile/tier para compartir en redes. Meta: retención + crecimiento orgánico. Inspirado por Mobalytics + Facecheck.', status: 'pending', category: 'Competencia' },
+      { id: 'C10', title: 'ARAM Tier List dedicado', desc: 'Tier list para ARAM con estratégicas de reroll y runes específicas. U.GG lo tiene pero nadie lo hace bien en mobile. Mercadazo desatendido.', status: 'pending', category: 'Competencia' },
+      { id: 'C11', title: 'Team Impact Analyzer', desc: 'Post-game: cuantifica contribución individual vs team luck. "¿Fue tu culpa?". YOUR.GG toca esto pero nadie lo hace mainstream.', status: 'pending', category: 'Competencia' },
+      { id: 'C12', title: 'Patch Impact Personalizado', desc: 'Después de cada parche: "Tu main X fue nerfeado — así te adaptás". Personalización basada en champion pool del usuario. Nadie lo hace.', status: 'pending', category: 'Competencia' },
+      { id: 'C13', title: 'Clasificación Wild Rift #1', desc: 'WR es el único mercado donde OP.GG no domina. Enfocarse 100% en WR = posición única. Solo 2-3 competidores serios.', status: 'pending', category: 'Competencia' },
+      { id: 'C14', title: 'Tauri Desktop Overlay', desc: 'App desktop liviana (Tauri, no Electron) para auto-imports + overlays. 10x menos RAM que Blitz/Mobalytics (Overwolf). iTero usa Tauri con éxito.', status: 'pending', category: 'Competencia' },
+      { id: 'C15', title: 'Smart Scouting con Tags', desc: 'Tags de playstyle: Onetricks, Dodge rate, Tilt probability, Win streak. Inspirado por Porofessor (no innovó en años, easy target).', status: 'pending', category: 'Competencia' },
     ],
   },
 ];
