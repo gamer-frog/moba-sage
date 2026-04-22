@@ -44,11 +44,11 @@ export function ActivityPopup() {
   const [feed, setFeed] = useState<ActivityFeed | null>(null);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const sessionKey = 'moba-sage-popup-seen';
     if (sessionStorage.getItem(sessionKey)) {
+      setLoading(false);
       return;
     }
 
@@ -71,11 +71,10 @@ export function ActivityPopup() {
 
   const handleDismiss = () => {
     setVisible(false);
-    setDismissed(true);
     sessionStorage.setItem('moba-sage-popup-seen', 'true');
   };
 
-  if (loading || dismissed || !feed) return null;
+  if (loading || !feed) return null;
 
   const recentEntries = feed.entries
     .slice()
