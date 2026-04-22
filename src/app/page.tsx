@@ -59,7 +59,7 @@ export default function Home() {
   const [summonerError, setSummonerError] = useState('');
 
   // Live version state
-  const [liveVersions, setLiveVersions] = useState<{ lol: string; wr: string }>({ lol: '', wr: '' });
+  const [liveVersions, setLiveVersions] = useState<{ lol: string; wr: string; gamePatch: string; metaLastUpdated: string }>({ lol: '', wr: '', gamePatch: '', metaLastUpdated: '' });
   const [lastUpdate, setLastUpdate] = useState('');
   const [isNewPatch, setIsNewPatch] = useState(false);
 
@@ -107,7 +107,12 @@ export default function Home() {
       setCombos(combosData);
       if (versionData?.lol) {
         const fullVer = versionData.lol;
-        setLiveVersions({ lol: fullVer.split('.').slice(0, 2).join('.'), wr: versionData.wr || '6.4' });
+        setLiveVersions({
+          lol: fullVer.split('.').slice(0, 2).join('.'),
+          wr: versionData.wr || '6.4',
+          gamePatch: versionData.gamePatch || fullVer.split('.').slice(0, 2).join('.'),
+          metaLastUpdated: versionData.metaLastUpdated || '',
+        });
         updateDdVersion(fullVer);
         const prevPatch = localStorage.getItem('moba-sage-last-patch');
         const currentPatch = fullVer.split('.').slice(0, 2).join('.');
@@ -253,7 +258,7 @@ export default function Home() {
             <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
               <WildRiftHeader version={liveVersions.wr} />
               {activeTab === 'novedades' && <ActivityTab />}
-              {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} />}
+              {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} metaLastUpdated={liveVersions.metaLastUpdated} />}
               {activeTab === 'patches' && <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />}
               {activeTab === 'broken' && <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />}
               {activeTab === 'tasks' && <TasksTab tasks={tasks} loading={loading} onRefresh={fetchData} onToggleTask={handleToggleTask} />}
@@ -266,7 +271,7 @@ export default function Home() {
           ) : (
             <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
               {activeTab === 'novedades' && <ActivityTab />}
-              {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} />}
+              {activeTab === 'tierlist' && <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={setSearchQuery} roleFilter={roleFilter} onRoleFilterChange={setRoleFilter} favorites={favorites} onToggleFavorite={toggleFavorite} onChampionClick={handleToggleChampion} metaLastUpdated={liveVersions.metaLastUpdated} />}
               {activeTab === 'patches' && <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />}
               {activeTab === 'broken' && <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />}
               {activeTab === 'tasks' && <TasksTab tasks={tasks} loading={loading} onRefresh={fetchData} onToggleTask={handleToggleTask} />}

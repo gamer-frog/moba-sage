@@ -1,23 +1,32 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T05:02:00Z",
+  "lastUpdated": "2026-04-22T05:35:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-004",
+      "type": "improvement",
+      "title": "Meta freshness indicator + version API gamePatch",
+      "description": "Version API ahora retorna gamePatch separado de CDN version. Banner muestra parche correcto. Tier List indica fecha de última actualización de datos con fuentes (Mobalytics, U.GG, PropelRC).",
+      "timestamp": "2026-04-22T05:35:00Z",
+      "commit": "pending",
+      "category": "improvement"
+    },
     {
       "id": "ralph-loop-003",
       "type": "fix",
       "title": "Ralph Loop: 3 Fixes críticos",
       "description": "WR patch mismatch fix (17.8→6.8 en banner y datos). Skill icon overlay duplicado (Q Q→Q). Popup close z-index + Escape handler.",
       "timestamp": "2026-04-22T05:02:00Z",
-      "commit": "pending",
+      "commit": "ac62cb1",
       "category": "fix"
     },
     {
       "id": "meta-001",
       "type": "fix",
       "title": "Tier List + Patch actualizados a 26.8 (datos reales)",
-      "description": "Patch 16.8→26.8 en todos los archivos. S-tier actualizado: Master Yi/Lee Sin/Yasuo descendidos a A. Garen/Katarina/Graves/Ashe promovidos a S. +5 nuevos campeones S-tier: Nocturne, Blitzcrank, Brand, K'Sante, Viego. Datos de Mobalytics/U.GG/PropelRC.",
+      "description": "Patch 16.8→26.8 en todos los archivos. S-tier actualizado: Master Yi/Lee Sin/Yasuo descendidos a A. Garen/Katarina/Graves/Ashe promovidos a S. +5 nuevos campeones S-tier: Nocturne, Blitzcrank, Brand, K'Sante, Viego.",
       "timestamp": "2026-04-22T04:55:00Z",
-      "commit": "pending",
+      "commit": "458e0ef",
       "category": "fix"
     },
     {
@@ -30,33 +39,6 @@
       "category": "fix"
     },
     {
-      "id": "deploy-001",
-      "type": "deploy",
-      "title": "Cleanup v2 deployado",
-      "description": "Eliminación de 3 API routes muertas, Prisma, examples/, skills/. 391 líneas eliminadas.",
-      "timestamp": "2026-04-22T03:00:00Z",
-      "commit": "24d69f5",
-      "category": "maintenance"
-    },
-    {
-      "id": "feature-001",
-      "type": "feature",
-      "title": "Iconos de Items DDragon",
-      "description": "51 items mapeados con imágenes de Data Dragon CDN en builds de campeones.",
-      "timestamp": "2026-04-22T00:30:00Z",
-      "commit": "1b02c91",
-      "category": "feature"
-    },
-    {
-      "id": "feature-002",
-      "type": "feature",
-      "title": "Roadmap Tab desde BRAINSTORM.md",
-      "description": "50 ideas organizadas en 4 categorías con progreso visual 62% completado.",
-      "timestamp": "2026-04-21T23:00:00Z",
-      "commit": "ab7e120",
-      "category": "feature"
-    },
-    {
       "id": "feature-003",
       "type": "feature",
       "title": "Tab Novedades + Popup",
@@ -66,31 +48,21 @@
       "category": "feature"
     },
     {
-      "id": "fix-001",
-      "type": "fix",
-      "title": "Fix Popup + Ralph Loop 15 min",
-      "description": "Fix botones X/Entendido del popup. Eliminados crons semanales, creado loop auto-mejora cada 15 min (ID 111446).",
-      "timestamp": "2026-04-22T04:23:00Z",
-      "commit": "e0a3df1",
-      "category": "fix"
-    },
-    {
-      "id": "audit-001",
-      "type": "audit",
-      "title": "Auditoría Completa de la App",
-      "description": "Revisión crítica: WR usa datos LoL, 22 champs sin brokenThings, SEO muerto, deps muertas. 23 findings totales.",
-      "timestamp": "2026-04-22T03:10:00Z",
-      "commit": "",
-      "category": "audit"
+      "id": "deploy-001",
+      "type": "deploy",
+      "title": "Cleanup v2 deployado",
+      "description": "Eliminación de 3 API routes muertas, Prisma, examples/, skills/. 391 líneas eliminadas.",
+      "timestamp": "2026-04-22T03:00:00Z",
+      "commit": "24d69f5",
+      "category": "maintenance"
     }
   ],
   "highlights": [
     "83 campeones con builds, runas y análisis IA",
-    "15 campeones S-tier actualizados con datos reales (patch 26.8)",
+    "13 campeones S-tier con datos reales actualizados",
+    "Indicador de frescura de datos con fuentes citadas",
     "10 pestañas funcionales con datos en vivo",
     "Iconos DDragon para items y campeones",
-    "Splash Art Gallery con 5 skins por campeón",
-    "Activity feed + popup de novedades",
     "Ralph Loop auto-mejora cada 15 minutos",
     "Tabs separadas: Juego (oro) vs Dev (cyan)"
   ]

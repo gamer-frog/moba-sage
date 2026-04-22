@@ -15,7 +15,7 @@ export function AppHeader({
   onDismissPatch,
 }: {
   selectedGame: GameSelection;
-  liveVersions: { lol: string; wr: string };
+  liveVersions: { lol: string; wr: string; gamePatch: string; metaLastUpdated: string };
   lastUpdate: string;
   isNewPatch: boolean;
   onBackToSelector: () => void;
@@ -49,7 +49,7 @@ export function AppHeader({
           {selectedGame === 'wildrift' && (
             <Badge variant="outline" className="text-[10px] border-[#0acbe6]/30 text-[#0acbe6]">Wild Rift</Badge>
           )}
-          <Badge variant="outline" className="text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? `Patch ${liveVersions.wr || '6.4'}` : `Patch ${liveVersions.lol || '25.6'}`}</Badge>
+          <Badge variant="outline" className="text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? `Patch ${liveVersions.wr || '6.4'}` : `Patch ${liveVersions.gamePatch || liveVersions.lol || '16.8'}`}</Badge>
           {isNewPatch && (
             <Badge className="lol-new-patch-badge bg-[#0fba81]/15 text-[#0fba81] border border-[#0fba81]/40 text-[10px] cursor-pointer" onClick={onDismissPatch}>
               <Bell className="w-3 h-3 mr-1" />

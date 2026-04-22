@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Search, Filter, Star, LayoutGrid, List, TrendingUp, BarChart3, X } from 'lucide-react';
+import { Search, Filter, Star, LayoutGrid, List, TrendingUp, BarChart3, X, RefreshCw } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ChampionIcon } from '../champion-icon';
 import { RoleBadge } from '../badges';
@@ -21,6 +21,7 @@ interface TierListTabProps {
   favorites: Set<number>;
   onToggleFavorite: (id: number) => void;
   onChampionClick: (c: Champion) => void;
+  metaLastUpdated?: string;
 }
 
 const ROLES = ['Todos', 'Top', 'Jungle', 'Mid', 'ADC', 'Support'];
@@ -35,7 +36,7 @@ function wrColor(wr: number): string {
 export function TierListTab({
   champions, loading, selectedGame,
   searchQuery, onSearchChange, roleFilter, onRoleFilterChange,
-  favorites, onToggleFavorite, onChampionClick,
+  favorites, onToggleFavorite, onChampionClick, metaLastUpdated,
 }: TierListTabProps) {
   const [viewMode, setViewMode] = useState<'list' | 'board'>('list');
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -203,6 +204,16 @@ export function TierListTab({
             icon={<BarChart3 className="w-4 h-4" />}
           />
         </motion.div>
+      )}
+
+      {/* Meta freshness indicator */}
+      {!loading && metaLastUpdated && (
+        <div className="flex items-center gap-2 text-[10px] text-[#5b5a56]">
+          <RefreshCw className="w-3 h-3" />
+          <span>Datos actualizados: {new Date(metaLastUpdated).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+          <span className="text-[#0fba81]">●</span>
+          <span> fuentes: Mobalytics, U.GG, PropelRC</span>
+        </div>
       )}
 
       {loading ? (

@@ -30,6 +30,8 @@ export interface Champion {
   brokenThings?: string[];
   buildLinks?: { label: string; url: string }[];
   runes?: { primary: string; secondary: string; shards: string };
+  metaUpdated?: boolean; // true = datos verificados con fuentes reales del parche actual
+  metaSources?: string[]; // fuentes: ['U.GG', 'Mobalytics', 'Blitz', ...]
 }
 
 export interface PatchNote {
