@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T05:31:00Z",
+  "lastUpdated": "2026-04-22T05:40:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-006",
+      "type": "improvement",
+      "title": "Meta 26.8 refresh — 3 promociones + 1 democión (6 fuentes)",
+      "description": "Malphite B→S (anti-AD dominante, Buildzcrank S + PropelRC S + Blitz.gg). Nautilus B→S (engage consistente, Amber.gg S + Mobalytics S). Diana A→S (AP burst jungle, PropelRC S+ + Blitz.gg). Kennen B→A (U.GG #1 Mid 52.1%). Brand S→A (fuera de listas S). Fuentes expandidas a 6: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg.",
+      "timestamp": "2026-04-22T05:40:00Z",
+      "commit": "pending",
+      "category": "improvement"
+    },
     {
       "id": "ralph-loop-005",
       "type": "improvement",
@@ -67,9 +76,9 @@
     }
   ],
   "highlights": [
-    "83 campeones con builds, runas y análisis IA",
-    "20 campeones S-tier con datos verificados (metaUpdated + metaSources)",
-    "Web scrape real: Blitz.gg, U.GG, Mobalytics, Metabot.gg",
+    "17 campeones S-tier con datos verificados de 6 fuentes",
+    "metaUpdated + metaSources distinguen datos frescos vs stale",
+    "Web scrape real: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg",
     "10 pestañas funcionales con datos en vivo",
     "Iconos DDragon para items y campeones",
     "Ralph Loop auto-mejora cada 15 minutos",

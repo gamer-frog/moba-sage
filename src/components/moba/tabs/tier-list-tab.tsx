@@ -212,7 +212,7 @@ export function TierListTab({
           <RefreshCw className="w-3 h-3" />
           <span>Datos actualizados: {new Date(metaLastUpdated).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
           <span className="text-[#0fba81]">●</span>
-          <span> fuentes: Mobalytics, U.GG, PropelRC</span>
+          <span> fuentes: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg</span>
         </div>
       )}
 

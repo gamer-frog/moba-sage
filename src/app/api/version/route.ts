@@ -14,7 +14,7 @@ const CACHE_DURATION = 1000 * 60 * 30; // 30 minutes
 
 // This is updated manually when we refresh tier list data with real meta
 let GAME_PATCH = '16.8';
-let META_LAST_UPDATED = '2026-04-22T04:55:00Z';
+let META_LAST_UPDATED = '2026-04-22T05:35:00Z';
 
 export function setGamePatch(patch: string) { GAME_PATCH = patch; }
 export function setMetaLastUpdated(date: string) { META_LAST_UPDATED = date; }
