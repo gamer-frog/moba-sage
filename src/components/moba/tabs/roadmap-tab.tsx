@@ -1,119 +1,194 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Map, Database, Brain, Trophy, Wrench, Users, Smartphone, Zap, Image as ImageIcon } from 'lucide-react';
-import { RoadmapStatusBadge } from '../badges';
+import { Map, Check, X, Clock, Sparkles, Wrench, BarChart3, Zap } from 'lucide-react';
 
+type IdeaStatus = 'done' | 'cancelled' | 'pending';
+
+interface Idea {
+  id: string;
+  title: string;
+  desc: string;
+  status: IdeaStatus;
+}
+
+// Based on BRAINSTORM.md — cross-referenced with TASKS.md and actual codebase
 const roadmapCategories = [
   {
-    title: 'Datos & APIs', icon: Database, items: [
-      { name: 'Conexión Riot API completa', status: 'progress', desc: 'API key configurada, datos reales de invocadores, ranked, historial' },
-      { name: 'Datos en tiempo real (U.GG / Mobalytics)', status: 'planned', desc: 'Conectar APIs de terceros para estadísticas actualizadas automáticamente' },
-      { name: 'Wild Rift - Datos completos', status: 'done', desc: 'Campeones con tier list (S/A/B), builds, counters, sinergias e IA' },
-      { name: 'Community Dragon Assets', status: 'done', desc: 'CDN Data Dragon para iconos de campeones, items y splash arts' },
-    ]
+    title: 'Estetica & Visual',
+    icon: Sparkles,
+    color: '#f0c646',
+    items: [
+      { id: 'E1', title: 'Particulas doradas flotantes', desc: 'Polvo dorado tipo client de LoL. Framer Motion + canvas', status: 'done' as IdeaStatus },
+      { id: 'E2', title: 'Font Beaufort para titulos', desc: 'Font oficial de LoL via @font-face para headings', status: 'done' as IdeaStatus },
+      { id: 'E3', title: 'Splash Art Gallery en modal', desc: 'Carousel de splashes (clasico, PROJECT, Mecha) con parallax', status: 'done' as IdeaStatus },
+      { id: 'E4', title: 'Iconos de rol visuales', desc: 'SVG custom: Top/Jungle/Mid/ADC/Support badges', status: 'done' as IdeaStatus },
+      { id: 'E5', title: 'Tier List estilo board', desc: 'Grid de avatares grandes clickeables tipo OP.GG', status: 'done' as IdeaStatus },
+      { id: 'E6', title: 'Loading screen animada', desc: 'Spinner estilo LoL con logo girando dorado', status: 'done' as IdeaStatus },
+      { id: 'E7', title: 'Dark mode variants', desc: 'Blue Essence, Red Essence, Prestige (negro + dorado). Toggle en header', status: 'done' as IdeaStatus },
+      { id: 'E8', title: 'Mini-map decorativo', desc: 'Mapa de Summoners Rift como fondo con campeones posicionados por rol', status: 'done' as IdeaStatus },
+      { id: 'E9', title: 'Runas visuales con iconos', desc: 'Iconos reales de Data Dragon (RunesReforged) en vez de texto', status: 'done' as IdeaStatus },
+      { id: 'E10', title: 'Transicion entre juegos', desc: 'Flash dorado / golpe de espada al cambiar LoL ↔ WR', status: 'done' as IdeaStatus },
+      { id: 'E11', title: 'Gold pulse mas prominente', desc: 'Animacion dorada pulsante en badges S-Tier y En vivo', status: 'done' as IdeaStatus },
+      { id: 'E12', title: 'Skill icons en builds', desc: 'Iconos de habilidades junto a las descripciones en el modal', status: 'done' as IdeaStatus },
+      { id: 'E13', title: 'Mapa vision interactivo', desc: 'Mini-mapa con wards placement recomendado por rol', status: 'done' as IdeaStatus },
+      { id: 'E14', title: 'Splash arts en landing', desc: 'Carrusel de splash arts en la landing page', status: 'done' as IdeaStatus },
+    ],
   },
   {
-    title: 'IA & Analytics', icon: Brain, items: [
-      { name: 'Auto-análisis IA (sin botón)', status: 'done', desc: 'La IA analiza automáticamente y muestra conclusiones pre-escritas' },
-      { name: 'Coach IA (Chatbot)', status: 'cancelled', desc: 'Chat con IA especializado en coaching de LoL' },
-      { name: 'Análisis de VODs', status: 'cancelled', desc: 'Subir replay/VOD y obtener análisis con IA' },
-      { name: 'Team Comp Analyzer', status: 'cancelled', desc: 'Reemplazado por Combos Rotos' },
-      { name: 'Predicción de patches', status: 'cancelled', desc: 'IA predice cambios de balance antes del parche' },
-    ]
+    title: 'Mejoras Tecnicas',
+    icon: Wrench,
+    color: '#0acbe6',
+    items: [
+      { id: 'T1', title: 'Refactor monolito', desc: 'Dividir page.tsx (2342 lineas) en componentes: TierList, ChampionModal, etc.', status: 'done' as IdeaStatus },
+      { id: 'T2', title: 'Limpiar dependencias', desc: 'Remover ~35 paquetes sin uso. Reducir bundle size', status: 'done' as IdeaStatus },
+      { id: 'T3', title: 'Data Dragon version dinamico', desc: 'Sync automatico en vez de hardcoded. Version desde Riot CDN', status: 'done' as IdeaStatus },
+      { id: 'T4', title: 'Fix TypeScript', desc: 'Sacar ignoreBuildErrors:true. Limpiar tipos duplicados', status: 'done' as IdeaStatus },
+      { id: 'T5', title: 'Usar Prisma', desc: 'Migrar data hardcodeada a SQLite para edicion via UI', status: 'cancelled' as IdeaStatus },
+      { id: 'T6', title: 'Accessibility (a11y)', desc: 'ARIA labels, keyboard nav, focus trapping en modales', status: 'done' as IdeaStatus },
+      { id: 'T7', title: 'reactStrictMode: true', desc: 'Activar para cachar bugs de double-rendering', status: 'done' as IdeaStatus },
+      { id: 'T8', title: 'Skeleton loaders', desc: 'Usar Skeleton de shadcn para loading states', status: 'done' as IdeaStatus },
+      { id: 'T9', title: 'Toast notifications', desc: 'Usar Sonner para feedback: copiar, buscar, cambiar region', status: 'done' as IdeaStatus },
+      { id: 'T10', title: 'Error boundaries', desc: 'Catch errors gracefully sin romper toda la app', status: 'done' as IdeaStatus },
+      { id: 'T11', title: 'SEO / Meta tags', desc: 'Open Graph, Twitter Cards, meta description para compartir', status: 'done' as IdeaStatus },
+      { id: 'T12', title: 'Imagenes optimizadas', desc: 'next/image para los splash arts y champion icons', status: 'done' as IdeaStatus },
+    ],
   },
   {
-    title: 'Competitivo', icon: Trophy, items: [
-      { name: 'Campeones Pro (LCK/LPL/LEC/LCS)', status: 'done', desc: 'Listado de campeones más usados en esports profesionales' },
-      { name: 'Ban/Pick Analysis Pro', status: 'cancelled', desc: 'Análisis de bans y picks en series profesionales' },
-      { name: 'Meta regional', status: 'planned', desc: 'Diferencias de meta entre regiones (KR vs NA vs EU)' },
-    ]
+    title: 'Data & Contenido',
+    icon: BarChart3,
+    color: '#0fba81',
+    items: [
+      { id: 'D1', title: 'Parches reales', desc: 'Scrapear notas de parche del blog de Riot / CommunityDragon', status: 'done' as IdeaStatus },
+      { id: 'D2', title: '100% datos completos', desc: 'aiAnalysis + runes detalladas + counters/synergias para TODOS los campeones', status: 'done' as IdeaStatus },
+      { id: 'D3', title: 'Pro Picks reales', desc: 'Scrapear de gol.gg u Oracles Elixir', status: 'pending' as IdeaStatus },
+      { id: 'D4', title: 'Counters con datos reales', desc: 'WR de matchups (ej: Darius vs Garen: 54.2%) de champion.gg', status: 'pending' as IdeaStatus },
+      { id: 'D5', title: 'Tier List automatico', desc: 'Calcular tier basado en WR + Pick Rate + Ban Rate reales', status: 'pending' as IdeaStatus },
+      { id: 'D6', title: 'Runas populares', desc: 'Top 3 rune pages por campeon desde CommunityDragon', status: 'pending' as IdeaStatus },
+    ],
   },
   {
-    title: 'Builds & Runas', icon: Wrench, items: [
-      { name: 'Builds recomendados', status: 'done', desc: '1-2 builds rotas para cada campeón S/A con iconos de items' },
-      { name: 'Runas óptimas', status: 'planned', desc: 'Runas recomendadas por campeon y rol' },
-      { name: 'Item build paths', status: 'planned', desc: 'Order de compra de items optimizado' },
-      { name: 'Counter builds', status: 'planned', desc: 'Items específicos contra cada campeon' },
-    ]
-  },
-  {
-    title: 'Social & Usuarios', icon: Users, items: [
-      { name: 'Autenticación Riot OAuth2', status: 'cancelled', desc: 'Login con cuenta de Riot Games' },
-      { name: 'Perfiles guardados', status: 'cancelled', desc: 'Guardar favoritos, tier lists personalizadas' },
-      { name: 'Comunidad', status: 'cancelled', desc: 'Compartir análisis, votar tier lists' },
-      { name: 'Discord Bot', status: 'cancelled', desc: 'Notificaciones de meta en canales de Discord' },
-    ]
-  },
-  {
-    title: 'Plataforma', icon: Smartphone, items: [
-      { name: 'PWA completa', status: 'cancelled', desc: 'Service worker, offline, installable' },
-      { name: 'Notificaciones Push', status: 'cancelled', desc: 'Alertas de buffs/nerfs de campeones principales' },
-      { name: 'Multi-idioma', status: 'cancelled', desc: 'Español, inglés, portugués, más' },
-      { name: 'Tema claro/oscuro', status: 'cancelled', desc: 'Toggle entre temas' },
-    ]
-  },
-  {
-    title: 'Combos Rotos', icon: Zap, items: [
-      { name: 'Combos de 2 campeones (Dúos)', status: 'done', desc: 'Sinergias rotas entre 2 campeones con win rate y dificultad' },
-      { name: 'Combos de 3 campeones (Tríos)', status: 'done', desc: 'Tríos de campeones con gran sinergia en mapa' },
-      { name: 'Combos de 4 campeones', status: 'done', desc: 'Composiciones de 4 con objetivo claro' },
-      { name: 'Combos de 5 campeones (Equipos)', status: 'done', desc: 'Team comps completas rotas para ranked' },
-    ]
-  },
-  {
-    title: 'Assets & Data que podemos agregar', icon: ImageIcon, items: [
-      { name: 'Spell icons (Q/W/E/R)', status: 'planned', desc: 'Iconos de habilidades de cada campeón' },
-      { name: 'Item icons', status: 'done', desc: 'Imágenes de items del juego en builds' },
-      { name: 'Rune icons', status: 'planned', desc: 'Iconos de runas (Precisión, Dominación, etc.)' },
-      { name: 'Mapa de visión', status: 'planned', desc: 'Visualización de ward spots óptimos' },
-      { name: 'Splash arts de skins', status: 'planned', desc: 'Galería de skins alternativas' },
-      { name: 'Emotes/Iconos de perfil', status: 'planned', desc: 'Explorador de emotes y iconos' },
-      { name: 'Datos de ranked distribution', status: 'planned', desc: 'Gráfico de distribución de rangos' },
-      { name: 'Champion.gg / U.GG synergy data', status: 'planned', desc: 'Sinergias y matchups basados en millones de partidas' },
-    ]
+    title: 'Funcionalidades',
+    icon: Zap,
+    color: '#e84057',
+    items: [
+      { id: 'F1', title: 'Chat IA flotante', desc: 'Boton Preguntale al Sage conectado a /api/ai-reason. CANCELADO por decision del CEO', status: 'cancelled' as IdeaStatus },
+      { id: 'F2', title: 'Comparador de Campeones', desc: 'Side-by-side: stats, WR, counters, synergies de 2 campeones', status: 'pending' as IdeaStatus },
+      { id: 'F3', title: 'Builder de Comp', desc: 'Arrastrar 5 campeones y analizar synergies, counters, WR', status: 'cancelled' as IdeaStatus },
+      { id: 'F4', title: 'Draft Assistant', desc: 'Flujo de decision: que pick contra X, que sinergia con Y', status: 'cancelled' as IdeaStatus },
+      { id: 'F5', title: 'Counter Picker Tool', desc: 'Input: campeon enemigo. Output: top 3 counters con WR y razones', status: 'cancelled' as IdeaStatus },
+      { id: 'F6', title: 'Alertas de Parche', desc: 'Badge NUEVO PARCHE cuando cambia la version. Polling /api/version', status: 'done' as IdeaStatus },
+      { id: 'F7', title: 'Ranked Distribution', desc: 'Tab nueva con distribucion de ranks por region (Hierro a Challenger)', status: 'pending' as IdeaStatus },
+      { id: 'F8', title: 'Meta Tracker', desc: 'Grafico de linea: WR del campeon parche a parche. Datos CommunityDragon', status: 'pending' as IdeaStatus },
+      { id: 'F9', title: 'Perfil Real con Riot API', desc: 'Conectar de verdad: match history, masteries, LP gains', status: 'pending' as IdeaStatus },
+      { id: 'F10', title: 'PWA', desc: 'manifest.json + service worker. Instalable en celu. Notificaciones push', status: 'pending' as IdeaStatus },
+      { id: 'F11', title: 'Favoritos (localStorage)', desc: 'Marcar campeones con estrella. Filtro en Tier List', status: 'done' as IdeaStatus },
+      { id: 'F12', title: 'Copy Build to Clipboard', desc: 'Boton que copia items como texto para pegar en el client', status: 'done' as IdeaStatus },
+      { id: 'F13', title: 'Share Link', desc: 'URL compartible: moba-sage.vercel.app/champion/yasuo', status: 'pending' as IdeaStatus },
+      { id: 'F14', title: 'Onboarding / Tour', desc: 'Primer uso: tooltips guiados por las tabs', status: 'pending' as IdeaStatus },
+      { id: 'F15', title: 'Busqueda predictiva', desc: 'Autocomplete al escribir nombre de campeon', status: 'done' as IdeaStatus },
+      { id: 'F16', title: 'Historial de vistas', desc: 'Ultimos vistos en Tier List', status: 'pending' as IdeaStatus },
+      { id: 'F17', title: 'Temporadas/Etapas por campeon', desc: 'Early game, Mid game, Late game con power curves', status: 'pending' as IdeaStatus },
+      { id: 'F18', title: 'Notas personales por campeon', desc: 'Textarea editable en modal para notas del usuario (localStorage)', status: 'pending' as IdeaStatus },
+    ],
   },
 ];
 
+const statusConfig: Record<IdeaStatus, { label: string; color: string; bg: string; icon: typeof Check }> = {
+  done: { label: 'Listo', color: '#0fba81', bg: 'rgba(15,186,129,0.1)', icon: Check },
+  cancelled: { label: 'Cancelado', color: '#5b5a56', bg: 'rgba(91,90,86,0.08)', icon: X },
+  pending: { label: 'Pendiente', color: '#f0c646', bg: 'rgba(240,198,70,0.08)', icon: Clock },
+};
+
 export function RoadmapTab() {
+  const totalDone = roadmapCategories.reduce((sum, cat) => sum + cat.items.filter(i => i.status === 'done').length, 0);
+  const totalCancelled = roadmapCategories.reduce((sum, cat) => sum + cat.items.filter(i => i.status === 'cancelled').length, 0);
+  const totalPending = roadmapCategories.reduce((sum, cat) => sum + cat.items.filter(i => i.status === 'pending').length, 0);
+  const total = totalDone + totalCancelled + totalPending;
+  const pct = Math.round((totalDone / total) * 100);
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="flex items-center gap-3">
         <Map className="w-5 h-5 text-[#c8aa6e]" />
         <div>
           <h2 className="text-lg font-bold text-[#f0e6d2]">Roadmap</h2>
-          <p className="text-xs text-[#5b5a56]">Plan de desarrollo y features futuras</p>
+          <p className="text-xs text-[#5b5a56]">Ideas de BRAINSTORM.md — {totalDone}/{total} completadas ({pct}%)</p>
         </div>
       </div>
-      <div className="space-y-4">
-        {roadmapCategories.map((cat, catIdx) => (
+
+      {/* Progress bar */}
+      <div className="rounded-lg px-4 py-3" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.15)' }}>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-[#a09b8c] font-medium">Progreso General</span>
+          <div className="flex items-center gap-3 text-[10px]">
+            <span className="flex items-center gap-1"><Check className="w-3 h-3 text-[#0fba81]" />{totalDone} listas</span>
+            <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-[#f0c646]" />{totalPending} pendientes</span>
+            <span className="flex items-center gap-1"><X className="w-3 h-3 text-[#5b5a56]" />{totalCancelled} canceladas</span>
+          </div>
+        </div>
+        <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.12)' }}>
           <motion.div
-            key={cat.title}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: catIdx * 0.05 }}
-            className="glass-card rounded-xl overflow-hidden"
-          >
-            <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
-              <cat.icon className="w-4 h-4 text-[#c8aa6e]" />
-              <h3 className="text-sm font-semibold text-[#f0e6d2]">{cat.title}</h3>
-              <span className="text-[10px] text-[#5b5a56] ml-auto">{cat.items.length} items</span>
-            </div>
-            <div className="divide-y divide-[#785a28]/10">
-              {cat.items.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3 px-4 py-3 hover:bg-[#1e2328]/40 transition-colors">
-                  <div className="mt-0.5 shrink-0">
-                    <RoadmapStatusBadge status={item.status} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-medium text-[#f0e6d2]">{item.name}</h4>
-                    <p className="text-[10px] text-[#5b5a56] mt-0.5 leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+            className="h-full rounded-full"
+            style={{ background: 'linear-gradient(90deg, #0fba81, #0acbe6)' }}
+            initial={{ width: 0 }}
+            animate={{ width: `${pct}%` }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+          />
+        </div>
+      </div>
+
+      {/* Categories */}
+      <div className="space-y-4">
+        {roadmapCategories.map((cat, catIdx) => {
+          const catDone = cat.items.filter(i => i.status === 'done').length;
+          const catTotal = cat.items.length;
+          return (
+            <motion.div
+              key={cat.title}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: catIdx * 0.05 }}
+              className="glass-card rounded-xl overflow-hidden"
+            >
+              <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
+                <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
+                <h3 className="text-sm font-semibold text-[#f0e6d2]">{cat.title}</h3>
+                <span className="text-[10px] text-[#5b5a56] ml-auto">{catDone}/{catTotal} completadas</span>
+              </div>
+              <div className="divide-y divide-[#785a28]/10">
+                {cat.items.map(idea => {
+                  const cfg = statusConfig[idea.status];
+                  const StatusIcon = cfg.icon;
+                  return (
+                    <div
+                      key={idea.id}
+                      className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-[#1e2328]/30"
+                      style={idea.status === 'cancelled' ? { opacity: 0.5 } : {}}
+                    >
+                      <div className="w-5 h-5 rounded flex items-center justify-center shrink-0" style={{ background: cfg.bg }}>
+                        <StatusIcon className="w-3 h-3" style={{ color: cfg.color }} />
+                      </div>
+                      <span className="text-[10px] font-mono text-[#5b5a56] shrink-0 w-5">{idea.id}</span>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`text-xs font-medium ${idea.status === 'cancelled' ? 'line-through text-[#5b5a56]' : 'text-[#f0e6d2]'}`}>
+                          {idea.title}
+                        </h4>
+                        <p className="text-[10px] text-[#5b5a56] mt-0.5 truncate">{idea.desc}</p>
+                      </div>
+                      <span
+                        className="text-[9px] font-medium px-1.5 py-0.5 rounded shrink-0"
+                        style={{ color: cfg.color, background: cfg.bg }}
+                      >
+                        {cfg.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
