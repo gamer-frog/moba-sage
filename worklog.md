@@ -401,3 +401,24 @@ Stage Summary:
 - 3 crons configurados para auto-mantenimiento (diario) y Ralph Loop (2x semana)
 - Bug pendiente: popup dismiss buttons no funcionan (framer-motion animation issue)
 - commits: 1a46a28, abb1875
+---
+Task ID: ralph-loop-003
+Agent: Ralph Loop (Auto-Mejora)
+Task: Scan live app, competitor analysis, implement max 3 fixes
+
+Work Log:
+- Leído ticks.md para tareas pendientes
+- Scan completo de app live (10 tabs): 9 OK, 1 parcial (Cosas Rotas - imágenes rotas)
+- Búsqueda de competidores: OP.GG, Blitz.gg, Mobalytics, U.GG, Porofessor, STATUP.GG, iTero.gg
+- Fix 1: WR patch mismatch - versión API calculaba 17.8 (lolMajor-9), corregido a 6.8. Actualizado banner, data.ts (18 champs WR), patches API (fallback+CDR)
+- Fix 2: Skill icon overlay duplicado - cuando imagen falla, se mostraba "Q Q" (fallback + overlay). Fix: ocultar overlay cuando imgError=true
+- Fix 3: Popup close - z-index conflict LoadingScreen (z-200) vs Popup (z-200). Subido popup a z-201. Agregado Escape key handler
+- Build verificado: npm run build OK (0 errores)
+- Commit: ac62cb1 pushed to main
+
+Stage Summary:
+- 3 fixes implementados y deployados
+- Bugs restantes: imágenes rotas en Cosas Rotas, Build Meta Live vacío, skins genéricos
+- Features faltantes vs competidores: overlay in-game, importación de runas, scouting de jugadores, análisis post-game
+- Diferenciadores MOBA SAGE: "Cosas Rotas" único, Ideas+Roadmap+Tasks gamificación
+
