@@ -43,6 +43,7 @@ const TYPE_ICONS: Record<string, typeof Rocket> = {
 export function ActivityPopup() {
   const [feed, setFeed] = useState<ActivityFeed | null>(null);
   const [show, setShow] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const handleDismiss = useCallback(() => {
     setShow(false);
@@ -59,6 +60,7 @@ export function ActivityPopup() {
         if (res.ok && !cancelled) {
           const data = await res.json();
           setFeed(data);
+          setMounted(true);
           setTimeout(() => { if (!cancelled) setShow(true); }, 800);
         }
       } catch (err) {
@@ -80,12 +82,10 @@ export function ActivityPopup() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [show, handleDismiss]);
 
-  if (!feed) return null;
-
-  const recentEntries = feed.entries
+  const recentEntries = feed?.entries
     .slice()
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-    .slice(0, 5);
+    .slice(0, 5) || [];
 
   const timeAgo = (ts: string) => {
     const diff = Date.now() - new Date(ts).getTime();
@@ -97,15 +97,18 @@ export function ActivityPopup() {
     return `${days}d`;
   };
 
+  // Always render AnimatePresence for exit animations
+  if (!feed || !mounted) return null;
+
   return (
-    <AnimatePresence mode="wait">
-      {show ? (
+    <AnimatePresence>
+      {show && (
         <motion.div
           key="activity-popup-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="fixed inset-0 z-[201] flex items-center justify-center p-4"
           onClick={handleDismiss}
           style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
@@ -128,7 +131,7 @@ export function ActivityPopup() {
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer z-10"
+                className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label="Cerrar novedades"
               >
                 <X className="text-[#a09b8c] text-base" />
@@ -139,7 +142,7 @@ export function ActivityPopup() {
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-[#f0e6d2]">Novedades</h2>
-                  <p className="text-[10px] text-[#5b5a56]">Lo último que pasó en MOBA SAGE</p>
+                  <p className="text-[10px] text-[#5b5a56]">Lo ultimo que paso en MOBA SAGE</p>
                 </div>
               </div>
             </div>
@@ -196,7 +199,7 @@ export function ActivityPopup() {
             </div>
           </motion.div>
         </motion.div>
-      ) : null}
+      )}
     </AnimatePresence>
   );
 }

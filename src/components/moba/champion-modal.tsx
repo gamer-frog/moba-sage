@@ -326,7 +326,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                   <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
                 </div>
               ) : (
-                <p className="text-[10px] text-[#5b5a56]">Scrapeando builds del meta actual...</p>
+                <p className="text-[10px] text-[#785a28] italic">Builds en proceso de recopilación — volvé más tarde</p>
               )}
             </div>
           )}

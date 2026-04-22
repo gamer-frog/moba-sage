@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T06:01:00Z",
+  "lastUpdated": "2026-04-22T06:55:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-008",
+      "type": "fix",
+      "title": "3 Fixes: spell icons 60+ campeones + popup Novedades + fallback mejorado",
+      "description": "Spell key overrides expandidos a 60+ campeones (antes ~25) con keys Q/W/E/R completos para todos los del tier list. Fallback mejorado: cuando icono falla muestra nombre de skill abreviado (Alpha, Wuju, Shunpo, etc). Popup Novedades reescrito: AnimatePresence corregido (mode wait→default), z-index card fijo, session tracking con mounted flag. Scan completo 10 tabs realizado.",
+      "timestamp": "2026-04-22T06:55:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-007",
       "type": "fix",
