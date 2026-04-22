@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T17:25:00Z",
+  "lastUpdated": "2026-04-22T17:05:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-014",
+      "type": "fix",
+      "title": "3 Fixes: typo ROTO OP + acentos Roadmap + items en español",
+      "description": "(1) Badge 'ROTOP' corregido a 'ROTO OP' en Cosas Rotas e Insights (2 instancias). (2) Acentos masivos en Roadmap: Estética, Partículas, títulos, vía, Transición, más, Animación, visión, clásico, líneas, edición, dinámico, automático, Versión, etc. (~25 correcciones). (3) Items en inglés traducidos: Stridebreaker→Pisotón Brutal, Experimental Hexplate→Placa Hexagonal Experimental (data.ts + helpers.ts). Palabras en inglés corregidas: maximize→maximizar, protege→proteger. Build OK.",
+      "timestamp": "2026-04-22T17:05:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-013",
       "type": "fix",

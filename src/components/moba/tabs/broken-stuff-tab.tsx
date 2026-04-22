@@ -44,7 +44,7 @@ export function BrokenStuffTab({
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(200,170,110,0.3), transparent)' }} />
             <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[10px]">
               <AlertTriangle className="w-3 h-3 mr-1" />
-              ROTOP
+              ROTO OP
             </Badge>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -199,7 +199,7 @@ export function BrokenStuffTab({
                       {insight.category === 'meta' && (
                         <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[10px]">
                           <AlertTriangle className="w-3 h-3 mr-1" />
-                          ROTOP
+                          ROTO OP
                         </Badge>
                       )}
                     </div>
