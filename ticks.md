@@ -1,6 +1,6 @@
 # TICKS — MOBA SAGE
 > Auto-maintenance tasks executed by cron jobs
-> Last run: 2026-04-22 06:10 BA | Next run: 2026-04-22 06:25 BA (cada 15 min)
+> Last run: 2026-04-22 06:43 BA | Next run: 2026-04-22 06:58 BA (cada 15 min)
 
 ## CRON JOBS CONFIGURED
 | Job | ID | Schedule | Descripción |
@@ -49,3 +49,5 @@
 - [2026-04-22 04:28 BA] Ralph Loop CEO + Competitor Research + 3 Fixes: (1) WR Patch 6.8 expandido con contenido real — summary detallado con buffs de Master Yi, Lee Sin, Ahri, Darius + digest con WRs y meta analysis. (2) Fix parseBuildItems: items con apostrofe (Jak'Sho, K'Sante) ya no se rompen — parseBuildItems solo splitea en `→` (no en `,`). Items faltantes agregados a ITEM_NAME_MAP: Jak'Sho (6665), Stridebreaker (6631), Experimental Hexplate (6664). (3) 7 ideas de competencia agregadas al tab Ideas basadas en research de OP.GG, Mobalytics, U.GG, Blitz.gg, iTero, Porofessor, LoLalytics. Build OK. Commit a6cfe6a.
 - [2026-04-22 05:40 BA] Ralph Loop QA + 3 Fixes: (1) Sección 'Build Meta Live' oculta cuando no hay datos (antes mostraba 'No Disponible' engañoso para todos los S-tier). (2) Rune tree 'Determinación' corregido a 'Valor' en 38 instancias (data.ts + helpers.ts — el tree Resolve en LoL español es Valor). (3) Tab Competitivo WR: reemplazado mensaje confuso + filtros LoL (LCK/LPL/LEC/LCS) con 'Coming Soon' limpio. Scan completo 10 tabs OK. Build OK.
 - [2026-04-22 06:10 BA] Ralph Loop QA + 3 Fixes: (1) Homepage '8 Pestañas' → '10 Pestañas' con lista completa de tabs (Novedades, Ideas, Roadmap, Tareas faltaban). (2) Sidebar 'ANALISIS' → 'ANÁLISIS' (tilde faltante visible en toda la app). (3) Acentos masivos: facil→fácil, dificil→difícil (combos), Rabadon→Rabadón (builds), Guardian→Guardián (runa, 16 instancias), proteccion→protección, Fuerza de Trinidad→Fuerza de la Trinidad (estandarizado). Scan completo 10 tabs OK. Build OK.
+- [2026-04-22 06:25 BA] Ralph Loop: Verificación de deploy — 7/7 checks PASADOS. Homepage 10 Pestañas ✓, Sidebar ANÁLISIS ✓, Combos fácil/difícil ✓, BUILD META LIVE oculto ✓, WR Competitivo Coming Soon ✓, Rune tree Valor ✓, Item Rabadón ✓. App estable, sin cambios necesarios.
+- [2026-04-22 06:43 BA] CEO Request: Sidebar drawer en mobile. SidebarNav convertida a componente responsive — desktop = fixed left (como antes), mobile/tablet = drawer que desliza desde la izquierda con backdrop oscuro y animación spring. Hamburger menu (☰) agregado al header (visible solo en mobile). BottomNav eliminada — la sidebar drawer da acceso a las 10 tabs completas con secciones colapsables (Análisis + Desarrollo). Botón X para cerrar drawer. Logo MOBA SAGE oculto en mobile para dar espacio al hamburger. Build OK.

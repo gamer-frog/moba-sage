@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GAME_TAB_ITEMS, DEV_TAB_ITEMS, DEV_TAB_IDS } from './constants';
-import { Trophy, ScrollText, AlertTriangle, Flame, Crown, User, Rocket, Lightbulb, Map, Wrench, ChevronDown, ChevronRight } from 'lucide-react';
+import { Trophy, ScrollText, AlertTriangle, Flame, Crown, User, Rocket, Lightbulb, Map, Wrench, ChevronDown, ChevronRight, X } from 'lucide-react';
 
 const DEV_ICONS: Record<string, typeof Wrench> = {
   novedades: Rocket,
@@ -21,12 +21,33 @@ const GAME_ICONS: Record<string, typeof Trophy> = {
   profile: User,
 };
 
-export function SidebarNav({ activeTab, onTabChange, gamePatch }: { activeTab: string; onTabChange: (tab: string) => void; gamePatch?: string }) {
+interface SidebarNavProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  gamePatch?: string;
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarNavProps) {
   const [devExpanded, setDevExpanded] = useState(DEV_TAB_IDS.has(activeTab));
 
+  const handleTabClick = (tabId: string) => {
+    onTabChange(tabId);
+    onClose?.();
+  };
+
   return (
-    <aside className="hidden lg:flex flex-col fixed left-0 top-[57px] bottom-0 w-[220px] border-r border-[#785a28]/15 z-30"
-      style={{ backgroundColor: 'rgba(10, 14, 26, 0.96)', backdropFilter: 'blur(20px)' }}>
+    <div className="flex flex-col h-full">
+      {/* Mobile close button */}
+      {onClose && (
+        <div className="flex items-center justify-between px-4 pt-3 pb-1 lg:hidden">
+          <p className="text-[9px] text-[#785a28] tracking-[0.25em] uppercase font-semibold">Navegación</p>
+          <button onClick={onClose} className="text-[#5b5a56] hover:text-[#a09b8c] transition-colors p-1" aria-label="Cerrar menú">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
 
       {/* Game Navigation */}
       <div className="flex-1 overflow-y-auto py-4 px-3 scrollbar-none">
@@ -38,7 +59,7 @@ export function SidebarNav({ activeTab, onTabChange, gamePatch }: { activeTab: s
             return (
               <button
                 key={tab.id}
-                onClick={() => onTabChange(tab.id)}
+                onClick={() => handleTabClick(tab.id)}
                 className={`
                   w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative
                   ${isActive
@@ -102,7 +123,7 @@ export function SidebarNav({ activeTab, onTabChange, gamePatch }: { activeTab: s
                   return (
                     <button
                       key={tab.id}
-                      onClick={() => onTabChange(tab.id)}
+                      onClick={() => handleTabClick(tab.id)}
                       className={`
                         w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 group relative
                         ${isActive
@@ -142,6 +163,47 @@ export function SidebarNav({ activeTab, onTabChange, gamePatch }: { activeTab: s
           )}
         </div>
       </div>
-    </aside>
+    </div>
+  );
+}
+
+export function SidebarNav(props: SidebarNavProps) {
+  const { isOpen, onClose } = props;
+
+  return (
+    <>
+      {/* Desktop: always visible fixed sidebar */}
+      <aside className="hidden lg:flex flex-col fixed left-0 top-[57px] bottom-0 w-[220px] border-r border-[#785a28]/15 z-30"
+        style={{ backgroundColor: 'rgba(10, 14, 26, 0.96)', backdropFilter: 'blur(20px)' }}>
+        <SidebarContent {...props} />
+      </aside>
+
+      {/* Mobile/Tablet: slide-in drawer */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 z-[45] bg-black/60 lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+            />
+            {/* Drawer panel */}
+            <motion.aside
+              className="fixed left-0 top-[57px] bottom-0 w-[260px] z-[46] border-r border-[#785a28]/15 lg:hidden"
+              style={{ backgroundColor: 'rgba(10, 14, 26, 0.98)', backdropFilter: 'blur(20px)' }}
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            >
+              <SidebarContent {...props} />
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

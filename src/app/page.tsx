@@ -13,7 +13,6 @@ import type {
 import { GoldParticles } from '@/components/moba/gold-particles';
 import { AppHeader } from '@/components/moba/app-header';
 import { SidebarNav } from '@/components/moba/sidebar-nav';
-import { BottomNav } from '@/components/moba/bottom-nav';
 import { GameSelectorLanding } from '@/components/moba/game-selector';
 import { WildRiftHeader } from '@/components/moba/wr-banner';
 import { ChampionModal } from '@/components/moba/champion-modal';
@@ -125,6 +124,9 @@ export default function Home() {
 
   // Game transition flash
   const [flashColor, setFlashColor] = useState<string | null>(null);
+
+  // Mobile sidebar drawer state
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // ============ FETCH DATA ============
   const fetchData = useCallback(async () => {
@@ -291,16 +293,14 @@ export default function Home() {
         isNewPatch={isNewPatch}
         onBackToSelector={handleBackToSelector}
         onDismissPatch={() => setIsNewPatch(false)}
+        onMenuToggle={() => setSidebarOpen(prev => !prev)}
       />
 
-      {/* Sidebar Navigation (desktop) */}
-      {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} />}
+      {/* Sidebar Navigation — desktop fixed + mobile drawer */}
+      {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
 
-      {/* Bottom Navigation (mobile) */}
-      {selectedGame && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />}
-
-      {/* Content — offset for sidebar on desktop, padding for bottom nav on mobile */}
-      <main className={`flex-1 w-full px-4 py-6 transition-all duration-300 ${selectedGame ? 'lg:ml-[220px] pb-24 lg:pb-6' : ''}`}>
+      {/* Content — offset for sidebar on desktop */}
+      <main className={`flex-1 w-full px-4 py-6 transition-all duration-300 ${selectedGame ? 'lg:ml-[220px]' : ''}`}>
         <div className={selectedGame ? 'max-w-5xl mx-auto' : ''}>
           <AnimatePresence mode="popLayout">
             {!selectedGame ? (
@@ -345,7 +345,7 @@ export default function Home() {
       {/* Champion Modal */}
       <AnimatePresence>
         {selectedChampion && (
-          <ChampionModal champion={selectedChampion} onClose={() => setSelectedChampion(null)} />
+          <ChampionModal key={selectedChampion.id} champion={selectedChampion} onClose={() => setSelectedChampion(null)} />
         )}
       </AnimatePresence>
 
@@ -354,7 +354,7 @@ export default function Home() {
 
       <div className="lol-divider" />
 
-      {/* Footer — hidden on mobile (bottom nav covers it) */}
+      {/* Footer — hidden on mobile (sidebar covers it) */}
       <footer className={`border-t border-[#785a28]/15 py-4 mt-auto ${selectedGame ? 'hidden lg:block' : ''}`} style={{ backgroundColor: 'rgba(10, 14, 26, 0.6)' }}>
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-[#785a28]">
           <span>MOBA SAGE © 2026</span>

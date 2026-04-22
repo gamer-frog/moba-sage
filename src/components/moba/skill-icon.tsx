@@ -52,7 +52,7 @@ const SKILL_NAMES: Record<string, Record<'Q'|'W'|'E'|'R', string>> = {
 
 // Some champions have non-standard DDragon spell keys
 const SPELL_KEY_OVERRIDES: Record<string, Partial<Record<'Q'|'W'|'E'|'R', string>>> = {
-  'Katarina':      { Q: 'KatarinaRicochet', E: 'KatarinaShunpo' },
+  'Katarina':      { Q: 'KatarinaQ', W: 'KatarinaBouncingBlade', E: 'KatarinaShunpo', R: 'KatarinaDeathLotus' },
   'Nidalee':       { W: 'NidaleeJavelin', E: 'NidaleeBushwhack', R: 'NidaleeAspectOfCougar' },
   'Shaco':         { W: 'ShacoBox', E: 'ShacoCage' },
   'Rengar':        { R: 'RengarThrillOfTheHunt' },
@@ -78,7 +78,7 @@ const SPELL_KEY_OVERRIDES: Record<string, Partial<Record<'Q'|'W'|'E'|'R', string
   'Aatrox':        { W: 'AatroxW', E: 'AatroxE', R: 'AatroxR' },
   'Elise':         { Q: 'EliseQ', W: 'EliseSpiderFormCocoon', E: 'EliseRappel', R: 'EliseR' },
   // Complete spell keys para todos los campeones del tier list
-  'Ahri':          { Q: 'AhriTumble', R: 'AhriSoulExplosion' },
+  'Ahri':          { Q: 'AhriQ', W: 'AhriW', E: 'AhriE', R: 'AhriR' },
   'Darius':        { Q: 'DariusDecimate', W: 'DariusCripplingStrike', E: 'DariusApprehend', R: 'DariusNoxianGuillotine' },
   'Thresh':        { Q: 'ThreshQ', W: 'ThreshW', E: 'ThreshE', R: 'ThreshR' },
   'Malphite':      { Q: 'MalphiteQ', W: 'MalphiteW', E: 'MalphiteE', R: 'MalphiteR' },
@@ -103,7 +103,7 @@ const SPELL_KEY_OVERRIDES: Record<string, Partial<Record<'Q'|'W'|'E'|'R', string
   'Kennen':        { Q: 'KennenQ', W: 'KennenW', E: 'KennenE', R: 'KennenR' },
   'Shen':          { Q: 'ShenQ', W: 'ShenW', E: 'ShenE', R: 'ShenR' },
   'Yasuo':         { Q: 'YasuoQ', W: 'YasuoW', E: 'YasuoE', R: 'YasuoR3' },
-  'Jinx':          { Q: 'JinxQ', W: 'JinxW', E: 'JinxE', R: 'JinxR' },
+  'Jinx':          { Q: 'JinxQ', W: 'JinxW', E: 'JinxEMine', R: 'JinxR' },
   'Ornn':          { Q: 'OrnnQ', W: 'OrnnW', E: 'OrnnE', R: 'OrnnR' },
   'Briar':         { Q: 'BriarQ', W: 'BriarW', E: 'BriarE', R: 'BriarR' },
   'AurelionSol':   { W: 'AurelionSolW', E: 'AurelionSolE', R: 'AurelionSolR' },
@@ -137,7 +137,9 @@ const SPELL_KEY_OVERRIDES: Record<string, Partial<Record<'Q'|'W'|'E'|'R', string
 };
 
 function getSpellKey(championName: string, skill: 'Q' | 'W' | 'E' | 'R'): string {
-  const override = SPELL_KEY_OVERRIDES[championName];
+  // Try lookup by display name first, then by DDragon key
+  const override = SPELL_KEY_OVERRIDES[championName]
+    || SPELL_KEY_OVERRIDES[CHAMPION_NAME_MAP[championName]];
   if (override && override[skill]) return override[skill];
   // Default: {ChampKey}{Q/W/E/R}
   const mapped = CHAMPION_NAME_MAP[championName];

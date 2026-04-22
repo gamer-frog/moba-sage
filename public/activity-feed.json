@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T09:10:00Z",
+  "lastUpdated": "2026-04-22T09:43:00Z",
   "entries": [
+    {
+      "id": "sidebar-mobile-001",
+      "type": "improvement",
+      "title": "Sidebar drawer en mobile — reemplaza BottomNav",
+      "description": "CEO request: barra lateral en mobile también. SidebarNav convertida a componente responsive: desktop = fixed left (como antes), mobile = drawer que desliza desde la izquierda con backdrop oscuro y botón cerrar. Hamburger menu (icono ☰) agregado al header, visible solo en mobile/tablet. BottomNav eliminada — la sidebar drawer tiene acceso a las 10 tabs completas con secciones colapsables. Animación spring con Framer Motion. Build OK.",
+      "timestamp": "2026-04-22T09:43:00Z",
+      "commit": "pending",
+      "category": "improvement"
+    },
     {
       "id": "ralph-loop-011",
       "type": "fix",
@@ -134,7 +143,7 @@
     "metaUpdated + metaSources distinguen datos frescos vs stale",
     "Web scrape real: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg",
     "10 pestañas funcionales con datos en vivo",
-    "Sidebar desktop + Bottom Nav mobile (responsive)",
+    "Sidebar responsive desktop + drawer mobile (hamburger menu)",
     "Dev tabs colapsables en sidebar",
     "Nombres reales de items (Llamarada Sombría, Botas de Celeridad)",
     "Ralph Loop auto-mejora cada 15 minutos",

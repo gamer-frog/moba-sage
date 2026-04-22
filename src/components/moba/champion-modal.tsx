@@ -335,13 +335,13 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
             </div>
             <p className="text-[10px] text-[#785a28] mb-2.5">Fuentes externas con builds siempre actualizadas:</p>
             <div className="flex items-center gap-2 flex-wrap">
-              <a href={extUrls.ugg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,203,230,0.1)', border: '1px solid rgba(0,203,230,0.3)', color: '#0acbe6' }}>
+              <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,203,230,0.1)', border: '1px solid rgba(0,203,230,0.3)', color: '#0acbe6' }}>
                 <ExternalLink className="w-3 h-3" /> U.GG
               </a>
-              <a href={extUrls.opgg} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}>
+              <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}>
                 <ExternalLink className="w-3 h-3" /> OP.GG
               </a>
-              <a href={extUrls.mobalytics} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(232,64,87,0.1)', border: '1px solid rgba(232,64,87,0.3)', color: '#e84057' }}>
+              <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105" style={{ background: 'rgba(232,64,87,0.1)', border: '1px solid rgba(232,64,87,0.3)', color: '#e84057' }}>
                 <ExternalLink className="w-3 h-3" /> Mobalytics
               </a>
             </div>
@@ -394,13 +394,13 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                         })}
                       </div>
                       <div className="flex items-center gap-2">
-                        <a href={extUrls.ugg} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                        <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
                           <ExternalLink className="w-2.5 h-2.5" /> U.GG
                         </a>
-                        <a href={extUrls.mobalytics} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                        <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
                           <ExternalLink className="w-2.5 h-2.5" /> Mobalytics
                         </a>
-                        <a href={extUrls.opgg} target="_blank" rel="noopener" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                        <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
                           <ExternalLink className="w-2.5 h-2.5" /> OP.GG
                         </a>
                       </div>
