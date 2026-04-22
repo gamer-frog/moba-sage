@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-22T17:05:00Z",
+  "lastUpdated": "2026-04-22T17:40:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-015",
+      "type": "fix",
+      "title": "3 Fixes: 25 imágenes rotas + versión DDragon + timeAgo negativo",
+      "description": "(1) CRÍTICO: 25/79 imágenes de campeones rotas (B-tier y below) — champion-icon.tsx sin prop unoptimized causaba timeout del proxy Next.js Image Optimization al cargar 79 imágenes concurrentes. Fix: unoptimized en 4 variantes (ChampionIcon, SmallChampionIcon, SplashArtIcon, TinyChampionIcon) + RuneIcon + profile-tab. (2) Default _ddVersion '26.8.1' (no existe) corregido a '16.8.1' (versión real DDragon) en helpers.ts — evita rotura de imágenes si la API de versión falla. (3) timeAgo mostraba valores negativos ('hace -434m') en Novedades cuando timestamps estaban en el futuro — fix con clamp a 'ahora' si mins <= 0 en 3 archivos (activity-tab, activity-popup, champion-modal). Build OK.",
+      "timestamp": "2026-04-22T17:40:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-014",
       "type": "fix",
