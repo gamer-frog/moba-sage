@@ -13,7 +13,7 @@ interface VersionInfo {
 const CACHE_DURATION = 1000 * 60 * 30; // 30 minutes
 
 // This is updated manually when we refresh tier list data with real meta
-let GAME_PATCH = '16.8';
+let GAME_PATCH = '26.8';
 let META_LAST_UPDATED = '2026-04-22T05:35:00Z';
 
 export function setGamePatch(patch: string) { GAME_PATCH = patch; }
@@ -76,7 +76,7 @@ export async function GET() {
       lol: '16.8.1',
       lolFull: '16.8.1',
       wr: '6.8',
-      gamePatch: GAME_PATCH || '16.8',
+      gamePatch: GAME_PATCH || '26.8',
       cdnVersion: '16.8.1',
       metaLastUpdated: META_LAST_UPDATED,
       fetchedAt: new Date().toISOString(),
