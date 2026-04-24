@@ -21,6 +21,15 @@
       "category": "fix"
     },
     {
+      "id": "ralph-loop-025",
+      "type": "fix",
+      "title": "3 fixes: coaching EN→ES + AVG→PROM + Notas Oficiales es-es",
+      "description": "(1) Coaching tab: 6 títulos EN→ES (Last Hitting→Último Golpe, Wave Management→Manejo de Oleadas, Trading Stance→Postura de Trading, Creep Block→Bloqueo de Minions, Map Awareness→Conciencia del Mapa, Powerspikes→Picos de Poder) + MOBA Coach→Entrenador MOBA. (2) Tier List AVG→PROM. (3) Notas Oficiales link en-us→es-es (LoL + WR). Build OK.",
+      "timestamp": "2026-04-25T00:41:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
+    {
       "id": "ralph-loop-024",
       "type": "fix",
       "title": "3 fixes: matchup rotos + 6 runas icon + Deploy→Despliegue",

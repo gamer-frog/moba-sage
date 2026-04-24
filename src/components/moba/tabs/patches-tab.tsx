@@ -140,9 +140,9 @@ function getGameStyle(game: string): { color: string; bg: string; border: string
 function getPatchNotesUrl(patch: PatchNote): string {
   const v = patch.version.replace(/\./g, '-');
   if (patch.sourceGame === 'WR') {
-    return `https://www.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-${v}-notes/`;
+    return `https://www.leagueoflegends.com/es-es/news/game-updates/wild-rift-patch-${v}-notes/`;
   }
-  return `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${v}-notes/`;
+  return `https://www.leagueoflegends.com/es-es/news/game-updates/patch-${v}-notes/`;
 }
 
 function getPatchExternalUrl(patch: { sourceGame?: string; url?: string; version: string }): string | null {

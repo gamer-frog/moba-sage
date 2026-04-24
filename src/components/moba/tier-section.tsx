@@ -62,7 +62,7 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
         {/* Tier averages */}
         <div className="hidden md:flex items-center gap-3 ml-auto text-[10px]">
           <div className="flex items-center gap-1">
-            <span className="text-[#5b5a56]">AVG</span>
+            <span className="text-[#5b5a56]">PROM</span>
             <span className="font-mono font-semibold" style={{ color: wrColor(parseFloat(avgWR)) }}>{avgWR}% WR</span>
           </div>
           <div className="w-px h-3 bg-[#785a28]/30" />
