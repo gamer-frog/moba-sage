@@ -8,7 +8,7 @@
       "title": "3 Fixes: parche API + runa Cosecha Oscura + versión DDragon dinámica",
       "description": "(1) API meta-builds devolvía parche '26.08' (formato inválido) — corregido a '26.8'. (2) Runa 'Oscuro Colhar' (traducción rota) → 'Cosecha Oscura' en helpers.ts (icono) + data.ts (Zed y Ekko). Mojibake 'Llamarada SombrÃ­a' eliminado del ITEM_NAME_MAP. (3) Ruta /api/summoner tenía versión DDragon hardcodeada ('26.8.1') — reemplazada por getDdVersion() dinámico (import desde helpers). Build OK.",
       "timestamp": "2026-04-24T16:16:00Z",
-      "commit": "pending",
+      "commit": "2a69088",
       "category": "fix"
     },
     {
