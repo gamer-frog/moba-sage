@@ -6,9 +6,9 @@
       "id": "ralph-loop-030",
       "type": "fix",
       "title": "3 fixes: tier mismatch Yasuo/Viego + item names Ángel Guardián/El Colector",
-      "description": "(1) CRÍTICO: Yasuo aiAnalysis decía 'Tier S' pero era tier A — corregido texto para reflejar tier real. Insight también corregido. (2) CRÍTICO: Viego aiAnalysis decía 'S-tier en jungle' pero era tier B — corregido texto para reflejar tier real. (3) Item names: 'Guardián Angel'→'Ángel Guardián' en builds Jinx + WR Master Yi (2 instancias), 'El Coleccionista'→'El Colector' en WR Lee Sin + WR Zed (2 instancias). Íconos ahora se muestran correctamente. Build OK.",
+      "description": "(1) CRÍTICO: Yasuo aiAnalysis decía 'Tier S' pero era tier A — corregido texto para reflejar tier real. Insight también corregido. (2) CRÍTICO: Viego aiAnalysis decía 'S-tier en jungle' pero era tier B — corregido a 'Tier B'. (3) Item names: 'Guardián Angel'→'Ángel Guardián' (Jinx + WR Master Yi), 'El Coleccionista'→'El Colector' (WR Lee Sin + WR Zed). Build OK.",
       "timestamp": "2026-04-25T07:41:00Z",
-      "commit": "pending",
+      "commit": "5638455",
       "category": "fix"
     },
     {
@@ -26,7 +26,7 @@
       "title": "3 fixes: coaching EN→ES + rune icon maps + item alias cleanup",
       "description": "(1) Coaching tab: 20+ nombres de runas/items traducidos de inglés a español LoL oficial — keystones (Grasp→Agarre del No Muerto, Fleet Footwork→Pies Veloces, Dark Harvest→Cosecha Oscura, Lethal Tempo→Tempo Letal, Aftershock→Conmoción, Phase Rush→Impulso de Fase, Glacial Augment→Aumento Glacial), runas secundarias (Bone Plating→Blindaje Óseo, Magical Footwear→Calzado Mágico, Second Wind→Segunda Vida, Cheap Shot→Golpe Bajo, Eyeball Collection→Colección de Ojos, Ultimate Hunter→Cazador Definitivo, Manaflow Band→Banda de Maná, Font of Life→Fuente de Vida, Unflinching→Inquebrantable, Treasure Hunter→Cazador de Tesoros, Relentless Hunter→Cazador Despiadado, Scorch→Quemadura, Triumph→Triunfo, Legend: Alacrity→Leyenda: Diligencia, Legend: Bloodline→Leyenda: Linaje, Cutdown→Golpe de Gracia, Hextech Flashtraption→Destellomática Hextech). (2) Rune icon maps: Fuente de Vida apuntaba a icono incorrecto (Revitalize→FontofLife), Calzado Mágico agregado al RUNE_ICON_MAP. (3) Item alias: 'El Coleccionista' eliminado (duplicado de 'El Colector'), 'Guardián Angel'/'Guardián de Angel'→'Ángel Guardián' (nombre oficial). Build OK.",
       "timestamp": "2026-04-25T07:11:00Z",
-      "commit": "pending",
+      "commit": "2d64f6e",
       "category": "fix"
     },
     {
