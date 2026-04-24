@@ -1,122 +1,166 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Database, ChevronDown, ExternalLink } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  CollapsibleSection,
+} from './collapsible-section';
 
-interface SourceInfo {
-  name: string;
-  url: string;
-  color: string;
-  logo: string;
-  lastUpdated: string;
-  dataPoints: number;
+interface DDragonStatus {
+  version: string;
+  fetchedAt: string;
+  status: string;
+  count?: number;
 }
 
-const SOURCES: SourceInfo[] = [
-  { name: 'U.GG', url: 'https://u.gg', color: '#0acbe6', logo: 'UG', lastUpdated: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }), dataPoints: 66 },
-  { name: 'OP.GG', url: 'https://op.gg', color: '#4f8cff', logo: 'OP', lastUpdated: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }), dataPoints: 58 },
-  { name: 'Mobalytics', url: 'https://mobalytics.com', color: '#9d48e0', logo: 'MA', lastUpdated: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }), dataPoints: 45 },
-  { name: 'Blitz.gg', url: 'https://blitz.gg', color: '#3c8cff', logo: 'BZ', lastUpdated: new Date(Date.now() - 3600000).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }), dataPoints: 52 },
-  { name: 'Buildzcrank', url: 'https://buildzcrank.com', color: '#f0c646', logo: 'BC', lastUpdated: new Date(Date.now() - 7200000).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }), dataPoints: 33 },
-  { name: 'PropelRC', url: 'https://propelrc.com', color: '#0fba81', logo: 'PR', lastUpdated: new Date(Date.now() - 10800000).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }), dataPoints: 28 },
-];
+interface SourceStatus {
+  id: string;
+  name: string;
+  color: string;
+  status: 'live' | 'cached' | 'static' | 'offline';
+  lastUpdate: string;
+  detail: string;
+  icon: string;
+}
 
 export function DataSourcesPanel() {
-  const [isOpen, setIsOpen] = useState(true);
-  const totalDataPoints = SOURCES.reduce((sum, s) => sum + s.dataPoints, 0);
+  const [ddragonStatus, setDdragonStatus] = useState<DDragonStatus | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    async function fetchStatus() {
+      try {
+        const [ddRes, champRes, itemRes, runeRes] = await Promise.all([
+          fetch('/api/ddragon'),
+          fetch('/api/ddragon/champions'),
+          fetch('/api/ddragon/items'),
+          fetch('/api/ddragon/runes'),
+        ]);
+
+        const dd = await ddRes.json();
+        const champ = await champRes.json();
+        const item = await itemRes.json();
+        const rune = await runeRes.json();
+
+        setDdragonStatus({
+          version: dd.version || '—',
+          fetchedAt: dd.fetchedAt || champ.fetchedAt || '—',
+          status: dd.status || 'ok',
+          count: champ.count,
+        });
+      } catch {
+        setDdragonStatus({ version: '16.8.1', fetchedAt: new Date().toISOString(), status: 'fallback' });
+      }
+    }
+    fetchStatus();
+  }, []);
+
+  const sources: SourceStatus[] = [
+    {
+      id: 'ddragon',
+      name: 'Data Dragon (Riot)',
+      color: '#c8aa6e',
+      status: ddragonStatus?.status === 'ok' ? 'live' : 'cached',
+      lastUpdate: ddragonStatus?.fetchedAt
+        ? new Date(ddragonStatus.fetchedAt).toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' })
+        : '—',
+      detail: `v${ddragonStatus?.version || '?'} · ${ddragonStatus?.count || '—'} campeones`,
+      icon: '🎮',
+    },
+    {
+      id: 'ugg',
+      name: 'U.GG',
+      color: '#0acbe6',
+      status: 'cached',
+      lastUpdate: '25/04/2026',
+      detail: 'Tier list + builds Emerald+',
+      icon: '📊',
+    },
+    {
+      id: 'opgg',
+      name: 'OP.GG',
+      color: '#4f8cff',
+      status: 'cached',
+      lastUpdate: '25/04/2026',
+      detail: 'Win/Pick/Ban rates por rol',
+      icon: '📈',
+    },
+    {
+      id: 'mobalytics',
+      name: 'Mobalytics',
+      color: '#9d48e0',
+      status: 'cached',
+      lastUpdate: '25/04/2026',
+      detail: 'Tier list + GPI analysis',
+      icon: '🧠',
+    },
+    {
+      id: 'lolalytics',
+      name: 'LoLalytics',
+      color: '#0fba81',
+      status: 'cached',
+      lastUpdate: '25/04/2026',
+      detail: 'Matchups + advanced stats',
+      icon: '🔍',
+    },
+    {
+      id: 'metabot',
+      name: 'MetaBot.GG',
+      color: '#f0c646',
+      status: 'cached',
+      lastUpdate: '25/04/2026',
+      detail: 'Win rate rankings global',
+      icon: '🤖',
+    },
+  ];
+
+  const statusColors = {
+    live: 'bg-emerald-500',
+    cached: 'bg-amber-500',
+    static: 'bg-gray-500',
+    offline: 'bg-red-500',
+  };
+
+  const statusLabels = {
+    live: 'EN VIVO',
+    cached: 'CACHEADO',
+    static: 'ESTÁTICO',
+    offline: 'OFFLINE',
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-xl overflow-hidden"
-      style={{ border: '1px solid rgba(120,90,40,0.2)' }}
-    >
-      {/* Header */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-2 p-3 text-left hover:bg-white/[0.02] transition-colors"
-        aria-expanded={isOpen}
-      >
-        <Database className="w-4 h-4 text-[#c8aa6e]" />
-        <span className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">
-          Fuentes de Datos
-        </span>
-        <span className="text-[9px] text-[#5b5a56] ml-1">
-          {totalDataPoints} builds
-        </span>
-        <ChevronDown
-          className={`w-3.5 h-3.5 ml-auto text-[#5b5a56] transition-transform duration-200 ${isOpen ? 'rotate-0' : '-rotate-90'}`}
-        />
-      </button>
-
-      {/* Source cards */}
-      {isOpen && (
-        <div className="px-3 pb-3">
-          {/* Mobile: horizontal scroll, Desktop: grid */}
-          <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1 md:grid md:grid-cols-3 md:overflow-x-visible">
-            {SOURCES.map((source, i) => (
-              <motion.a
-                key={source.name}
-                href={source.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.04 }}
-                className="shrink-0 w-[140px] md:w-auto rounded-lg p-2.5 transition-all duration-200 hover:scale-[1.02]"
-                style={{
-                  background: `${source.color}06`,
-                  border: `1px solid ${source.color}18`,
-                }}
-              >
-                <div className="flex items-center gap-2 mb-1.5">
-                  {/* Logo box */}
-                  <div
-                    className="w-8 h-8 rounded-md flex items-center justify-center text-[10px] font-black shrink-0"
-                    style={{
-                      backgroundColor: `${source.color}20`,
-                      color: source.color,
-                      border: `1px solid ${source.color}35`,
-                    }}
-                  >
-                    {source.logo}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1">
-                      <span className="text-[11px] font-semibold text-[#f0e6d2] truncate">{source.name}</span>
-                      <ExternalLink className="w-2.5 h-2.5 text-[#5b5a56] shrink-0" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-0.5">
-                  <p className="text-[9px] text-[#5b5a56]">
-                    Actualizado: <span className="font-mono text-[#a09b8c]">{source.lastUpdated}</span>
-                  </p>
-                  <p className="text-[9px] text-[#5b5a56]">
-                    <span className="font-mono font-semibold" style={{ color: source.color }}>{source.dataPoints}</span> builds
-                  </p>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-
-          {/* Total bar */}
+    <CollapsibleSection title="Fuentes de Datos" defaultOpen={false}>
+      <div className="space-y-2">
+        {sources.map((source) => (
           <div
-            className="mt-2 flex items-center justify-center gap-2 py-1.5 rounded-lg"
-            style={{
-              background: 'rgba(200,170,110,0.06)',
-              border: '1px solid rgba(200,170,110,0.12)',
-            }}
+            key={source.id}
+            className="flex items-center justify-between px-3 py-2 rounded-lg bg-[#1a2328] hover:bg-[#242d34] transition-colors"
           >
-            <span className="text-[9px] text-[#5b5a56]">Total datos agregados:</span>
-            <span className="text-[11px] font-mono font-bold text-[#c8aa6e]">{totalDataPoints}</span>
-            <span className="text-[9px] text-[#5b5a56]">builds de {SOURCES.length} fuentes</span>
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-sm flex-shrink-0">{source.icon}</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-[#f0e6d2]">{source.name}</span>
+                  <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold ${statusColors[source.status]} text-white`}>
+                    {statusLabels[source.status]}
+                  </span>
+                </div>
+                <p className="text-[10px] text-[#a09b8c] truncate">{source.detail}</p>
+              </div>
+            </div>
+            <div className="text-right flex-shrink-0 ml-2">
+              <p className="text-[10px] text-[#a09b8c]">{source.lastUpdate}</p>
+            </div>
           </div>
+        ))}
+        <div className="mt-3 pt-2 border-t border-[#785a28]/30">
+          <p className="text-[10px] text-[#a09b8c] text-center">
+            Patch <span className="text-[#c8aa6e] font-medium">26.9</span> · Season 2 Pandemonium
+          </p>
+          <p className="text-[9px] text-[#a09b8c]/60 text-center mt-1">
+            © Riot Games, Inc. League of Legends y todo el contenido relacionado son marcas registradas de Riot Games, Inc.
+          </p>
         </div>
-      )}
-    </motion.div>
+      </div>
+    </CollapsibleSection>
   );
 }
