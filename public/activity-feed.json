@@ -8,7 +8,7 @@
       "title": "3 fixes: runa Colección de Ojos árbol + datos campeones + activity-feed cleanup",
       "description": "(1) Runa 'Colección de Ojos' asignada a árbol incorrecto 'Brujería' en 6 campeones (Master Yi, Ezreal, Ashe, Tristana x2 WR) → corregido a 'Dominación'. Iconos de runa ahora muestran color correcto. (2) Datos campeones: duplicate Zaahen eliminado de sección WR, Veigar 'R cage'→'E jaula' (Event Horizon es E, no R), Elise 'la Araña de la Spin'→'la Reina Araña', Briar 'la Cache Excéntrica'→'la Cachorra Excéntrica', Jinx 'la Cañón Suelto'→'la Pistolera Loca' (LoL + WR). (3) activity-feed.json: ID duplicado ralph-loop-025→ralph-loop-025b, commit 'pending'→'N/A'. Build OK.",
       "timestamp": "2026-04-25T06:57:00Z",
-      "commit": "pending",
+      "commit": "2c67b17",
       "category": "fix"
     },
     {
