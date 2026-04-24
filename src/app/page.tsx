@@ -32,6 +32,7 @@ import { CompetitiveTab } from '@/components/moba/tabs/competitive-tab';
 import { ProfileTab } from '@/components/moba/tabs/profile-tab';
 import { ActivityTab } from '@/components/moba/tabs/activity-tab';
 import { GuidesTab } from '@/components/moba/tabs/guides-tab';
+import { CoachingTab } from '@/components/moba/tabs/coaching-tab';
 import { ActivityPopup } from '@/components/moba/activity-popup';
 
 // ============ TAB CONTENT RENDERER ============
@@ -66,6 +67,7 @@ function TabContent({
       case 'combos': return <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />;
       case 'competitive': return <CompetitiveTab proPicks={proPicks} loading={loading} selectedGame={selectedGame} proRegionFilter={proRegionFilter} onProRegionFilterChange={onProRegionFilterChange} />;
       case 'guides': return <GuidesTab />;
+      case 'coaching': return <CoachingTab selectedGame={selectedGame || ''} />;
       case 'profile': return <ProfileTab summonerName={summonerName} onSummonerNameChange={onSummonerNameChange} summonerRegion={summonerRegion} onSummonerRegionChange={onSummonerRegionChange} summonerData={summonerData} summonerLoading={summonerLoading} summonerError={summonerError} onSearchSummoner={onSearchSummoner} />;
       case 'novedades': return <ActivityTab />;
       case 'ideas': return <IdeasTab />;
@@ -133,6 +135,8 @@ export default function Home() {
   // Mobile sidebar drawer state
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // ============ GAME SELECTION ============
+
   // ============ FETCH DATA ============
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -191,6 +195,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  // Listen for notification bell tab switch
+  useEffect(() => {
+    function handleTabSwitch(e: Event) {
+      const detail = (e as CustomEvent).detail;
+      if (typeof detail === 'string') setActiveTab(detail);
+    }
+    window.addEventListener('moba-sage-switch-tab', handleTabSwitch);
+    return () => window.removeEventListener('moba-sage-switch-tab', handleTabSwitch);
+  }, []);
 
   // Persist favorites
   useEffect(() => {

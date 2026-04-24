@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Rocket, Sparkles, Clock,
-  CheckCircle2, AlertTriangle, GitCommit, Eye, Bug, Palette
+  CheckCircle2, AlertTriangle, GitCommit, Eye, Bug, Palette,
+  ExternalLink
 } from 'lucide-react';
 
 interface ActivityEntry {
@@ -45,12 +46,18 @@ export function ActivityPopup() {
   const [show, setShow] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const handleDismissPermanently = useCallback(() => {
+    setShow(false);
+    localStorage.setItem('moba-sage-popup-dismissed', 'true');
+  }, []);
+
   const handleDismiss = useCallback(() => {
     setShow(false);
     sessionStorage.setItem('moba-sage-popup-seen', 'true');
   }, []);
 
   useEffect(() => {
+    if (localStorage.getItem('moba-sage-popup-dismissed')) return;
     if (sessionStorage.getItem('moba-sage-popup-seen')) return;
 
     let cancelled = false;
@@ -74,9 +81,7 @@ export function ActivityPopup() {
   useEffect(() => {
     if (!show) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        handleDismiss();
-      }
+      if (e.key === 'Escape') handleDismiss();
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
@@ -86,6 +91,8 @@ export function ActivityPopup() {
     .slice()
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     .slice(0, 5) || [];
+
+  const latestEntry = recentEntries[0];
 
   const timeAgo = (ts: string) => {
     const diff = Date.now() - new Date(ts).getTime();
@@ -110,24 +117,25 @@ export function ActivityPopup() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-[201] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[201] flex items-end sm:items-center justify-center p-4"
           onClick={handleDismiss}
           style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
         >
           <motion.div
             key="activity-popup-card"
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.95, opacity: 0, y: 10 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            initial={{ y: 80, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 80, opacity: 0, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 260 }}
             onClick={(e) => { e.stopPropagation(); }}
             className="w-full max-w-md rounded-2xl overflow-hidden"
             style={{
               background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
-              border: '1.5px solid rgba(200,170,110,0.3)',
-              boxShadow: '0 0 60px rgba(200,170,110,0.1), 0 25px 50px rgba(0,0,0,0.5)',
+              border: '1.5px solid rgba(200,170,110,0.35)',
+              boxShadow: '0 0 60px rgba(200,170,110,0.15), 0 0 120px rgba(200,170,110,0.05), 0 25px 50px rgba(0,0,0,0.5)',
             }}
           >
+            {/* Header with gold glow border accent */}
             <div className="relative p-5 pb-3" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
               <button
                 type="button"
@@ -138,20 +146,69 @@ export function ActivityPopup() {
                 <X className="text-[#a09b8c] text-base" />
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(200,170,110,0.15)', border: '1px solid rgba(200,170,110,0.3)' }}>
-                  <Rocket className="w-5 h-5 text-[#c8aa6e]" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(200,170,110,0.05))',
+                    border: '1.5px solid rgba(200,170,110,0.4)',
+                    boxShadow: '0 0 20px rgba(200,170,110,0.1)',
+                  }}>
+                  <Rocket className="w-6 h-6 text-[#c8aa6e]" />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-[#f0e6d2]">Novedades</h2>
-                  <p className="text-[10px] text-[#5b5a56]">Lo ultimo que paso en MOBA SAGE</p>
+                  <h2 className="lol-title text-base text-[#f0e6d2]">Novedades</h2>
+                  <p className="lol-subtitle text-[#5b5a56]">Lo último que pasó en MOBA SAGE</p>
                 </div>
               </div>
             </div>
 
+            {/* Latest entry hero */}
+            {latestEntry && (
+              <div className="px-5 pt-4 pb-3">
+                <div className="rounded-xl p-4 relative overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(200,170,110,0.06), rgba(200,170,110,0.02))',
+                    border: '1px solid rgba(200,170,110,0.2)',
+                  }}>
+                  <div className="absolute top-0 left-0 right-0 h-0.5"
+                    style={{ background: 'linear-gradient(90deg, transparent, rgba(200,170,110,0.5), transparent)' }} />
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: `${TYPE_COLORS[latestEntry.type] || '#a09b8c'}18`, border: `1px solid ${TYPE_COLORS[latestEntry.type] || '#a09b8c'}30` }}>
+                      {(() => { const Icon = TYPE_ICONS[latestEntry.type] || Sparkles; return <Icon className="w-5 h-5" style={{ color: TYPE_COLORS[latestEntry.type] || '#a09b8c' }} />; })()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-[#f0e6d2]">{latestEntry.title}</p>
+                      <p className="text-[11px] text-[#a09b8c] mt-1 leading-relaxed line-clamp-2">{latestEntry.description}</p>
+                      <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                        <div className="flex items-center gap-1 text-[8px] text-[#5b5a56]">
+                          <Clock className="w-2.5 h-2.5" />
+                          {timeAgo(latestEntry.timestamp)}
+                        </div>
+                        {latestEntry.commit && (
+                          <a
+                            href={`https://github.com/bautiarmij/moba-sage/commit/${latestEntry.commit}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-[8px] text-[#0acbe6] hover:text-[#f0e6d2] transition-colors font-mono"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <GitCommit className="w-2.5 h-2.5" />
+                            {latestEntry.commit.slice(0, 7)}
+                            <ExternalLink className="w-2 h-2" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Highlights */}
             {feed.highlights.length > 0 && (
-              <div className="px-5 pt-3">
+              <div className="px-5 py-2">
                 <div className="rounded-lg p-3" style={{ background: 'rgba(15,186,129,0.04)', border: '1px solid rgba(15,186,129,0.1)' }}>
-                  <p className="text-[9px] text-[#0fba81] font-semibold uppercase tracking-wider mb-2">La app tiene</p>
+                  <p className="lol-label text-[9px] text-[#0fba81] mb-2">La app tiene</p>
                   <div className="flex flex-wrap gap-x-3 gap-y-1">
                     {feed.highlights.map((h, i) => (
                       <span key={i} className="text-[10px] text-[#a09b8c] flex items-center gap-1">
@@ -164,9 +221,10 @@ export function ActivityPopup() {
               </div>
             )}
 
-            <div className="px-5 py-3 space-y-2">
-              <p className="text-[9px] text-[#5b5a56] uppercase tracking-wider font-medium">Actividad reciente</p>
-              {recentEntries.map((entry) => {
+            {/* Recent activity entries */}
+            <div className="px-5 py-2 space-y-1">
+              <p className="lol-label text-[9px] text-[#5b5a56] mb-2">Actividad reciente</p>
+              {recentEntries.slice(1).map((entry) => {
                 const color = TYPE_COLORS[entry.type] || '#a09b8c';
                 const Icon = TYPE_ICONS[entry.type] || Sparkles;
                 return (
@@ -176,11 +234,20 @@ export function ActivityPopup() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[11px] font-medium text-[#f0e6d2]">{entry.title}</p>
-                      <p className="text-[9px] text-[#5b5a56] truncate">{entry.description}</p>
                       <div className="flex items-center gap-2 mt-0.5 text-[8px] text-[#5b5a56]">
                         <Clock className="w-2 h-2" />
                         {timeAgo(entry.timestamp)}
-                        {entry.commit && <span className="font-mono">{entry.commit.slice(0, 7)}</span>}
+                        {entry.commit && (
+                          <a
+                            href={`https://github.com/bautiarmij/moba-sage/commit/${entry.commit}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-[#0acbe6] hover:text-[#f0e6d2] transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {entry.commit.slice(0, 7)}
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -188,14 +255,23 @@ export function ActivityPopup() {
               })}
             </div>
 
-            <div className="px-5 pb-4">
+            {/* Actions */}
+            <div className="px-5 pb-4 pt-2 flex gap-2">
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="w-full py-2.5 rounded-xl text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer lol-label"
                 style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(200,170,110,0.1))', border: '1px solid rgba(200,170,110,0.3)', color: '#c8aa6e' }}
               >
                 Entendido
+              </button>
+              <button
+                type="button"
+                onClick={handleDismissPermanently}
+                className="py-2.5 px-4 rounded-xl text-[10px] font-medium transition-all hover:bg-white/5 cursor-pointer text-[#5b5a56] hover:text-[#a09b8c]"
+                style={{ border: '1px solid rgba(120,90,40,0.2)' }}
+              >
+                No volver a mostrar
               </button>
             </div>
           </motion.div>

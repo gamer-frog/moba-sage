@@ -238,7 +238,7 @@ export function TierListTab({
             <div className="rounded-xl p-3 border border-[#0fba81]/20" style={{ background: 'rgba(15,186,129,0.04)' }}>
               <div className="flex items-center gap-2 mb-2">
                 <ArrowUpCircle className="w-4 h-4 text-[#0fba81]" />
-                <span className="text-xs font-bold text-[#0fba81] uppercase tracking-wider">En Ascenso</span>
+                <span className="lol-title text-xs text-[#0fba81]">En Ascenso</span>
                 <span className="text-[9px] text-[#5b5a56] ml-auto">{risingChampions.length}</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -260,7 +260,7 @@ export function TierListTab({
             <div className="rounded-xl p-3 border border-[#e84057]/20" style={{ background: 'rgba(232,64,87,0.04)' }}>
               <div className="flex items-center gap-2 mb-2">
                 <ArrowDownCircle className="w-4 h-4 text-[#e84057]" />
-                <span className="text-xs font-bold text-[#e84057] uppercase tracking-wider">En Caída</span>
+                <span className="lol-title text-xs text-[#e84057]">En Caída</span>
                 <span className="text-[9px] text-[#5b5a56] ml-auto">{fallingChampions.length}</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -378,7 +378,7 @@ function StatCard({ label, value, sub, color, icon }: {
     >
       <div className="flex items-center gap-1.5">
         <div style={{ color }} className="opacity-60">{icon}</div>
-        <span className="text-[10px] text-[#5b5a56] uppercase tracking-wider font-medium">{label}</span>
+        <span className="lol-label text-[10px] text-[#5b5a56]">{label}</span>
       </div>
       <span className="text-base font-bold font-mono" style={{ color }}>{value}</span>
       <span className="text-[10px] text-[#a09b8c] truncate">{sub}</span>
@@ -402,7 +402,7 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
         return (
           <div key={tier}>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-black tracking-wider" style={{ color: cfg.color, textShadow: `0 0 10px ${cfg.color}30` }}>{tier}</span>
+                <span className="lol-title text-sm" style={{ color: cfg.color, textShadow: `0 0 10px ${cfg.color}30` }}>{tier}</span>
               <span className="text-[10px] text-[#5b5a56]">{cfg.label}</span>
               <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${cfg.color}30, transparent)` }} />
             </div>

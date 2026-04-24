@@ -32,7 +32,7 @@ export function BrokenStuffTab({
       <div className="flex items-center gap-3">
         <AlertTriangle className="w-5 h-5 text-[#e84057]" />
         <div>
-          <h2 className="text-lg font-bold text-[#f0e6d2]">Cosas Rotas & Combos OP</h2>
+          <h2 className="lol-title text-lg text-[#f0e6d2]">Cosas Rotas & Combos OP</h2>
           <p className="text-xs text-[#5b5a56]">Campeones y combinaciones que están dominando el meta</p>
         </div>
       </div>
@@ -40,7 +40,7 @@ export function BrokenStuffTab({
       {!loading && sTierChamps.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-sm font-black tracking-wider" style={{ color: '#c8aa6e', textShadow: '0 0 10px rgba(200,170,110,0.3)' }}>S TIER</span>
+            <span className="lol-title text-sm" style={{ color: '#c8aa6e', textShadow: '0 0 10px rgba(200,170,110,0.3)' }}>S TIER</span>
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(200,170,110,0.3), transparent)' }} />
             <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[10px]">
               <AlertTriangle className="w-3 h-3 mr-1" />
@@ -84,7 +84,7 @@ export function BrokenStuffTab({
                     <div className="px-4 py-2" style={{ borderTop: '1px solid rgba(200,170,110,0.1)', background: 'rgba(200,170,110,0.03)' }}>
                       <div className="flex items-center gap-1.5 mb-1.5">
                         <Wrench className="w-3 h-3 text-[#c8aa6e]" />
-                        <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">Build Roto</span>
+                        <span className="lol-label text-[10px] text-[#c8aa6e]">Build Roto</span>
                         <span className="text-[9px] font-mono text-[#0acbe6] ml-auto">{mainBuild.winRate}% WR</span>
                       </div>
                       <div className="flex items-center gap-1.5 flex-wrap overflow-hidden max-h-[52px]">
@@ -104,13 +104,13 @@ export function BrokenStuffTab({
                     <div className="grid grid-cols-2 gap-2 px-4 py-2" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
                       {champ.counterPick && (
                         <div className="min-w-0">
-                          <span className="text-[9px] text-[#e84057] uppercase tracking-wider font-medium">Counters</span>
+                          <span className="lol-label text-[9px] text-[#e84057]">Counters</span>
                           <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.counterPick}>{champ.counterPick}</p>
                         </div>
                       )}
                       {champ.synergy && (
                         <div className="min-w-0">
-                          <span className="text-[9px] text-[#0acbe6] uppercase tracking-wider font-medium">Sinergia</span>
+                          <span className="lol-label text-[9px] text-[#0acbe6]">Sinergia</span>
                           <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.synergy}>{champ.synergy}</p>
                         </div>
                       )}
@@ -126,7 +126,7 @@ export function BrokenStuffTab({
       {!loading && aTierChamps.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-sm font-black tracking-wider" style={{ color: '#0acbe6', textShadow: '0 0 10px rgba(10,203,230,0.3)' }}>A TIER</span>
+            <span className="lol-title text-sm" style={{ color: '#0acbe6', textShadow: '0 0 10px rgba(10,203,230,0.3)' }}>A TIER</span>
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(10,203,230,0.3), transparent)' }} />
             <span className="text-[10px] text-[#5b5a56]">También fuertes</span>
           </div>
@@ -172,7 +172,7 @@ export function BrokenStuffTab({
       {!loading && bTierChamps.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-sm font-black tracking-wider" style={{ color: '#0fba81', textShadow: '0 0 10px rgba(15,186,129,0.3)' }}>B TIER</span>
+            <span className="lol-title text-sm" style={{ color: '#0fba81', textShadow: '0 0 10px rgba(15,186,129,0.3)' }}>B TIER</span>
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(15,186,129,0.3), transparent)' }} />
             <span className="text-[10px] text-[#5b5a56]">Jugables</span>
           </div>
@@ -195,7 +195,7 @@ export function BrokenStuffTab({
       <div>
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="w-4 h-4 text-[#f0c646]" />
-          <span className="text-sm font-semibold text-[#a09b8c]">Insights de IA</span>
+          <span className="lol-label text-xs font-semibold text-[#a09b8c]">Insights de IA</span>
           <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(240,198,70,0.2), transparent)' }} />
           <span className="text-[10px] text-[#5b5a56]">{metaInsights.length} insights</span>
         </div>

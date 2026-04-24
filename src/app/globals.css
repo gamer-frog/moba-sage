@@ -377,6 +377,29 @@ body > * {
   font-family: 'Beaufort', 'Geist Sans', serif;
 }
 
+/* Beaufort utility classes — LoL typography system */
+.lol-label {
+  font-family: 'Beaufort for LOL', 'Beaufort', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 400;
+}
+
+.lol-title {
+  font-family: 'Beaufort for LOL', 'Beaufort', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.lol-subtitle {
+  font-family: 'Beaufort', 'Geist Sans', serif;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 /* NEW PATCH badge pulse */
 @keyframes lol-new-patch-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(15, 186, 129, 0.5); }

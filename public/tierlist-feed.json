@@ -1,7 +1,7 @@
 {
-  "lastUpdated": "2026-04-24T14:15:00Z",
+  "lastUpdated": "2026-04-26T10:00:00Z",
   "source": "juegos-1 BOTARDO OS",
-  "version": 2,
+  "version": 3,
   "lol": {
     "patch": "26.8 (live) → 26.9 PBE preview",
     "sTier": [
@@ -19,9 +19,29 @@
       {"name": "Shyvana", "role": "Jungle", "winrate": "49.5%", "reason": "Reajuste grande 26.9. Potencial S si tuning favorable."},
       {"name": "Master Yi", "role": "Jungle", "winrate": "51.2%", "reason": "Alto WR en ELOs bajos, farm jungler sólido."}
     ],
-    "falling": ["Ambessa (nerf 26.9)", "Briar"],
+    "falling": ["Ambessa (nerf 26.9)", "Briar (nerf 26.9)"],
     "rising": ["Taliyah (buff 26.9)", "Warwick (buff 26.9)", "Zeri (rework 26.9)"],
-    "watch26_9": ["Zeri (rework grande)", "Xin Zhao", "Kennen", "Shyvana (rework)"]
+    "watch26_9": ["Zeri (rework grande)", "Xin Zhao", "Kennen", "Shyvana (rework)"],
+    "proComps": [
+      {
+        "name": "Avalanche Engage",
+        "champions": ["Malphite", "Jarvan IV", "Orianna", "Jinx", "Thresh"],
+        "playstyle": "Engage masivo con Malphite R + Orianna R. Jarvan inicia.",
+        "winRate": "54.2%"
+      },
+      {
+        "name": "Deathball Control",
+        "champions": ["Ornn", "Briar", "Ahri", "Nilah", "Soraka"],
+        "playstyle": "Wombo combo Ornn R + Briar R chase. Ahri charm + Soraka R global.",
+        "winRate": "53.8%"
+      },
+      {
+        "name": "Shadow Split",
+        "champions": ["Fiora", "Nidalee", "Taliyah", "Caitlyn", "Morgana"],
+        "playstyle": "Fiora split top. Taliyah/Caitlyn pressure mid/bot. Nidalee jungle.",
+        "winRate": "52.5%"
+      }
+    ]
   },
   "valorant": {
     "patch": "12.07 (live)",
@@ -52,5 +72,11 @@
       {"name": "MAC-10", "category": "SMG", "reason": "Best eco/force buy option."},
       {"name": "Five-SeveN", "category": "Pistol", "reason": "Best armor-piercing pistol."}
     ]
-  }
+  },
+  "coachingTips": [
+    "Practica last hitting en custom games con bots — 10 min/día mejora significativamente tu CS.",
+    "El wave management es la diferencia entre Gold y Plat: slow push, fast push, freeze.",
+    "Siempre ward antes de push — 1 control ward puede prevenir 3 ganks.",
+    "Las team comps más fuertes del meta 26.8 son: Engage (Malphite+Orianna), Control (Ornn+Briar), Split (Fiora+Nidalee)."
+  ]
 }

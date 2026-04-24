@@ -29,7 +29,7 @@ export function CompetitiveTab({
       <div className="flex items-center gap-3">
         <Crown className="w-5 h-5 text-[#f0c646]" />
         <div>
-          <h2 className="text-lg font-bold text-[#f0e6d2]">Escena Competitiva</h2>
+          <h2 className="lol-title text-lg text-[#f0e6d2]">Escena Competitiva</h2>
           <p className="text-xs text-[#5b5a56]">Campeones más pickados en torneos profesionales</p>
         </div>
       </div>
@@ -67,7 +67,7 @@ export function CompetitiveTab({
           </div>
 
           <div className="glass-card rounded-xl overflow-hidden">
-            <div className="hidden sm:grid grid-cols-[2.5rem_1fr_4rem_5rem_3.5rem_3.5rem_3.5rem] gap-2 px-4 py-2 text-[8px] text-[#5b5a56] uppercase tracking-widest font-medium" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
+            <div className="hidden sm:grid grid-cols-[2.5rem_1fr_4rem_5rem_3.5rem_3.5rem_3.5rem] gap-2 px-4 py-2 lol-label text-[8px] text-[#5b5a56]" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
               <div />
               <div>Campeón</div>
               <div>Rol</div>

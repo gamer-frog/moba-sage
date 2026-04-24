@@ -6,7 +6,7 @@ import {
   Sword, ScrollText, AlertTriangle,
   ChevronRight, Zap, Shield, Target, Crosshair,
   Trophy, User, Flame, Map, Crown, Sparkles, Lightbulb,
-  Rocket, Wrench, Settings, BookOpen,
+  Rocket, Wrench, Settings, BookOpen, GraduationCap,
 } from 'lucide-react';
 
 export const TIERS = ['S', 'A', 'B'] as const;
@@ -70,6 +70,7 @@ export const GAME_TAB_ITEMS = [
   { id: 'broken', label: 'Cosas Rotas', icon: AlertTriangle },
   { id: 'combos', label: 'Combos', icon: Flame },
   { id: 'guides', label: 'Guías', icon: BookOpen },
+  { id: 'coaching', label: 'Coaching', icon: GraduationCap },
   { id: 'competitive', label: 'Competitivo', icon: Crown },
   { id: 'profile', label: 'Perfil', icon: User },
 ];

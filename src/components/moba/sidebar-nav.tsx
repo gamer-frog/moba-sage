@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GAME_TAB_ITEMS, DEV_TAB_ITEMS, DEV_TAB_IDS } from './constants';
-import { Trophy, ScrollText, AlertTriangle, Flame, Crown, User, Rocket, Lightbulb, Map, Wrench, ChevronDown, ChevronRight, X, BookOpen } from 'lucide-react';
+import { Trophy, ScrollText, AlertTriangle, Flame, Crown, User, Rocket, Lightbulb, Map, Wrench, ChevronDown, ChevronRight, X, BookOpen, GraduationCap } from 'lucide-react';
 
 const DEV_ICONS: Record<string, typeof Wrench> = {
   novedades: Rocket,
@@ -18,6 +18,7 @@ const GAME_ICONS: Record<string, typeof Trophy> = {
   broken: AlertTriangle,
   combos: Flame,
   guides: BookOpen,
+  coaching: GraduationCap,
   competitive: Crown,
   profile: User,
 };
@@ -31,8 +32,7 @@ interface SidebarNavProps {
 }
 
 function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarNavProps) {
-  const [devExpanded, setDevExpanded] = useState(DEV_TAB_IDS.has(activeTab));
-
+  const [devExpanded, setDevExpanded] = useState(false);
   const handleTabClick = (tabId: string) => {
     onTabChange(tabId);
     onClose?.();
@@ -43,7 +43,7 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
       {/* Mobile close button */}
       {onClose && (
         <div className="flex items-center justify-between px-4 pt-3 pb-1 lg:hidden">
-          <p className="text-[9px] text-[#785a28] tracking-[0.25em] uppercase font-semibold">Navegación</p>
+          <p className="lol-label text-[9px] text-[#785a28]">Navegación</p>
           <button onClick={onClose} className="text-[#5b5a56] hover:text-[#a09b8c] transition-colors p-1" aria-label="Cerrar menú">
             <X className="w-5 h-5" />
           </button>
@@ -52,7 +52,7 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
 
       {/* Game Navigation */}
       <div className="flex-1 overflow-y-auto py-4 px-3 scrollbar-none">
-        <p className="text-[9px] text-[#785a28] tracking-[0.25em] uppercase font-semibold px-3 mb-2">Análisis</p>
+        <p className="lol-label text-[9px] text-[#785a28] px-3 mb-2">Análisis</p>
         <div className="space-y-0.5">
           {GAME_TAB_ITEMS.map((tab) => {
             const Icon = GAME_ICONS[tab.id] || Trophy;
@@ -79,7 +79,7 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
                   />
                 )}
                 <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#c8aa6e]' : 'text-[#785a28] group-hover:text-[#a09b8c]'}`} />
-                <span>{tab.label}</span>
+                <span className='lol-label'>{tab.label}</span>
                 {isActive && (
                   <motion.div
                     className="ml-auto w-1.5 h-1.5 rounded-full bg-[#c8aa6e]"
@@ -97,11 +97,15 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
           <div className="flex-1 h-px bg-[#785a28]/15" />
         </div>
 
-        {/* Dev Navigation (collapsible) */}
+        {/* Dev Navigation (collapsible, dimmer) */}
         <button
           onClick={() => setDevExpanded(!devExpanded)}
-          className="w-full flex items-center gap-2 px-3 mb-2 text-[9px] text-[#5b5a56] tracking-[0.25em] uppercase font-semibold hover:text-[#785a28] transition-colors"
+          className="w-full flex items-center gap-2 px-3 mb-2 text-[9px] text-[#5b5a56] hover:text-[#785a28] transition-colors lol-label"
         >
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[7px] font-bold tracking-wider"
+            style={{ backgroundColor: 'rgba(91,90,86,0.15)', color: '#5b5a56', border: '1px solid rgba(91,90,86,0.2)' }}>
+            DEV
+          </span>
           <Wrench className="w-3 h-3" />
           <span>Desarrollo</span>
           <motion.div animate={{ rotate: devExpanded ? 90 : 0 }} transition={{ duration: 0.2 }}>
@@ -126,10 +130,10 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
                       key={tab.id}
                       onClick={() => handleTabClick(tab.id)}
                       className={`
-                        w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 group relative
+                        w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 group relative
                         ${isActive
                           ? 'bg-[#0acbe6]/10 text-[#0acbe6]'
-                          : 'text-[#5b5a56] hover:text-[#a09b8c] hover:bg-[#1e2328]/40'
+                          : 'text-[#5b5a56] hover:text-[#785a28] hover:bg-[#1e2328]/40'
                         }
                       `}
                     >
@@ -141,8 +145,11 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
                           transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                         />
                       )}
-                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#0acbe6]' : 'text-[#785a28] group-hover:text-[#a09b8c]'}`} />
-                      <span>{tab.label}</span>
+                      <Icon className={`w-3 h-3 shrink-0 ${isActive ? 'text-[#0acbe6]' : 'text-[#5b5a56] group-hover:text-[#785a28]'}`} />
+                      <span className='lol-label text-[11px]'>
+                        <span className="text-[8px] mr-1 opacity-50">[DEV]</span>
+                        {tab.label}
+                      </span>
                     </button>
                   );
                 })}

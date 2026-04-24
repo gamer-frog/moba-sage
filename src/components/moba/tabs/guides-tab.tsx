@@ -71,7 +71,7 @@ export function GuidesTab() {
       <div className="flex items-center gap-3">
         <BookOpen className="w-5 h-5 text-[#c8aa6e]" />
         <div>
-          <h2 className="text-lg font-bold text-[#f0e6d2]">Guías & Análisis</h2>
+          <h2 className="lol-title text-lg text-[#f0e6d2]">Guías & Análisis</h2>
           <p className="text-xs text-[#5b5a56]">Guías de campeones, meta y parches</p>
         </div>
       </div>

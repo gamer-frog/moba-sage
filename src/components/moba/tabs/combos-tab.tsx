@@ -33,7 +33,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
       <div className="flex items-center gap-3">
         <Flame className="w-5 h-5 text-[#e84057]" />
         <div>
-          <h2 className="text-lg font-bold text-[#f0e6d2]">Combos Rotos</h2>
+          <h2 className="lol-title text-lg text-[#f0e6d2]">Combos Rotos</h2>
           <p className="text-xs text-[#5b5a56]">Combinaciones más tóxicas del meta — Ordenadas por win rate</p>
         </div>
       </div>
