@@ -1,0 +1,36 @@
+{
+  "lastUpdated": "2026-04-24T13:30:00Z",
+  "source": "juegos-1 BOTARDO OS",
+  "patch": "26.8 → 26.9 (upcoming)",
+  "lol": {
+    "sTier": [
+      {"name": "K'Sante", "role": "Top", "reason": "Tanque dominante con sustain alto. Guía disponible."},
+      {"name": "Hwei", "role": "Mid", "reason": "Control de mapa y burst combo. Guía disponible."},
+      {"name": "Jinx", "role": "ADC", "reason": "WR 52.82%, hyper carry fuerte en teamfights."},
+      {"name": "Thresh", "role": "Support", "reason": "WR 51.76%, utilidad máxima con pick engage."},
+      {"name": "Warwick", "role": "Jungle", "reason": "Buff incoming 26.9, sustain jungle ya fuerte."},
+      {"name": "Taliyah", "role": "Mid", "reason": "Buff 26.9 confirmado, wave clear y roam."}
+    ],
+    "aTier": [
+      {"name": "Darius", "role": "Top", "reason": "WR 50.12%, bruiser consistente."},
+      {"name": "Lee Sin", "role": "Jungle", "reason": "WR 50.55%, early game pressure."},
+      {"name": "Master Yi", "role": "Jungle", "reason": "WR alto en ELOs bajos, farm jungler."},
+      {"name": "Ezreal", "role": "ADC", "reason": "Ajuste 26.9 + nuevos Doran's."},
+      {"name": "Shyvana", "role": "Jungle", "reason": "Reajuste 26.9, potencial S-tier si tuning favorable."}
+    ],
+    "falling": ["Ambessa", "Briar"],
+    "rising": ["Taliyah", "Warwick", "Shyvana"],
+    "watch26_9": ["Zeri", "Xin Zhao", "Kennen"]
+  },
+  "valorant": {
+    "patch": "12.07 → 12.06 rolling out",
+    "sTier": ["Clove", "Sage"],
+    "aTier": ["Omen", "Jett", "Killjoy"],
+    "nerfed": ["Waylay"],
+    "maps_removed": ["Bind (Act 3)"]
+  },
+  "cs2": {
+    "patch": "1.41.5.1 (AnimGraph 2)",
+    "notes": "AnimGraph 2 deployed, screen shake reducido, recoil patterns changing."
+  }
+}
