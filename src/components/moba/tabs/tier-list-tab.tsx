@@ -1,22 +1,23 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Search, Filter, Star, LayoutGrid, List, TrendingUp, BarChart3, X, RefreshCw, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { Search, Filter, Star, LayoutGrid, List, TrendingUp, BarChart3, X, RefreshCw, ArrowUpCircle, ArrowDownCircle, Clock, ExternalLink, Database, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ChampionIcon } from '../champion-icon';
 import { RoleBadge } from '../badges';
 import { TierSection, TierSectionSkeleton } from '../tier-section';
 import { TIER_CONFIG } from '../constants';
 import { ChampionCard } from '../champion-card';
-import { DataSourcesPanel } from '../data-sources-panel';
-import type { Champion, GameSelection } from '../types';
+import { WeeklyWRChart } from '../weekly-wr-chart';
+import type { Champion, GameSelection } from './types';
 
 // ---- Local types for tierlist feed ----
 interface TierlistFeed {
   lastUpdated: string;
   source: string;
   version: number;
+  sources?: Array<{ name: string; url: string; lastScraped: string }>;
   lol?: {
     patch?: string;
     rising?: string[];
@@ -24,6 +25,7 @@ interface TierlistFeed {
     sTier?: Array<{ name: string; role: string; winrate?: string; reason?: string }>;
     aTier?: Array<{ name: string; role: string; winrate?: string; reason?: string }>;
     watch26_9?: string[];
+    weeklyTop?: Array<{ name: string; role: string; currentWR: number; change: number }>;
   };
   valorant?: Record<string, unknown>;
   cs2?: Record<string, unknown>;
@@ -66,6 +68,8 @@ export function TierListTab({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [feedData, setFeedData] = useState<TierlistFeed | null>(null);
   const [feedLoading, setFeedLoading] = useState(true);
+  const [showSources, setShowSources] = useState(false);
+  const [expandedWeekly, setExpandedWeekly] = useState<string | null>(null);
 
   // Fetch tierlist-feed.json on mount
   useEffect(() => {
@@ -136,6 +140,20 @@ export function TierListTab({
   // Rising & falling data from feed
   const risingChampions = feedData?.lol?.rising || [];
   const fallingChampions = feedData?.lol?.falling || [];
+
+  // Weekly top movers
+  const weeklyTop = feedData?.lol?.weeklyTop || [];
+
+  // Data sources
+  const dataSources = feedData?.sources || [
+    { name: 'U.GG', url: 'https://u.gg', lastScraped: new Date().toISOString() },
+    { name: 'OP.GG', url: 'https://op.gg', lastScraped: new Date().toISOString() },
+    { name: 'Mobalytics', url: 'https://mobalytics.com', lastScraped: new Date().toISOString() },
+  ];
+
+  const feedLastUpdated = feedData?.lastUpdated
+    ? new Date(feedData.lastUpdated).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    : null;
 
   return (
     <div className="space-y-4">
@@ -283,6 +301,110 @@ export function TierListTab({
         </motion.div>
       )}
 
+      {/* Weekly Top Movers — Bar chart section */}
+      {!loading && weeklyTop.length > 0 && !searchQuery && roleFilter === 'Todos' && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card rounded-xl p-4 space-y-3"
+          style={{ border: '1px solid rgba(200,170,110,0.15)' }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-[#c8aa6e]" />
+              <span className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">
+                Top Movimientos Semanales
+              </span>
+              <span className="text-[9px] text-[#5b5a56]">Patch {feedData?.lol?.patch || '26.8'}</span>
+            </div>
+            <div className="flex items-center gap-1 text-[9px] text-[#5b5a56]">
+              <Clock className="w-3 h-3" />
+              {feedLastUpdated || 'Actualizado hoy'}
+            </div>
+          </div>
+
+          {/* Bar chart — horizontal bars for weekly changes */}
+          <div className="space-y-2">
+            {weeklyTop.map((mover, i) => {
+              const champ = gameChampions.find(c => c.name === mover.name);
+              if (!champ) return null;
+              const isPositive = mover.change > 0;
+              const barColor = isPositive ? '#0fba81' : '#e84057';
+              const barWidth = Math.min(Math.abs(mover.change) * 12, 85);
+              const isExpanded = expandedWeekly === mover.name;
+
+              return (
+                <motion.div
+                  key={mover.name}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="group"
+                >
+                  <button
+                    onClick={() => setExpandedWeekly(isExpanded ? null : mover.name)}
+                    className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/[0.03] transition-colors text-left cursor-pointer"
+                  >
+                    <div className="relative shrink-0">
+                      <ChampionIcon name={mover.name} tier={champ.tier} />
+                      {isPositive ? (
+                        <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#0a0e1a] flex items-center justify-center border border-[#0fba81]/40">
+                          <TrendingUp className="w-2.5 h-2.5 text-[#0fba81]" />
+                        </div>
+                      ) : (
+                        <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#0a0e1a] flex items-center justify-center border border-[#e84057]/40">
+                          <ArrowDownCircle className="w-2.5 h-2.5 text-[#e84057]" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[11px] font-semibold text-[#f0e6d2] truncate">{mover.name}</span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <RoleBadge role={mover.role} />
+                          <span className="text-[10px] font-mono font-bold" style={{ color: barColor }}>
+                            {isPositive ? '+' : ''}{mover.change.toFixed(1)}%
+                          </span>
+                          <span className="text-[9px] text-[#a09b8c] font-mono">{mover.currentWR}% WR</span>
+                        </div>
+                      </div>
+                      {/* Animated bar */}
+                      <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.1)' }}>
+                        <motion.div
+                          className="h-full rounded-full"
+                          style={{
+                            background: `linear-gradient(90deg, ${barColor}60, ${barColor})`,
+                            marginLeft: isPositive ? 'auto' : undefined,
+                          }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${barWidth}%` }}
+                          transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
+                        />
+                      </div>
+                    </div>
+                  </button>
+                  {/* Expanded weekly chart */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pl-14 pr-2 pt-1 pb-2">
+                          <WeeklyWRChart championName={mover.name} currentWR={mover.currentWR} />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+
       {/* Meta Overview Summary */}
       {!loading && !searchQuery && roleFilter === 'Todos' && (
         <motion.div
@@ -357,18 +479,96 @@ export function TierListTab({
         );
       })()}
 
-      {/* Meta freshness indicator */}
-      {!loading && metaLastUpdated && (
-        <div className="flex items-center gap-2 text-[10px] text-[#5b5a56]">
-          <RefreshCw className="w-3 h-3" />
-          <span>Datos actualizados: {new Date(metaLastUpdated).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
-          <span className="text-[#0fba81]">●</span>
-          <span> fuentes: U.GG, Mobalytics, Blitz.gg, Buildzcrank, PropelRC, Amber.gg</span>
+      {/* Meta freshness indicator with source attribution */}
+      {!loading && (metaLastUpdated || feedLastUpdated) && (
+        <div className="flex items-center flex-wrap gap-x-3 gap-y-1 text-[10px] text-[#5b5a56]">
+          <div className="flex items-center gap-1.5">
+            <RefreshCw className="w-3 h-3" />
+            <span>Datos actualizados: {feedLastUpdated || metaLastUpdated}</span>
+            <span className="text-[#0fba81]">●</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Database className="w-3 h-3" />
+            <span>Fuentes: </span>
+            {dataSources.map((s, i) => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 text-[#a09b8c] hover:text-[#c8aa6e] transition-colors"
+              >
+                {s.name}
+                <ExternalLink className="w-2 h-2" />
+                {i < dataSources.length - 1 && <span className="text-[#785a28]">·</span>}
+              </a>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Data Sources Panel */}
-      {!loading && !searchQuery && roleFilter === 'Todos' && <DataSourcesPanel />}
+      {/* Collapsible Data Sources */}
+      {!loading && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card rounded-xl overflow-hidden"
+          style={{ border: '1px solid rgba(120,90,40,0.2)' }}
+        >
+          <button
+            onClick={() => setShowSources(!showSources)}
+            className="w-full flex items-center gap-2 p-3 text-left hover:bg-white/[0.02] transition-colors"
+          >
+            <Database className="w-4 h-4 text-[#c8aa6e]" />
+            <span className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">
+              Fuentes de Datos
+            </span>
+            <span className="text-[9px] text-[#5b5a56]">{dataSources.length} fuentes</span>
+            <ChevronDown
+              className={`w-3.5 h-3.5 ml-auto text-[#5b5a56] transition-transform duration-200 ${showSources ? '' : '-rotate-90'}`}
+            />
+          </button>
+          <AnimatePresence>
+            {showSources && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="px-3 pb-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    {dataSources.map((source) => (
+                      <a
+                        key={source.name}
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-lg p-2.5 transition-all duration-200 hover:scale-[1.01] hover:bg-white/[0.02]"
+                        style={{
+                          background: 'rgba(200,170,110,0.04)',
+                          border: '1px solid rgba(200,170,110,0.1)',
+                        }}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[11px] font-semibold text-[#f0e6d2]">{source.name}</span>
+                          <ExternalLink className="w-3 h-3 text-[#5b5a56]" />
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-2.5 h-2.5 text-[#5b5a56]" />
+                          <span className="text-[8px] text-[#5b5a56] font-mono">
+                            {new Date(source.lastScraped).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
 
       {loading ? (
         <>
@@ -385,6 +585,7 @@ export function TierListTab({
             favorites={favorites}
             onToggleFavorite={onToggleFavorite}
             trendMap={trendMap}
+            showWeeklyChart={true}
           />
         ))
       ) : (
@@ -447,7 +648,7 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
               <span className="text-[10px] text-[#5b5a56]">{cfg.label}</span>
               <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${cfg.color}30, transparent)` }} />
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
               {tierChamps.map(champ => (
                 <ChampionCard
                   key={champ.id}
@@ -457,6 +658,7 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                   isFavorite={favorites.has(champ.id)}
                   trend={trendMap?.[champ.name]}
                   size="sm"
+                  showWeeklyChart={false}
                 />
               ))}
             </div>

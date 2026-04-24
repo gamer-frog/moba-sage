@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Star, ChevronDown, TrendingUp, Minus, TrendingDown } from 'lucide-react';
 import { ChampionIcon, MicroChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
+import { WeeklyWRChart } from './weekly-wr-chart';
 import type { Champion } from './types';
 
 // Color coding for win rate: red (<48) → yellow (48-51) → cyan (51-53) → green (>53)
@@ -47,12 +48,13 @@ function parseChampionNames(str: string | undefined, currentChampName: string): 
     .filter(n => n.length > 0 && n.length < 25 && n !== currentChampName);
 }
 
-export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, trend }: {
+export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, trend, showWeeklyChart }: {
   champion: Champion;
   onClick: () => void;
   isFavorite?: boolean;
   onToggleFavorite?: (e: React.MouseEvent) => void;
   trend?: 'rising' | 'falling';
+  showWeeklyChart?: boolean;
 }) {
   const wr = wrColor(champion.winRate);
 
@@ -64,8 +66,8 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
     <motion.div
       initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 0.99 }}
+      whileHover={{ scale: 1.005 }}
+      whileTap={{ scale: 0.995 }}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -151,6 +153,13 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
           </span>
           <MiniBar value={champion.banRate} max={20} color="#e84057" />
         </div>
+        {/* Weekly WR mini chart */}
+        {showWeeklyChart && (
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="text-[8px] text-[#5b5a56] uppercase tracking-wider leading-none">4 Sem</span>
+            <WeeklyWRChart championName={champion.name} currentWR={champion.winRate} compact />
+          </div>
+        )}
       </div>
       <ChevronDown className="w-4 h-4 text-[#785a28] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
       {onToggleFavorite && (

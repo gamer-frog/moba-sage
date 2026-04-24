@@ -14,13 +14,14 @@ function wrColor(wr: number): string {
   return '#e84057';
 }
 
-export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap }: {
+export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap, showWeeklyChart }: {
   tier: string;
   champions: Champion[];
   onChampionClick: (c: Champion) => void;
   favorites: Set<number>;
   onToggleFavorite: (id: number) => void;
   trendMap?: Record<string, 'rising' | 'falling'>;
+  showWeeklyChart?: boolean;
 }) {
   const cfg = TIER_CONFIG[tier];
 
@@ -105,7 +106,7 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
       >
         {champions.map(champ => (
           <div key={champ.id}>
-            <ChampionRow champion={champ} onClick={() => onChampionClick(champ)} isFavorite={favorites.has(champ.id)} onToggleFavorite={(e) => { e.stopPropagation(); onToggleFavorite(champ.id); }} trend={trendMap?.[champ.name]} />
+            <ChampionRow champion={champ} onClick={() => onChampionClick(champ)} isFavorite={favorites.has(champ.id)} onToggleFavorite={(e) => { e.stopPropagation(); onToggleFavorite(champ.id); }} trend={trendMap?.[champ.name]} showWeeklyChart={showWeeklyChart} />
           </div>
         ))}
       </div>

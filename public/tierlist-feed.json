@@ -1,28 +1,54 @@
 {
-  "lastUpdated": "2026-04-26T10:00:00Z",
-  "source": "juegos-1 BOTARDO OS",
-  "version": 3,
+  "lastUpdated": "2026-04-25T01:00:00Z",
+  "source": "juegos-1 BOTARDO OS — Web Scraping Agent",
+  "version": 4,
+  "sources": [
+    { "name": "Mobalytics", "url": "https://mobalytics.gg/lol/tier-list/stats", "lastScraped": "2026-04-25T00:45:00Z" },
+    { "name": "U.GG", "url": "https://u.gg/lol/tier-list", "lastScraped": "2026-04-25T00:45:00Z" },
+    { "name": "OP.GG", "url": "https://op.gg/lol/statistics/champions", "lastScraped": "2026-04-25T00:45:00Z" },
+    { "name": "MetaBot", "url": "https://metabot.gg/en/league/champions/tier-list", "lastScraped": "2026-04-24T18:00:00Z" }
+  ],
   "lol": {
     "patch": "26.8 (live) → 26.9 PBE preview",
     "sTier": [
-      {"name": "K'Sante", "role": "Top", "winrate": "51.2%", "reason": "Tanque dominante con sustain alto. Guía disponible en data/guides/."},
-      {"name": "Hwei", "role": "Mid", "winrate": "51.5%", "reason": "Control de mapa y burst combo. Guía disponible en data/guides/."},
+      {"name": "Karthus", "role": "Bot", "winrate": "55.1%", "reason": "AP Bot Lane dominante. R global teamfight, pick rate bajo pero WR altísimo."},
+      {"name": "Garen", "role": "Mid", "winrate": "54.7%", "reason": "Counter pick meta mid. W buff lo hizo inmune al poke."},
+      {"name": "Sion", "role": "Mid", "winrate": "54.6%", "reason": "Off-role Sion mid roto. HP stacking + W shield broke the lane."},
+      {"name": "Hwei", "role": "Bot", "winrate": "53.9%", "reason": "Control de mapa y burst combo. +4.2pp desde 26.7."},
       {"name": "Jinx", "role": "ADC", "winrate": "52.8%", "reason": "Hyper carry fuerte en teamfights, consistente S-tier."},
-      {"name": "Thresh", "role": "Support", "winrate": "51.8%", "reason": "Utilidad máxima con pick engage, meta favorita."},
-      {"name": "Taliyah", "role": "Mid", "winrate": "51.1%", "reason": "Buff 26.9 confirmado. Wave clear y roam fortalecidos."},
-      {"name": "Warwick", "role": "Jungle", "winrate": "50.8%", "reason": "Buff incoming 26.9, sustain jungle dominante."}
+      {"name": "Thresh", "role": "Support", "winrate": "51.8%", "reason": "Utilidad máxima con pick engage, meta favorita."}
     ],
     "aTier": [
-      {"name": "Darius", "role": "Top", "winrate": "50.1%", "reason": "Bruiser consistente en lane phase."},
-      {"name": "Lee Sin", "role": "Jungle", "winrate": "50.6%", "reason": "Early game pressure, snowball dependiente."},
-      {"name": "Ezreal", "role": "ADC", "winrate": "49.8%", "reason": "Ajuste 26.9 + nuevos Doran's Helm sinergia."},
-      {"name": "Shyvana", "role": "Jungle", "winrate": "49.5%", "reason": "Reajuste grande 26.9. Potencial S si tuning favorable."},
-      {"name": "Master Yi", "role": "Jungle", "winrate": "51.2%", "reason": "Alto WR en ELOs bajos, farm jungler sólido."}
+      {"name": "Briar", "role": "Jungle", "winrate": "53.3%", "reason": "Stable alto WR pero nerf 26.9 amenaza. 18.9% ban rate."},
+      {"name": "Milio", "role": "Support", "winrate": "53.0%", "reason": "Buff constante. W + R save carry, enchanter top pick."},
+      {"name": "Shyvana", "role": "Jungle", "winrate": "53.2%", "reason": "Farm jungler fuerte. +3.4pp desde 26.7, C→S."},
+      {"name": "Rammus", "role": "Jungle", "winrate": "53.2%", "reason": "Tank jungle counter AD. Taunt R en teamfights."},
+      {"name": "K'Sante", "role": "Top", "winrate": "51.2%", "reason": "Tanque dominante con sustain alto."}
     ],
-    "falling": ["Ambessa (nerf 26.9)", "Briar (nerf 26.9)"],
-    "rising": ["Taliyah (buff 26.9)", "Warwick (buff 26.9)", "Zeri (rework 26.9)"],
-    "watch26_9": ["Zeri (rework grande)", "Xin Zhao", "Kennen", "Shyvana (rework)"],
+    "falling": ["Ambessa (nerf 26.9)", "Briar (nerf 26.9)", "Nocturne (ajuste)"],
+    "rising": ["Hwei (C→S, +4.2pp)", "Sion Mid (C→S, +4.7pp)", "Taliyah (buff 26.9)", "Warwick (buff 26.9)", "Zeri (rework 26.9)", "Shyvana (C→S, +3.4pp)"],
+    "watch26_9": ["Zeri (rework grande)", "Xin Zhao", "Kennen", "Shyvana (rework)", "Garen (posible nerf)"],
+    "weeklyTop": [
+      {"name": "Hwei", "role": "Bot", "currentWR": 53.9, "change": 4.2},
+      {"name": "Sion", "role": "Mid", "currentWR": 54.6, "change": 4.7},
+      {"name": "Nasus", "role": "Mid", "currentWR": 54.4, "change": 4.1},
+      {"name": "Shyvana", "role": "Jungle", "currentWR": 53.2, "change": 3.4},
+      {"name": "Garen", "role": "Mid", "currentWR": 54.7, "change": 2.8},
+      {"name": "Karthus", "role": "Bot", "currentWR": 55.1, "change": 2.5},
+      {"name": "Brand", "role": "Bot", "currentWR": 54.0, "change": 2.1},
+      {"name": "Nilah", "role": "Bot", "currentWR": 53.9, "change": 1.8},
+      {"name": "Rammus", "role": "Jungle", "currentWR": 53.2, "change": 1.5},
+      {"name": "Milio", "role": "Support", "currentWR": 53.0, "change": 1.2},
+      {"name": "Ambessa", "role": "Top", "currentWR": 49.8, "change": -2.1},
+      {"name": "Briar", "role": "Jungle", "currentWR": 53.3, "change": -1.8}
+    ],
     "proComps": [
+      {
+        "name": "AP Bot Lane Meta",
+        "champions": ["Karthus", "Shyvana", "Sion", "Hwei", "Milio"],
+        "playstyle": "AP double threat bot (Karthus/Hwei) + Sion mid anti-mage. Shyvana farm jungle. Milio enchanter.",
+        "winRate": "54.1%"
+      },
       {
         "name": "Avalanche Engage",
         "champions": ["Malphite", "Jarvan IV", "Orianna", "Jinx", "Thresh"],
@@ -34,12 +60,6 @@
         "champions": ["Ornn", "Briar", "Ahri", "Nilah", "Soraka"],
         "playstyle": "Wombo combo Ornn R + Briar R chase. Ahri charm + Soraka R global.",
         "winRate": "53.8%"
-      },
-      {
-        "name": "Shadow Split",
-        "champions": ["Fiora", "Nidalee", "Taliyah", "Caitlyn", "Morgana"],
-        "playstyle": "Fiora split top. Taliyah/Caitlyn pressure mid/bot. Nidalee jungle.",
-        "winRate": "52.5%"
       }
     ]
   },
@@ -77,6 +97,7 @@
     "Practica last hitting en custom games con bots — 10 min/día mejora significativamente tu CS.",
     "El wave management es la diferencia entre Gold y Plat: slow push, fast push, freeze.",
     "Siempre ward antes de push — 1 control ward puede prevenir 3 ganks.",
-    "Las team comps más fuertes del meta 26.8 son: Engage (Malphite+Orianna), Control (Ornn+Briar), Split (Fiora+Nidalee)."
+    "Las team comps más fuertes del meta 26.8 son: AP Bot (Karthus+Hwei), Engage (Malphite+Orianna), Control (Ornn+Briar).",
+    "AP Bot Lane es el meta 26.8: Karthus, Swain, Brand, Veigar, Hwei y Aurelion Sol se juegan como carry bot."
   ]
 }

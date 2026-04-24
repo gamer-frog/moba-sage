@@ -13,6 +13,7 @@ import { CollapsibleSection } from './collapsible-section';
 import { CopyBuildButton } from './copy-build-button';
 import { AbilityBar, SkillIcon } from './skill-icon';
 import { VisionMap } from './vision-map';
+import { WeeklyWRChart as SharedWeeklyWRChart } from './weekly-wr-chart';
 import type { Champion } from './types';
 
 // ============================================================
@@ -174,61 +175,8 @@ function timeAgoMeta(ts: string): string {
 }
 
 // ============================================================
-// Weekly WR History Chart (mock 7-day data)
+// Champion Modal
 // ============================================================
-
-function WeeklyWRChart({ currentWR, name }: { currentWR: number; name: string }) {
-  const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-  // Generate deterministic "plausible" data from current WR using name as seed
-  const baseWR = currentWR;
-  const data = days.map((_, i) => {
-    const variation = (Math.sin(i * 1.3 + name.length * 0.7) * 1.5) + (Math.sin(i * 2.1 + name.charCodeAt(0) * 0.3) * 0.5);
-    return Math.round((baseWR + variation - 3) * 10) / 10;
-  });
-  data[6] = currentWR; // Last day = current
-
-  const minWR = Math.min(...data) - 0.5;
-  const maxWR = Math.max(...data) + 0.5;
-  const range = maxWR - minWR || 1;
-
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-[9px] text-[#5b5a56]">Últimos 7 días</span>
-        <span className="text-[9px] font-mono text-[#0acbe6]">→ {currentWR}% actual</span>
-      </div>
-      <div className="flex items-end gap-1.5 h-24">
-        {data.map((wr, i) => {
-          const height = ((wr - minWR) / range) * 100;
-          const color = wr >= 53 ? '#0fba81' : wr >= 51 ? '#0acbe6' : wr >= 49 ? '#f0c646' : '#e84057';
-          const isLast = i === 6;
-          return (
-            <div key={i} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[8px] font-mono" style={{ color }}>{wr.toFixed(1)}%</span>
-              <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: `${Math.max(height, 8)}%` }}
-                transition={{ delay: i * 0.05, duration: 0.4 }}
-                className="w-full rounded-t-md"
-                style={{
-                  background: isLast
-                    ? `linear-gradient(to top, ${color}, ${color}cc)`
-                    : `${color}40`,
-                  minHeight: '4px',
-                }}
-              />
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex gap-1.5">
-        {days.map(d => (
-          <span key={d} className="flex-1 text-center text-[8px] text-[#5b5a56]">{d}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () => void }) {
   const cfg = TIER_CONFIG[champion.tier];
@@ -473,7 +421,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
 
           {/* Weekly WR History */}
           <CollapsibleSection title="Historial Win Rate" icon={TrendingUp} color="#0acbe6" defaultOpen={true}>
-            <WeeklyWRChart currentWR={champion.winRate} name={champion.name} />
+            <SharedWeeklyWRChart championName={champion.name} currentWR={champion.winRate} />
           </CollapsibleSection>
 
           {/* Build Section — Only shows live scraped data when available */}
