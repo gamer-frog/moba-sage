@@ -35,20 +35,21 @@ const TYPE_ICONS: Record<string, typeof Rocket> = {
   maintenance: Bug,
 };
 
-function isToday(ts: string): boolean {
-  const d = new Date(ts);
-  const now = new Date();
-  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+function isRecent(ts: string): boolean {
+  const diff = Date.now() - new Date(ts).getTime();
+  const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+  return diff >= 0 && diff <= sevenDaysMs;
 }
 
 function timeAgo(ts: string): string {
   const diff = Date.now() - new Date(ts).getTime();
   const mins = Math.floor(diff / 60000);
   if (mins <= 0) return 'ahora';
-  if (mins < 60) return `${mins}m`;
+  if (mins < 60) return `hace ${mins}m`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h`;
-  return `${Math.floor(hours / 24)}d`;
+  if (hours < 24) return `hace ${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `hace ${days}d`;
 }
 
 export function AppHeader({
@@ -70,7 +71,7 @@ export function AppHeader({
 }) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [selectedNotif, setSelectedNotif] = useState<ActivityEntry | null>(null);
-  const [todayEntries, setTodayEntries] = useState<ActivityEntry[]>([]);
+  const [recentEntries, setRecentEntries] = useState<ActivityEntry[]>([]);
   const bellRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -81,9 +82,9 @@ export function AppHeader({
         if (res.ok) {
           const data = await res.json();
           if (data?.entries) {
-            setTodayEntries(
+            setRecentEntries(
               data.entries
-                .filter((e: ActivityEntry) => isToday(e.timestamp))
+                .filter((e: ActivityEntry) => isRecent(e.timestamp))
                 .sort((a: ActivityEntry, b: ActivityEntry) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
             );
           }
@@ -122,9 +123,9 @@ export function AppHeader({
     return () => document.removeEventListener('keydown', handleEsc);
   }, [selectedNotif]);
 
-  const notifCount = todayEntries.length;
+  const notifCount = recentEntries.length;
   const hasNotifs = notifCount > 0;
-  const visibleEntries = todayEntries.slice(0, 5);
+  const visibleEntries = recentEntries.slice(0, 8);
 
   function formatTimestamp(ts: string): string {
     const d = new Date(ts);
@@ -249,7 +250,7 @@ export function AppHeader({
                 >
                   {/* Dropdown header */}
                   <div className="px-4 py-3 border-b border-[#785a28]/15 flex items-center justify-between">
-                    <span className="lol-label text-[10px] text-[#c8aa6e]">Notificaciones de hoy</span>
+                    <span className="lol-label text-[10px] text-[#c8aa6e]">Actividad Reciente</span>
                     <button
                       onClick={() => setNotifOpen(false)}
                       className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -264,7 +265,7 @@ export function AppHeader({
                     {visibleEntries.length === 0 ? (
                       <div className="px-4 py-8 text-center">
                         <Bell className="w-8 h-8 mx-auto mb-2 text-[#785a28]/30" />
-                        <p className="text-xs text-[#5b5a56]">Sin novedades hoy</p>
+                        <p className="text-xs text-[#5b5a56]">Sin actividad en los últimos 7 días</p>
                       </div>
                     ) : (
                       visibleEntries.map((entry) => {

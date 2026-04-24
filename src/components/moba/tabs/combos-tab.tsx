@@ -2,10 +2,56 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, X, ChevronRight, Trophy, Target } from 'lucide-react';
+import { Flame, X, ChevronRight, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TinyChampionIcon, SplashArtIcon } from '../champion-icon';
 import type { BrokenCombo, GameSelection } from '../types';
+
+// Combo type detection from description keywords
+type ComboType = 'Burst' | 'Poke' | 'Engage' | 'Dive' | 'Peel' | null;
+
+const COMBO_TYPE_CONFIG: Record<string, { color: string; bg: string; border: string; icon: typeof Zap }> = {
+  'Burst': { color: '#e84057', bg: 'rgba(232,64,87,0.1)', border: 'rgba(232,64,87,0.3)', icon: Zap },
+  'Poke': { color: '#0acbe6', bg: 'rgba(10,203,230,0.1)', border: 'rgba(10,203,230,0.3)', icon: Crosshair },
+  'Engage': { color: '#c8aa6e', bg: 'rgba(200,170,110,0.1)', border: 'rgba(200,170,110,0.3)', icon: Shield },
+  'Dive': { color: '#f0c646', bg: 'rgba(240,198,70,0.1)', border: 'rgba(240,198,70,0.3)', icon: ArrowDown },
+  'Peel': { color: '#0fba81', bg: 'rgba(15,186,129,0.1)', border: 'rgba(15,186,129,0.3)', icon: Swords },
+};
+
+function detectComboType(description: string): ComboType {
+  const desc = description.toLowerCase();
+  if (/burst|explosi|one-shot|instakill|daño instant|eliminaci.rápida|burstear/.test(desc)) return 'Burst';
+  if (/poke|daño sostenido| harass|ataque a distancia|pokear|dac/.test(desc)) return 'Poke';
+  if (/engage|iniciar|iniciaci.hroe|teamfight|entrar|engagear|start/.test(desc)) return 'Engage';
+  if (/dive|sumergir|salto|saltar|profundidad|inmersion|bruscar/.test(desc)) return 'Dive';
+  if (/peel|proteger|guardi.hroe de acompa.ar|defender|supresar|cc/.test(desc)) return 'Peel';
+  return null;
+}
+
+// Difficulty rating parser
+function getDifficultyRating(difficulty: string): number {
+  const d = difficulty.toLowerCase();
+  if (/dif.cil|hard|expert|avanzado|difícil|alta/.test(d)) return 3;
+  if (/media|medium|moderada|moderate|intermed/.test(d)) return 2;
+  return 1; // fácil / easy / low
+}
+
+function DifficultyStars({ rating }: { rating: number }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3].map(i => (
+        <Star
+          key={i}
+          className="w-3 h-3"
+          style={{
+            color: i <= rating ? '#c8aa6e' : 'rgba(120,90,40,0.25)',
+            fill: i <= rating ? '#c8aa6e' : 'transparent',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCombo[]; loading: boolean; selectedGame: GameSelection }) {
   const [sizeFilter, setSizeFilter] = useState<number | null>(null);
@@ -69,6 +115,10 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
           {filtered.map((combo, idx) => {
             const dc = diffColors[combo.difficulty] || diffColors.media;
             const isExpanded = expandedCombo === combo.id;
+            const diffRating = getDifficultyRating(combo.difficulty);
+            const comboType = detectComboType(combo.description);
+            const comboTypeCfg = comboType ? COMBO_TYPE_CONFIG[comboType] : null;
+
             return (
               <div key={combo.id}>
                 <motion.div
@@ -92,14 +142,31 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                     ))}
                   </div>
                   <h3 className="text-sm font-bold text-[#f0e6d2] group-hover:text-[#e84057] transition-colors">{combo.name}</h3>
-                  <p className="text-[11px] text-[#a09b8c] mt-1 leading-relaxed">{combo.description}</p>
-                  <div className="flex items-center gap-2 mt-3">
+                  <p className="text-[11px] text-[#a09b8c] mt-1 leading-relaxed line-clamp-2">{combo.description}</p>
+
+                  {/* Badges row */}
+                  <div className="flex items-center gap-2 mt-3 flex-wrap">
+                    {/* Win Rate */}
                     <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style={{ backgroundColor: combo.winRate >= 57 ? 'rgba(10,203,230,0.1)' : 'rgba(160,155,140,0.1)', color: combo.winRate >= 57 ? '#0acbe6' : '#a09b8c', border: `1px solid ${combo.winRate >= 57 ? 'rgba(10,203,230,0.3)' : 'rgba(160,155,140,0.2)'}` }}>
                       {combo.winRate}% WR
                     </span>
+
+                    {/* Difficulty label */}
                     <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
                       {combo.difficulty}
                     </span>
+
+                    {/* Combo Type Badge */}
+                    {comboTypeCfg && (
+                      <span
+                        className="text-[9px] font-bold px-2 py-0.5 rounded flex items-center gap-1"
+                        style={{ backgroundColor: comboTypeCfg.bg, color: comboTypeCfg.color, border: `1px solid ${comboTypeCfg.border}` }}
+                      >
+                        {(() => { const Icon = comboTypeCfg.icon; return <Icon className="w-2.5 h-2.5" />; })()}
+                        {comboType}
+                      </span>
+                    )}
+
                     <span className="text-[9px] text-[#5b5a56] ml-auto">
                       {combo.champions.length} champ{combo.champions.length > 1 ? 's' : ''}
                     </span>
@@ -109,6 +176,12 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                     >
                       <ChevronRight className="w-4 h-4 text-[#785a28]" />
                     </motion.div>
+                  </div>
+
+                  {/* Difficulty Stars */}
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-[9px] text-[#5b5a56]">Dificultad:</span>
+                    <DifficultyStars rating={diffRating} />
                   </div>
                 </motion.div>
 
@@ -154,6 +227,25 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                             <Flame className="w-3.5 h-3.5 mx-auto mb-1 text-[#c8aa6e]" />
                             <span className="text-xs font-semibold text-[#c8aa6e]">{combo.champions.length}</span>
                             <p className="text-[9px] text-[#5b5a56]">Campeones</p>
+                          </div>
+                        </div>
+
+                        {/* Combo Type + Difficulty Stars in detail */}
+                        <div className="flex items-center gap-4 mb-3 p-2 rounded-lg" style={{ background: 'rgba(10,14,26,0.4)', border: '1px solid rgba(120,90,40,0.1)' }}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[9px] text-[#5b5a56]">Tipo:</span>
+                            {comboTypeCfg ? (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1" style={{ backgroundColor: comboTypeCfg.bg, color: comboTypeCfg.color, border: `1px solid ${comboTypeCfg.border}` }}>
+                                {(() => { const Icon = comboTypeCfg.icon; return <Icon className="w-3 h-3" />; })()}
+                                {comboType}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-[#5b5a56]">Mixto</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[9px] text-[#5b5a56]">Dificultad:</span>
+                            <DifficultyStars rating={diffRating} />
                           </div>
                         </div>
 

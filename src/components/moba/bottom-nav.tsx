@@ -1,15 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Trophy, AlertTriangle, Flame, ScrollText, Crown, Menu, BookOpen } from 'lucide-react';
+import { Trophy, AlertTriangle, BookOpen, GraduationCap, MoreHorizontal } from 'lucide-react';
 
-// The 5 most important tabs for bottom nav
+// 4 primary tabs + Más (sidebar)
 const PRIMARY_BOTTOM_TABS = [
   { id: 'tierlist', label: 'Tier List', icon: Trophy },
   { id: 'broken', label: 'Rotas', icon: AlertTriangle },
   { id: 'guides', label: 'Guías', icon: BookOpen },
-  { id: 'patches', label: 'Parches', icon: ScrollText },
-  { id: 'competitive', label: 'Comp.', icon: Crown },
+  { id: 'coaching', label: 'Coaching', icon: GraduationCap },
 ];
 
 export function BottomNav({ activeTab, onTabChange, onOpenSidebar }: { activeTab: string; onTabChange: (tab: string) => void; onOpenSidebar?: () => void }) {
@@ -47,7 +46,7 @@ export function BottomNav({ activeTab, onTabChange, onOpenSidebar }: { activeTab
             </button>
           );
         })}
-        {/* Sidebar toggle button — opens full sidebar drawer */}
+        {/* Más button — opens sidebar drawer */}
         <button
           onClick={onOpenSidebar}
           className="
@@ -56,8 +55,8 @@ export function BottomNav({ activeTab, onTabChange, onOpenSidebar }: { activeTab
           "
           aria-label="Abrir menú lateral"
         >
-          <Menu className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Menú</span>
+          <MoreHorizontal className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Más</span>
         </button>
       </div>
     </nav>

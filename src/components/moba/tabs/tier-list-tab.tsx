@@ -319,6 +319,42 @@ export function TierListTab({
         </motion.div>
       )}
 
+      {/* Role Win Rate Summary Bar */}
+      {!loading && !searchQuery && roleFilter === 'Todos' && gameChampions.length > 0 && (() => {
+        const roles = ['Top', 'Jungle', 'Mid', 'ADC', 'Support'] as const;
+        const roleData = roles.map(role => {
+          const champs = gameChampions.filter(c => c.role === role);
+          if (champs.length === 0) return { role, avg: 0, count: 0 };
+          const avg = champs.reduce((sum, c) => sum + c.winRate, 0) / champs.length;
+          return { role, avg: Math.round(avg * 10) / 10, count: champs.length };
+        });
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card rounded-xl p-4"
+          >
+            <p className="lol-label text-[10px] text-[#c8aa6e] mb-3">Promedio WR por Rol</p>
+            <div className="flex flex-wrap items-center gap-3">
+              {roleData.map(({ role, avg, count }) => {
+                const color = avg > 51 ? '#0fba81' : avg > 50 ? '#c8aa6e' : '#e84057';
+                return (
+                  <div
+                    key={role}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg flex-1 min-w-[100px] justify-center"
+                    style={{ background: `${color}08`, border: `1px solid ${color}18` }}
+                  >
+                    <span className="lol-label text-[10px] text-[#a09b8c]">{role}</span>
+                    <span className="text-sm font-bold font-mono" style={{ color }}>{avg}%</span>
+                    <span className="text-[8px] text-[#5b5a56]">({count})</span>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        );
+      })()}
+
       {/* Meta freshness indicator */}
       {!loading && metaLastUpdated && (
         <div className="flex items-center gap-2 text-[10px] text-[#5b5a56]">

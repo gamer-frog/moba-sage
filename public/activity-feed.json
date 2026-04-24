@@ -1,5 +1,5 @@
 {
-  "version": "1.3",
+  "version": "1.4",
   "lastUpdated": "2026-04-25T00:35:00Z",
   "entries": [
     {
@@ -10,6 +10,15 @@
       "timestamp": "2026-04-25T00:35:00Z",
       "commit": "pending",
       "category": "fix"
+    },
+    {
+      "id": "ux-batch2-001",
+      "type": "improvement",
+      "title": "6 mejoras UX — notif 7 días, bottom nav coaching, landing showcase, role WR",
+      "description": "Notificaciones ahora muestran últimos 7 días en vez de solo hoy. Bottom nav actualizada con tab Coaching. Landing page con Champion Showcase Strip animado. Tier List con Promedio WR por Rol. Guías con placeholder 'Próximamente'. Sidebar con atajos de teclado Ctrl+K y Esc.",
+      "timestamp": "2026-04-25T16:30:00Z",
+      "commit": "pending",
+      "category": "improvement"
     },
     {
       "id": "ux-overhaul-002",
@@ -157,14 +166,12 @@
     }
   ],
   "highlights": [
-    "Notificaciones tappable — popup detail con description + commit link",
-    "Coaching: Counter Tips (10 champs) + Keystones por Rol + Runas S-Tier",
-    "Tier List: matchup icons inline (synergias cyan + counters red)",
-    "Global Search: Ctrl+K command palette",
-    "Profile: Match History placeholder",
-    "Landing: Meta Report banner + date footer",
-    "Champion Modal: external links estilizados (U.GG/OP.GG/Mobalytics)",
-    "Patch Analysis: proTips + runeChanges",
-    "26 mejoras totales en la sesión"
+    "Notificaciones: últimos 7 días con popup detail",
+    "Bottom Nav: Coaching añadido, orden optimizado",
+    "Landing: Champion Showcase Strip animado + Meta Report actualizado",
+    "Tier List: Promedio WR por Rol (Top/JNG/Mid/ADC/Sup)",
+    "Guías: placeholder 'Próximamente' con animación",
+    "Sidebar: atajos de teclado (Ctrl+K, Esc)",
+    "32+ mejoras totales acumuladas"
   ]
 }

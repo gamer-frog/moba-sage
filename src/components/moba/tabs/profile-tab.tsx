@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { User, Search, MapPin, ChevronDown, Loader2, Crown, AlertTriangle, Sparkles, Trophy, Clock, Key } from 'lucide-react';
+import { User, Search, MapPin, ChevronDown, Loader2, Crown, AlertTriangle, Sparkles, Trophy, Clock, Key, Swords, TrendingUp, Shield } from 'lucide-react';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,34 @@ import { SmallChampionIcon } from '../champion-icon';
 import { REGIONS, TIER_COLORS } from '../constants';
 import type { SummonerData } from '../types';
 import type { LucideIcon } from 'lucide-react';
+
+const QUICK_STATS = [
+  {
+    label: 'Partidas Ranked',
+    value: '—',
+    icon: Swords,
+    color: '#c8aa6e',
+  },
+  {
+    label: 'Win Rate',
+    value: '—',
+    icon: TrendingUp,
+    color: '#0acbe6',
+  },
+  {
+    label: 'Rango Actual',
+    value: 'Sin conectar',
+    icon: Shield,
+    color: '#0fba81',
+  },
+];
+
+const CONNECT_FEATURES = [
+  'Historial de partidas con builds y runas',
+  'Estadísticas por campeón',
+  'Comparativa con el promedio de tu elo',
+  'Progresión de ranking en el tiempo',
+];
 
 export function ProfileTab({
   summonerName, onSummonerNameChange,
@@ -27,6 +55,40 @@ export function ProfileTab({
   summonerError: string;
   onSearchSummoner: () => void;
 }) {
+  // Use real data when available
+  const displayStats = summonerData
+    ? [
+        {
+          label: 'Partidas Ranked',
+          value: summonerData.ranked.length > 0
+            ? String(summonerData.ranked.reduce((acc, r) => acc + r.wins + r.losses, 0))
+            : '0',
+          icon: Swords,
+          color: '#c8aa6e',
+        },
+        {
+          label: 'Win Rate',
+          value: summonerData.ranked.length > 0
+            ? (() => {
+                const total = summonerData.ranked.reduce((acc, r) => acc + r.wins + r.losses, 0);
+                const wins = summonerData.ranked.reduce((acc, r) => acc + r.wins, 0);
+                return total > 0 ? `${((wins / total) * 100).toFixed(1)}%` : '—';
+              })()
+            : '—',
+          icon: TrendingUp,
+          color: '#0acbe6',
+        },
+        {
+          label: 'Rango Actual',
+          value: summonerData.ranked.length > 0
+            ? `${summonerData.ranked[0].tier} ${summonerData.ranked[0].rank}`
+            : 'Sin ranked',
+          icon: Shield,
+          color: '#0fba81',
+        },
+      ]
+    : QUICK_STATS;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -36,6 +98,74 @@ export function ProfileTab({
           <p className="text-xs text-[#5b5a56]">Busca cualquier invocador para ver su perfil</p>
         </div>
       </div>
+
+      {/* ===== Quick Stats Cards ===== */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="grid grid-cols-3 gap-3"
+      >
+        {displayStats.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <motion.div
+              key={stat.label}
+              whileHover={{ scale: 1.03, y: -2 }}
+              className="glass-card rounded-xl p-3 text-center"
+              style={{ border: '1px solid rgba(200,170,110,0.15)' }}
+            >
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2"
+                style={{ backgroundColor: `${stat.color}15`, border: `1px solid ${stat.color}25` }}
+              >
+                <Icon className="w-4 h-4" style={{ color: stat.color }} />
+              </div>
+              <p className="text-[10px] text-[#5b5a56] mb-0.5 truncate">{stat.label}</p>
+              <p className="text-sm font-bold text-[#f0e6d2] truncate">{stat.value}</p>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      {/* ===== Conecta tu Cuenta Card ===== */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="rounded-xl overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(120,90,40,0.04))',
+          border: '1.5px solid rgba(200,170,110,0.25)',
+          boxShadow: '0 0 20px rgba(200,170,110,0.05)',
+        }}
+      >
+        <div className="p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{
+                background: 'linear-gradient(135deg, #c8aa6e, #785a28)',
+                boxShadow: '0 0 16px rgba(200,170,110,0.3)',
+              }}
+            >
+              <Key className="w-5 h-5 text-[#0a0e1a]" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-[#f0e6d2]">Conecta tu cuenta</h3>
+              <p className="text-[10px] text-[#a09b8c]">Desbloquea estadísticas completas</p>
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            {CONNECT_FEATURES.map((feature, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: '#c8aa6e', boxShadow: '0 0 6px rgba(200,170,110,0.4)' }} />
+                <span className="text-[11px] text-[#a09b8c]">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
 
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(200,170,110,0.08)', border: '1px solid rgba(200,170,110,0.15)' }}>
         <Sparkles className="w-4 h-4 text-[#c8aa6e] shrink-0" />

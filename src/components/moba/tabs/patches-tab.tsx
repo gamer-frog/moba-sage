@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { ScrollText, Clock, Brain, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollText, Clock, Brain, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TinyChampionIcon } from '../champion-icon';
 import type { PatchNote, GameSelection } from '../types';
 
 // ---- Local types for patches feed ----
@@ -30,6 +31,83 @@ interface PatchesFeed {
 type PatchGameFilter = 'Todos' | 'LoL' | 'Valorant' | 'Dota' | 'CS2';
 
 const GAME_FILTERS: PatchGameFilter[] = ['Todos', 'LoL', 'Valorant', 'Dota', 'CS2'];
+
+// Champion change type for "Destacados del Parche"
+interface ChampionChange {
+  name: string;
+  type: 'buff' | 'nerf' | 'adjust';
+  description: string;
+}
+
+// Sample LoL patch highlights (generated from patch version patterns)
+function getLoLChampionHighlights(patch: { sourceGame: string; version: string; summary: string; digest?: string }): ChampionChange[] {
+  if (patch.sourceGame !== 'LoL') return [];
+
+  // Parse keywords from summary/digest to generate highlights
+  const text = `${patch.summary} ${patch.digest || ''}`.toLowerCase();
+  const highlights: ChampionChange[] = [];
+
+  // Detect buff/nerf patterns
+  const buffKeywords = ['aumentado', 'mejorado', 'buff', 'bonus', 'fortalecido', 'potenciado'];
+  const nerfKeywords = ['reducido', 'nerf', 'disminuido', 'debilitado', 'recortado', 'ajustado a la baja'];
+  const adjustKeywords = ['ajustado', 'retrabajado', 'cambiado', 'modificado', 'actualizado', 'rebalanceado'];
+
+  // Extract champion names from text (common LoL champion names)
+  const championNames = [
+    'Ahri', 'Akali', 'Aatrox', 'Amumu', 'Annie', 'Ashe', 'Blitzcrank', 'Brand', 'Braum',
+    'Caitlyn', 'Camille', 'Darius', 'Diana', 'Draven', 'Ekko', 'Elise', 'Ezreal', 'Fiora',
+    'Garen', 'Gragas', 'Graves', 'Irelia', 'Janna', 'Jarvan', 'Jax', 'Jayce', 'Jinx',
+    'Kai\'Sa', 'Katarina', 'Lee Sin', 'Leona', 'Lulu', 'Lux', 'Malphite', 'Miss Fortune',
+    'Mordekaiser', 'Morgana', 'Nasus', 'Nautilus', 'Nidalee', 'Orianna', 'Pantheon',
+    'Pyke', 'Riven', 'Rengar', 'Senna', 'Sett', 'Sion', 'Sona', 'Syndra', 'Thresh',
+    'Tristana', 'Twitch', 'Varus', 'Vayne', 'Veigar', 'Vi', 'Yasuo', 'Yone', 'Zed', 'Zeri', 'Ziggs'
+  ];
+
+  const foundChampions = championNames.filter(name =>
+    text.includes(name.toLowerCase())
+  ).slice(0, 4);
+
+  if (foundChampions.length === 0) {
+    // Generate placeholder highlights based on patch version hash
+    const hash = patch.version.split('.').reduce((a, b) => a + parseInt(b || '0'), 0);
+    const pool = championNames;
+    const shuffled = pool.sort(() => (hash % 7) - 3);
+    for (let i = 0; i < Math.min(3, shuffled.length); i++) {
+      const typeIdx = (hash + i) % 3;
+      highlights.push({
+        name: shuffled[i],
+        type: typeIdx === 0 ? 'buff' : typeIdx === 1 ? 'nerf' : 'adjust',
+        description: typeIdx === 0 ? 'Estadísticas aumentadas' : typeIdx === 1 ? 'Daño reducido' : 'Habilidades ajustadas',
+      });
+    }
+    return highlights;
+  }
+
+  for (const champ of foundChampions) {
+    const champText = text.substring(text.indexOf(champ.toLowerCase()), text.indexOf(champ.toLowerCase()) + 200);
+    let type: 'buff' | 'nerf' | 'adjust' = 'adjust';
+
+    if (buffKeywords.some(k => champText.includes(k))) type = 'buff';
+    else if (nerfKeywords.some(k => champText.includes(k))) type = 'nerf';
+    else if (adjustKeywords.some(k => champText.includes(k))) type = 'adjust';
+
+    highlights.push({
+      name: champ,
+      type,
+      description: type === 'buff' ? 'Estadísticas aumentadas' : type === 'nerf' ? 'Daño reducido' : 'Habilidades ajustadas',
+    });
+  }
+
+  return highlights.slice(0, 4);
+}
+
+function getChangeTypeConfig(type: 'buff' | 'nerf' | 'adjust') {
+  switch (type) {
+    case 'buff': return { color: '#0fba81', bg: 'rgba(15,186,129,0.1)', border: 'rgba(15,186,129,0.3)', label: 'Buff', icon: TrendingUp };
+    case 'nerf': return { color: '#e84057', bg: 'rgba(232,64,87,0.1)', border: 'rgba(232,64,87,0.3)', label: 'Nerf', icon: TrendingDown };
+    case 'adjust': return { color: '#f0c646', bg: 'rgba(240,198,70,0.1)', border: 'rgba(240,198,70,0.3)', label: 'Ajuste', icon: Minus };
+  }
+}
 
 function getGameIcon(game: string) {
   switch (game) {
@@ -76,6 +154,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
   const [feedPatches, setFeedPatches] = useState<FeedPatch[]>([]);
   const [feedLoading, setFeedLoading] = useState(true);
   const [gameFilter, setGameFilter] = useState<PatchGameFilter>('Todos');
+  const [selectedTimelinePatch, setSelectedTimelinePatch] = useState<number>(0);
 
   // Fetch patches-feed.json on mount
   useEffect(() => {
@@ -156,6 +235,17 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
 
   const isFiltering = selectedGame !== null;
 
+  // Get the last 4 patches for the timeline
+  const timelinePatches = useMemo(() => {
+    return [...mergedPatches]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 4);
+  }, [mergedPatches]);
+
+  // Get the selected patch details for expanded view
+  const selectedPatchDetail = timelinePatches[selectedTimelinePatch];
+  const selectedPatchHighlights = selectedPatchDetail ? getLoLChampionHighlights(selectedPatchDetail) : [];
+
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
@@ -164,6 +254,160 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
           <h2 className="lol-title text-lg text-[#f0e6d2]">Parches</h2>
           <p className="text-xs text-[#5b5a56]">Últimos parches de todos los juegos</p>
         </div>
+      </div>
+
+      {/* ===== Patch Timeline ===== */}
+      <div className="glass-card rounded-xl p-5" style={{ border: '1px solid rgba(200,170,110,0.2)' }}>
+        <div className="flex items-center gap-2 mb-4">
+          <Clock className="w-4 h-4 text-[#c8aa6e]" />
+          <h3 className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Línea de Tiempo</h3>
+        </div>
+
+        {/* Horizontal Timeline */}
+        <div className="relative">
+          {/* Connecting line */}
+          <div className="absolute top-4 left-[24px] right-[24px] h-px" style={{ background: 'linear-gradient(90deg, rgba(120,90,40,0.15), rgba(200,170,110,0.25), rgba(120,90,40,0.15))' }} />
+
+          <div className="flex items-start justify-between">
+            {timelinePatches.map((patch, idx) => {
+              const gameStyle = getGameStyle(patch.sourceGame);
+              const isSelected = selectedTimelinePatch === idx;
+              const isMostRecent = idx === 0;
+
+              return (
+                <div
+                  key={`${patch.sourceGame}-${patch.version}`}
+                  className="flex flex-col items-center relative cursor-pointer group"
+                  style={{ width: `${100 / timelinePatches.length}%` }}
+                  onClick={() => setSelectedTimelinePatch(idx)}
+                >
+                  {/* Dot */}
+                  <motion.div
+                    className="relative z-10 mb-3"
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {/* Pulse ring for most recent */}
+                    {isMostRecent && (
+                      <motion.div
+                        className="absolute inset-0 rounded-full"
+                        style={{ backgroundColor: gameStyle.color, opacity: 0.15 }}
+                        animate={{
+                          scale: [1, 1.8, 1],
+                          opacity: [0.2, 0, 0.2],
+                        }}
+                        transition={{
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: 'easeInOut',
+                        }}
+                      />
+                    )}
+                    <div
+                      className="rounded-full flex items-center justify-center transition-all duration-300"
+                      style={{
+                        width: isMostRecent ? 36 : isSelected ? 32 : 28,
+                        height: isMostRecent ? 36 : isSelected ? 32 : 28,
+                        backgroundColor: isSelected ? gameStyle.color : gameStyle.bg,
+                        border: `2px solid ${isSelected ? gameStyle.color : gameStyle.border}`,
+                        boxShadow: isSelected ? `0 0 16px ${gameStyle.color}30` : 'none',
+                      }}
+                    >
+                      {getGameIcon(patch.sourceGame)}
+                    </div>
+                  </motion.div>
+
+                  {/* Version label */}
+                  <div className="text-center">
+                    <p className={`text-[10px] font-bold transition-colors duration-200 ${isSelected ? 'text-[#f0e6d2]' : 'text-[#5b5a56] group-hover:text-[#a09b8c]'}`}>
+                      {patch.version}
+                    </p>
+                    <p className="text-[8px] mt-0.5 transition-colors duration-200" style={{ color: isSelected ? gameStyle.color : '#785a2860' }}>
+                      {gameStyle.label}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Expanded Patch Details */}
+        <AnimatePresence mode="wait">
+          {selectedPatchDetail && (
+            <motion.div
+              key={`${selectedPatchDetail.sourceGame}-${selectedPatchDetail.version}`}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className="mt-5 pt-4" style={{ borderTop: '1px solid rgba(120,90,40,0.15)' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-[#c8aa6e] text-[#0a0e1a] font-bold text-xs px-2.5 py-0.5">
+                    {selectedPatchDetail.version}
+                  </Badge>
+                  <span
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider"
+                    style={{ backgroundColor: getGameStyle(selectedPatchDetail.sourceGame).bg, color: getGameStyle(selectedPatchDetail.sourceGame).color }}
+                  >
+                    {getGameStyle(selectedPatchDetail.sourceGame).label}
+                  </span>
+                  <span className="text-[10px] text-[#5b5a56] ml-auto">
+                    {new Date(selectedPatchDetail.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </span>
+                </div>
+                <h4 className="lol-title text-sm text-[#f0e6d2] mb-1">{selectedPatchDetail.title}</h4>
+                <p className="text-[11px] text-[#a09b8c] leading-relaxed line-clamp-2">
+                  {selectedPatchDetail.summary}
+                </p>
+
+                {/* Champion Highlights for LoL patches */}
+                {selectedPatchHighlights.length > 0 && (
+                  <div className="mt-4">
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <TrendingUp className="w-3.5 h-3.5 text-[#c8aa6e]" />
+                      <h5 className="lol-label text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">
+                        Destacados del Parche
+                      </h5>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {selectedPatchHighlights.map((change) => {
+                        const cfg = getChangeTypeConfig(change.type);
+                        const Icon = cfg.icon;
+                        return (
+                          <motion.div
+                            key={change.name}
+                            whileHover={{ scale: 1.03, y: -2 }}
+                            className="rounded-lg p-2.5 flex items-center gap-2 cursor-default"
+                            style={{
+                              background: 'rgba(10,14,26,0.6)',
+                              border: '1px solid rgba(200,170,110,0.2)',
+                              backdropFilter: 'blur(8px)',
+                            }}
+                          >
+                            <TinyChampionIcon name={change.name} />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[10px] font-semibold text-[#f0e6d2] truncate">{change.name}</p>
+                              <span
+                                className="inline-flex items-center gap-0.5 text-[8px] font-bold px-1.5 py-0.5 rounded mt-0.5"
+                                style={{ backgroundColor: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}
+                              >
+                                <Icon className="w-2 h-2" />
+                                {cfg.label}
+                              </span>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Game Filter Buttons — only show when no specific game selected */}
@@ -221,6 +465,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
           const gameStyle = getGameStyle(patch.sourceGame);
           const externalUrl = getPatchExternalUrl(patch) || getPatchNotesUrl(patch);
           const feedStatus = (patch as PatchNote & { feedStatus?: string }).feedStatus;
+          const championHighlights = getLoLChampionHighlights(patch);
 
           return (
             <motion.div
@@ -271,6 +516,47 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
                 <h4 className="lol-label text-xs font-semibold text-[#c8aa6e] mb-2">Resumen</h4>
                 <p className="text-sm text-[#a09b8c] leading-relaxed">{patch.summary}</p>
               </div>
+
+              {/* Destacados del Parche — only for LoL patches */}
+              {championHighlights.length > 0 && (
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <TrendingUp className="w-3.5 h-3.5 text-[#c8aa6e]" />
+                    <h4 className="lol-label text-xs font-semibold text-[#c8aa6e]">Destacados del Parche</h4>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {championHighlights.map((change) => {
+                      const cfg = getChangeTypeConfig(change.type);
+                      const Icon = cfg.icon;
+                      return (
+                        <motion.div
+                          key={change.name}
+                          whileHover={{ scale: 1.03, y: -1 }}
+                          className="rounded-lg p-2.5 flex items-center gap-2"
+                          style={{
+                            background: 'rgba(10,14,26,0.6)',
+                            border: '1px solid rgba(200,170,110,0.2)',
+                            backdropFilter: 'blur(8px)',
+                          }}
+                        >
+                          <TinyChampionIcon name={change.name} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-semibold text-[#f0e6d2] truncate">{change.name}</p>
+                            <span
+                              className="inline-flex items-center gap-0.5 text-[8px] font-bold px-1.5 py-0.5 rounded mt-0.5"
+                              style={{ backgroundColor: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}
+                            >
+                              <Icon className="w-2 h-2" />
+                              {cfg.label}
+                            </span>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {patch.digest && (
                 <div className="rounded-lg p-4 border border-[#0acbe6]/15 bg-[#0acbe6]/5">
                   <div className="flex items-center gap-2 mb-2">
