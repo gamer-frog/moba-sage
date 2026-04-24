@@ -1,0 +1,87 @@
+{
+  "lastUpdated": "2026-04-24T13:30:00Z",
+  "source": "juegos-1 BOTARDO OS",
+  "patches": [
+    {
+      "id": 1,
+      "version": "26.9",
+      "title": "Patch 26.9 — Season 2 Pandemonium",
+      "date": "2026-04-29",
+      "sourceGame": "LoL",
+      "status": "upcoming",
+      "summary": "Lanzamiento de Season 2 Pandemonium. Nuevos Doran's, botas Omnivamp (1.5%), WASD keybinds por campeón, ranked reset, Endless Hunger buff.",
+      "digest": "CAMBIOS DE SISTEMAS: Nuevos items de inicio (reemplazan Trailblazer/Opportunity), Doran's Bow confirmado, Dusk and Dawn rework, botas Omnivamp 1.5%, WASD controles, ranked Season 1 termina. NERFS: Ambessa (burst/survivability), Briar (dive sostenido). BUFFS: Taliyah (control mapa), Warwick (jungle sustain), Tahm Kench (utilidad support). AJUSTES: Zeri (DPS balance), Shyvana (reajuste iterativo), Xin Zhao (enganche), Ezreal (nuevos Doran's), Kennen, Teemo, Udyr, Zoe. SISTEMAS: Endless Hunger buff, keybinds por campeón. NUEVO CAMPEON: AP midlaner en Season 2.",
+      "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-9-notes/",
+      "changes": {
+        "nerfs": ["Ambessa", "Briar"],
+        "buffs": ["Taliyah", "Warwick", "Tahm Kench"],
+        "adjustments": ["Zeri", "Shyvana", "Xin Zhao", "Ezreal", "Kennen", "Teemo", "Udyr", "Zoe"],
+        "newItems": ["Doran's Bow", "Dusk and Dawn (rework)", "Omnivamp Boots (1.5%)"],
+        "removedItems": ["Trailblazer", "Opportunity"],
+        "systems": ["WASD keybinds", "Endless Hunger buff", "Ranked Season 1 end", "Ranked Season 2 start"]
+      }
+    },
+    {
+      "id": 2,
+      "version": "26.8",
+      "title": "Patch 26.8 — First Stand",
+      "date": "2026-04-14",
+      "sourceGame": "LoL",
+      "status": "current",
+      "summary": "Shyvana update, items mythic adjustments, First Stand tournament balance.",
+      "digest": "Patch 26.8 trae cambios significativos al meta actual. Se ajustan items mythic y objetos legendarios, se modifican las ratios de la jungla, y varios campeones reciben buffs y nerfs de balance. El meta evoluciona con nuevas composiciones viables en todas las roles.",
+      "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-8-notes/"
+    },
+    {
+      "id": 3,
+      "version": "12.07",
+      "title": "VALORANT Patch 12.07 — Discord Partnership",
+      "date": "2026-04-14",
+      "sourceGame": "VAL",
+      "status": "current",
+      "summary": "Partnership with Discord, revamped Settings page, QoL updates.",
+      "digest": "VALORANT 12.07 trae partnership con Discord, settings page rediseñada, QoL updates a Clove y otros agentes.",
+      "url": "https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-12-07/"
+    },
+    {
+      "id": 4,
+      "version": "12.06",
+      "title": "VALORANT Patch 12.06 — Waylay Nerf",
+      "date": "2026-04-24",
+      "sourceGame": "VAL",
+      "status": "rolling_out",
+      "summary": "Waylay Saturate changed from INSTANT to EQUIP. Bind out of competitive rotation Act 3.",
+      "digest": "Waylay recibe nerfo significativo: Saturate pasa de INSTANT a EQUIP, limitando combo flash+trap. Viper backend improvements en ultimate. Bind sale de rotación competitiva Act 3. Implementándose en VCT Pacific Week 4 (24/04).",
+      "url": "https://playvalorant.com/en-us/news/game-updates/",
+      "changes": {
+        "nerfs": ["Waylay (Saturate INSTANT → EQUIP)"],
+        "maps": ["Bind out of Act 3 rotation"]
+      }
+    },
+    {
+      "id": 5,
+      "version": "7.38c",
+      "title": "Dota 2 Patch 7.38c",
+      "date": "2026-04-01",
+      "sourceGame": "Dota",
+      "status": "current",
+      "summary": "Minor balance patch post-7.38.",
+      "digest": "Dota 2 7.38c ajustes menores de balance. Meta estable sin cambios significativos.",
+      "url": "https://www.dota2.com/patches/"
+    },
+    {
+      "id": 6,
+      "version": "1.41.5.1",
+      "title": "CS2 AnimGraph 2 + Screen Shake Fix",
+      "date": "2026-04-21",
+      "sourceGame": "CS2",
+      "status": "current",
+      "summary": "AnimGraph 2 live deployment, screen shake reducido, burst fire fix.",
+      "digest": "Valve deployed AnimGraph 2 overhaul para todas las animaciones third-person. Screen shake al spray reducido significativamente. Burst fire bug fix. Knife attack transitions fix. Elites third-person fix.",
+      "url": "https://blog.counter-strike.net/",
+      "changes": {
+        "fixes": ["Screen shake spray", "Burst fire delay", "Knife transitions", "Elites third-person"]
+      }
+    }
+  ]
+}
