@@ -8,7 +8,7 @@
       "title": "3 Fixes: item IDs + runa icon + 25+ texto inglés→español",
       "description": "(1) IDs rotos: Convergencia de Zeke 3190→3194 (mostraba ícono de Medallón), Hydratación Letal ID 3074 inexistente eliminado, ghost item Filo de la Trinidad removido. Runa Sabor a Sangre apuntaba a HailOfBlades→TasteOfBlood. meta-builds parche fallback 16.08→26.8. (2) 25+ correcciones de texto: lantern→linterna (Thresh x6), landing→acertar (Ahri/Ezreal/Graves/Jhin/Ahri WR/Nidalee), mobility→movilidad (Rakan), machine→máquina (Senna), facing→enfrentarse (Darius x2), target→objetivo (Thresh WR/Lulu/Camille), assassinar→asesinar (Elise), eliminate→eliminar (Zed), sin mercy→sin piedad (Garen), teamfight breaker→romper teamfights (Morgana), definien→definen (Vi), posicionate→posicionáte (Vayne/Vel'Koz/Draven), rapidamente→rápidamente (Rakan), reactívamente→reactivamente (Nami). Build OK.",
       "timestamp": "2026-04-24T18:26:00Z",
-      "commit": "pending",
+      "commit": "9b578c8",
       "category": "fix"
     },
     {
