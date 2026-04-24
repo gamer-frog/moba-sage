@@ -34,6 +34,7 @@ import { ProfileTab } from '@/components/moba/tabs/profile-tab';
 import { ActivityTab } from '@/components/moba/tabs/activity-tab';
 import { GuidesTab } from '@/components/moba/tabs/guides-tab';
 import { CoachingTab } from '@/components/moba/tabs/coaching-tab';
+import { ComparisonTab } from '@/components/moba/tabs/comparison-tab';
 import { ActivityPopup } from '@/components/moba/activity-popup';
 
 // ============ TAB CONTENT RENDERER ============
@@ -64,6 +65,7 @@ function TabContent({
     switch (activeTab) {
       case 'tierlist': return <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={onSearchChange} roleFilter={roleFilter} onRoleFilterChange={onRoleFilterChange} favorites={favorites} onToggleFavorite={onToggleFavorite} onChampionClick={onChampionClick} metaLastUpdated={liveVersions.metaLastUpdated} />;
       case 'patches': return <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />;
+      case 'comparison': return <ComparisonTab champions={champions} loading={loading} selectedGame={selectedGame} onChampionClick={onChampionClick} />;
       case 'broken': return <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />;
       case 'combos': return <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />;
       case 'competitive': return <CompetitiveTab proPicks={proPicks} loading={loading} selectedGame={selectedGame} proRegionFilter={proRegionFilter} onProRegionFilterChange={onProRegionFilterChange} />;
@@ -142,8 +144,6 @@ export default function Home() {
 
   // Back to Top state
   const [showBackToTop, setShowBackToTop] = useState(false);
-
-  // ============ GAME SELECTION ============
 
   // ============ FETCH DATA ============
   const fetchData = useCallback(async () => {
@@ -390,7 +390,8 @@ export default function Home() {
                   placeholder="Buscar campeón..."
                   className="flex-1 bg-transparent text-[#f0e6d2] text-lg placeholder:text-[#5b5a56] outline-none lol-title"
                   style={{ fontFamily: 'inherit', letterSpacing: '0.05em' }}
-                />\n                <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] text-[#5b5a56]" style={{ background: 'rgba(120,90,40,0.12)', border: '1px solid rgba(120,90,40,0.2)' }}>
+                />
+                <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] text-[#5b5a56]" style={{ background: 'rgba(120,90,40,0.12)', border: '1px solid rgba(120,90,40,0.2)' }}>
                   <span className="text-[8px]">⌘</span>K
                 </kbd>
               </div>
