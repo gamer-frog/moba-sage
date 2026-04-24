@@ -27,7 +27,6 @@ interface TierlistFeed {
     watch26_9?: string[];
     weeklyTop?: Array<{ name: string; role: string; currentWR: number; change: number }>;
   };
-  valorant?: Record<string, unknown>;
   cs2?: Record<string, unknown>;
 }
 
