@@ -1,7 +1,16 @@
 {
   "version": "1.1",
-  "lastUpdated": "2026-04-24T14:25:00Z",
+  "lastUpdated": "2026-04-24T14:35:00Z",
   "entries": [
+    {
+      "id": "ui-polish-001",
+      "type": "feature",
+      "title": "7 mejoras de UI — nueva tab Guías, Patches multi-juego, WR bars, trends",
+      "description": "Nueva tab Guías (7 guías, filtros LoL/Valorant, cards responsive). Patches multi-juego (LoL/Valorant/Dota/CS2 con badges de color). WR stat bars animadas en Tier List. Rising/Falling trends (↑↓) desde tierlist-feed.json. A-tier con splash art grande en Cosas Rotas. 11 archivos modificados, 673 líneas agregadas.",
+      "timestamp": "2026-04-24T14:35:00Z",
+      "commit": "ff7857e",
+      "category": "feature"
+    },
     {
       "id": "dev-maintenance-001",
       "type": "maintenance",
@@ -139,12 +148,12 @@
     }
   ],
   "highlights": [
-    "Dev cron rotation activa: PATCHES → TIERLIST → GUIDES → MAINTENANCE",
-    "7 guías indexadas (LoL + Valorant)",
-    "Tierlist-feed v2 con win rates y categorías",
-    "6 patches trackeados (LoL, Valorant, Dota, CS2)",
-    "Git push con bautiarmanijuegos@gmail.com → Vercel redeploys",
-    "Wild Rift data migrado desde mobas-coach",
-    "Coaching data disponible en data/coaching/"
+    "Nueva tab Guías — 7 guías indexadas (LoL + Valorant) con cards responsive",
+    "Patches multi-juego — LoL/Valorant/Dota/CS2 con badges de color",
+    "Rising/Falling trends (↑↓) en Tier List desde tierlist-feed.json",
+    "WR stat bars animadas por color en cada campeón",
+    "A-tier splash art grande en Cosas Rotas con gold glow hover",
+    "Dev cron rotation: PATCHES → TIERLIST → GUIDES → MAINTENANCE",
+    "Git push con bautiarmanijuegos@gmail.com → Vercel redeploys"
   ]
 }
