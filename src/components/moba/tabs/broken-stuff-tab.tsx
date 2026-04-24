@@ -6,10 +6,12 @@ import { AlertTriangle, Sparkles, Wrench, ChevronRight, Newspaper, TrendingUp, T
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 import { SplashArtIcon, TinyChampionIcon } from '../champion-icon';
 import { RoleBadge, CategoryBadge } from '../badges';
 import { ItemIcon } from '../item-icon';
-import { parseBuildItems } from '../helpers';
+import { ChampionCard } from '../champion-card';
+import { parseBuildItems, getChampionSplashUrl } from '../helpers';
 import type { Champion, AiInsight, GameSelection } from '../types';
 
 // ---- Patch Analysis types ----
@@ -243,7 +245,7 @@ export function BrokenStuffTab({
               ROTO OP
             </Badge>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2">
             {sTierChamps.map((champ, idx) => {
               const mainBuild = champ.builds?.[0];
               const buildItems = mainBuild ? parseBuildItems(mainBuild.items) : [];
@@ -253,65 +255,71 @@ export function BrokenStuffTab({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="glass-card rounded-xl overflow-hidden group"
-                  style={{ border: '1px solid rgba(200,170,110,0.2)' }}
+                  className="shrink-0 w-full sm:w-[180px] h-[220px] rounded-xl overflow-hidden relative group"
+                  style={{ border: `2px solid rgba(200,170,110,0.3)`, boxShadow: '0 0 20px rgba(200,170,110,0.1)' }}
                 >
-                  <div className="flex items-start gap-3 p-4">
-                    <div className="relative shrink-0">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden" style={{ border: '2.5px solid #c8aa6e', boxShadow: '0 0 20px rgba(200,170,110,0.2), 0 0 40px rgba(200,170,110,0.05)' }}>
-                        <SplashArtIcon name={champ.name} />
-                      </div>
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: '#c8aa6e', color: '#0a0e1a' }}>S</div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <h3 className="font-bold text-[#f0e6d2] text-sm truncate">{champ.name}</h3>
-                        <RoleBadge role={champ.role} />
-                      </div>
-                      <div className="flex items-center gap-3 text-[11px] mb-1">
-                        <span className="font-mono font-bold" style={{ color: champ.winRate >= 53 ? '#0acbe6' : '#c8aa6e' }}>{champ.winRate}% WR</span>
-                        <span className="text-[#5b5a56]">|</span>
-                        <span className="font-mono text-[#a09b8c]">{champ.pickRate}% Pick</span>
-                        {champ.banRate > 5 && (<><span className="text-[#5b5a56]">|</span><span className="font-mono text-[#e84057]">{champ.banRate}% Ban</span></>)}
-                      </div>
-                    </div>
+                  {/* Splash background */}
+                  <div className="absolute inset-0">
+                    <Image
+                      src={getChampionSplashUrl(champ.name, 0)}
+                      alt={champ.name}
+                      fill
+                      className="object-cover"
+                      style={{ filter: 'brightness(0.65) saturate(1.2)' }}
+                      unoptimized
+                      sizes="180px"
+                    />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 15%, rgba(10,14,26,0.6) 50%, rgba(10,14,26,0.97) 100%)' }} />
                   </div>
-                  {mainBuild && (
-                    <div className="px-4 py-2" style={{ borderTop: '1px solid rgba(200,170,110,0.1)', background: 'rgba(200,170,110,0.03)' }}>
-                      <div className="flex items-center gap-1.5 mb-1.5">
-                        <Wrench className="w-3 h-3 text-[#c8aa6e]" />
-                        <span className="lol-label text-[10px] text-[#c8aa6e]">Build Roto</span>
-                        <span className="text-[9px] font-mono text-[#0acbe6] ml-auto">{mainBuild.winRate}% WR</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 flex-wrap overflow-hidden max-h-[52px]">
-                        {buildItems.map((item, i) => (
-                          <div key={i} className="flex items-center gap-1">
+
+                  {/* ROTO OP badge */}
+                  {champ.winRate >= 53 && (
+                    <div className="absolute top-2 left-2 z-10">
+                      <Badge className="bg-[#e84057]/90 text-white border border-[#e84057] text-[8px] px-1.5 py-0.5 font-black">
+                        ROTO OP
+                      </Badge>
+                    </div>
+                  )}
+
+                  {/* S Tier badge */}
+                  <div className="absolute top-2 right-2 z-10">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md text-[10px] font-black" style={{ backgroundColor: '#c8aa6e', color: '#0a0e1a', boxShadow: '0 0 12px rgba(200,170,110,0.4)' }}>S</span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="relative h-full flex flex-col justify-end p-3">
+                    <span className="lol-title text-base font-bold text-[#f0e6d2]">{champ.name}</span>
+                    <RoleBadge role={champ.role} />
+
+                    {/* Stats row */}
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="font-mono text-[11px] font-bold" style={{ color: champ.winRate >= 53 ? '#0acbe6' : '#c8aa6e' }}>
+                        {champ.winRate}% WR
+                      </span>
+                      <span className="text-[#5b5a56] text-[10px]">·</span>
+                      <span className="font-mono text-[10px] text-[#a09b8c]">{champ.pickRate}% Pick</span>
+                      {champ.banRate > 5 && (
+                        <>
+                          <span className="text-[#5b5a56] text-[10px]">·</span>
+                          <span className="font-mono text-[10px] text-[#e84057]">{champ.banRate}% Ban</span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Build items inside card */}
+                    {mainBuild && buildItems.length > 0 && (
+                      <div className="mt-2 flex items-center gap-1 overflow-hidden">
+                        {buildItems.slice(0, 4).map((item, i) => (
+                          <div key={i} className="relative">
                             <ItemIcon name={item} />
-                            <span className="text-[9px] text-[#a09b8c] whitespace-nowrap">{item}</span>
-                            {i < buildItems.length - 1 && (
-                              <svg className="w-3 h-3 text-[#785a28]/40 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                            )}
                           </div>
                         ))}
+                        {buildItems.length > 4 && (
+                          <span className="text-[8px] text-[#5b5a56]">+{buildItems.length - 4}</span>
+                        )}
                       </div>
-                    </div>
-                  )}
-                  {(champ.counterPick || champ.synergy) && (
-                    <div className="grid grid-cols-2 gap-2 px-4 py-2" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
-                      {champ.counterPick && (
-                        <div className="min-w-0">
-                          <span className="lol-label text-[9px] text-[#e84057]">Counters</span>
-                          <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.counterPick}>{champ.counterPick}</p>
-                        </div>
-                      )}
-                      {champ.synergy && (
-                        <div className="min-w-0">
-                          <span className="lol-label text-[9px] text-[#0acbe6]">Sinergia</span>
-                          <p className="text-[10px] text-[#a09b8c] mt-0.5 truncate" title={champ.synergy}>{champ.synergy}</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </motion.div>
               );
             })}

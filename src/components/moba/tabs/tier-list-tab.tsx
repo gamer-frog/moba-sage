@@ -8,6 +8,8 @@ import { ChampionIcon } from '../champion-icon';
 import { RoleBadge } from '../badges';
 import { TierSection, TierSectionSkeleton } from '../tier-section';
 import { TIER_CONFIG } from '../constants';
+import { ChampionCard } from '../champion-card';
+import { DataSourcesPanel } from '../data-sources-panel';
 import type { Champion, GameSelection } from '../types';
 
 // ---- Local types for tierlist feed ----
@@ -365,6 +367,9 @@ export function TierListTab({
         </div>
       )}
 
+      {/* Data Sources Panel */}
+      {!loading && !searchQuery && roleFilter === 'Todos' && <DataSourcesPanel />}
+
       {loading ? (
         <>
           <TierSectionSkeleton />
@@ -438,36 +443,21 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
         return (
           <div key={tier}>
             <div className="flex items-center gap-2 mb-2">
-                <span className="lol-title text-sm" style={{ color: cfg.color, textShadow: `0 0 10px ${cfg.color}30` }}>{tier}</span>
+              <span className="lol-title text-sm" style={{ color: cfg.color, textShadow: `0 0 10px ${cfg.color}30` }}>{tier}</span>
               <span className="text-[10px] text-[#5b5a56]">{cfg.label}</span>
               <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${cfg.color}30, transparent)` }} />
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
               {tierChamps.map(champ => (
-                <motion.button
+                <ChampionCard
                   key={champ.id}
+                  champion={champ}
                   onClick={() => onChampionClick(champ)}
-                  className="relative group flex flex-col items-center gap-1.5 p-3 rounded-xl transition-all duration-200 cursor-pointer"
-                  style={{ background: 'rgba(30,35,40,0.5)', border: `1px solid ${cfg.color}20` }}
-                  whileHover={{ scale: 1.05, borderColor: `${cfg.color}50` }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <ChampionIcon name={champ.name} tier={champ.tier} />
-                  <div className="text-center min-w-0 w-full">
-                    <p className="text-[11px] font-semibold text-[#f0e6d2] truncate flex items-center justify-center gap-0.5">
-                      {champ.name}
-                      {trendMap?.[champ.name] === 'rising' && <span className="text-[9px] font-bold text-[#0fba81]">↑</span>}
-                      {trendMap?.[champ.name] === 'falling' && <span className="text-[9px] font-bold text-[#e84057]">↓</span>}
-                    </p>
-                    <p className="text-[9px] font-mono" style={{ color: wrColor(champ.winRate) }}>{champ.winRate}%</p>
-                  </div>
-                  <RoleBadge role={champ.role} />
-                  {favorites.has(champ.id) && (
-                    <div className="absolute -top-1 -right-1">
-                      <Star className="w-3 h-3 text-[#f0c646]" fill="#f0c646" />
-                    </div>
-                  )}
-                </motion.button>
+                  showFavorite={true}
+                  isFavorite={favorites.has(champ.id)}
+                  trend={trendMap?.[champ.name]}
+                  size="sm"
+                />
               ))}
             </div>
           </div>
