@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, useCallback, memo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Sword, Monitor, Smartphone, Gamepad2, ChevronRight, Database, Clock, Shield, GraduationCap, Trophy, Zap } from 'lucide-react';
 import { GAME_TAB_ITEMS, DEV_TAB_ITEMS } from './constants';
@@ -9,6 +9,7 @@ import type { GameSelection } from './types';
 const TOTAL_TABS = GAME_TAB_ITEMS.length + DEV_TAB_ITEMS.length;
 
 const SPLASH_CHAMPIONS = ['Yasuo', 'Jinx', 'Ahri', 'LeeSin'];
+const SHOWCASE_CHAMPIONS = ['Jinx', 'Ahri', 'Yasuo', 'LeeSin', 'Katarina', 'Thresh', 'Darius', 'Vi'];
 
 const _SplashCarousel = memo(function _SplashCarousel() {
   const [current, setCurrent] = useState(0);
@@ -89,13 +90,13 @@ export function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: Gam
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm sm:text-base font-bold text-[#c8aa6e] lol-title">Patch 26.8 — Meta Report</h3>
+                <h3 className="text-sm sm:text-base font-bold text-[#c8aa6e] lol-title">Patch 26.9 — Meta Report</h3>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-bold" style={{ background: 'rgba(15,186,129,0.15)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.25)' }}>
                   <Zap className="w-2.5 h-2.5" />
                   LIVE
                 </span>
               </div>
-              <p className="text-[11px] text-[#a09b8c] mt-0.5">16 campeones S-tier · 6 parches trackeados · 7 guías disponibles</p>
+              <p className="text-[11px] text-[#a09b8c] mt-0.5">20+ campeones analizados · 6 parches trackeados · 7 guías disponibles · Coaching IA</p>
             </div>
             <ChevronRight className="w-5 h-5 text-[#785a28] shrink-0" />
           </div>
@@ -234,6 +235,40 @@ export function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: Gam
           <div className="absolute bottom-3 left-3 w-6 h-6" style={{ borderBottom: '1px solid rgba(10,203,230,0.3)', borderLeft: '1px solid rgba(10,203,230,0.3)' }} />
         </motion.button>
       </div>
+
+      {/* Champion Showcase Strip — sm+ only */}
+      <motion.div
+        className="w-full max-w-2xl mt-10 relative z-10 hidden sm:block"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+      >
+        <p className="lol-label text-[10px] text-[#785a28] mb-3 tracking-wider uppercase">Campeones Destacados</p>
+        <div className="relative overflow-hidden rounded-xl py-2" style={{ maskImage: 'linear-gradient(90deg, transparent, black 8%, black 92%, transparent)' }}>
+          <div
+            className="flex gap-3 animate-marquee"
+            style={{ width: 'max-content' }}
+          >
+            {[...SHOWCASE_CHAMPIONS, ...SHOWCASE_CHAMPIONS].map((champ, i) => (
+              <button
+                key={`${champ}-${i}`}
+                onClick={() => onSelectGame('lol')}
+                className="shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all duration-300 hover:scale-110 hover:ring-2 hover:ring-[#c8aa6e] hover:shadow-[0_0_12px_rgba(200,170,110,0.4)]"
+                style={{ border: '1px solid rgba(120,90,40,0.25)' }}
+                title={champ}
+                aria-label={champ}
+              >
+                <img
+                  src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champ}_0.jpg`}
+                  alt={champ}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
 
       <motion.div className="mt-12 max-w-2xl w-full relative z-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
