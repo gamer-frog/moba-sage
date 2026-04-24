@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Flame } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Flame, X, ChevronRight, Trophy, Target } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TinyChampionIcon } from '../champion-icon';
+import { TinyChampionIcon, SplashArtIcon } from '../champion-icon';
 import type { BrokenCombo, GameSelection } from '../types';
 
 export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCombo[]; loading: boolean; selectedGame: GameSelection }) {
   const [sizeFilter, setSizeFilter] = useState<number | null>(null);
+  const [expandedCombo, setExpandedCombo] = useState<number | null>(null);
   const gameFilter = selectedGame === 'wildrift' ? 'WR' : 'LoL';
   const filtered = combos
     .filter(c => c.game === gameFilter)
@@ -67,40 +68,114 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {filtered.map((combo, idx) => {
             const dc = diffColors[combo.difficulty] || diffColors.media;
+            const isExpanded = expandedCombo === combo.id;
             return (
-              <motion.div
-                key={combo.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.04 }}
-                className="glass-card rounded-xl p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group"
-                style={{ border: '1px solid rgba(120,90,40,0.12)' }}
-                whileHover={{ scale: 1.01 }}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  {combo.champions.map((name, i) => (
-                    <div key={name} className="flex items-center gap-2">
-                      <TinyChampionIcon name={name} />
-                      {i < combo.champions.length - 1 && (
-                        <span className="text-[10px] text-[#785a28] font-bold">+</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <h3 className="text-sm font-bold text-[#f0e6d2] group-hover:text-[#e84057] transition-colors">{combo.name}</h3>
-                <p className="text-[11px] text-[#a09b8c] mt-1 leading-relaxed">{combo.description}</p>
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style={{ backgroundColor: combo.winRate >= 57 ? 'rgba(10,203,230,0.1)' : 'rgba(160,155,140,0.1)', color: combo.winRate >= 57 ? '#0acbe6' : '#a09b8c', border: `1px solid ${combo.winRate >= 57 ? 'rgba(10,203,230,0.3)' : 'rgba(160,155,140,0.2)'}` }}>
-                    {combo.winRate}% WR
-                  </span>
-                  <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
-                    {combo.difficulty}
-                  </span>
-                  <span className="text-[9px] text-[#5b5a56] ml-auto">
-                    {combo.champions.length} champ{combo.champions.length > 1 ? 's' : ''}
-                  </span>
-                </div>
-              </motion.div>
+              <div key={combo.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.04 }}
+                  className="glass-card rounded-xl p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group"
+                  style={{ border: '1px solid rgba(120,90,40,0.12)' }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => setExpandedCombo(isExpanded ? null : combo.id)}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    {combo.champions.map((name, i) => (
+                      <div key={name} className="flex items-center gap-2">
+                        <TinyChampionIcon name={name} />
+                        {i < combo.champions.length - 1 && (
+                          <span className="text-[10px] text-[#785a28] font-bold">+</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <h3 className="text-sm font-bold text-[#f0e6d2] group-hover:text-[#e84057] transition-colors">{combo.name}</h3>
+                  <p className="text-[11px] text-[#a09b8c] mt-1 leading-relaxed">{combo.description}</p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style={{ backgroundColor: combo.winRate >= 57 ? 'rgba(10,203,230,0.1)' : 'rgba(160,155,140,0.1)', color: combo.winRate >= 57 ? '#0acbe6' : '#a09b8c', border: `1px solid ${combo.winRate >= 57 ? 'rgba(10,203,230,0.3)' : 'rgba(160,155,140,0.2)'}` }}>
+                      {combo.winRate}% WR
+                    </span>
+                    <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
+                      {combo.difficulty}
+                    </span>
+                    <span className="text-[9px] text-[#5b5a56] ml-auto">
+                      {combo.champions.length} champ{combo.champions.length > 1 ? 's' : ''}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 90 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronRight className="w-4 h-4 text-[#785a28]" />
+                    </motion.div>
+                  </div>
+                </motion.div>
+
+                {/* Inline Expansion Detail */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-2 p-4 rounded-xl" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.15)' }}>
+                        {/* Champions with icons */}
+                        <div className="mb-3">
+                          <span className="lol-label text-[10px] text-[#c8aa6e] mb-2 block">Campeones</span>
+                          <div className="flex items-center gap-3 flex-wrap">
+                            {combo.champions.map((name) => (
+                              <div key={name} className="flex items-center gap-2 px-2 py-1 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.12)' }}>
+                                <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0" style={{ border: '1.5px solid rgba(200,170,110,0.3)' }}>
+                                  <SplashArtIcon name={name} />
+                                </div>
+                                <span className="text-xs font-semibold text-[#f0e6d2]">{name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="grid grid-cols-3 gap-2 mb-3">
+                          <div className="text-center p-2 rounded-lg" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.1)' }}>
+                            <Trophy className="w-3.5 h-3.5 mx-auto mb-1 text-[#0acbe6]" />
+                            <span className="text-xs font-mono font-bold text-[#0acbe6]">{combo.winRate}%</span>
+                            <p className="text-[9px] text-[#5b5a56]">Win Rate</p>
+                          </div>
+                          <div className="text-center p-2 rounded-lg" style={{ background: dc.bg, border: `1px solid ${dc.border}` }}>
+                            <Target className="w-3.5 h-3.5 mx-auto mb-1" style={{ color: dc.text }} />
+                            <span className="text-xs font-semibold" style={{ color: dc.text }}>{combo.difficulty}</span>
+                            <p className="text-[9px] text-[#5b5a56]">Dificultad</p>
+                          </div>
+                          <div className="text-center p-2 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.1)' }}>
+                            <Flame className="w-3.5 h-3.5 mx-auto mb-1 text-[#c8aa6e]" />
+                            <span className="text-xs font-semibold text-[#c8aa6e]">{combo.champions.length}</span>
+                            <p className="text-[9px] text-[#5b5a56]">Campeones</p>
+                          </div>
+                        </div>
+
+                        {/* Full description */}
+                        <div>
+                          <span className="lol-label text-[10px] text-[#c8aa6e] mb-1 block">Por qué funciona</span>
+                          <p className="text-xs text-[#a09b8c] leading-relaxed">{combo.description}</p>
+                        </div>
+
+                        {/* Close button */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setExpandedCombo(null); }}
+                          className="mt-3 w-full py-1.5 rounded-lg text-[10px] text-[#5b5a56] hover:text-[#a09b8c] transition-colors text-center"
+                          style={{ background: 'rgba(120,90,40,0.08)', border: '1px solid rgba(120,90,40,0.1)' }}
+                        >
+                          Cerrar detalle
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             );
           })}
         </div>

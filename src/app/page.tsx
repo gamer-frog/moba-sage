@@ -25,7 +25,6 @@ import { TierListTab } from '@/components/moba/tabs/tier-list-tab';
 import { PatchesTab } from '@/components/moba/tabs/patches-tab';
 import { BrokenStuffTab } from '@/components/moba/tabs/broken-stuff-tab';
 import { TasksTab } from '@/components/moba/tabs/tasks-tab';
-import { RoadmapTab } from '@/components/moba/tabs/roadmap-tab';
 import { IdeasTab } from '@/components/moba/tabs/ideas-tab';
 import { CombosTab } from '@/components/moba/tabs/combos-tab';
 import { CompetitiveTab } from '@/components/moba/tabs/competitive-tab';
@@ -71,7 +70,6 @@ function TabContent({
       case 'profile': return <ProfileTab summonerName={summonerName} onSummonerNameChange={onSummonerNameChange} summonerRegion={summonerRegion} onSummonerRegionChange={onSummonerRegionChange} summonerData={summonerData} summonerLoading={summonerLoading} summonerError={summonerError} onSearchSummoner={onSearchSummoner} />;
       case 'novedades': return <ActivityTab />;
       case 'ideas': return <IdeasTab />;
-      case 'roadmap': return <RoadmapTab />;
       case 'tasks': return <TasksTab tasks={tasks} loading={loading} onRefresh={fetchData} onToggleTask={handleToggleTask} />;
       default: return <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={onSearchChange} roleFilter={roleFilter} onRoleFilterChange={onRoleFilterChange} favorites={favorites} onToggleFavorite={onToggleFavorite} onChampionClick={onChampionClick} metaLastUpdated={liveVersions.metaLastUpdated} />;
     }

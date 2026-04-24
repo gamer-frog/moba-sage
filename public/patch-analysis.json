@@ -1,0 +1,43 @@
+{
+  "lastUpdated": "2026-04-26T15:00:00Z",
+  "currentPatch": "26.8",
+  "nextPatch": "26.9 PBE",
+  "patchDate": "2026-04-29",
+  "keyChanges": [
+    "Taliyah: Buff significativo a W (Seismic Shove) y E (Unraveled Earth) — wave clear y roam dominante",
+    "Warwick: Jungle sustain fortalecido + R range buff — ganks post-6 más letales",
+    "Zeri: Rework completo — diferenciación builds AD/AP, nueva mecánica Q chain",
+    "Ambessa: Nerf a burst y survivability — caída de S-tier directa",
+    "Briar: Nerf a dive sostenido — menos tiempo inmune en R",
+    "Shyvana: Reajuste iterativo — incentivos para builds AP/AD diferenciados",
+    "Gragas: Ajustes a ratios — reposicionamiento en meta jungle",
+    "Ezreal: Ajuste de Q damage + sinergia con nuevos Doran's"
+  ],
+  "systemChanges": [
+    "Season 2 Pandemonium — ranked reset completo",
+    "Nuevos items de inicio: Doran's Helm (bruisers), Doran's Bow (ADCs)",
+    "Gluttonous Greaves — immortalización al kill",
+    "Omnivamp Boots (1.5%) — sustain para carries",
+    "Trailblazer y Opportunity removidos",
+    "WASD keybinds por campeón",
+    "Endless Hunger buff — buffs de mapa más valiosos",
+    "Más de 10 runas ajustadas"
+  ],
+  "brokenChampions": [
+    { "name": "Taliyah", "reason": "Buff 26.9 la catapulta a S-tier. Wave clear + roam dominante. Mejor mid laner post-patch.", "tier": "S" },
+    { "name": "K'Sante", "reason": "Sigue dominando top lane con WR 51%+. Sin nerfs en 26.9. Doran's Helm lo beneficia.", "tier": "S" },
+    { "name": "Hwei", "reason": "Sin cambios negativos. Burst combo sigue siendo top mid. Meta de teamfight le favorece.", "tier": "S" },
+    { "name": "Nocturne", "reason": "Sin nerfs. R global sigue siendo devastador. Meta bruiser jungle le favorece.", "tier": "S" },
+    { "name": "Warwick", "reason": "Buff a sustain y R range. Posible A+ post-patch. Excelente para gankar post-6.", "tier": "A+" }
+  ],
+  "fallenChampions": [
+    { "name": "Ambessa", "reason": "Nerf significativo 26.9 a burst y survivability. Baja de S a B directa.", "tier": "B" },
+    { "name": "Briar", "reason": "Sustain reducido. Menos tiempo inmune en R. Ya no domina early game jungle.", "tier": "A" },
+    { "name": "Shyvana", "reason": "Reajuste iterativo — podría mejorar pero necesita testing. Tier incierto.", "tier": "A" }
+  ],
+  "itemImpact": {
+    "winners": ["Doran's Helm beneficia bruisers/tanks (Ornn, Darius, K'Sante)", "Doran's Bow fortalece ADCs en early (Nilah, Jinx)", "Omnivamp Boots da sustain a carries"],
+    "losers": ["Trailblazer removido — mages sin item de inicio ideal", "Opportunity removido — ciertos ADCs pierden su item preferido"]
+  },
+  "summary": "Patch 26.9 redefine el meta con nuevos items de inicio que cambian la fase de lanes. Taliyah y Warwick son los principales beneficiados. Ambessa y Briar caen tras nerfs directos. La Season 2 Pandemonium trae ranked reset y cambios sistémicos masivos."
+}

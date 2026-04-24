@@ -79,7 +79,6 @@ export const GAME_TAB_ITEMS = [
 export const DEV_TAB_ITEMS = [
   { id: 'novedades', label: 'Novedades', icon: Rocket },
   { id: 'ideas', label: 'Ideas', icon: Lightbulb },
-  { id: 'roadmap', label: 'Roadmap', icon: Map },
   { id: 'tasks', label: 'Tareas', icon: Wrench },
 ];
 

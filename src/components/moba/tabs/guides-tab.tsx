@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Filter, ExternalLink, Tag, ChevronRight, Gamepad2, Swords } from 'lucide-react';
+import { BookOpen, Filter, ExternalLink, Tag, ChevronRight, Gamepad2, Swords, X, Clock, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChampionIcon } from '../champion-icon';
@@ -37,10 +37,155 @@ function getGameBadge(game?: string): { label: string; color: string; bg: string
   return { label: 'LoL', color: '#c8aa6e', bg: 'rgba(200,170,110,0.1)' };
 }
 
+// ---- Guide Detail Modal ----
+function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void }) {
+  const gameBadge = getGameBadge(guide.game);
+  const isLoL = !guide.game || guide.game !== 'valorant';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+      {/* Modal */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl scrollbar-none"
+        style={{
+          background: 'linear-gradient(180deg, #1e2328 0%, #0a0e1a 100%)',
+          border: '1px solid rgba(200,170,110,0.25)',
+          boxShadow: '0 0 60px rgba(200,170,110,0.1), 0 25px 50px rgba(0,0,0,0.5)',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Top gradient accent */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl"
+          style={{ background: 'linear-gradient(90deg, transparent, #c8aa6e, transparent)' }} />
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-[#1e2328] text-[#5b5a56] hover:text-[#f0e6d2]"
+          aria-label="Cerrar"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Header */}
+        <div className="p-6 pb-4">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="shrink-0">
+              {isLoL && guide.champion !== 'General' ? (
+                <ChampionIcon name={guide.champion} tier="A" />
+              ) : (
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center"
+                  style={{ border: `2.5px solid ${gameBadge.color}70`, background: gameBadge.bg }}>
+                  {guide.game === 'valorant' ? (
+                    <Gamepad2 className="w-6 h-6" style={{ color: gameBadge.color }} />
+                  ) : (
+                    <Swords className="w-6 h-6" style={{ color: gameBadge.color }} />
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="lol-title text-lg text-[#f0e6d2] leading-tight mb-2">{guide.title}</h2>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: gameBadge.bg, color: gameBadge.color, border: `1px solid ${gameBadge.color}30` }}
+                >
+                  {gameBadge.label}
+                </span>
+                <span className="text-[10px] font-mono text-[#a09b8c] flex items-center gap-1">
+                  <Clock className="w-3 h-3" /> v{guide.patch}
+                </span>
+                {guide.role && (
+                  <span className="text-[10px] text-[#5b5a56]">· {guide.role}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Summary */}
+          <p className="text-sm text-[#a09b8c] leading-relaxed">{guide.summary}</p>
+        </div>
+
+        {/* Divider */}
+        <div className="mx-6 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(120,90,40,0.3), transparent)' }} />
+
+        {/* Key Points */}
+        <div className="p-6">
+          <h3 className="lol-label text-xs font-semibold text-[#c8aa6e] mb-3 flex items-center gap-2">
+            <FileText className="w-3.5 h-3.5" />
+            Puntos Clave
+          </h3>
+          <div className="space-y-2.5">
+            {guide.keyPoints.map((point, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="flex items-start gap-2.5"
+              >
+                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                  style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)' }}>
+                  <span className="text-[9px] font-bold text-[#c8aa6e]">{i + 1}</span>
+                </div>
+                <span className="text-xs text-[#a09b8c] leading-relaxed">{point}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tags */}
+        {guide.tags && guide.tags.length > 0 && (
+          <div className="px-6 pb-4">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <Tag className="w-3 h-3 text-[#785a28]" />
+              {guide.tags.map(tag => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-medium text-[#a09b8c] bg-[#1e2328]/60 border border-[#785a28]/15"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Content coming soon */}
+        <div className="mx-6 mb-6 p-4 rounded-xl text-center"
+          style={{ background: 'rgba(200,170,110,0.04)', border: '1px solid rgba(200,170,110,0.1)' }}>
+          <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center"
+            style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.15)' }}>
+            <Clock className="w-5 h-5 text-[#c8aa6e]" />
+          </div>
+          <p className="text-xs font-semibold text-[#f0e6d2] mb-1">Contenido en desarrollo</p>
+          <p className="text-[10px] text-[#5b5a56]">La guía completa con builds, runas y strategias estará disponible próximamente.</p>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export function GuidesTab() {
   const [guides, setGuides] = useState<GuideEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [gameFilter, setGameFilter] = useState<GameFilter>('Todos');
+  const [selectedGuide, setSelectedGuide] = useState<GuideEntry | null>(null);
 
   useEffect(() => {
     async function fetchGuides() {
@@ -145,7 +290,10 @@ export function GuidesTab() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3, delay: idx * 0.04 }}
-                  className="glass-card rounded-xl p-5 border border-[#785a28]/25 flex flex-col group hover:border-[#c8aa6e]/30 transition-all duration-300"
+                  className="glass-card rounded-xl p-5 border border-[#785a28]/25 flex flex-col group hover:border-[#c8aa6e]/30 transition-all duration-300 cursor-pointer"
+                  onClick={() => setSelectedGuide(guide)}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
                 >
                   {/* Top row: icon + title + game badge */}
                   <div className="flex items-start gap-3 mb-3">
@@ -213,7 +361,7 @@ export function GuidesTab() {
 
                   {/* Leer más */}
                   <div className="pt-3 border-t border-[#785a28]/10">
-                    <span className="inline-flex items-center gap-1 text-[11px] text-[#c8aa6e] hover:text-[#f0e6d2] transition-colors cursor-pointer group/link">
+                    <span className="inline-flex items-center gap-1 text-[11px] text-[#c8aa6e] group-hover/link:text-[#f0e6d2] transition-colors">
                       Leer más
                       <ChevronRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
                     </span>
@@ -224,6 +372,13 @@ export function GuidesTab() {
           </AnimatePresence>
         </div>
       )}
+
+      {/* Guide Detail Modal */}
+      <AnimatePresence>
+        {selectedGuide && (
+          <GuideModal guide={selectedGuide} onClose={() => setSelectedGuide(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

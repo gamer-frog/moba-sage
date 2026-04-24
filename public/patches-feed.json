@@ -9,28 +9,42 @@
       "date": "2026-04-29",
       "sourceGame": "LoL",
       "status": "upcoming",
-      "summary": "Lanzamiento de Season 2 Pandemonium. Nuevos Doran's, Gluttonous Greaves, Immortal Path, Doran's Helm, botas Omnivamp (1.5%), WASD keybinds por campeón, ranked reset, Endless Hunger buff.",
-      "digest": "CAMBIOS DE SISTEMAS: Nuevos items de inicio (reemplazan Trailblazer/Opportunity), Doran's Bow confirmado, Dusk and Dawn rework, botas Omnivamp 1.5%, WASD controles, ranked Season 1 termina. NERFS: Ambessa (burst/survivabilidad), Briar (dive sostenido). BUFFS: Taliyah (control mapa), Warwick (jungle sustain), Tahm Kench (utilidad support). AJUSTES: Zeri (DPS balance), Shyvana (reajuste iterativo), Xin Zhao (enganche), Ezreal (nuevos Doran's), Kennen, Teemo, Udyr, Zoe. SISTEMAS: Endless Hunger buff, keybinds por campeón. NUEVO CAMPEON: AP midlaner en Season 2.\n\nNUEVOS ITEMS PBE (Apr 23): Doran's Helm, Gluttonous Greaves, Immortal Path. Massive item & rune update confirmado — más de 10 items nuevos/reworkeados.",
+      "summary": "Season 2 Pandemonium llega con cambios masivos. Taliyah y Warwick reciben buffs significativos que los catapultan a S-tier. Ambessa y Briar caen tras nerfs directos. Zeri recibe un rework que diferencia builds AD y AP. Massive item & rune update: Doran's Helm, Gluttonous Greaves, Immortal Path, Omnivamp Boots reemplazan Trailblazer/Opportunity.",
+      "digest": "POR QUÉ IMPORTA: Este parche redefine completamente la fase de lanes con nuevos items de inicio. Doran's Helm beneficia bruisers y tanks, cambiando las dinámicas de top lane. Los nerfs a Ambessa y Briar abren espacio para junglers como Warwick y Xin Zhao que reciben buffs directos.\n\nCAMPEONES CLAVE: Taliyah emerge como la mid laner más fuerte post-buff (wave clear + roam). K'Sante sigue dominando top sin cambios negativos. Hwei mantiene su burst combo como top mid. Zeri's rework crea dos builds viables diferenciados (AD burst vs AP utility), lo que podría revitalizarla en bot lane.\n\nIMPACTO SISTÉMICOS: Nuevos Doran's cambian la economía de early game. Ranked Season 1 termina — ranked reset completo para Season 2. WASD keybinds por campeón es un cambio de calidad de vida masivo. Endless Hunger buff hace que los buffs de mapa sean más valiosos.",
       "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-9-notes/",
       "brokenChampions": [
-        { "name": "Taliyah", "reason": "Buff significativo a su W (Seismic Shove) y E (Unraveled Earth). Mejor control de oleadas y más daño en combo. Posible Tier S post-patch." },
-        { "name": "Warwick", "reason": "Buff a jungle sustain y R range. Mejor gank post-6 con más presión de mapa. Expected +2% WR." },
-        { "name": "Zeri", "reason": "Rework grande en 26.9. DPS ajustado, nueva mecánica de Q chain. Potencial Tier A si tuning es favorable." },
-        { "name": "Shyvana", "reason": "Reajuste iterativo importante. Si el tuning es bueno, puede volver a S-tier jungle con su rework." },
-        { "name": "Ambessa", "reason": "Nerf a burst y survivability. Caída esperada de Tier S a A/B." },
-        { "name": "Briar", "reason": "Nerf a dive sostenido. Menos tiempo inmune en R. Caída de Tier S a A." }
+        { "name": "Taliyah", "reason": "Buff significativo a W (Seismic Shove) y E (Unraveled Earth). Mejor control de oleadas y más daño en combo roams.", "tierBefore": "A", "tierAfter": "S" },
+        { "name": "Warwick", "reason": "Buff a jungle sustain y R range. Mejor gank post-6 con más presión de mapa.", "tierBefore": "A", "tierAfter": "A+" },
+        { "name": "Zeri", "reason": "Rework grande en 26.9. DPS ajustado, nueva mecánica de Q chain. Potencial AD/AP dual build.", "tierBefore": "B", "tierAfter": "A" },
+        { "name": "Shyvana", "reason": "Reajuste iterativo. Si tuning es favorable, puede volver a jungle S-tier.", "tierBefore": "B", "tierAfter": "A" },
+        { "name": "K'Sante", "reason": "Sin nerfs en 26.9. Sigue dominando top lane con WR 51%+. Nuevo Doran's Helm lo beneficia.", "tierBefore": "S", "tierAfter": "S" },
+        { "name": "Ambessa", "reason": "Nerf significativo a burst y survivability. Menos impacto en teamfights.", "tierBefore": "S", "tierAfter": "B" },
+        { "name": "Briar", "reason": "Nerf a dive sostenido. Menos tiempo inmune en R. Ya no domina early game.", "tierBefore": "S", "tierAfter": "A" },
+        { "name": "Hwei", "reason": "Sin cambios negativos. Burst combo sigue siendo top mid. Meta le favorece.", "tierBefore": "S", "tierAfter": "S" }
       ],
       "metaShifts": {
-        "summary": "Season 2 Pandemonium cambia drásticamente el meta. Nuevos items de inicio reemplazan Trailblazer/Opportunity, cambiando la fase de lanes completamente. Doran's Helm beneficia bruisers, Doran's Bow beneficia ADCs.",
-        "itemChanges": "Doran's Helm (tank stats), Gluttonous Greaves (immortalización al kill), Immortal Path (DAE con pociones), Omnivamp Boots (1.5%). Removidos: Trailblazer, Opportunity.",
-        "runeChanges": "Más de 10 runas ajustadas. Precisión y Brujería reciben cambios significativos.",
-        "positionImpact": "Top Lane: buff a bruisers con Doran's Helm. Jungle: nuevos items cambian clear speed. Mid: mages AP se benefician. Bot: ADCs con Doran's Bow más fuerte en early.",
-        "predictedWinRateChanges": "Taliyah +2.5%, Warwick +2%, Ambessa -3%, Briar -2.5%"
+        "playstyle": "Season 2 Pandemonium favorece composiciones de teamfight y engage con bruisers tanky. Los nuevos items de inicio cambian drásticamente la fase de lanes, dándole más poder a bruisers y tanks en early game. ADCs con Doran's Bow tienen mejor scaling, mages AP se benefician de ajustes de runas.",
+        "items": [
+          "Doran's Helm (tank/bruiser stats) — reemplaza Trailblazer",
+          "Doran's Bow (ADC stats) — nuevo item de inicio para bot lane",
+          "Gluttonous Greaves (immortalización al kill) — nuevo boots mythic",
+          "Immortal Path (DAE con pociones) — nueva alternativa jungle",
+          "Omnivamp Boots (1.5%) — sustain para carries",
+          "Dusk and Dawn (rework) — reajuste completo"
+        ],
+        "runes": [
+          "Precisión: ajustes a Pies Veloces y Conquistador",
+          "Brujería: Cambios en Cometa Arcano y Frailidad",
+          "Valor: Guardián ajustado — más shielding early",
+          "Dominación: Golpe de Gracia nerfeado ligeramente",
+          "Más de 10 runas ajustadas en total"
+        ],
+        "removedItems": ["Trailblazer", "Opportunity"]
       },
       "changes": {
-        "nerfs": ["Ambessa", "Briar"],
-        "buffs": ["Taliyah", "Warwick", "Tahm Kench"],
-        "adjustments": ["Zeri", "Shyvana", "Xin Zhao", "Ezreal", "Kennen", "Teemo", "Udyr", "Zoe"],
+        "nerfs": ["Ambessa (burst/survivabilidad)", "Briar (dive sostenido)"],
+        "buffs": ["Taliyah (control mapa)", "Warwick (jungle sustain)", "Tahm Kench (utilidad support)"],
+        "adjustments": ["Zeri (DPS balance AD/AP)", "Shyvana (reajuste iterativo)", "Xin Zhao (enganche)", "Ezreal (nuevos Doran's)", "Kennen", "Teemo", "Udyr", "Zoe", "Gragas"],
         "newItems": ["Doran's Helm", "Dusk and Dawn (rework)", "Gluttonous Greaves", "Omnivamp Boots (1.5%)", "Immortal Path", "Doran's Bow"],
         "removedItems": ["Trailblazer", "Opportunity"],
         "systems": ["WASD keybinds", "Endless Hunger buff", "Ranked Season 1 end", "Ranked Season 2 start"]
@@ -43,20 +57,35 @@
       "date": "2026-04-14",
       "sourceGame": "LoL",
       "status": "current",
-      "summary": "Shyvana update, items mythic adjustments, First Stand tournament balance.",
-      "digest": "Patch 26.8 trae cambios significativos al meta actual. Se ajustan items mythic y objetos legendarios, se modifican las ratios de la jungla, y varios campeones reciben buffs y nerfs de balance. El meta evoluciona con nuevas composiciones viables en todas las roles.",
+      "summary": "Shyvana update, items mythic adjustments, First Stand tournament balance. Meta de teamfight y engage con bruisers dominando top lane. Jungle bruiser meta fuerte con Briar y Nocturne. ADCs con protección thrive.",
+      "digest": "POR QUÉ IMPORTA: Patch 26.8 definió el meta actual de teamfight y engage. Bruisers dominan top lane con Ornn, K'Sante y Darius. Jungle bruiser meta se consolidó con Briar como pick #1 y Nocturne como consistencia. Los ADCs hiper carries (Nilah, Jinx) prosperan con protect compositions.\n\nCAMPEONES CLAVE: Ornn emerge como top laner Tier 1 con su R global engage y item upgrades para el team. Briar domina jungle con unstoppable dive y execute. Nilah tiene el WR más alto entre ADCs (53%+). Aurelion Sol y Veigar son las control mages más fuertes del meta.\n\nIMPACTO: El meta favorece composiciones con fuerte engage y peel. Supports enchanters (Soraka, Zyra) son los más consistentes. First Stand tournament validó el meta de bruisers con resultados competitivos.",
+      "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-8-notes/",
       "brokenChampions": [
-        { "name": "Ornn", "reason": "Tier 1 consistente en top lane. R global engage + item upgrades." },
-        { "name": "Briar", "reason": "Jungler más dominante con unstoppable dive y execute." },
-        { "name": "Nilah", "reason": "ADC con WR más alto. W shield AoE + R pull." },
-        { "name": "Aurelion Sol", "reason": "R AoE masivo desde cualquier posición." },
-        { "name": "Nocturne", "reason": "R global apaga visión + ganks devastadores." }
+        { "name": "Ornn", "reason": "Tier 1 consistente en top lane. R global engage + item upgrades para todo el team.", "tierBefore": "A", "tierAfter": "S" },
+        { "name": "Briar", "reason": "Jungler más dominante con unstoppable dive y execute. Sin nerfs directos.", "tierBefore": "A", "tierAfter": "S" },
+        { "name": "Nilah", "reason": "ADC con WR más alto (53%+). W shield AoE + R pull = teamfight monster.", "tierBefore": "A", "tierAfter": "S" },
+        { "name": "Aurelion Sol", "reason": "R AoE masivo desde cualquier posición. Scaling infinito late game.", "tierBefore": "A", "tierAfter": "S" },
+        { "name": "Nocturne", "reason": "R global apaga visión + ganks devastadores. Consistencia 52% WR.", "tierBefore": "A", "tierAfter": "S" }
       ],
       "metaShifts": {
-        "summary": "Meta estable de teamfight y engage. Bruisers dominan top lane. Jungle bruiser meta fuerte. ADCs con protección thrive.",
-        "positionImpact": "Top: bruisers (Ornn, Darius, K'Sante). Jungle: bruisers (Briar, Nocturne). Mid: control mages (Aurelion Sol, Veigar). Bot: hypercarries protegidos (Nilah, Jinx). Support: enchanters (Soraka, Zyra)."
+        "playstyle": "Meta estable de teamfight y engage. Bruisers dominan top lane. Jungle bruiser meta fuerte. ADCs con protección thrive. Supports enchanters son los más consistentes.",
+        "items": [
+          "Items mythic ajustados para bruisers",
+          "Objetos legendarios reescalados",
+          "Trailblazer y Opportunity siguen como items de inicio estándar"
+        ],
+        "runes": [
+          "Conquistador dominante en bruisers top/jungle",
+          "Guardián meta para supports enchanters",
+          "Cometa Arcano fuerte en control mages"
+        ]
       },
-      "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-8-notes/"
+      "changes": {
+        "nerfs": [],
+        "buffs": [],
+        "adjustments": ["Shyvana", "Items mythic", "Jungle ratios"],
+        "systems": ["First Stand tournament balance"]
+      }
     },
     {
       "id": 3,
