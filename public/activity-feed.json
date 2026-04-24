@@ -1,13 +1,13 @@
 {
   "version": "1.3",
-  "lastUpdated": "2026-04-25T00:15:00Z",
+  "lastUpdated": "2026-04-25T00:35:00Z",
   "entries": [
     {
-      "id": "ralph-loop-023",
+      "id": "ralph-loop-024",
       "type": "fix",
-      "title": "3 fixes: typo strategias + labels EN→ES + runa Brand icon",
-      "description": "Typo strategias→estrategias (guides-tab). Labels Feature→Función, Fix→Corrección, Activity feed→Feed de actividad (activity-tab). Runa Gusto por Sangre→Sabor a Sangre en Brand + Diana (data.ts). Build OK.",
-      "timestamp": "2026-04-25T00:15:00Z",
+      "title": "3 fixes: matchup rotos + 6 runas icon + Deploy→Despliegue",
+      "description": "(1) CRÍTICO: matchup icons rotos en Yasuo ('engages con knock-up') y K'Sante ('Comps con follow-up y CC') → nombres campeones reales. (2) 6 runas agregadas a RUNE_ICON_MAP: Segunda Vida, Presencia de Campeón, Sobrecrecimiento, Revitalizar, Frailidad, Golpe de Gracia (40+ campeones afectados). (3) Label 'Deploy'→'Despliegue' en activity-tab. Build OK.",
+      "timestamp": "2026-04-25T00:35:00Z",
       "commit": "pending",
       "category": "fix"
     },

@@ -116,6 +116,13 @@ const RUNE_ICON_MAP: Record<string, string> = {
   'Fuente de Vida': '8400_Resolve/Revitalize/Revitalize.png',
   // Inspiration Keystones
   'Viento Favorable': '8300_Inspiration/GlacialAugment/GlacialAugment.png',
+  // Runas secundarias comunes
+  'Segunda Vida': '8400_Resolve/SecondWind/SecondWind.png',
+  'Presencia de Campeón': '7201_Precision/PresenceOfMind/PresenceOfMind.png',
+  'Sobrecrecimiento': '8400_Resolve/Overgrowth/Overgrowth.png',
+  'Revitalizar': '8400_Resolve/Revitalize/Revitalize.png',
+  'Frailidad': '8200_Sorcery/Weakness/Weakness.png',
+  'Golpe de Gracia': '8100_Domination/CoupDeGrace/CoupDeGrace.png',
 };
 
 const RUNE_COLOR_MAP: Record<string, string> = {

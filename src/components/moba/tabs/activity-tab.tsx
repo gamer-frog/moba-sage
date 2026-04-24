@@ -25,7 +25,7 @@ interface ActivityFeed {
 }
 
 const TYPE_CONFIG: Record<string, { icon: typeof Rocket; color: string; label: string; bg: string }> = {
-  deploy: { icon: Rocket, color: '#c8aa6e', label: 'Deploy', bg: 'rgba(200,170,110,0.1)' },
+  deploy: { icon: Rocket, color: '#c8aa6e', label: 'Despliegue', bg: 'rgba(200,170,110,0.1)' },
   feature: { icon: Sparkles, color: '#0fba81', label: 'Función', bg: 'rgba(15,186,129,0.1)' },
   audit: { icon: Eye, color: '#0acbe6', label: 'Auditoría', bg: 'rgba(10,203,230,0.1)' },
   fix: { icon: Bug, color: '#e84057', label: 'Corrección', bg: 'rgba(232,64,87,0.1)' },
