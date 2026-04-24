@@ -1,7 +1,25 @@
 {
-  "version": "1.1",
-  "lastUpdated": "2026-04-24T14:35:00Z",
+  "version": "1.2",
+  "lastUpdated": "2026-04-24T15:10:00Z",
   "entries": [
+    {
+      "id": "ui-overhaul-001",
+      "type": "feature",
+      "title": "UI Overhaul LoL-Style — Beaufort font + Notif Bell + Coaching tab",
+      "description": "Beaufort font en todos los headings/labels. Campanita de notificaciones con dropdown de actividad del día. Nueva tab Coaching (mecánicas, warding, comps pro). Dev tabs marcadas con [DEV]. 15 archivos, 609+ líneas.",
+      "timestamp": "2026-04-24T15:05:00Z",
+      "commit": "02f1922",
+      "category": "feature"
+    },
+    {
+      "id": "patch-analysis-001",
+      "type": "feature",
+      "title": "Patch Analysis + Guide Modals + Merge Ideas/Roadmap + Clickable Combos",
+      "description": "Sección ANÁLISIS DE PARCHE en Cosas Rotas (quién queda roto/caído). Patches feeds con tierBefore/tierAfter + metaShifts. Guías con modal funcional. Combos expandibles inline. Ideas+Roadmap merge en una tab.",
+      "timestamp": "2026-04-24T15:10:00Z",
+      "commit": "52bf4d8",
+      "category": "feature"
+    },
     {
       "id": "ui-polish-001",
       "type": "feature",
@@ -127,33 +145,18 @@
       "timestamp": "2026-04-22T05:31:00Z",
       "commit": "a6cfe6a",
       "category": "improvement"
-    },
-    {
-      "id": "feature-003",
-      "type": "feature",
-      "title": "Tab Novedades + Popup",
-      "description": "Activity feed con timeline de deploys y popup al abrir la app.",
-      "timestamp": "2026-04-22T03:20:00Z",
-      "commit": "58008c6",
-      "category": "feature"
-    },
-    {
-      "id": "deploy-001",
-      "type": "deploy",
-      "title": "Cleanup v2 deployado",
-      "description": "Eliminación de API routes muertas, Prisma, examples/, skills/. 391 líneas eliminadas.",
-      "timestamp": "2026-04-22T03:00:00Z",
-      "commit": "24d69f5",
-      "category": "maintenance"
     }
   ],
   "highlights": [
-    "Nueva tab Guías — 7 guías indexadas (LoL + Valorant) con cards responsive",
-    "Patches multi-juego — LoL/Valorant/Dota/CS2 con badges de color",
-    "Rising/Falling trends (↑↓) en Tier List desde tierlist-feed.json",
-    "WR stat bars animadas por color en cada campeón",
-    "A-tier splash art grande en Cosas Rotas con gold glow hover",
-    "Dev cron rotation: PATCHES → TIERLIST → GUIDES → MAINTENANCE",
-    "Git push con bautiarmanijuegos@gmail.com → Vercel redeploys"
+    "Beaufort font en headings/labels — auténtico LoL style",
+    "Campanita de notificaciones con dropdown de actividad del día",
+    "Nueva tab Coaching — mecánicas, warding por rol, composiciones pro",
+    "ANÁLISIS DE PARCHE — quién queda roto/caído con cada parche",
+    "Patches feeds con metaShifts + tierBefore/tierAfter",
+    "Guías con modal funcional (champ icon, key points)",
+    "Combos expandibles inline con stats completos",
+    "Ideas+Roadmap merge en una sola tab",
+    "12 tabs funcionales (down de 13 por merge)",
+    "Dev tabs claramente marcadas con [DEV]"
   ]
 }
