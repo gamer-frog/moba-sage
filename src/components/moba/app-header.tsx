@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, AlertTriangle, Eye, Bug, Clock, X } from 'lucide-react';
+import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, AlertTriangle, Eye, Bug, Clock, X, ExternalLink, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from './theme-toggle';
 import type { GameSelection } from './types';
@@ -69,6 +69,7 @@ export function AppHeader({
   onMenuToggle?: () => void;
 }) {
   const [notifOpen, setNotifOpen] = useState(false);
+  const [selectedNotif, setSelectedNotif] = useState<ActivityEntry | null>(null);
   const [todayEntries, setTodayEntries] = useState<ActivityEntry[]>([]);
   const bellRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -96,7 +97,7 @@ export function AppHeader({
     return () => clearInterval(interval);
   }, []);
 
-  // Click outside to close
+  // Click outside to close dropdown
   useEffect(() => {
     if (!notifOpen) return;
     function handleClickOutside(e: MouseEvent) {
@@ -111,9 +112,34 @@ export function AppHeader({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [notifOpen]);
 
+  // Close detail popup on Escape
+  useEffect(() => {
+    if (!selectedNotif) return;
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === 'Escape') setSelectedNotif(null);
+    }
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [selectedNotif]);
+
   const notifCount = todayEntries.length;
   const hasNotifs = notifCount > 0;
   const visibleEntries = todayEntries.slice(0, 5);
+
+  function formatTimestamp(ts: string): string {
+    const d = new Date(ts);
+    const day = d.getDate();
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const month = months[d.getMonth()];
+    const hours = d.getHours().toString().padStart(2, '0');
+    const mins = d.getMinutes().toString().padStart(2, '0');
+    return `${day} ${month} ${d.getFullYear()} · ${hours}:${mins}`;
+  }
+
+  function handleNotifClick(entry: ActivityEntry) {
+    setSelectedNotif(entry);
+    setNotifOpen(false);
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b-2 border-[#785a28]/30" style={{ backgroundColor: 'rgba(10, 14, 26, 0.94)', backdropFilter: 'blur(20px) saturate(1.2)' }}>
@@ -167,6 +193,19 @@ export function AppHeader({
           <span className="hidden md:inline text-[9px] text-[#5b5a56] ml-1">
             Update: {lastUpdate || 'Cargando...'}
           </span>
+
+          {/* Search Button */}
+          {selectedGame && (
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('moba-sage-open-search'))}
+              className="flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 hover:bg-[#1e2328]/40"
+              style={{ color: '#a09b8c' }}
+              aria-label="Buscar campeón (Ctrl+K)"
+              title="Buscar campeón (Ctrl+K)"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+          )}
 
           {/* Notification Bell */}
           <div className="relative">
@@ -234,7 +273,11 @@ export function AppHeader({
                         return (
                           <div
                             key={entry.id}
-                            className="flex items-start gap-2.5 px-4 py-2.5 border-b border-[#785a28]/8 hover:bg-[#1e2328]/40 transition-colors"
+                            onClick={() => handleNotifClick(entry)}
+                            className="flex items-start gap-2.5 px-4 py-2.5 border-b border-[#785a28]/8 hover:bg-[#1e2328]/60 transition-colors cursor-pointer"
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => { if (e.key === 'Enter') handleNotifClick(entry); }}
                           >
                             <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5"
                               style={{ background: `${color}12`, border: `1px solid ${color}20` }}>
@@ -275,6 +318,107 @@ export function AppHeader({
           </div>
         </div>
       </div>
+
+      {/* Notification Detail Popup — Full Screen Overlay */}
+      <AnimatePresence>
+        {selectedNotif && (() => {
+          const notifColor = TYPE_COLORS[selectedNotif.type] || '#a09b8c';
+          const NotifIcon = TYPE_ICONS[selectedNotif.type] || Sparkles;
+          return (
+            <motion.div
+              className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+              style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedNotif(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.85, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+                className="w-full max-w-md rounded-2xl overflow-hidden"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
+                  border: `1.5px solid ${notifColor}40`,
+                  boxShadow: `0 0 60px ${notifColor}15, 0 25px 50px rgba(0,0,0,0.6)`,
+                }}
+                onClick={e => e.stopPropagation()}
+              >
+                {/* Detail Header */}
+                <div className="p-6 pb-4" style={{ borderBottom: `1px solid ${notifColor}15` }}>
+                  <button onClick={() => setSelectedNotif(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Cerrar">
+                    <X className="w-4 h-4 text-[#a09b8c]" />
+                  </button>
+
+                  {/* Type icon + badge */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ background: `${notifColor}18`, border: `1.5px solid ${notifColor}30`, boxShadow: `0 0 20px ${notifColor}15` }}>
+                      <NotifIcon className="w-6 h-6" style={{ color: notifColor }} />
+                    </div>
+                    <span className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider lol-label"
+                      style={{ background: `${notifColor}15`, color: notifColor, border: `1px solid ${notifColor}30` }}>
+                      {selectedNotif.type}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="text-lg font-bold text-[#f0e6d2] lol-title mb-2" style={{ color: notifColor === '#c8aa6e' ? '#c8aa6e' : '#f0e6d2' }}>
+                    {selectedNotif.title}
+                  </h2>
+
+                  {/* Timestamp */}
+                  <div className="flex items-center gap-2 text-[10px] text-[#5b5a56]">
+                    <Clock className="w-3 h-3" />
+                    <span>{formatTimestamp(selectedNotif.timestamp)}</span>
+                    <span className="text-[#785a28]">·</span>
+                    <span>{timeAgo(selectedNotif.timestamp)}</span>
+                  </div>
+                </div>
+
+                {/* Detail Body */}
+                <div className="p-6 space-y-4">
+                  {/* Description */}
+                  <div className="rounded-xl p-4" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}>
+                    <p className="text-sm text-[#a09b8c] leading-relaxed">{selectedNotif.description}</p>
+                  </div>
+
+                  {/* Category badge */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-[#5b5a56] uppercase tracking-wider">Categoría:</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.08)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.15)' }}>
+                      {selectedNotif.category}
+                    </span>
+                  </div>
+
+                  {/* Commit link */}
+                  {selectedNotif.commit && (
+                    <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(15,186,129,0.06)', border: '1px solid rgba(15,186,129,0.15)' }}>
+                      <Rocket className="w-4 h-4 text-[#0fba81] shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] text-[#5b5a56] uppercase tracking-wider">Commit</p>
+                        <p className="text-xs text-[#a09b8c] font-mono truncate">{selectedNotif.commit}</p>
+                      </div>
+                      <a
+                        href={`https://github.com/gamer-frog/moba-sage/commit/${selectedNotif.commit}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all hover:scale-105 shrink-0"
+                        style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.3)', color: '#0fba81' }}
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        Ver en GitHub
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
     </header>
   );
 }

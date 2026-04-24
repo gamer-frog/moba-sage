@@ -115,3 +115,30 @@ export const TinyChampionIcon = memo(function TinyChampionIcon({ name }: { name:
     </div>
   );
 });
+
+export const MicroChampionIcon = memo(function MicroChampionIcon({ name }: { name: string }) {
+  const [imgError, setImgError] = useState(false);
+  return (
+    <div
+      className="w-4 h-4 rounded-full overflow-hidden shrink-0"
+      style={{ border: '1px solid rgba(120,90,40,0.3)' }}
+    >
+      {!imgError ? (
+        <Image
+          src={getChampionImageUrl(name)}
+          alt={name}
+          width={16}
+          height={16}
+          className="w-full h-full object-cover"
+          loading="lazy"
+          unoptimized
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-[6px] font-bold bg-[#1e2328] text-[#a09b8c]">
+          {name[0]}
+        </div>
+      )}
+    </div>
+  );
+});

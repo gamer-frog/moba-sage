@@ -36,8 +36,79 @@
     { "name": "Shyvana", "reason": "Reajuste iterativo — podría mejorar pero necesita testing. Tier incierto.", "tier": "A" }
   ],
   "itemImpact": {
-    "winners": ["Doran's Helm beneficia bruisers/tanks (Ornn, Darius, K'Sante)", "Doran's Bow fortalece ADCs en early (Nilah, Jinx)", "Omnivamp Boots da sustain a carries"],
-    "losers": ["Trailblazer removido — mages sin item de inicio ideal", "Opportunity removido — ciertos ADCs pierden su item preferido"]
+    "winners": [
+      "Doran's Helm beneficia bruisers/tanks (Ornn, Darius, K'Sante)",
+      "Doran's Bow fortalece ADCs en early (Nilah, Jinx)",
+      "Omnivamp Boots da sustain a carries",
+      "Gluttonous Greaves fortalece assassins y divers (Zed, Katarina)",
+      "Jak'Sho se beneficia del meta prolongado de teamfights",
+      "Black Cleaver más relevante por el meta de bruisers en top"
+    ],
+    "losers": [
+      "Trailblazer removido — mages sin item de inicio ideal",
+      "Opportunity removido — ciertos ADCs pierden su item preferido",
+      "Randuin's Omen menos efectivo con el meta de AP bruisers",
+      "Force of Nature perde valor contra comps mixtas"
+    ]
   },
-  "summary": "Patch 26.9 redefine el meta con nuevos items de inicio que cambian la fase de lanes. Taliyah y Warwick son los principales beneficiados. Ambessa y Briar caen tras nerfs directos. La Season 2 Pandemonium trae ranked reset y cambios sistémicos masivos."
+  "proTips": [
+    {
+      "player": "Chovy",
+      "tip": "En el meta de Season 2, el wave management en mid lane es más importante que nunca. Con los nuevos Doran's items, el early game se decide en los primeros 3 minutos de CS.",
+      "champion": "Taliyah"
+    },
+    {
+      "player": "369",
+      "tip": "Doran's Helm hace que los bruisers de top sean inmensamente fuertes en short trades. Grasp + Black Cleaver es el core que todo bruiser debería considerar.",
+      "champion": "K'Sante"
+    },
+    {
+      "player": "Ruler",
+      "tip": "Doran's Bow cambia el lane phase para ADCs. Si tu support no es engage-heavy, podés priorizar farming seguro con el sustain extra del nuevo item.",
+      "champion": "Jinx"
+    },
+    {
+      "player": "Peanut",
+      "tip": "Con los cambios a sustains en jungle, los junglers que pueden gankar post-6 sin depender de items son los más fuertes. Warwick y Nocturne son top tier por esto.",
+      "champion": "Warwick"
+    },
+    {
+      "player": "Keria",
+      "tip": "Glacial Augment es el keystone más subestimado para supports engage. El slow de las piezas + tu CC base garantiza catches en ranked. Thresh y Nautilus la rompen.",
+      "champion": "Thresh"
+    }
+  ],
+  "runeChanges": [
+    {
+      "rune": "Grasp of the Undying",
+      "change": "Ajustado el heal scaling — menos sustain en early, más en late game. Afecta principalmente a bruisers de top.",
+      "impact": "medium"
+    },
+    {
+      "rune": "Dark Harvest",
+      "change": "Reset timer reducido de 3s a 2s. Mejor para snowball en teamfights. Warwick y junglers burst se benefician.",
+      "impact": "high"
+    },
+    {
+      "rune": "Phase Rush",
+      "change": "MS buff duration aumentado de 1.5s a 2s. Más tiempo para kiting y disengage. Taliyah y mages mobiles ganan valor.",
+      "impact": "medium"
+    },
+    {
+      "rune": "Lethal Tempo",
+      "change": "AS cap reducido de 110% a 100%. Hyper carries como Jinx y Kog'Maw pierden algo de DPS máximo pero ganan stack speed.",
+      "impact": "medium"
+    },
+    {
+      "rune": "Glacial Augment",
+      "change": "Cooldown de item actives reducido 15%. Items como Frostfire Gauntlet y Everfrost son más spameables.",
+      "impact": "low"
+    },
+    {
+      "rune": "Aftershock",
+      "change": "Resistencias granted reducidas 5%. Tank junglers ligeramente más débiles en early ganks.",
+      "impact": "low"
+    }
+  ],
+  "summary": "Patch 26.9 redefine el meta con nuevos items de inicio que cambian la fase de lanes. Taliyah y Warwick son los principales beneficiados. Ambessa y Briar caen tras nerfs directos. La Season 2 Pandemonium trae ranked reset y cambios sistémicos masivos. Dark Harvest se consolida como keystone top para junglers, mientras que Grasp pierde algo de fuerza en early pero compensa en late."
 }

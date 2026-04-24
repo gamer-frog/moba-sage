@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { User, Search, MapPin, ChevronDown, Loader2, Crown, AlertTriangle, Sparkles, Trophy } from 'lucide-react';
+import { User, Search, MapPin, ChevronDown, Loader2, Crown, AlertTriangle, Sparkles, Trophy, Clock, Key } from 'lucide-react';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -189,10 +189,88 @@ export function ProfileTab({
       )}
 
       {!summonerData && !summonerLoading && !summonerError && (
-        <div className="text-center py-16">
-          <User className="w-16 h-16 mx-auto mb-4 text-[#785a28]/30" />
-          <p className="text-[#5b5a56] text-sm">Busca un invocador para ver su perfil</p>
-          <p className="text-[#785a28]/40 text-xs mt-1">Escribe el nombre y selecciona una región</p>
+        <div className="space-y-6">
+          {/* Empty state for search */}
+          <div className="text-center py-10">
+            <User className="w-16 h-16 mx-auto mb-4 text-[#785a28]/30" />
+            <p className="text-[#5b5a56] text-sm">Busca un invocador para ver su perfil</p>
+            <p className="text-[#785a28]/40 text-xs mt-1">Escribe el nombre y selecciona una región</p>
+          </div>
+
+          {/* Match History Placeholder */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <Clock className="w-4 h-4 text-[#c8aa6e]" />
+              <h4 className="text-sm font-semibold text-[#f0e6d2] lol-title">Historial de Partidas</h4>
+            </div>
+            <div className="relative pl-6">
+              {/* Timeline line */}
+              <div className="absolute left-[11px] top-3 bottom-3 w-px" style={{ background: 'linear-gradient(180deg, rgba(200,170,110,0.3), rgba(120,90,40,0.1), transparent)' }} />
+
+              {Array.from({ length: 5 }).map((_, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + idx * 0.08 }}
+                  className="relative mb-3 last:mb-0"
+                >
+                  {/* Timeline dot */}
+                  <div
+                    className="absolute -left-6 top-4 w-[9px] h-[9px] rounded-full"
+                    style={{ background: 'rgba(120,90,40,0.3)', border: '2px solid rgba(120,90,40,0.15)' }}
+                  />
+
+                  {/* Match slot */}
+                  <div
+                    className="rounded-xl p-4 flex items-center gap-4"
+                    style={{
+                      background: 'rgba(30,35,40,0.3)',
+                      border: '2px dashed rgba(120,90,40,0.15)',
+                    }}
+                  >
+                    {/* Faded champion silhouette placeholder */}
+                    <div
+                      className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center"
+                      style={{ background: 'rgba(120,90,40,0.08)', border: '1px solid rgba(120,90,40,0.1)' }}
+                    >
+                      <User className="w-5 h-5 text-[#785a28]/15" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-[#5b5a56]/50 truncate">Partida {5 - idx}</p>
+                      <p className="text-[10px] text-[#5b5a56]/30 mt-0.5">Esperando datos...</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: 'rgba(120,90,40,0.08)' }}>
+                        <span className="text-[8px] text-[#5b5a56]/30">—</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Connect API Key hint */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="mt-5 rounded-xl p-4 flex items-center gap-3"
+              style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.12)' }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)' }}>
+                <Key className="w-4 h-4 text-[#c8aa6e]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-[#c8aa6e]">Conecta tu API Key de Riot</p>
+                <p className="text-[10px] text-[#5b5a56] mt-0.5">para ver tu historial de partidas completo</p>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       )}
     </div>

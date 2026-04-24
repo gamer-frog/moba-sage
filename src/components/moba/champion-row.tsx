@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Star, ChevronDown, TrendingUp, Minus, TrendingDown } from 'lucide-react';
-import { ChampionIcon } from './champion-icon';
+import { ChampionIcon, MicroChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
 import type { Champion } from './types';
 
@@ -38,6 +38,15 @@ function TrendIcon({ rate }: { rate: number }) {
   return <TrendingDown className="w-3 h-3 text-[#5b5a56]" />;
 }
 
+// Parse comma-separated champion names from counterPick or synergy
+function parseChampionNames(str: string | undefined, currentChampName: string): string[] {
+  if (!str) return [];
+  return str
+    .split(/[,;—]/)
+    .map(s => s.replace(/\(.*?\)/g, '').replace(/—.*/g, '').trim())
+    .filter(n => n.length > 0 && n.length < 25 && n !== currentChampName);
+}
+
 export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, trend }: {
   champion: Champion;
   onClick: () => void;
@@ -46,6 +55,10 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
   trend?: 'rising' | 'falling';
 }) {
   const wr = wrColor(champion.winRate);
+
+  const synergyNames = parseChampionNames(champion.synergy, champion.name);
+  const counterNames = parseChampionNames(champion.counterPick, champion.name);
+  const hasMatchups = synergyNames.length > 0 || counterNames.length > 0;
 
   return (
     <motion.div
@@ -80,6 +93,26 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
           )}
         </div>
         <p className="text-[10px] text-[#5b5a56] truncate leading-tight mt-0.5">{champion.title}</p>
+        {/* Matchup indicators — synergy (green) + counters (red) */}
+        {hasMatchups && (
+          <div className="flex items-center gap-1.5 mt-1 opacity-70 group-hover:opacity-100 transition-opacity">
+            {synergyNames.slice(0, 3).map((name) => (
+              <div key={`syn-${name}`} className="relative" title={`${name} (Sinergia)`}>
+                <MicroChampionIcon name={name} />
+                <div className="absolute inset-0 rounded-full" style={{ boxShadow: '0 0 4px rgba(10,203,230,0.6)', border: '1px solid rgba(10,203,230,0.4)' }} />
+              </div>
+            ))}
+            {synergyNames.length > 0 && counterNames.length > 0 && (
+              <div className="w-px h-3 bg-[#785a28]/30" />
+            )}
+            {counterNames.slice(0, 3).map((name) => (
+              <div key={`ctr-${name}`} className="relative" title={`${name} (Counter)`}>
+                <MicroChampionIcon name={name} />
+                <div className="absolute inset-0 rounded-full" style={{ boxShadow: '0 0 4px rgba(232,64,87,0.6)', border: '1px solid rgba(232,64,87,0.4)' }} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <RoleBadge role={champion.role} />
       {/* Mobile WR bar — subtle inline indicator */}

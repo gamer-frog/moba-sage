@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain } from 'lucide-react';
+import { Brain, Search } from 'lucide-react';
+import { ChampionIcon } from '@/components/moba/champion-icon';
+import { RoleBadge } from '@/components/moba/badges';
 import { updateDdVersion } from '@/components/moba/helpers';
 import type {
   Champion, PatchNote, AiInsight, TaskItem,
@@ -133,6 +135,11 @@ export default function Home() {
   // Mobile sidebar drawer state
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Global search state
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+  const [globalSearchQuery, setGlobalSearchQuery] = useState('');
+  const globalSearchRef = useRef<HTMLInputElement>(null);
+
   // ============ GAME SELECTION ============
 
   // ============ FETCH DATA ============
@@ -194,15 +201,59 @@ export default function Home() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  // Listen for notification bell tab switch
+  // Listen for notification bell tab switch + search button
   useEffect(() => {
     function handleTabSwitch(e: Event) {
       const detail = (e as CustomEvent).detail;
       if (typeof detail === 'string') setActiveTab(detail);
     }
+    function handleOpenSearch() {
+      setGlobalSearchOpen(true);
+      setGlobalSearchQuery('');
+    }
     window.addEventListener('moba-sage-switch-tab', handleTabSwitch);
-    return () => window.removeEventListener('moba-sage-switch-tab', handleTabSwitch);
+    window.addEventListener('moba-sage-open-search', handleOpenSearch);
+    return () => {
+      window.removeEventListener('moba-sage-switch-tab', handleTabSwitch);
+      window.removeEventListener('moba-sage-open-search', handleOpenSearch);
+    };
   }, []);
+
+  // Ctrl+K / Cmd+K global search
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        if (selectedGame) {
+          setGlobalSearchOpen(prev => !prev);
+          setGlobalSearchQuery('');
+        }
+      }
+      if (e.key === 'Escape' && globalSearchOpen) {
+        setGlobalSearchOpen(false);
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedGame, globalSearchOpen]);
+
+  // Auto-focus search input
+  useEffect(() => {
+    if (globalSearchOpen && globalSearchRef.current) {
+      setTimeout(() => globalSearchRef.current?.focus(), 100);
+    }
+  }, [globalSearchOpen]);
+
+  // Filter champions by search query
+  const searchResults = globalSearchQuery.trim().length > 0
+    ? champions.filter(c => c.name.toLowerCase().includes(globalSearchQuery.toLowerCase())).slice(0, 8)
+    : champions.slice(0, 8);
+
+  function handleSearchSelect(champ: typeof champions[0]) {
+    setSelectedChampion(champ);
+    setGlobalSearchOpen(false);
+    setGlobalSearchQuery('');
+  }
 
   // Persist favorites
   useEffect(() => {
@@ -281,6 +332,88 @@ export default function Home() {
       {/* Loading Screen (initial only) */}
       <AnimatePresence>
         {!initialLoadDone && <LoadingScreen />}
+      </AnimatePresence>
+
+      {/* Global Search Overlay (Command Palette) */}
+      <AnimatePresence>
+        {globalSearchOpen && selectedGame && (
+          <motion.div
+            className="fixed inset-0 z-[70] flex items-start justify-center pt-[15vh] p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setGlobalSearchOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: -10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: -10 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              className="w-full max-w-lg rounded-2xl overflow-hidden"
+              style={{
+                background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
+                border: '1.5px solid rgba(200,170,110,0.3)',
+                boxShadow: '0 0 60px rgba(200,170,110,0.1), 0 25px 50px rgba(0,0,0,0.6)',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Search input */}
+              <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
+                <Search className="w-5 h-5 text-[#c8aa6e] shrink-0" />
+                <input
+                  ref={globalSearchRef}
+                  type="text"
+                  value={globalSearchQuery}
+                  onChange={e => setGlobalSearchQuery(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && searchResults.length > 0) {
+                      handleSearchSelect(searchResults[0]);
+                    }
+                  }}
+                  placeholder="Buscar campeón..."
+                  className="flex-1 bg-transparent text-[#f0e6d2] text-lg placeholder:text-[#5b5a56] outline-none lol-title"
+                  style={{ fontFamily: 'inherit', letterSpacing: '0.05em' }}
+                />\n                <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] text-[#5b5a56]" style={{ background: 'rgba(120,90,40,0.12)', border: '1px solid rgba(120,90,40,0.2)' }}>
+                  <span className="text-[8px]">⌘</span>K
+                </kbd>
+              </div>
+
+              {/* Results */}
+              <div className="max-h-72 overflow-y-auto scrollbar-none">
+                {searchResults.length === 0 ? (
+                  <div className="px-5 py-8 text-center">
+                    <Search className="w-8 h-8 mx-auto mb-2 text-[#785a28]/30" />
+                    <p className="text-xs text-[#5b5a56]">No se encontraron campeones</p>
+                  </div>
+                ) : (
+                  searchResults.map(champ => (
+                    <motion.button
+                      key={champ.id}
+                      onClick={() => handleSearchSelect(champ)}
+                      className="w-full flex items-center gap-3 px-5 py-2.5 hover:bg-[#1e2328]/60 transition-colors cursor-pointer"
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <ChampionIcon name={champ.name} tier={champ.tier} />
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-sm font-semibold text-[#f0e6d2] truncate">{champ.name}</p>
+                        <p className="text-[10px] text-[#5b5a56] truncate">{champ.title}</p>
+                      </div>
+                      <RoleBadge role={champ.role} />
+                      <span className="text-[10px] font-mono font-semibold" style={{ color: champ.winRate >= 52 ? '#0fba81' : '#a09b8c' }}>{champ.winRate}%</span>
+                    </motion.button>
+                  ))
+                )}
+              </div>
+
+              {/* Footer hint */}
+              <div className="px-5 py-2.5 flex items-center justify-between text-[10px] text-[#5b5a56]" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
+                <span>{champions.length} campeones disponibles</span>
+                <span>Enter para seleccionar · Esc para cerrar</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Activity Popup (once per session) */}
