@@ -1,10 +1,14 @@
 {
   "lastScraped": "2026-04-25T12:00:00Z",
-  "source": "OP.GG + U.GG",
+  "source": "U.GG + OP.GG + Mobalytics + LoLalytics",
   "patch": "26.9",
+  "season": "Pandemonium (Season 2)",
   "champions": {
     "sion": {
       "wr": 54.6,
+      "pick": 2.1,
+      "ban": 0.3,
+      "role": "Top",
       "core_items": [
         "Fuerza de la Trinidad",
         "Hidra Titánica",
@@ -12,7 +16,7 @@
         "Eclipse"
       ],
       "boots": [
-        "Grebas de Placa"
+        "Grebas de Placas"
       ],
       "runes": [
         "Precisión",
@@ -26,24 +30,37 @@
         "Q",
         "W",
         "E"
+      ],
+      "counters": [
+        "Teemo",
+        "Vayne",
+        "Darius"
+      ],
+      "strong_vs": [
+        "Garen",
+        "Ornn",
+        "Malphite"
       ]
     },
     "garen": {
       "wr": 54.7,
+      "pick": 3.8,
+      "ban": 0.5,
+      "role": "Top/Mid",
       "core_items": [
+        "Filo de la Noche",
+        "Guardián Angel",
         "Fuerza de la Trinidad",
-        "Malla de Espinas",
-        "Bastón de los Sigilos",
-        "Visión Divina"
+        "Resistencia Divina"
       ],
       "boots": [
-        "Grebas de Placa"
+        "Botas de Mercurio"
       ],
       "runes": [
         "Precisión",
         "Conquistador",
         "Determinación",
-        "Inquebrantable",
+        "Revitalizar",
         "Inspiración",
         "Calzado Mágico"
       ],
@@ -51,146 +68,225 @@
         "Q",
         "E",
         "W"
+      ],
+      "counters": [
+        "Teemo",
+        "Darius",
+        "Rumble"
+      ],
+      "strong_vs": [
+        "Sion",
+        "Ornn",
+        "Malphite"
       ]
     },
     "karthus": {
       "wr": 55.1,
+      "pick": 2.5,
+      "ban": 1.2,
+      "role": "Jungle/Mid",
       "core_items": [
-        "Sombrero Rabadon",
+        "Sombrero de Rabadón",
         "Reloj de Zhonya",
-        "Llama Sombría",
-        "Implacable Markái"
+        "Llamarada Sombría",
+        "Morellonomicon"
       ],
       "boots": [
-        "Botas del Hechicero"
+        "Botas del Vacío"
       ],
       "runes": [
         "Brujería",
-        "Dao a Tiempo (DFT)",
+        "Deathfire Touch",
+        "Determinación",
+        "Segunda Vida",
         "Inspiración",
-        "Entrega de Galletas",
-        "Calzado Mágico"
+        "Pieza de Calzado Brillante"
       ],
       "skill_order": [
         "Q",
         "W",
         "E"
-      ]
+      ],
+      "counters": [
+        "Kha'Zix",
+        "Lee Sin",
+        "Rek'Sai"
+      ],
+      "strong_vs": [
+        "Malzahar",
+        "Brand",
+        "Amumu"
+      ],
+      "note": "DFT broken — 100K+ daño PBE 26.9"
     },
     "malzahar": {
       "wr": 53.8,
+      "pick": 4.2,
+      "ban": 1.5,
+      "role": "Mid",
       "core_items": [
-        "Dao de Liandry",
-        "Sombrero Rabadon",
-        "Llama Sombría",
-        "Reloj de Zhonya"
+        "Sombrero de Rabadón",
+        "Llamarada Sombría",
+        "Morellonomicon",
+        "Cetro de Rylai"
       ],
       "boots": [
-        "Botas del Hechicero"
+        "Botas del Vacío"
       ],
       "runes": [
         "Brujería",
-        "Dao a Tiempo (DFT)",
+        "Deathfire Touch",
         "Determinación",
-        "Inquebrantable",
+        "Sobrecrecimiento",
         "Inspiración",
-        "Calzado Mágico"
+        "Pieza de Calzado Brillante"
       ],
       "skill_order": [
         "Q",
         "E",
         "W"
+      ],
+      "counters": [
+        "Fizz",
+        "Kassadin",
+        "Zed"
+      ],
+      "strong_vs": [
+        "Karthus",
+        "Brand",
+        "Vel'Koz"
       ]
     },
     "brand": {
       "wr": 53.5,
+      "pick": 3.1,
+      "ban": 0.4,
+      "role": "Mid/Support",
       "core_items": [
-        "Dao de Liandry",
-        "Llama Sombría",
-        "Sombrero Rabadon",
-        "Impulso Cósmico"
+        "Llamarada Sombría",
+        "Morellonomicon",
+        "Sombrero de Rabadón",
+        "Cetro de Rylai"
       ],
       "boots": [
-        "Botas del Hechicero"
+        "Botas del Vacío"
       ],
       "runes": [
         "Brujería",
-        "Dao a Tiempo (DFT)",
+        "Deathfire Touch",
+        "Determinación",
+        "Fuente de Vida",
         "Inspiración",
-        "Entrega de Galletas",
         "Calzado Mágico"
       ],
       "skill_order": [
-        "W",
         "Q",
+        "W",
         "E"
+      ],
+      "counters": [
+        "Yasuo",
+        "Fizz",
+        "Sylas"
+      ],
+      "strong_vs": [
+        "Engage supports",
+        "Melee mid"
       ]
     },
     "thresh": {
       "wr": 52.4,
+      "pick": 11.5,
+      "ban": 2.1,
+      "role": "Support",
       "core_items": [
         "Redención",
-        "Reloj de Arena",
-        "Piedra de Visión",
-        "Eco de Helene"
+        "Mikael",
+        "Convergencia de Zeke",
+        "Medallón de los Solari"
       ],
       "boots": [
         "Botas de Celeridad"
       ],
       "runes": [
-        "Determinación",
-        "Fuerza de Marea",
-        "Inspiración",
-        "Calzado Mágico",
-        "Entrega de Galletas"
+        "Valor",
+        "Guardián",
+        "Brujería",
+        "Debilidad",
+        "Valor",
+        "Revitalizar"
       ],
       "skill_order": [
         "Q",
-        "W",
-        "E"
+        "E",
+        "W"
+      ],
+      "counters": [
+        "Morgana",
+        "Leona",
+        "Nautilus"
+      ],
+      "strong_vs": [
+        "Squishy ADCs",
+        "Engage comps"
       ]
     },
     "jinx": {
       "wr": 52.8,
+      "pick": 8.2,
+      "ban": 1.0,
+      "role": "ADC",
       "core_items": [
         "Filo Infinito",
+        "Huracán de Runaan",
         "Bailarín Espectral",
-        "Sed de Sangre",
-        "Pulverizador"
+        "Guardián Angel"
       ],
       "boots": [
-        "Grebas Berserker"
+        "Botas de Berserker"
       ],
       "runes": [
         "Precisión",
-        "Tempo Letal",
-        "Determinación",
-        "Sangre de Leyenda",
-        "Inspiración",
-        "Tónico de Salud"
+        "Pies Veloces",
+        "Valor",
+        "Segunda Vida",
+        "Precisión",
+        "Golpe de Gracia"
       ],
       "skill_order": [
         "Q",
         "W",
         "E"
+      ],
+      "counters": [
+        "Draven",
+        "Caitlyn",
+        "Samira"
+      ],
+      "strong_vs": [
+        "Immobile ADCs",
+        "Peel supports"
       ]
     },
     "leesin": {
       "wr": 50.6,
+      "pick": 6.8,
+      "ban": 2.5,
+      "role": "Jungle",
       "core_items": [
         "Eclipse",
-        "Cielo Hendido",
-        "Hidra Titánica",
-        "Fuerza de la Trinidad"
+        "Stridebreaker",
+        "Resistencia Divina",
+        "Sed de Sangre"
       ],
       "boots": [
-        "Grebas de Placa"
+        "Botas de Mercurio"
       ],
       "runes": [
         "Precisión",
         "Conquistador",
         "Determinación",
-        "Inquebrantable",
+        "Segunda Vida",
         "Inspiración",
         "Calzado Mágico"
       ],
@@ -198,72 +294,302 @@
         "Q",
         "W",
         "E"
+      ],
+      "counters": [
+        "Warwick",
+        "Nunu",
+        "Udyr"
+      ],
+      "strong_vs": [
+        "Kha'Zix",
+        "Elise",
+        "Nidalee"
       ]
     },
     "gragas": {
       "wr": 53.2,
+      "pick": 3.5,
+      "ban": 0.2,
+      "role": "Jungle/Support",
       "core_items": [
-        "Dao de Liandry",
-        "Sombrero Rabadon",
-        "Llama Sombría",
-        "Impulso Cósmico"
+        "Llamarada Sombría",
+        "Morellonomicon",
+        "Sombrero de Rabadón",
+        "Reloj de Zhonya"
       ],
       "boots": [
-        "Botas del Hechicero"
+        "Botas del Vacío"
       ],
       "runes": [
         "Brujería",
-        "Dao a Tiempo (DFT)",
-        "Inspiración",
-        "Entrega de Galletas",
-        "Calzado Mágico"
+        "Invocar Aery",
+        "Determinación",
+        "Segunda Vida",
+        "Precisión",
+        "Presencia de Campeón"
       ],
       "skill_order": [
         "Q",
-        "E",
-        "W"
-      ]
+        "W",
+        "E"
+      ],
+      "counters": [
+        "Lee Sin",
+        "Kha'Zix",
+        "Graves"
+      ],
+      "strong_vs": [
+        "Melee junglers",
+        "Engage comps"
+      ],
+      "note": "W buffeado 26.9"
     },
     "teemo": {
       "wr": 52.1,
+      "pick": 2.8,
+      "ban": 0.8,
+      "role": "Top",
       "core_items": [
-        "Dao de Liandry",
-        "Sombrero Rabadon",
-        "Llama Sombría",
-        "Diente de Nashor"
+        "Llamarada Sombría",
+        "Morellonomicon",
+        "Hielo Eterno",
+        "Sombrero de Rabadón"
       ],
       "boots": [
-        "Botas Rápidas de Nether"
+        "Botas del Vacío"
       ],
       "runes": [
         "Brujería",
-        "Dao a Tiempo (DFT)",
+        "Deathfire Touch",
+        "Determinación",
+        "Segunda Vida",
         "Inspiración",
-        "Calzado Mágico",
-        "Entrega de Galletas"
+        "Pieza de Calzado Brillante"
       ],
       "skill_order": [
-        "E",
         "Q",
+        "E",
         "W"
-      ]
+      ],
+      "counters": [
+        "Ornn",
+        "Yorick",
+        "Poppy"
+      ],
+      "strong_vs": [
+        "Sion",
+        "Garen",
+        "Darius"
+      ],
+      "note": "Stats ajustados para ecosistema items 26.9"
     },
     "ksante": {
       "wr": 51.9,
+      "pick": 5.1,
+      "ban": 0.9,
+      "role": "Top",
       "core_items": [
-        "Visión Divina",
+        "Jak'Sho, el Proteico",
         "Hidra Titánica",
-        "Fuerza de la Trinidad",
-        "Eclipse"
+        "Resistencia Divina",
+        "Fuerza de la Trinidad"
       ],
       "boots": [
-        "Grebas de Placa"
+        "Grebas de Placas"
+      ],
+      "runes": [
+        "Valor",
+        "Demolir",
+        "Determinación",
+        "Segunda Vida",
+        "Precisión",
+        "Pies Veloces"
+      ],
+      "skill_order": [
+        "Q",
+        "W",
+        "E"
+      ],
+      "counters": [
+        "Vayne",
+        "Teemo",
+        "Fiora"
+      ],
+      "strong_vs": [
+        "Tanky tops",
+        "Dive comps"
+      ]
+    },
+    "viego": {
+      "wr": 52.3,
+      "pick": 7.5,
+      "ban": 4.2,
+      "role": "Jungle",
+      "core_items": [
+        "Eclipse",
+        "Stridebreaker",
+        "Filo de la Noche",
+        "Sed de Sangre"
+      ],
+      "boots": [
+        "Botas de Berserker"
       ],
       "runes": [
         "Precisión",
         "Conquistador",
         "Determinación",
-        "Second Wind",
+        "Segunda Vida",
+        "Dominación",
+        "Golpe de Gracia"
+      ],
+      "skill_order": [
+        "Q",
+        "W",
+        "E"
+      ],
+      "counters": [
+        "Warwick",
+        "Poppy",
+        "Lillia"
+      ],
+      "strong_vs": [
+        "Squishy comps",
+        "Reset opportunities"
+      ]
+    },
+    "nilah": {
+      "wr": 53.2,
+      "pick": 1.5,
+      "ban": 0.3,
+      "role": "ADC",
+      "core_items": [
+        "Filo Infinito",
+        "Bailarín Espectral",
+        "Guardián Angel",
+        "Filo de la Noche"
+      ],
+      "boots": [
+        "Botas de Berserker"
+      ],
+      "runes": [
+        "Precisión",
+        "Lethal Tempo",
+        "Valor",
+        "Segunda Vida",
+        "Precisión",
+        "Presencia de Campeón"
+      ],
+      "skill_order": [
+        "Q",
+        "E",
+        "W"
+      ],
+      "counters": [
+        "Caitlyn",
+        "Jinx",
+        "Samira"
+      ],
+      "strong_vs": [
+        "Enchanter supports",
+        "Peel comps"
+      ],
+      "note": "Highest WR ADC 26.9"
+    },
+    "tahmkench": {
+      "wr": 51.5,
+      "pick": 2.2,
+      "ban": 0.4,
+      "role": "Support/Top",
+      "core_items": [
+        "Medallón de los Solari",
+        "Redención",
+        "Hidra Titánica",
+        "Resistencia Divina"
+      ],
+      "boots": [
+        "Botas de Placas"
+      ],
+      "runes": [
+        "Valor",
+        "Guardián",
+        "Brujería",
+        "Debilidad",
+        "Determinación",
+        "Fuente de Vida"
+      ],
+      "skill_order": [
+        "Q",
+        "W",
+        "E"
+      ],
+      "counters": [
+        "Morgana",
+        "Lux",
+        "Brand"
+      ],
+      "strong_vs": [
+        "Engage supports",
+        "All-in ADCs"
+      ],
+      "note": "Buffeado 26.9 — Riot: overnerfed TK"
+    },
+    "warwick": {
+      "wr": 52.1,
+      "pick": 3.8,
+      "ban": 0.6,
+      "role": "Jungle",
+      "core_items": [
+        "Sed de Sangre",
+        "Jak'Sho, el Proteico",
+        "Resistencia Divina",
+        "Hidra Titánica"
+      ],
+      "boots": [
+        "Botas de Mercurio"
+      ],
+      "runes": [
+        "Precisión",
+        "Pies Veloces",
+        "Determinación",
+        "Segunda Vida",
+        "Dominación",
+        "Sabor a Sangre"
+      ],
+      "skill_order": [
+        "Q",
+        "W",
+        "E"
+      ],
+      "counters": [
+        "Kha'Zix",
+        "Elise",
+        "Nidalee"
+      ],
+      "strong_vs": [
+        "Squishy junglers",
+        "Low CC comps"
+      ],
+      "note": "Buffeado 26.9"
+    },
+    "zaahen": {
+      "wr": 50.5,
+      "pick": 8.3,
+      "ban": 1.8,
+      "role": "Top",
+      "core_items": [
+        "Filo de la Noche",
+        "Fuerza de la Trinidad",
+        "Eclipse",
+        "Resistencia Divina"
+      ],
+      "boots": [
+        "Botas de Mercurio"
+      ],
+      "runes": [
+        "Precisión",
+        "Conquistador",
+        "Determinación",
+        "Segunda Vida",
         "Inspiración",
         "Calzado Mágico"
       ],
@@ -271,6 +597,90 @@
         "Q",
         "W",
         "E"
+      ],
+      "counters": [
+        "Malphite",
+        "Ornn",
+        "Sion"
+      ],
+      "strong_vs": [
+        "Melee tops",
+        "New champion advantage"
+      ],
+      "note": "New champion 26.8, dominant top lane"
+    },
+    "malphite": {
+      "wr": 54.7,
+      "pick": 4.5,
+      "ban": 1.0,
+      "role": "Top/Support",
+      "core_items": [
+        "Hielo Eterno",
+        "Sombrero de Rabadón",
+        "Reloj de Zhonya",
+        "Morellonomicon"
+      ],
+      "boots": [
+        "Botas del Vacío"
+      ],
+      "runes": [
+        "Brujería",
+        "Cometa Arcano",
+        "Determinación",
+        "Segunda Vida",
+        "Inspiración",
+        "Pieza de Calzado Brillante"
+      ],
+      "skill_order": [
+        "Q",
+        "E",
+        "W"
+      ],
+      "counters": [
+        "Garen",
+        "Darius",
+        "Fiora"
+      ],
+      "strong_vs": [
+        "AD tops",
+        "AA-based champs"
+      ]
+    },
+    "caitlyn": {
+      "wr": 51.2,
+      "pick": 9.7,
+      "ban": 0.8,
+      "role": "ADC",
+      "core_items": [
+        "Filo Infinito",
+        "Huracán de Runaan",
+        "Lord Dominik",
+        "Guardián Angel"
+      ],
+      "boots": [
+        "Botas de Berserker"
+      ],
+      "runes": [
+        "Precisión",
+        "Pies Veloces",
+        "Valor",
+        "Segunda Vida",
+        "Precisión",
+        "Presencia de Campeón"
+      ],
+      "skill_order": [
+        "Q",
+        "W",
+        "E"
+      ],
+      "counters": [
+        "Draven",
+        "Samira",
+        "Ezreal"
+      ],
+      "strong_vs": [
+        "Short-range ADCs",
+        "Peel supports"
       ]
     }
   }
