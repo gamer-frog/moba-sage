@@ -1,7 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-24T17:11:00Z",
+  "lastUpdated": "2026-04-24T17:26:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-020",
+      "type": "fix",
+      "title": "10+ correcciones de inglés en texto español (aiAnalysis)",
+      "description": "Palabras en inglés corregidas a español en data.ts: 'wait'→'esperá' (Blitzcrank), 'enough'→'suficiente' (Xin Zhao, Elise), 'capacity'→'capacidad' (5 instancias: Volibear, Nidalee, Braum, Kalista, Senna), 'game-changing'→'decisivo/decisiva' (Braum, Ivern, Jinx WR, Lulu WR), 'landing'→'acertado' (Blitzcrank, Morgana), 'desengagements'→'desenganchar' (Morgana). Build OK.",
+      "timestamp": "2026-04-24T17:26:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-019",
       "type": "fix",
