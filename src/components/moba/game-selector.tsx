@@ -26,7 +26,7 @@ const _SplashCarousel = memo(function _SplashCarousel() {
       {SPLASH_CHAMPIONS.map((key, i) => (
         <div
           key={key}
-          className="absolute inset-0 transition-opacity duration-[2000ms]"
+          className="absolute inset-0 transition-opacity duration-s]"
           style={{
             opacity: i === current ? 0.08 : 0,
             backgroundImage: `url(https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${key}_0.jpg)`,
@@ -43,6 +43,37 @@ export function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: Gam
   const now = new Date();
   const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
   const formattedDate = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  // Dynamic data from API
+  const [patchVersion, setPatchVersion] = useState('26.9');
+  const [championCount, setChampionCount] = useState(20);
+
+  useEffect(() => {
+    async function fetchLiveData() {
+      try {
+        const [versionRes, championsRes] = await Promise.all([
+          fetch('/api/version'),
+          fetch('/api/champions'),
+        ]);
+        if (versionRes.ok) {
+          const versionData = await versionRes.json();
+          if (versionData?.gamePatch || versionData?.lol) {
+            const patch = versionData.gamePatch || (versionData.lol ? versionData.lol.split('.').slice(0, 2).join('.') : '26.9');
+            setPatchVersion(patch);
+          }
+        }
+        if (championsRes.ok) {
+          const champsData = await championsRes.json();
+          if (Array.isArray(champsData)) {
+            setChampionCount(champsData.length);
+          }
+        }
+      } catch {
+        // Keep fallback values
+      }
+    }
+    fetchLiveData();
+  }, []);
 
   return (
     <motion.div
@@ -90,13 +121,13 @@ export function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: Gam
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm sm:text-base font-bold text-[#c8aa6e] lol-title">Patch 26.9 — Meta Report</h3>
+                <h3 className="text-sm sm:text-base font-bold text-[#c8aa6e] lol-title">Patch {patchVersion} — Meta Report</h3>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-bold" style={{ background: 'rgba(15,186,129,0.15)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.25)' }}>
                   <Zap className="w-2.5 h-2.5" />
                   LIVE
                 </span>
               </div>
-              <p className="text-[11px] text-[#a09b8c] mt-0.5">20+ campeones analizados · 6 parches trackeados · 7 guías disponibles · Coaching IA</p>
+              <p className="text-[11px] text-[#a09b8c] mt-0.5">{championCount} campeones analizados · 6 parches trackeados · 7 guías disponibles · Coaching IA</p>
             </div>
             <ChevronRight className="w-5 h-5 text-[#785a28] shrink-0" />
           </div>

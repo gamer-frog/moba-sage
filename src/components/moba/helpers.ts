@@ -2,7 +2,7 @@
 // MOBA SAGE — Helper Functions
 // ============================================================
 
-let _ddVersion = '16.8.1';
+let _ddVersion = '16.8.1'; // Auto-synced with Data Dragon API
 export function updateDdVersion(v: string) { _ddVersion = v; }
 export function getDdVersion() { return _ddVersion; }
 
@@ -26,6 +26,7 @@ export const CHAMPION_NAME_MAP: Record<string, string> = {
   'Xin Zhao': 'XinZhao',
   'Jarvan IV': 'JarvanIV',
   'Aatrox': 'Aatrox',
+  'Zaahen': 'Zaahen',
 };
 
 export function getChampionImageUrl(name: string): string {
@@ -123,6 +124,11 @@ const RUNE_ICON_MAP: Record<string, string> = {
   'Revitalizar': '8400_Resolve/Revitalize/Revitalize.png',
   'Debilidad': '8200_Sorcery/Weakness/Weakness.png',
   'Golpe de Gracia': '8100_Domination/CoupDeGrace/CoupDeGrace.png',
+  // Season 2 Sorcery Keystones
+  'Deathfire Touch': '8200_Sorcery/DeathfireTouch/DeathfireTouch.png',
+  'Toque de Fuego Mortal': '8200_Sorcery/DeathfireTouch/DeathfireTouch.png',
+  'Stormraider': '8200_Sorcery/StormraidersSurge/StormraidersSurge.png',
+  'Invocador de la Tormenta': '8200_Sorcery/StormraidersSurge/StormraidersSurge.png',
 };
 
 const RUNE_COLOR_MAP: Record<string, string> = {

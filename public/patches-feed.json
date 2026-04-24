@@ -1,142 +1,67 @@
-{
-  "lastUpdated": "2026-04-26T10:00:00Z",
-  "source": "juegos-1 BOTARDO OS",
-  "patches": [
-    {
-      "id": 1,
-      "version": "26.9",
-      "title": "Patch 26.9 — Season 2 Pandemonium",
-      "date": "2026-04-29",
-      "sourceGame": "LoL",
-      "status": "upcoming",
-      "summary": "Season 2 Pandemonium llega con cambios masivos. Taliyah y Warwick reciben buffs significativos que los catapultan a S-tier. Ambessa y Briar caen tras nerfs directos. Zeri recibe un rework que diferencia builds AD y AP. Massive item & rune update: Doran's Helm, Gluttonous Greaves, Immortal Path, Omnivamp Boots reemplazan Trailblazer/Opportunity.",
-      "digest": "POR QUÉ IMPORTA: Este parche redefine completamente la fase de lanes con nuevos items de inicio. Doran's Helm beneficia bruisers y tanks, cambiando las dinámicas de top lane. Los nerfs a Ambessa y Briar abren espacio para junglers como Warwick y Xin Zhao que reciben buffs directos.\n\nCAMPEONES CLAVE: Taliyah emerge como la mid laner más fuerte post-buff (wave clear + roam). K'Sante sigue dominando top sin cambios negativos. Hwei mantiene su burst combo como top mid. Zeri's rework crea dos builds viables diferenciados (AD burst vs AP utility), lo que podría revitalizarla en bot lane.\n\nIMPACTO SISTÉMICOS: Nuevos Doran's cambian la economía de early game. Ranked Season 1 termina — ranked reset completo para Season 2. WASD keybinds por campeón es un cambio de calidad de vida masivo. Endless Hunger buff hace que los buffs de mapa sean más valiosos.",
-      "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-9-notes/",
-      "brokenChampions": [
-        { "name": "Taliyah", "reason": "Buff significativo a W (Seismic Shove) y E (Unraveled Earth). Mejor control de oleadas y más daño en combo roams.", "tierBefore": "A", "tierAfter": "S" },
-        { "name": "Warwick", "reason": "Buff a jungle sustain y R range. Mejor gank post-6 con más presión de mapa.", "tierBefore": "A", "tierAfter": "A+" },
-        { "name": "Zeri", "reason": "Rework grande en 26.9. DPS ajustado, nueva mecánica de Q chain. Potencial AD/AP dual build.", "tierBefore": "B", "tierAfter": "A" },
-        { "name": "Shyvana", "reason": "Reajuste iterativo. Si tuning es favorable, puede volver a jungle S-tier.", "tierBefore": "B", "tierAfter": "A" },
-        { "name": "K'Sante", "reason": "Sin nerfs en 26.9. Sigue dominando top lane con WR 51%+. Nuevo Doran's Helm lo beneficia.", "tierBefore": "S", "tierAfter": "S" },
-        { "name": "Ambessa", "reason": "Nerf significativo a burst y survivability. Menos impacto en teamfights.", "tierBefore": "S", "tierAfter": "B" },
-        { "name": "Briar", "reason": "Nerf a dive sostenido. Menos tiempo inmune en R. Ya no domina early game.", "tierBefore": "S", "tierAfter": "A" },
-        { "name": "Hwei", "reason": "Sin cambios negativos. Burst combo sigue siendo top mid. Meta le favorece.", "tierBefore": "S", "tierAfter": "S" }
-      ],
-      "metaShifts": {
-        "playstyle": "Season 2 Pandemonium favorece composiciones de teamfight y engage con bruisers tanky. Los nuevos items de inicio cambian drásticamente la fase de lanes, dándole más poder a bruisers y tanks en early game. ADCs con Doran's Bow tienen mejor scaling, mages AP se benefician de ajustes de runas.",
-        "items": [
-          "Doran's Helm (tank/bruiser stats) — reemplaza Trailblazer",
-          "Doran's Bow (ADC stats) — nuevo item de inicio para bot lane",
-          "Gluttonous Greaves (immortalización al kill) — nuevo boots mythic",
-          "Immortal Path (DAE con pociones) — nueva alternativa jungle",
-          "Omnivamp Boots (1.5%) — sustain para carries",
-          "Dusk and Dawn (rework) — reajuste completo"
-        ],
-        "runes": [
-          "Precisión: ajustes a Pies Veloces y Conquistador",
-          "Brujería: Cambios en Cometa Arcano y Frailidad",
-          "Valor: Guardián ajustado — más shielding early",
-          "Dominación: Golpe de Gracia nerfeado ligeramente",
-          "Más de 10 runas ajustadas en total"
-        ],
-        "removedItems": ["Trailblazer", "Opportunity"]
-      },
-      "changes": {
-        "nerfs": ["Ambessa (burst/survivabilidad)", "Briar (dive sostenido)"],
-        "buffs": ["Taliyah (control mapa)", "Warwick (jungle sustain)", "Tahm Kench (utilidad support)"],
-        "adjustments": ["Zeri (DPS balance AD/AP)", "Shyvana (reajuste iterativo)", "Xin Zhao (enganche)", "Ezreal (nuevos Doran's)", "Kennen", "Teemo", "Udyr", "Zoe", "Gragas"],
-        "newItems": ["Doran's Helm", "Dusk and Dawn (rework)", "Gluttonous Greaves", "Omnivamp Boots (1.5%)", "Immortal Path", "Doran's Bow"],
-        "removedItems": ["Trailblazer", "Opportunity"],
-        "systems": ["WASD keybinds", "Endless Hunger buff", "Ranked Season 1 end", "Ranked Season 2 start"]
-      }
+[
+  {
+    "id": 1,
+    "version": "26.9",
+    "title": "Pandemonium — Season 2 Launch",
+    "summary": "Lanzamiento de Season 2 Pandemonium. DFT y Stormraider vuelven. Shiv rework on-hit. Nuevos items: Doran's Bow, Doran's Helm, Gluttonous Greaves. Hard reset ranked. Arena overhaul.",
+    "digest": "SEASON 2 · DFT + Stormraider · Shiv on-hit · Zaahen dominante · WASD ranked · Arena rework",
+    "date": "2026-04-29",
+    "sourceGame": "lol",
+    "changes": {
+      "newRunes": ["Deathfire Touch", "Stormraider's Surge"],
+      "removedRunes": ["Phase Rush"],
+      "reworkedItems": ["Statikk Shiv", "Dusk and Dawn", "Hail of Blades"],
+      "newItems": ["Doran's Bow", "Doran's Helm", "Gluttonous Greaves", "Immortal Path"],
+      "removedItems": ["Trailblazer", "Opportunity"],
+      "buffs": ["Gragas W", "Tahm Kench", "Taliyah", "Warwick"],
+      "nerfs": ["Ambessa (cast time ult)", "Briar (HP growth)"],
+      "adjustments": ["Zeri (passive/Q/W/E/R)", "Shyvana", "Ezreal (AP build)", "Kennen (on-hit)", "Teemo", "Udyr", "Xin Zhao"]
     },
-    {
-      "id": 2,
-      "version": "26.8",
-      "title": "Patch 26.8 — First Stand",
-      "date": "2026-04-14",
-      "sourceGame": "LoL",
-      "status": "current",
-      "summary": "Shyvana update, items mythic adjustments, First Stand tournament balance. Meta de teamfight y engage con bruisers dominando top lane. Jungle bruiser meta fuerte con Briar y Nocturne. ADCs con protección thrive.",
-      "digest": "POR QUÉ IMPORTA: Patch 26.8 definió el meta actual de teamfight y engage. Bruisers dominan top lane con Ornn, K'Sante y Darius. Jungle bruiser meta se consolidó con Briar como pick #1 y Nocturne como consistencia. Los ADCs hiper carries (Nilah, Jinx) prosperan con protect compositions.\n\nCAMPEONES CLAVE: Ornn emerge como top laner Tier 1 con su R global engage y item upgrades para el team. Briar domina jungle con unstoppable dive y execute. Nilah tiene el WR más alto entre ADCs (53%+). Aurelion Sol y Veigar son las control mages más fuertes del meta.\n\nIMPACTO: El meta favorece composiciones con fuerte engage y peel. Supports enchanters (Soraka, Zyra) son los más consistentes. First Stand tournament validó el meta de bruisers con resultados competitivos.",
-      "url": "https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-8-notes/",
-      "brokenChampions": [
-        { "name": "Ornn", "reason": "Tier 1 consistente en top lane. R global engage + item upgrades para todo el team.", "tierBefore": "A", "tierAfter": "S" },
-        { "name": "Briar", "reason": "Jungler más dominante con unstoppable dive y execute. Sin nerfs directos.", "tierBefore": "A", "tierAfter": "S" },
-        { "name": "Nilah", "reason": "ADC con WR más alto (53%+). W shield AoE + R pull = teamfight monster.", "tierBefore": "A", "tierAfter": "S" },
-        { "name": "Aurelion Sol", "reason": "R AoE masivo desde cualquier posición. Scaling infinito late game.", "tierBefore": "A", "tierAfter": "S" },
-        { "name": "Nocturne", "reason": "R global apaga visión + ganks devastadores. Consistencia 52% WR.", "tierBefore": "A", "tierAfter": "S" }
-      ],
-      "metaShifts": {
-        "playstyle": "Meta estable de teamfight y engage. Bruisers dominan top lane. Jungle bruiser meta fuerte. ADCs con protección thrive. Supports enchanters son los más consistentes.",
-        "items": [
-          "Items mythic ajustados para bruisers",
-          "Objetos legendarios reescalados",
-          "Trailblazer y Opportunity siguen como items de inicio estándar"
-        ],
-        "runes": [
-          "Conquistador dominante en bruisers top/jungle",
-          "Guardián meta para supports enchanters",
-          "Cometa Arcano fuerte en control mages"
-        ]
-      },
-      "changes": {
-        "nerfs": [],
-        "buffs": [],
-        "adjustments": ["Shyvana", "Items mythic", "Jungle ratios"],
-        "systems": ["First Stand tournament balance"]
-      }
+    "highlights": [
+      "DFT top: Karthus (BROKEN), Brand, Malzahar, Teemo",
+      "Hard reset Master+ — ranked soft reset S2",
+      "WASD controls entran a ranked",
+      "Nilah 53.2% WR — highest ADC",
+      "Zaahen 8.3% pick — new champ dominant",
+      "Sion/Garen Mid ~54.5% WR off-meta"
+    ]
+  },
+  {
+    "id": 2,
+    "version": "26.8",
+    "title": "Mel nerf + AP Bot Lane meta",
+    "summary": "Mel nerf significativo. Meta AP Bot Lane emerge: Karthus 55.1%, Hwei +4.2pp. Zaahen nuevo campeón. K'Sante return to meta.",
+    "digest": "Mel nerf · AP Bot meta · Zaahen new · Karthus ADC 55.1%",
+    "date": "2026-04-01",
+    "sourceGame": "lol",
+    "changes": {
+      "nerfs": ["Mel", "Ambessa"],
+      "buffs": ["K'Sante", "Syndra"],
+      "newChampions": ["Zaahen"]
     },
-    {
-      "id": 3,
-      "version": "12.07",
-      "title": "VALORANT Patch 12.07 — Discord Partnership",
-      "date": "2026-04-14",
-      "sourceGame": "VAL",
-      "status": "current",
-      "summary": "Partnership with Discord, revamped Settings page, QoL updates.",
-      "digest": "VALORANT 12.07 trae partnership con Discord, settings page rediseñada, QoL updates a Clove y otros agentes.",
-      "url": "https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-12-07/"
+    "highlights": [
+      "AP Bot Lane: Karthus 55.1%, Hwei +4.2pp",
+      "K'Sante back in top meta",
+      "Sion Mid 54.6%, Garen Mid 54.7%"
+    ]
+  },
+  {
+    "id": 3,
+    "version": "6.9",
+    "title": "WR 7.1c — ARAM Speed Buff",
+    "summary": "Wild Rift patch 7.1c live. ARAM speed buff. Jhin + MF best ADC. Vayne top highest WR. Roadmap: Cho'Gath, Hwei, Sylas para 7.2 (Julio).",
+    "digest": "WR 7.1c · ARAM buff · Jhin MF best · Vayne top WR",
+    "date": "2026-04-15",
+    "sourceGame": "wildrift",
+    "changes": {
+      "buffs": ["ARAM speed"],
+      "meta": ["Jhin + MF ADC", "Vayne Top"]
     },
-    {
-      "id": 4,
-      "version": "12.06",
-      "title": "VALORANT Patch 12.06 — Waylay Nerf",
-      "date": "2026-04-24",
-      "sourceGame": "VAL",
-      "status": "rolling_out",
-      "summary": "Waylay Saturate changed from INSTANT to EQUIP. Bind out of competitive rotation Act 3.",
-      "digest": "Waylay recibe nerfo significativo: Saturate pasa de INSTANT a EQUIP, limitando combo flash+trap. Viper backend improvements en ultimate. Bind sale de rotación competitiva Act 3. Implementándose en VCT Pacific Week 4 (24/04).",
-      "url": "https://playvalorant.com/en-us/news/game-updates/",
-      "changes": {
-        "nerfs": ["Waylay (Saturate INSTANT → EQUIP)"],
-        "maps": ["Bind out of Act 3 rotation"]
-      }
-    },
-    {
-      "id": 5,
-      "version": "7.38c",
-      "title": "Dota 2 Patch 7.38c",
-      "date": "2026-04-01",
-      "sourceGame": "Dota",
-      "status": "current",
-      "summary": "Minor balance patch post-7.38.",
-      "digest": "Dota 2 7.38c ajustes menores de balance. Meta estable sin cambios significativos.",
-      "url": "https://www.dota2.com/patches/"
-    },
-    {
-      "id": 6,
-      "version": "1.41.5.1",
-      "title": "CS2 AnimGraph 2 + Screen Shake Fix",
-      "date": "2026-04-21",
-      "sourceGame": "CS2",
-      "status": "current",
-      "summary": "AnimGraph 2 live deployment, screen shake reducido, burst fire fix.",
-      "digest": "Valve deployed AnimGraph 2 overhaul para todas las animaciones third-person. Screen shake al spray reducido significativamente. Burst fire bug fix. Knife attack transitions fix. Elites third-person fix.",
-      "url": "https://blog.counter-strike.net/",
-      "changes": {
-        "fixes": ["Screen shake spray", "Burst fire delay", "Knife transitions", "Elites third-person"]
-      }
-    }
-  ]
-}
+    "highlights": [
+      "Jhin + MF best ADC duo WR 7.1c",
+      "Runaan's on-hit > crit Jhin",
+      "Vayne Top Lane highest WR — subrepresentado",
+      "WR 7.2: Julio 2026 (Cho'Gath, Hwei, Sylas)"
+    ]
+  }
+]

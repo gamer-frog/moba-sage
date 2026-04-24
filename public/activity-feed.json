@@ -1,15 +1,54 @@
 {
-  "version": "1.5",
-  "lastUpdated": "2026-04-25T06:50:00Z",
+  "version": "1.6",
+  "lastUpdated": "2026-04-24T20:35:54Z",
   "entries": [
     {
-      "id": "ralph-loop-027",
+      "id": 100,
+      "type": "feature",
+      "title": "Champion Comparison Tool — comparar 2 campeones lado a lado",
+      "description": "Nueva pestaña Comparar con WR/Pick/Ban side-by-side, counters, sinergias, splash art headers, animaciones Framer Motion",
+      "date": "2026-04-24T20:35:54Z",
+      "commit": "b2eb880"
+    },
+    {
+      "id": 101,
+      "type": "feature",
+      "title": "Runas Reales en Modal — Data Dragon icons + tree grouping",
+      "description": "Display de runas mejorado con 5 árboles de runas (Precisión/Brujería/Dominación/Determinación/Inspiración), keystone destacado, colores por árbol",
+      "date": "2026-04-24T20:35:54Z",
+      "commit": "18c6c86"
+    },
+    {
+      "id": 102,
+      "type": "feature",
+      "title": "Patch Highlights — Cambios por Campeón con tier before/after",
+      "description": "Cards de cambios por campeón mostrando tier anterior → actual, tipo de cambio (buff/nerf/rework), barra de impacto animada",
+      "date": "2026-04-24T20:35:54Z",
+      "commit": "ce8d9d7"
+    },
+    {
+      "id": 103,
+      "type": "feature",
+      "title": "Tier List Sorting — Ordenar por WR, Pick, Ban o Nombre",
+      "description": "Botones de ordenamiento con indicador animado, aplicado a list y board view",
+      "date": "2026-04-24T20:35:54Z",
+      "commit": "c09baa1"
+    },
+    {
+      "id": 104,
       "type": "fix",
-      "title": "3 fixes: labels EN→ES + activity feed IDs + Master Yi comment",
-      "description": "(1) Labels EN→ES en 3 archivos: tier-section (Win Rate→TV, Pick Rate→Pick, Ban Rate→Ban), tier-list-tab (Top Win Rate→Mejor Win Rate, Más Pick→Más Pickeados), champion-modal (Historial Win Rate→Historial de Win Rate, Build Meta Live→Build Meta en Vivo, Live→En Vivo). (2) Activity feed: duplicate ID ralph-loop-025→ralph-loop-026, commit 'pending'→'N/A'. (3) Master Yi: comentario aclaratorio de demotion a Tier A. Build OK.",
-      "timestamp": "2026-04-25T06:50:00Z",
-      "commit": "pending",
-      "category": "fix"
+      "title": "Fix crítico: champion-modal useState + patches-tab useMemo + meta-builds corruptos",
+      "description": "3 bugs críticos corregidos: syntax errors en useState, dependency array roto, datos de builds regenerados",
+      "date": "2026-04-24T20:35:54Z",
+      "commit": "be721d7"
+    },
+    {
+      "id": 105,
+      "type": "improvement",
+      "title": "Patch 26.9 — Versión actualizada + meta-builds para 11 campeones",
+      "description": "Version API actualizada a 26.9, meta-builds regenerados con datos limpios (Karthus, Sion, Garen, Brand, Malzahar, Thresh, Jinx, Lee Sin, Gragas, Teemo, K'Sante)",
+      "date": "2026-04-24T20:35:54Z",
+      "commit": "8fb475d"
     },
     {
       "id": "champion-cards-001",
@@ -30,7 +69,7 @@
       "category": "fix"
     },
     {
-      "id": "ralph-loop-026",
+      "id": "ralph-loop-025",
       "type": "fix",
       "title": "3 fixes: coaching EN→ES + AVG→PROM + Notas Oficiales es-es",
       "description": "(1) Coaching tab: 6 títulos EN→ES (Last Hitting→Último Golpe, Wave Management→Manejo de Oleadas, Trading Stance→Postura de Trading, Creep Block→Bloqueo de Minions, Map Awareness→Conciencia del Mapa, Powerspikes→Picos de Poder) + MOBA Coach→Entrenador MOBA. (2) Tier List AVG→PROM. (3) Notas Oficiales link en-us→es-es (LoL + WR). Build OK.",
@@ -98,7 +137,7 @@
       "title": "DEV_MAINTENANCE: activity feed cleanup + data refresh",
       "description": "Trimmed activity feed to 15 most recent entries. Added dev cron rotation config. Updated tierlist-feed v2 with enriched data (win rates, categories). +2 new guides (Zeri rework 26.9, Valorant 12.07 meta). Total guides indexed: 7.",
       "timestamp": "2026-04-24T14:25:00Z",
-      "commit": "N/A",
+      "commit": "pending",
       "category": "maintenance"
     },
     {
@@ -202,12 +241,12 @@
     }
   ],
   "highlights": [
-    "Champion Cards: splash art fondo estilo tarjeta LoL (2 tamaños)",
-    "Weekly WR Chart: gráfico de barras 7 días en modal de campeón",
-    "Fuentes de Datos: panel con 6 sources + timestamps",
-    "S-Tier Cosas Rotas: tarjetas visuales con build items inline",
-    "Board View: completamente rediseñado con ChampionCard",
-    "Notificaciones: últimos 7 días con popup detail",
-    "40+ mejoras totales acumuladas"
+    "Champion Comparison Tool — comparar 2 campeones side a side",
+    "12 pestañas con 11 tabs de juego + 3 DEV tabs",
+    "Runas reales con iconos Data Dragon",
+    "Tier List con sorting, WR bars verdes/rojos, weekly movers",
+    "Patch 26.9 tracking + análisis por campeón",
+    "Coaching IA con counters, keystones y runas por rol",
+    "LoL card-style modal con splash art gallery"
   ]
 }

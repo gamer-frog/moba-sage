@@ -1,0 +1,19 @@
+{
+  "lastUpdated": "2026-04-25T05:10:00Z",
+  "notes": [
+    {
+      "id": "n1",
+      "author": "Bauti",
+      "content": "Agregar datos reales de U.GG con scraping automático cada 24hs",
+      "timestamp": "2026-04-25T05:10:00Z",
+      "status": "idea"
+    },
+    {
+      "id": "n2",
+      "author": "Bauti",
+      "content": "Poder buscar campeón por nombre en la barra de búsqueda",
+      "timestamp": "2026-04-25T05:10:00Z",
+      "status": "idea"
+    }
+  ]
+}

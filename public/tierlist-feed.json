@@ -1,82 +1,241 @@
 {
-  "lastUpdated": "2026-04-26T10:00:00Z",
-  "source": "juegos-1 BOTARDO OS",
-  "version": 3,
+  "lastUpdated": "2026-04-25T04:50:00Z",
+  "source": "juegos-1 BOTARDO OS — TICK ciclo 15 (R2)",
+  "version": 5,
+  "sources": [
+    {
+      "name": "Mobalytics",
+      "url": "https://mobalytics.gg/lol/tier-list",
+      "lastScraped": "2026-04-25T04:45:00Z"
+    },
+    {
+      "name": "U.GG",
+      "url": "https://u.gg/lol/tier-list",
+      "lastScraped": "2026-04-25T04:45:00Z"
+    },
+    {
+      "name": "OP.GG",
+      "url": "https://op.gg/lol/statistics/champions",
+      "lastScraped": "2026-04-25T04:45:00Z"
+    },
+    {
+      "name": "AltChar/GGRecon",
+      "url": "https://www.altchar.com/game-news/league-of-legends-patch-26.09-tier-list-best-champions-for-every-role-avZ5n8o9V64M",
+      "lastScraped": "2026-04-25T04:50:00Z"
+    },
+    {
+      "name": "UniFuncs",
+      "url": "https://unifuncs.com/s/g648iX72",
+      "lastScraped": "2026-04-25T04:50:00Z"
+    }
+  ],
   "lol": {
-    "patch": "26.8 (live) → 26.9 PBE preview",
+    "patch": "26.9 — Season 2 Pandemonium (launch 29 Abr)",
     "sTier": [
-      {"name": "K'Sante", "role": "Top", "winrate": "51.2%", "reason": "Tanque dominante con sustain alto. Guía disponible en data/guides/."},
-      {"name": "Hwei", "role": "Mid", "winrate": "51.5%", "reason": "Control de mapa y burst combo. Guía disponible en data/guides/."},
-      {"name": "Jinx", "role": "ADC", "winrate": "52.8%", "reason": "Hyper carry fuerte en teamfights, consistente S-tier."},
-      {"name": "Thresh", "role": "Support", "winrate": "51.8%", "reason": "Utilidad máxima con pick engage, meta favorita."},
-      {"name": "Taliyah", "role": "Mid", "winrate": "51.1%", "reason": "Buff 26.9 confirmado. Wave clear y roam fortalecidos."},
-      {"name": "Warwick", "role": "Jungle", "winrate": "50.8%", "reason": "Buff incoming 26.9, sustain jungle dominante."}
+      {
+        "name": "Zaahen",
+        "role": "Top",
+        "winrate": "53.8%",
+        "reason": "Nuevo campeón S-tier top. Dominante en lane phase y teamfights."
+      },
+      {
+        "name": "Karthus",
+        "role": "Bot",
+        "winrate": "55.1%",
+        "reason": "AP Bot Lane + DFT Season 2 = broken. R global teamfight."
+      },
+      {
+        "name": "Nasus",
+        "role": "Mid",
+        "winrate": "55.5%",
+        "reason": "Off-meta Nasus Mid 55.5% WR. Stack infinito roto."
+      },
+      {
+        "name": "Annie",
+        "role": "Top",
+        "winrate": "54.3%",
+        "reason": "Annie Top 54.3% WR. Early pressure insane con stun."
+      },
+      {
+        "name": "Sion",
+        "role": "Top",
+        "winrate": "54.3%",
+        "reason": "Sion top/meta continuía dominando. HP stacking roto."
+      },
+      {
+        "name": "Garen",
+        "role": "Mid",
+        "winrate": "54.7%",
+        "reason": "Counter pick meta mid. W buff inmune al poke."
+      },
+      {
+        "name": "Jinx",
+        "role": "ADC",
+        "winrate": "52.8%",
+        "reason": "Hyper carry consistente. Mejor ADC para teamfights."
+      },
+      {
+        "name": "Thresh",
+        "role": "Support",
+        "winrate": "51.8%",
+        "reason": "Utilidad máxima. Pick rate #1 entre supports."
+      },
+      {
+        "name": "Viego",
+        "role": "Jungle",
+        "winrate": "52.6%",
+        "reason": "Reset jungler dominante post-reset system."
+      },
+      {
+        "name": "Warwick",
+        "role": "Jungle",
+        "winrate": "52.9%",
+        "reason": "Buff 26.9 + sustain jungle. Excelente ganker."
+      }
     ],
     "aTier": [
-      {"name": "Darius", "role": "Top", "winrate": "50.1%", "reason": "Bruiser consistente en lane phase."},
-      {"name": "Lee Sin", "role": "Jungle", "winrate": "50.6%", "reason": "Early game pressure, snowball dependiente."},
-      {"name": "Ezreal", "role": "ADC", "winrate": "49.8%", "reason": "Ajuste 26.9 + nuevos Doran's Helm sinergia."},
-      {"name": "Shyvana", "role": "Jungle", "winrate": "49.5%", "reason": "Reajuste grande 26.9. Potencial S si tuning favorable."},
-      {"name": "Master Yi", "role": "Jungle", "winrate": "51.2%", "reason": "Alto WR en ELOs bajos, farm jungler sólido."}
+      {
+        "name": "Malphite",
+        "role": "Top",
+        "winrate": "52.1%",
+        "reason": "Zaahen no afecta — Malphite sigue sólido anti-AD."
+      },
+      {
+        "name": "Mordekaiser",
+        "role": "Top",
+        "winrate": "51.8%",
+        "reason": "Bruiser dominante con R iso."
+      },
+      {
+        "name": "Briar",
+        "role": "Jungle",
+        "winrate": "53.3%",
+        "reason": "Nerf 26.9 pero sigue fuerte. 18.9% ban rate."
+      },
+      {
+        "name": "Shyvana",
+        "role": "Jungle",
+        "winrate": "53.2%",
+        "reason": "Farm jungler fuerte. C-tier → S-tier en 2 parches."
+      },
+      {
+        "name": "Milio",
+        "role": "Support",
+        "winrate": "53.0%",
+        "reason": "Enchanter top pick. W + R save carry."
+      },
+      {
+        "name": "Hwei",
+        "role": "Bot",
+        "winrate": "53.9%",
+        "reason": "Control de mapa + burst. +4.2pp desde 26.7."
+      },
+      {
+        "name": "Brand",
+        "role": "Bot",
+        "winrate": "53.4%",
+        "reason": "DFT beneficiary #1. Poke masivo con burn DOT."
+      },
+      {
+        "name": "Taliyah",
+        "role": "Mid",
+        "winrate": "52.7%",
+        "reason": "Buff 26.9. Seismic Shuffle + E field."
+      },
+      {
+        "name": "Ahri",
+        "role": "Mid",
+        "winrate": "51.8%",
+        "reason": "Charm + DFT = burst poking machine."
+      }
     ],
-    "falling": ["Ambessa (nerf 26.9)", "Briar (nerf 26.9)"],
-    "rising": ["Taliyah (buff 26.9)", "Warwick (buff 26.9)", "Zeri (rework 26.9)"],
-    "watch26_9": ["Zeri (rework grande)", "Xin Zhao", "Kennen", "Shyvana (rework)"],
-    "proComps": [
+    "rising": [
+      "Zaahen (nuevo S-tier Top)",
+      "Karthus + DFT (broken bot lane)",
+      "Nasus Mid 55.5% WR",
+      "Annie Top 54.3%",
+      "Brand + DFT (+2.1pp)",
+      "Warwick (buff 26.9)",
+      "Taliyah (buff 26.9)",
+      "Malzahar + DFT"
+    ],
+    "falling": [
+      "Ambessa (nerf 26.9)",
+      "Briar (nerf 26.9, baja ban rate)",
+      "Nocturne (ajuste)",
+      "Sion Mid (54.6% → 54.3%, corrección)"
+    ],
+    "watch26_9": [
+      "Zaahen (nuevo campeón)",
+      "DFT (Deathfire Touch) — beneficiaries: Karthus, Brand, Malz, Teemo",
+      "Stormraider Surge — return Season 2",
+      "Statikk Shiv rework (crit 140%)",
+      "Gluttonous Greaves (950g, 45 MS, 4% omni)",
+      "Zeri rework",
+      "Hard reset Master+ 26.9",
+      "Role Quests nuevo mecanico"
+    ],
+    "weeklyTop": [
       {
-        "name": "Avalanche Engage",
-        "champions": ["Malphite", "Jarvan IV", "Orianna", "Jinx", "Thresh"],
-        "playstyle": "Engage masivo con Malphite R + Orianna R. Jarvan inicia.",
-        "winRate": "54.2%"
+        "name": "Nasus",
+        "role": "Mid",
+        "currentWR": 55.5,
+        "change": 3.2
       },
       {
-        "name": "Deathball Control",
-        "champions": ["Ornn", "Briar", "Ahri", "Nilah", "Soraka"],
-        "playstyle": "Wombo combo Ornn R + Briar R chase. Ahri charm + Soraka R global.",
-        "winRate": "53.8%"
+        "name": "Karthus",
+        "role": "Bot",
+        "currentWR": 55.1,
+        "change": 2.8
       },
       {
-        "name": "Shadow Split",
-        "champions": ["Fiora", "Nidalee", "Taliyah", "Caitlyn", "Morgana"],
-        "playstyle": "Fiora split top. Taliyah/Caitlyn pressure mid/bot. Nidalee jungle.",
-        "winRate": "52.5%"
+        "name": "Annie",
+        "role": "Top",
+        "currentWR": 54.3,
+        "change": 2.1
+      },
+      {
+        "name": "Brand",
+        "role": "Bot",
+        "currentWR": 53.4,
+        "change": 2.1
+      },
+      {
+        "name": "Warwick",
+        "role": "Jungle",
+        "currentWR": 52.9,
+        "change": 1.8
+      },
+      {
+        "name": "Taliyah",
+        "role": "Mid",
+        "currentWR": 52.7,
+        "change": 1.5
+      },
+      {
+        "name": "Viego",
+        "role": "Jungle",
+        "currentWR": 52.6,
+        "change": 1.2
+      },
+      {
+        "name": "Ambessa",
+        "role": "Top",
+        "currentWR": 49.8,
+        "change": -2.3
+      },
+      {
+        "name": "Briar",
+        "role": "Jungle",
+        "currentWR": 53.3,
+        "change": -0.8
+      },
+      {
+        "name": "Nocturne",
+        "role": "Jungle",
+        "currentWR": 50.5,
+        "change": -1.1
       }
     ]
-  },
-  "valorant": {
-    "patch": "12.07 (live)",
-    "season": "2026 Act 2",
-    "sTier": [
-      {"name": "Clove", "role": "Sentinel", "reason": "Consistente top pick, fuerte en todas las ranks."},
-      {"name": "Sage", "role": "Sentinel", "reason": "Heal y wall siguen siendo meta dominante."},
-      {"name": "Omen", "role": "Controller", "reason": "Smokes meta, pick rate alto."}
-    ],
-    "aTier": [
-      {"name": "Jett", "role": "Duelist", "reason": "Operador picks, mobility sigue fuerte."},
-      {"name": "Killjoy", "role": "Sentinel", "reason": "Lockdown utility, consistente A-tier."},
-      {"name": "Gekko", "role": "Initiator", "reason": "Rising pick en ranked."}
-    ],
-    "nerfed": ["Waylay (ajustes Act 2)"],
-    "maps_note": "Bind rotated out for Act 3"
-  },
-  "cs2": {
-    "patch": "1.41.5.1 (AnimGraph 2)",
-    "notes": "AnimGraph 2 deployed, screen shake reducido, recoil patterns changing.",
-    "sTier": [
-      {"name": "AK-47", "category": "Rifle", "reason": "Core meta, DPS/price ratio imbatible."},
-      {"name": "AWP", "category": "Sniper", "reason": "One-shot potential, indispensable."},
-      {"name": "M4A1-S", "category": "Rifle", "reason": "CT-side staple, silenciado y preciso."}
-    ],
-    "aTier": [
-      {"name": "M4A4", "category": "Rifle", "reason": "Alternative CT, spray predecible."},
-      {"name": "MAC-10", "category": "SMG", "reason": "Best eco/force buy option."},
-      {"name": "Five-SeveN", "category": "Pistol", "reason": "Best armor-piercing pistol."}
-    ]
-  },
-  "coachingTips": [
-    "Practica last hitting en custom games con bots — 10 min/día mejora significativamente tu CS.",
-    "El wave management es la diferencia entre Gold y Plat: slow push, fast push, freeze.",
-    "Siempre ward antes de push — 1 control ward puede prevenir 3 ganks.",
-    "Las team comps más fuertes del meta 26.8 son: Engage (Malphite+Orianna), Control (Ornn+Briar), Split (Fiora+Nidalee)."
-  ]
+  }
 }

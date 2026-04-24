@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Filter, ExternalLink, Tag, ChevronRight, Gamepad2, Swords, X, Clock, FileText, Plus } from 'lucide-react';
+import { BookOpen, Filter, ExternalLink, Tag, ChevronRight, Swords, X, Clock, FileText, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChampionIcon } from '../champion-icon';
@@ -28,20 +28,12 @@ interface GuidesFeed {
   guides: GuideEntry[];
 }
 
-type GameFilter = 'Todos' | 'LoL' | 'Valorant';
-
-const GAME_FILTERS: GameFilter[] = ['Todos', 'LoL', 'Valorant'];
-
-function getGameBadge(game?: string): { label: string; color: string; bg: string } {
-  if (game === 'valorant') return { label: 'Valorant', color: '#e84057', bg: 'rgba(232,64,87,0.1)' };
-  return { label: 'LoL', color: '#c8aa6e', bg: 'rgba(200,170,110,0.1)' };
-}
+// Only LoL guides — no Valorant
+const GAME_FILTERS = ['Todos', 'LoL'] as const;
+type GameFilter = typeof GAME_FILTERS[number];
 
 // ---- Guide Detail Modal ----
 function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void }) {
-  const gameBadge = getGameBadge(guide.game);
-  const isLoL = !guide.game || guide.game !== 'valorant';
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -85,16 +77,12 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
         <div className="p-6 pb-4">
           <div className="flex items-start gap-3 mb-4">
             <div className="shrink-0">
-              {isLoL && guide.champion !== 'General' ? (
+              {guide.champion !== 'General' ? (
                 <ChampionIcon name={guide.champion} tier="A" />
               ) : (
                 <div className="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center"
-                  style={{ border: `2.5px solid ${gameBadge.color}70`, background: gameBadge.bg }}>
-                  {guide.game === 'valorant' ? (
-                    <Gamepad2 className="w-6 h-6" style={{ color: gameBadge.color }} />
-                  ) : (
-                    <Swords className="w-6 h-6" style={{ color: gameBadge.color }} />
-                  )}
+                  style={{ border: '2.5px solid rgba(200,170,110,0.4)', background: 'rgba(200,170,110,0.1)' }}>
+                  <Swords className="w-6 h-6" style={{ color: '#c8aa6e' }} />
                 </div>
               )}
             </div>
@@ -103,9 +91,9 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
               <div className="flex items-center gap-2 flex-wrap">
                 <span
                   className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: gameBadge.bg, color: gameBadge.color, border: `1px solid ${gameBadge.color}30` }}
+                  style={{ backgroundColor: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}
                 >
-                  {gameBadge.label}
+                  LoL
                 </span>
                 <span className="text-[10px] font-mono text-[#a09b8c] flex items-center gap-1">
                   <Clock className="w-3 h-3" /> v{guide.patch}
@@ -193,7 +181,9 @@ export function GuidesTab() {
         const res = await fetch('/guides-feed.json');
         if (res.ok) {
           const data: GuidesFeed = await res.json();
-          setGuides(data.guides || []);
+          // Filter out any Valorant guides at fetch time
+          const allGuides = data.guides || [];
+          setGuides(allGuides.filter(g => g.game !== 'valorant'));
         }
       } catch (err) {
         console.error('Error loading guides:', err);
@@ -204,11 +194,8 @@ export function GuidesTab() {
     fetchGuides();
   }, []);
 
-  const filteredGuides = guides.filter(g => {
-    if (gameFilter === 'LoL') return !g.game || g.game !== 'valorant';
-    if (gameFilter === 'Valorant') return g.game === 'valorant';
-    return true;
-  });
+  // All guides are LoL now (Valorant filtered at fetch), no filter needed
+  const filteredGuides = guides;
 
   return (
     <div className="space-y-4">
@@ -219,35 +206,6 @@ export function GuidesTab() {
           <h2 className="lol-title text-lg text-[#f0e6d2]">Guías & Análisis</h2>
           <p className="text-xs text-[#5b5a56]">Guías de campeones, meta y parches</p>
         </div>
-      </div>
-
-      {/* Game Filter Buttons */}
-      <div className="flex items-center gap-2">
-        <Filter className="w-3.5 h-3.5 text-[#5b5a56]" />
-        {GAME_FILTERS.map(game => {
-          const isActive = gameFilter === game;
-          return (
-            <button
-              key={game}
-              onClick={() => setGameFilter(game)}
-              className={`
-                px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200
-                ${isActive
-                  ? 'bg-[#c8aa6e]/15 text-[#c8aa6e] border border-[#c8aa6e]/30 shadow-[0_0_10px_rgba(200,170,110,0.08)]'
-                  : 'text-[#5b5a56] hover:text-[#a09b8c] hover:bg-[#1e2328]/40 border border-transparent'
-                }
-              `}
-              aria-pressed={isActive}
-            >
-              {game === 'Valorant' ? (
-                <span className="flex items-center gap-1"><Gamepad2 className="w-3 h-3" /> {game}</span>
-              ) : game === 'LoL' ? (
-                <span className="flex items-center gap-1"><Swords className="w-3 h-3" /> {game}</span>
-              ) : game}
-            </button>
-          );
-        })}
-        <span className="ml-auto text-[10px] text-[#5b5a56]">{filteredGuides.length} guía(s)</span>
       </div>
 
       {/* Loading skeletons */}
@@ -275,14 +233,12 @@ export function GuidesTab() {
       ) : filteredGuides.length === 0 ? (
         <div className="text-center py-12 text-[#5b5a56]">
           <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-20" />
-          <p className="text-sm">No hay guías disponibles para este filtro</p>
+          <p className="text-sm">No hay guías disponibles</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <AnimatePresence>
             {filteredGuides.map((guide, idx) => {
-              const gameBadge = getGameBadge(guide.game);
-              const isLoL = !guide.game || guide.game !== 'valorant';
               return (
                 <motion.div
                   key={guide.id}
@@ -298,16 +254,12 @@ export function GuidesTab() {
                   {/* Top row: icon + title + game badge */}
                   <div className="flex items-start gap-3 mb-3">
                     <div className="shrink-0">
-                      {isLoL && guide.champion !== 'General' ? (
+                      {guide.champion !== 'General' ? (
                         <ChampionIcon name={guide.champion} tier="A" />
                       ) : (
                         <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 flex items-center justify-center"
-                          style={{ border: `2.5px solid ${gameBadge.color}70`, background: gameBadge.bg }}>
-                          {guide.game === 'valorant' ? (
-                            <Gamepad2 className="w-5 h-5" style={{ color: gameBadge.color }} />
-                          ) : (
-                            <Swords className="w-5 h-5" style={{ color: gameBadge.color }} />
-                          )}
+                          style={{ border: '2.5px solid rgba(200,170,110,0.4)', background: 'rgba(200,170,110,0.1)' }}>
+                          <Swords className="w-5 h-5" style={{ color: '#c8aa6e' }} />
                         </div>
                       )}
                     </div>
@@ -319,9 +271,9 @@ export function GuidesTab() {
                         {/* Game badge */}
                         <span
                           className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider"
-                          style={{ backgroundColor: gameBadge.bg, color: gameBadge.color, border: `1px solid ${gameBadge.color}30` }}
+                          style={{ backgroundColor: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}
                         >
-                          {gameBadge.label}
+                          LoL
                         </span>
                         {/* Patch version */}
                         <span className="text-[10px] font-mono text-[#a09b8c]">v{guide.patch}</span>

@@ -520,6 +520,116 @@ body > * {
   animation: subtle-pulse 3s ease-in-out infinite;
 }
 
+/* ===== LOL CHAMPION CARD STYLES ===== */
+
+/* Card border glow on hover — LoL collection page style */
+.lol-card-border {
+  position: relative;
+}
+.lol-card-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(200,170,110,0.4), transparent 40%, transparent 60%, rgba(200,170,110,0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.lol-card-border:hover::before {
+  opacity: 1;
+}
+
+/* Champion card shimmer on hover */
+@keyframes lol-card-shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(200%) translateY(200%) rotate(45deg); }
+}
+.lol-card-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(200,170,110,0.06), transparent);
+  transform: rotate(45deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.lol-card-shimmer:hover::after {
+  opacity: 1;
+  animation: lol-card-shimmer 1.2s ease-out;
+}
+
+/* Tier badge diamond shape */
+.lol-tier-diamond {
+  clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+}
+
+/* WR trend bar gradient */
+.lol-wr-bar-positive {
+  background: linear-gradient(90deg, rgba(15,186,129,0.3), #0fba81);
+}
+.lol-wr-bar-negative {
+  background: linear-gradient(90deg, rgba(232,64,87,0.3), #e84057);
+}
+
+/* Data source attribution badge */
+.lol-source-badge {
+  background: rgba(200,170,110,0.06);
+  border: 1px solid rgba(200,170,110,0.12);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 9px;
+  color: #a09b8c;
+}
+
+/* Weekly chart container */
+.lol-weekly-chart {
+  background: rgba(30,35,40,0.5);
+  border: 1px solid rgba(120,90,40,0.15);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* Meta overview card with animated gradient border */
+@keyframes lol-meta-border-glow {
+  0%, 100% { border-color: rgba(200,170,110,0.15); }
+  50% { border-color: rgba(200,170,110,0.3); }
+}
+.lol-meta-card {
+  animation: lol-meta-border-glow 4s ease-in-out infinite;
+}
+
+/* Champion grid card responsive improvements */
+@media (max-width: 640px) {
+  .lol-card-grid-sm {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+@media (min-width: 640px) and (max-width: 1024px) {
+  .lol-card-grid-sm {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Panel slide animation */
+@keyframes lol-panel-slide {
+  from { transform: translateY(-8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.lol-panel-animate {
+  animation: lol-panel-slide 0.3s ease-out;
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

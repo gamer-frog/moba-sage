@@ -168,7 +168,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                     )}
 
                     <span className="text-[9px] text-[#5b5a56] ml-auto">
-                      {combo.champions.length} champ{combo.champions.length > 1 ? 's' : ''}
+                      {combo.champions.length} campeón{combo.champions.length > 1 ? 'es' : ''}
                     </span>
                     <motion.div
                       animate={{ rotate: isExpanded ? 90 : 0 }}

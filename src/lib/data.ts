@@ -89,6 +89,21 @@ export interface BrokenCombo {
 // ============================================================
 
 const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
+  {
+    name: 'Zaahen', title: 'el Águila de Éter', role: 'Top', tier: 'S', winRate: 53.8, pickRate: 5.4, banRate: 2.1, image: '', aiInsight: '', build: '', counters: '', synergies: '', patch: '26.9', game: 'LoL',
+    metaUpdated: true, metaSources: ['AltChar', 'GGRecon', 'Mobalytics'],
+    brokenThings: ['Passive escudo etéreo → invulnerabilidad temporal', 'E engage + knockup → sin counterplay en gank', 'R transformación → stats masivos en teamfight'],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/zaahen/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/zaahen"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/zaahen"}],
+    builds: [
+      { name: 'Build Bruiser', items: "Filo de la Noche → Stridebreaker → Jak'Sho → Hidra Titánica → Botas de Placas", winRate: 54.2 },
+      { name: 'Build Tank', items: "Pozo de la Noche → Jak'Sho → Resistencia Divina → Hidra → Botas de Mercurio", winRate: 52.1 },
+    ],
+    counterPick: 'Teemo, Vayne, Gwen — On-hit counters su escudo',
+    synergy: 'Orianna, Taliyah — Follow-up engage + CC chain',
+    aiAnalysis: "Zaahen es el nuevo campeón de LoL introducido en el parche 26.9 Season 2. Como Top laner con kit de bruiser/engage, ya se posiciona como S-tier con un 53.8% de win rate. Su passive de escudo etéreo le da una ventana de invulnerabilidad que rompe los trades en lane, mientras que su E proporciona engage con knockup para ganks del jungler.\n\nEl build de bruiser con Stridebreaker maximiza su capacidad de engage en teamfights. Jak'Sho le da el sustain necesario para escalar como tanque.\n\nConsejo principal: Abusa de tu passive para ganar trades en lane. Coordina con tu jungler para ganks letales con tu E + knockup.",
+    proPickRate: 12.5,
+    runes: { primary: 'Precisión — Conquistador', secondary: 'Valor — Segunda Vida', shards: 'Adaptativo + Velocidad + Resistencia' },
+  },
   // Tier S — Dioses del Meta
   // NOTA: Master Yi fue demoted a A en 26.8 (run 02) pero queda primero por posición en el array. El campo tier determina su sección real.
   {
@@ -827,6 +842,21 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
 
   // ============ WILD RIFT CHAMPIONS ============
+  {
+    name: 'Zaahen', title: 'el Águila de Éter', role: 'Top', tier: 'S', winRate: 53.8, pickRate: 5.4, banRate: 2.1, image: '', aiInsight: '', build: '', counters: '', synergies: '', patch: '26.9', game: 'LoL',
+    metaUpdated: true, metaSources: ['AltChar', 'GGRecon', 'Mobalytics'],
+    brokenThings: ['Passive escudo etéreo → invulnerabilidad temporal', 'E engage + knockup → sin counterplay en gank', 'R transformación → stats masivos en teamfight'],
+    buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/zaahen/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/zaahen"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/zaahen"}],
+    builds: [
+      { name: 'Build Bruiser', items: "Filo de la Noche → Stridebreaker → Jak'Sho → Hidra Titánica → Botas de Placas", winRate: 54.2 },
+      { name: 'Build Tank', items: "Pozo de la Noche → Jak'Sho → Resistencia Divina → Hidra → Botas de Mercurio", winRate: 52.1 },
+    ],
+    counterPick: 'Teemo, Vayne, Gwen — On-hit counters su escudo',
+    synergy: 'Orianna, Taliyah — Follow-up engage + CC chain',
+    aiAnalysis: "Zaahen es el nuevo campeón de LoL introducido en el parche 26.9 Season 2. Como Top laner con kit de bruiser/engage, ya se posiciona como S-tier con un 53.8% de win rate. Su passive de escudo etéreo le da una ventana de invulnerabilidad que rompe los trades en lane, mientras que su E proporciona engage con knockup para ganks del jungler.\n\nEl build de bruiser con Stridebreaker maximiza su capacidad de engage en teamfights. Jak'Sho le da el sustain necesario para escalar como tanque.\n\nConsejo principal: Abusa de tu passive para ganar trades en lane. Coordina con tu jungler para ganks letales con tu E + knockup.",
+    proPickRate: 12.5,
+    runes: { primary: 'Precisión — Conquistador', secondary: 'Valor — Segunda Vida', shards: 'Adaptativo + Velocidad + Resistencia' },
+  },
   // Tier S — Dioses del Meta (Wild Rift)
   {
     name: 'Master Yi', title: 'el Buscador de Wuju', role: 'Jungle', tier: 'S', winRate: 56.8, pickRate: 16.3, banRate: 15.2, image: '', aiInsight: '', build: '', counters: '', synergies: '', patch: '6.8', game: 'WR',

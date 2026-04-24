@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { TIER_CONFIG } from './constants';
 import { ChampionRow } from './champion-row';
+import { SourceBadge } from './source-badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Champion } from './types';
 import type { LucideIcon } from 'lucide-react';
@@ -14,13 +15,14 @@ function wrColor(wr: number): string {
   return '#e84057';
 }
 
-export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap }: {
+export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap, showWeeklyChart }: {
   tier: string;
   champions: Champion[];
   onChampionClick: (c: Champion) => void;
   favorites: Set<number>;
   onToggleFavorite: (id: number) => void;
   trendMap?: Record<string, 'rising' | 'falling'>;
+  showWeeklyChart?: boolean;
 }) {
   const cfg = TIER_CONFIG[tier];
 
@@ -36,14 +38,14 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
     : '0.0';
 
   return (
-    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-4">
+    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-5">
+      {/* Gold accent line */}
+      <div className="w-full h-[2px] rounded-full mb-1" style={{ background: `linear-gradient(90deg, ${cfg.color}60, ${cfg.color}20, transparent)` }} />
       <div
         className="flex items-center gap-3 px-4 py-2.5 rounded-t-xl"
         style={{
-          background: `linear-gradient(90deg, ${cfg.color}18, ${cfg.color}05)`,
-          borderTop: `2px solid ${cfg.color}`,
-          borderLeft: `1px solid ${cfg.color}25`,
-          borderRight: `1px solid ${cfg.color}25`,
+          background: `linear-gradient(90deg, ${cfg.color}15, transparent)`,
+          borderLeft: `2px solid ${cfg.color}80`,
         }}
       >
         <span
@@ -76,6 +78,13 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
         </div>
       </div>
 
+      {/* Source attribution under tier header */}
+      {tier === 'S' && (
+        <div className="px-4 py-1" style={{ background: 'rgba(20, 24, 30, 0.6)', borderLeft: '1px solid rgba(120, 90, 40, 0.12)', borderRight: '1px solid rgba(120, 90, 40, 0.12)' }}>
+          <SourceBadge source="U.GG + OP.GG" patch="Patch 26.9" timestamp="2026-04-25T12:00:00Z" size="xs" />
+        </div>
+      )}
+
       <div
         className="hidden sm:flex items-center px-4 py-1.5 text-[8px] text-[#5b5a56] uppercase tracking-widest font-medium"
         style={{
@@ -105,7 +114,7 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
       >
         {champions.map(champ => (
           <div key={champ.id}>
-            <ChampionRow champion={champ} onClick={() => onChampionClick(champ)} isFavorite={favorites.has(champ.id)} onToggleFavorite={(e) => { e.stopPropagation(); onToggleFavorite(champ.id); }} trend={trendMap?.[champ.name]} />
+            <ChampionRow champion={champ} onClick={() => onChampionClick(champ)} isFavorite={favorites.has(champ.id)} onToggleFavorite={(e) => { e.stopPropagation(); onToggleFavorite(champ.id); }} trend={trendMap?.[champ.name]} showWeeklyChart={showWeeklyChart} />
           </div>
         ))}
       </div>

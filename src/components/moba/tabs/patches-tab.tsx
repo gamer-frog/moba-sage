@@ -28,9 +28,9 @@ interface PatchesFeed {
   patches: FeedPatch[];
 }
 
-type PatchGameFilter = 'Todos' | 'LoL' | 'Valorant' | 'Dota' | 'CS2';
+type PatchGameFilter = 'Todos' | 'LoL' | 'Dota' | 'CS2';
 
-const GAME_FILTERS: PatchGameFilter[] = ['Todos', 'LoL', 'Valorant', 'Dota', 'CS2'];
+const GAME_FILTERS: PatchGameFilter[] = ['Todos', 'LoL', 'Dota', 'CS2'];
 
 // Champion change type for "Destacados del Parche"
 interface ChampionChange {
@@ -111,9 +111,6 @@ function getChangeTypeConfig(type: 'buff' | 'nerf' | 'adjust') {
 
 function getGameIcon(game: string) {
   switch (game) {
-    case 'VAL':
-    case 'Valorant':
-      return <Gamepad2 className="w-3.5 h-3.5" />;
     case 'Dota':
       return <Shield className="w-3.5 h-3.5" />;
     case 'CS2':
@@ -125,9 +122,6 @@ function getGameIcon(game: string) {
 
 function getGameStyle(game: string): { color: string; bg: string; border: string; label: string } {
   switch (game) {
-    case 'VAL':
-    case 'Valorant':
-      return { color: '#e84057', bg: 'rgba(232,64,87,0.1)', border: 'rgba(232,64,87,0.3)', label: 'Valorant' };
     case 'Dota':
       return { color: '#0acbe6', bg: 'rgba(10,203,230,0.1)', border: 'rgba(10,203,230,0.3)', label: 'Dota 2' };
     case 'CS2':
@@ -174,13 +168,14 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
     fetchFeed();
   }, []);
 
-  // Merge API patches with feed patches, deduplicate by version
+  // Merge API patches with feed patches, deduplicate by version — exclude Valorant patches
   const mergedPatches = useMemo(() => {
     const seenVersions = new Set<string>();
     const result: Array<PatchNote & { feedStatus?: string }> = [];
 
     // First add API patches
     for (const p of patches) {
+      if (p.sourceGame === 'VAL' || p.sourceGame === 'Valorant') continue;
       const key = `${p.sourceGame}-${p.version}`;
       if (!seenVersions.has(key)) {
         seenVersions.add(key);
@@ -188,9 +183,10 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
       }
     }
 
-    // Then add feed patches (only if not already present)
+    // Then add feed patches (only if not already present, exclude Valorant)
     for (const fp of feedPatches) {
       const normalizedGame = normalizeGame(fp.game);
+      if (normalizedGame === 'VAL') continue;
       const key = `${normalizedGame}-${fp.version}`;
       if (!seenVersions.has(key)) {
         seenVersions.add(key);
@@ -227,7 +223,6 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
     }
     // Otherwise use game filter
     if (gameFilter === 'LoL') return p.sourceGame === 'LoL';
-    if (gameFilter === 'Valorant') return p.sourceGame === 'VAL';
     if (gameFilter === 'Dota') return p.sourceGame === 'Dota';
     if (gameFilter === 'CS2') return p.sourceGame === 'CS2';
     return true;
@@ -575,7 +570,6 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
 }
 
 function normalizeGame(game: string): string {
-  if (game === 'valorant' || game === 'VAL' || game === 'Valorant') return 'VAL';
   if (game === 'dota' || game === 'Dota' || game === 'Dota2') return 'Dota';
   if (game === 'cs2' || game === 'CS2') return 'CS2';
   if (game === 'lol' || game === 'LoL') return 'LoL';

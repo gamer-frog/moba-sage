@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Star, ChevronDown, TrendingUp, Minus, TrendingDown } from 'lucide-react';
 import { ChampionIcon, MicroChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
+import { WeeklyWRChart } from './weekly-wr-chart';
 import type { Champion } from './types';
 
 // Color coding for win rate: red (<48) → yellow (48-51) → cyan (51-53) → green (>53)
@@ -47,12 +48,13 @@ function parseChampionNames(str: string | undefined, currentChampName: string): 
     .filter(n => n.length > 0 && n.length < 25 && n !== currentChampName);
 }
 
-export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, trend }: {
+export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, trend, showWeeklyChart }: {
   champion: Champion;
   onClick: () => void;
   isFavorite?: boolean;
   onToggleFavorite?: (e: React.MouseEvent) => void;
   trend?: 'rising' | 'falling';
+  showWeeklyChart?: boolean;
 }) {
   const wr = wrColor(champion.winRate);
 
@@ -64,8 +66,8 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
     <motion.div
       initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 0.99 }}
+      whileHover={{ scale: 1.005 }}
+      whileTap={{ scale: 0.995 }}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -83,16 +85,20 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <h3 className="font-semibold text-[13px] text-[#f0e6d2] truncate group-hover:text-[#c8aa6e] transition-colors leading-tight">
+          <h3 className="font-bold text-[13px] text-[#f0e6d2] truncate group-hover:text-[#c8aa6e] transition-colors leading-tight">
             {champion.name}
           </h3>
-          {trend === 'rising' && <span className="text-[11px] font-bold text-[#0fba81]">↑</span>}
-          {trend === 'falling' && <span className="text-[11px] font-bold text-[#e84057]">↓</span>}
+          {trend === 'rising' && (
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full text-[9px] font-black" style={{ background: 'rgba(15,186,129,0.15)', color: '#0fba81' }}>▲</span>
+          )}
+          {trend === 'falling' && (
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full text-[9px] font-black" style={{ background: 'rgba(232,64,87,0.15)', color: '#e84057' }}>▼</span>
+          )}
           {champion.proPickRate !== undefined && champion.proPickRate > 0 && (
             <TrendIcon rate={champion.proPickRate} />
           )}
         </div>
-        <p className="text-[10px] text-[#5b5a56] truncate leading-tight mt-0.5">{champion.title}</p>
+        <p className="text-[9px] text-[#785a28] truncate leading-tight mt-0.5 italic">{champion.title}</p>
         {/* Matchup indicators — synergy (green) + counters (red) */}
         {hasMatchups && (
           <div className="flex items-center gap-1.5 mt-1 opacity-70 group-hover:opacity-100 transition-opacity">
@@ -115,42 +121,29 @@ export function ChampionRow({ champion, onClick, isFavorite, onToggleFavorite, t
         )}
       </div>
       <RoleBadge role={champion.role} />
-      {/* Mobile WR bar — subtle inline indicator */}
-      <div className="flex sm:hidden items-center gap-1.5 shrink-0">
-        <span className="text-[10px] font-mono font-semibold" style={{ color: wr }}>{champion.winRate}%</span>
-        <div className="w-12 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.12)' }}>
-          <motion.div
-            className="h-full rounded-full"
-            style={{ background: wr, opacity: 0.8 }}
-            initial={{ width: 0 }}
-            animate={{ width: `${Math.min((champion.winRate / 58) * 100, 100)}%` }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          />
-        </div>
-      </div>
-      <div className="hidden sm:flex items-center gap-3 shrink-0 text-[11px]">
-        {/* Win Rate with bar */}
-        <div className="flex flex-col items-end gap-0.5">
-          <span className="text-[8px] text-[#5b5a56] uppercase tracking-wider leading-none">WR</span>
-          <span className="font-mono font-semibold leading-tight" style={{ color: wr }}>
+      {/* Stats cluster — pill badges */}
+      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md" style={{ background: `${wr}10`, border: `1px solid ${wr}20` }}>
+          <span className="font-mono font-bold text-[11px] sm:text-[12px] leading-none" style={{ color: wr }}>
             {champion.winRate}%
           </span>
-          <MiniBar value={champion.winRate} max={60} color={wr} />
+          <span className="text-[7px] text-[#5b5a56] uppercase tracking-widest">WR</span>
         </div>
-        {/* Pick Rate with bar */}
-        <div className="flex flex-col items-end gap-0.5">
-          <span className="text-[8px] text-[#5b5a56] uppercase tracking-wider leading-none">Pick</span>
-          <span className="font-mono font-semibold text-[#a09b8c] leading-tight">{champion.pickRate}%</span>
-          <MiniBar value={champion.pickRate} max={20} color="#5b8af5" />
+        <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-md" style={{ background: 'rgba(91,138,245,0.08)', border: '1px solid rgba(91,138,245,0.15)' }}>
+          <span className="font-mono font-semibold text-[12px] text-[#5b8af5] leading-none">{champion.pickRate}%</span>
+          <span className="text-[7px] text-[#5b5a56] uppercase tracking-widest">Pick</span>
         </div>
-        {/* Ban Rate with bar */}
-        <div className="flex flex-col items-end gap-0.5">
-          <span className="text-[8px] text-[#5b5a56] uppercase tracking-wider leading-none">Ban</span>
-          <span className="font-mono font-semibold leading-tight" style={{ color: champion.banRate > 5 ? '#e84057' : '#a09b8c' }}>
-            {champion.banRate}%
-          </span>
-          <MiniBar value={champion.banRate} max={20} color="#e84057" />
+        <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-md" style={{ background: champion.banRate > 5 ? 'rgba(232,64,87,0.08)' : 'rgba(120,90,40,0.05)', border: champion.banRate > 5 ? '1px solid rgba(232,64,87,0.15)' : '1px solid rgba(120,90,40,0.1)' }}>
+          <span className="font-mono font-semibold text-[12px] leading-none" style={{ color: champion.banRate > 5 ? '#e84057' : '#a09b8c' }}>{champion.banRate}%</span>
+          <span className="text-[7px] text-[#5b5a56] uppercase tracking-widest">Ban</span>
         </div>
+        {/* Weekly WR mini chart */}
+        {showWeeklyChart && (
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="text-[8px] text-[#5b5a56] uppercase tracking-wider leading-none">4 Sem</span>
+            <WeeklyWRChart championName={champion.name} currentWR={champion.winRate} compact />
+          </div>
+        )}
       </div>
       <ChevronDown className="w-4 h-4 text-[#785a28] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
       {onToggleFavorite && (

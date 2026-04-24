@@ -7,6 +7,7 @@ import {
   ChevronRight, Zap, Shield, Target, Crosshair,
   Trophy, User, Flame, Map, Crown, Sparkles, Lightbulb,
   Rocket, Wrench, Settings, BookOpen, GraduationCap,
+  GitCompare,
 } from 'lucide-react';
 
 export const TIERS = ['S', 'A', 'B'] as const;
@@ -67,6 +68,7 @@ export const TOURNAMENT_REGIONS = [
 export const GAME_TAB_ITEMS = [
   { id: 'tierlist', label: 'Tier List', icon: Trophy },
   { id: 'patches', label: 'Parches', icon: ScrollText },
+  { id: 'comparison', label: 'Comparar', icon: GitCompare },
   { id: 'broken', label: 'Cosas Rotas', icon: AlertTriangle },
   { id: 'combos', label: 'Combos', icon: Flame },
   { id: 'guides', label: 'Guías', icon: BookOpen },
