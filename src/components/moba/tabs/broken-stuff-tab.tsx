@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Sparkles, Wrench, ChevronRight, Newspaper, TrendingUp, TrendingDown, Shield, Zap, Clock, ArrowUpCircle, ArrowDownCircle, Info } from 'lucide-react';
+import { AlertTriangle, Sparkles, Wrench, ChevronRight, Newspaper, TrendingUp, TrendingDown, Shield, Zap, Clock, ArrowUpCircle, ArrowDownCircle, Info, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,14 +26,27 @@ interface PatchAnalysis {
   fallenChampions: { name: string; reason: string; tier: string }[];
   itemImpact: { winners: string[]; losers: string[] };
   summary: string;
+  patchChanges?: PatchChampionChange[];
+}
+
+// Extended type for per-champion patch changes
+interface PatchChampionChange {
+  name: string;
+  tierBefore?: string;
+  tierAfter?: string;
+  changeType: 'buff' | 'nerf' | 'rework' | 'new' | 'adjustment';
+  description: string;
+  impact?: 'high' | 'medium' | 'low';
 }
 
 function TierBadge({ tier }: { tier: string }) {
   const colors: Record<string, { bg: string; color: string; border: string }> = {
     'S': { bg: 'rgba(200,170,110,0.15)', color: '#c8aa6e', border: 'rgba(200,170,110,0.4)' },
+    'S+': { bg: 'rgba(200,170,110,0.2)', color: '#c8aa6e', border: 'rgba(200,170,110,0.5)' },
     'A+': { bg: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: 'rgba(200,170,110,0.3)' },
     'A': { bg: 'rgba(10,203,230,0.1)', color: '#0acbe6', border: 'rgba(10,203,230,0.3)' },
     'B': { bg: 'rgba(232,64,87,0.1)', color: '#e84057', border: 'rgba(232,64,87,0.3)' },
+    'C': { bg: 'rgba(91,90,86,0.1)', color: '#5b5a56', border: 'rgba(91,90,86,0.3)' },
   };
   const c = colors[tier] || colors['A'];
   return (
@@ -44,7 +57,191 @@ function TierBadge({ tier }: { tier: string }) {
   );
 }
 
+// Determine tier direction: up, down, same, new
+function getTierDirection(tierBefore?: string, tierAfter?: string): 'up' | 'down' | 'same' | 'new' {
+  if (!tierBefore || !tierAfter) return 'new';
+  if (tierBefore === tierAfter) return 'same';
+  const tierOrder: Record<string, number> = { 'S': 5, 'S+': 6, 'A+': 4, 'A': 3, 'B': 2, 'C': 1 };
+  const before = tierOrder[tierBefore] || 0;
+  const after = tierOrder[tierAfter] || 0;
+  return after > before ? 'up' : 'down';
+}
+
+// Calculate tier change magnitude (0-100)
+function getTierChangeMagnitude(tierBefore?: string, tierAfter?: string): number {
+  if (!tierBefore || !tierAfter) return 50;
+  const tierOrder: Record<string, number> = { 'S+': 6, 'S': 5, 'A+': 4, 'A': 3, 'B': 2, 'C': 1 };
+  return Math.abs((tierOrder[tierAfter] || 0) - (tierOrder[tierBefore] || 0)) * 25;
+}
+
+function ChampionPatchCard({ change, index }: { change: PatchChampionChange; index: number }) {
+  const direction = getTierDirection(change.tierBefore, change.tierAfter);
+  const magnitude = getTierChangeMagnitude(change.tierBefore, change.tierAfter);
+  
+  const directionConfig = {
+    up: { color: '#0fba81', icon: '↑', label: 'Sube' },
+    down: { color: '#e84057', icon: '↓', label: 'Baja' },
+    same: { color: '#f0c646', icon: '→', label: 'Igual' },
+    new: { color: '#c8aa6e', icon: '★', label: 'Nuevo' },
+  };
+
+  const typeConfig = {
+    buff: { color: '#0fba81', label: 'Buff' },
+    nerf: { color: '#e84057', label: 'Nerf' },
+    rework: { color: '#f0c646', label: 'Rework' },
+    new: { color: '#c8aa6e', label: 'Nuevo' },
+    adjustment: { color: '#0acbe6', label: 'Ajuste' },
+  };
+
+  const dir = directionConfig[direction];
+  const type = typeConfig[change.changeType] || typeConfig.adjustment;
+
+  // Tooltip content
+  const tooltipText = change.description;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.04, duration: 0.25 }}
+      className="group relative"
+      title={tooltipText}
+    >
+      <div
+        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-all duration-200 hover:scale-[1.01]"
+        style={{
+          background: `${dir.color}06`,
+          border: `1px solid ${dir.color}18`,
+        }}
+      >
+        {/* Champion icon */}
+        <div
+          className="w-9 h-9 rounded-lg overflow-hidden shrink-0"
+          style={{ border: `1.5px solid ${dir.color}50` }}
+        >
+          <TinyChampionIcon name={change.name} />
+        </div>
+
+        {/* Name + Type Badge */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-[11px] font-semibold text-[#f0e6d2] truncate">{change.name}</span>
+            <span
+              className="text-[8px] px-1.5 py-0.5 rounded font-bold"
+              style={{ background: `${type.color}15`, color: type.color, border: `1px solid ${type.color}25` }}
+            >
+              {type.label}
+            </span>
+            {change.impact && (
+              <span className="text-[8px] text-[#5b5a56]">· {change.impact === 'high' ? 'Alto impacto' : change.impact === 'medium' ? 'Medio' : 'Bajo'}</span>
+            )}
+          </div>
+          <p className="text-[9px] text-[#a09b8c] truncate">{change.description}</p>
+        </div>
+
+        {/* Tier change indicator */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {change.tierBefore && (
+            <div className="text-center">
+              <span className="block text-[8px] text-[#5b5a56]">Antes</span>
+              <TierBadge tier={change.tierBefore} />
+            </div>
+          )}
+          {/* Direction arrow */}
+          <div className="flex flex-col items-center">
+            <span
+              className="text-sm font-black leading-none"
+              style={{ color: dir.color }}
+            >
+              {dir.icon}
+            </span>
+          </div>
+          {change.tierAfter && (
+            <div className="text-center">
+              <span className="block text-[8px] text-[#5b5a56]">Ahora</span>
+              <TierBadge tier={change.tierAfter} />
+            </div>
+          )}
+          {/* Impact bar */}
+          {direction !== 'new' && change.tierBefore && change.tierAfter && change.tierBefore !== change.tierAfter && (
+            <div className="w-12 h-1.5 rounded-full overflow-hidden ml-1" style={{ background: 'rgba(120,90,40,0.08)' }}>
+              <motion.div
+                className="h-full rounded-full"
+                style={{
+                  background: dir.color,
+                  boxShadow: `0 0 4px ${dir.color}40`,
+                }}
+                initial={{ width: 0 }}
+                animate={{ width: `${magnitude}%` }}
+                transition={{ duration: 0.5, delay: index * 0.04 }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// Derive champion patch changes from existing data
+function deriveChampionChanges(analysis: PatchAnalysis): PatchChampionChange[] {
+  const changes: PatchChampionChange[] = [];
+
+  // Build from broken champions (these went UP)
+  for (const champ of analysis.brokenChampions) {
+    changes.push({
+      name: champ.name,
+      tierAfter: champ.tier,
+      changeType: 'buff',
+      description: champ.reason,
+      impact: champ.tier === 'S' ? 'high' : 'medium',
+    });
+  }
+
+  // Build from fallen champions (these went DOWN)
+  for (const champ of analysis.fallenChampions) {
+    const existingIdx = changes.findIndex(c => c.name === champ.name);
+    if (existingIdx >= 0) {
+      changes[existingIdx].tierBefore = champ.tier;
+      changes[existingIdx].tierAfter = analysis.brokenChampions.find(b => b.name === champ.name)?.tier;
+      // Don't add duplicate
+    } else {
+      changes.push({
+        name: champ.name,
+        tierAfter: champ.tier,
+        changeType: 'nerf',
+        description: champ.reason,
+        impact: champ.tier === 'B' ? 'high' : 'medium',
+      });
+    }
+  }
+
+  // Add tier before/after from the broken/fallen structure
+  // Cross-reference: broken = went UP, fallen = went DOWN
+  for (const change of changes) {
+    const isBroken = analysis.brokenChampions.some(b => b.name === change.name);
+    const isFallen = analysis.fallenChampions.some(f => f.name === change.name);
+    
+    if (isBroken) {
+      // Went up to current tier
+      if (change.tierAfter === 'S') change.tierBefore = 'A';
+      else if (change.tierAfter === 'A+') change.tierBefore = 'A';
+      else change.tierBefore = 'B';
+    } else if (isFallen) {
+      // Went down to current tier
+      if (change.tierAfter === 'B') change.tierBefore = 'S';
+      else if (change.tierAfter === 'A') change.tierBefore = 'S';
+      else change.tierBefore = 'A+';
+    }
+  }
+
+  return changes;
+}
+
 function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
+  // Derive per-champion changes from the analysis data
+  const championChanges = deriveChampionChanges(analysis);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -135,6 +332,44 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
           </div>
         </div>
       </div>
+
+      {/* Per-Champion Patch Changes (NEW: TASK 3) */}
+      {championChanges.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card rounded-xl p-4"
+          style={{ border: '1px solid rgba(200,170,110,0.2)' }}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(200,170,110,0.12)', border: '1px solid rgba(200,170,110,0.2)' }}>
+              <Newspaper className="w-3.5 h-3.5 text-[#c8aa6e]" />
+            </div>
+            <span className="lol-label text-xs font-semibold text-[#c8aa6e]">Cambios por Campeón</span>
+            <span className="ml-auto text-[9px] text-[#5b5a56]">{championChanges.length} campeones</span>
+          </div>
+          
+          {/* Legend */}
+          <div className="flex items-center gap-4 mb-3 px-1">
+            <span className="flex items-center gap-1.5 text-[9px] text-[#5b5a56]">
+              <span className="w-3 h-1.5 rounded-full inline-block" style={{ background: '#0fba81' }} /> Tier sube
+            </span>
+            <span className="flex items-center gap-1.5 text-[9px] text-[#5b5a56]">
+              <span className="w-3 h-1.5 rounded-full inline-block" style={{ background: '#e84057' }} /> Tier baja
+            </span>
+            <span className="flex items-center gap-1.5 text-[9px] text-[#5b5a56]">
+              <span className="w-3 h-1.5 rounded-full inline-block" style={{ background: '#c8aa6e' }} /> Nuevo
+            </span>
+          </div>
+
+          {/* Champion change cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {championChanges.map((change, i) => (
+              <ChampionPatchCard key={change.name} change={change} index={i} />
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Key Changes */}
       <div className="glass-card rounded-xl p-4" style={{ border: '1px solid rgba(120,90,40,0.15)' }}>
