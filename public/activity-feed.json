@@ -8,7 +8,7 @@
       "title": "3 fixes de texto roto en aiAnalysis",
       "description": "(1) Master Yi: 'Filo de la Noche into Eclipse' → 'Filo de la Noche → Eclipse' (preposición inglesa en build). (2) Diana: 'survives jungle y dives' → 'sobrevivir la jungla y los dives' (verbo inglés roto en frase español). (3) Yorick: typo 'capacité' → 'capacidad'. Build OK.",
       "timestamp": "2026-04-24T17:50:00Z",
-      "commit": "pending",
+      "commit": "a1fa0a5",
       "category": "fix"
     },
     {
