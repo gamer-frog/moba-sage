@@ -1,32 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const GITHUB_REPO = 'gamer-frog/moba-sage';
-const NOTES_PATH = 'data/community-notes.json';
-
 interface CommunityNote {
   id: string;
   author: string;
   content: string;
   timestamp: string;
-  status: 'idea' | 'doing' | 'done';
+  status: string;
 }
 
-interface NotesFile {
+interface NotesStore {
   lastUpdated: string;
   notes: CommunityNote[];
 }
 
-// Cache
-let cached: { data: NotesFile; sha: string } | null = null;
-let cacheTime = 0;
-const CACHE_TTL = 1000 * 60 * 5; // 5 min
+const REPO_OWNER = 'gamer-frog';
+const REPO_NAME = 'moba-sage';
+const NOTES_PATH = 'data/community-notes.json';
 
-async function githubRead(): Promise<{ data: NotesFile; sha: string } | null> {
+// In-memory fallback when GITHUB_TOKEN is not set
+let memoryStore: NotesStore = { lastUpdated: '', notes: [] };
+let hasToken: boolean | null = null;
+
+function getToken(): string | null {
+  const token = process.env.GITHUB_TOKEN || '';
+  if (token) return token;
+  return null;
+}
+
+async function githubRead(token: string): Promise<{ data: NotesStore; sha: string } | null> {
   try {
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${NOTES_PATH}`, {
-      headers: { Authorization: `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' },
-    });
+    const res = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${NOTES_PATH}`,
+      {
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+        },
+        next: { revalidate: 300 },
+      }
+    );
     if (!res.ok) return null;
     const file = await res.json();
     const content = Buffer.from(file.content, 'base64').toString('utf-8');
@@ -36,129 +48,118 @@ async function githubRead(): Promise<{ data: NotesFile; sha: string } | null> {
   }
 }
 
-async function githubWrite(data: NotesFile, sha: string): Promise<boolean> {
+async function githubWrite(token: string, data: NotesStore, sha: string): Promise<boolean> {
   try {
     const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${NOTES_PATH}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json',
-      },
-      body: JSON.stringify({
-        message: `note: ${data.notes.length} notas comunitarias`,
-        content,
-        sha,
-        branch: 'main',
-      }),
-    });
+    const res = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${NOTES_PATH}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.github.v3+json',
+        },
+        body: JSON.stringify({
+          message: `notes: update community notes (${data.notes.length} total)`,
+          content,
+          sha,
+          branch: 'main',
+        }),
+      }
+    );
     return res.ok;
   } catch {
     return false;
   }
 }
 
-async function getNotes(): Promise<{ data: NotesFile; sha: string }> {
-  const now = Date.now();
-  if (cached && now - cacheTime < CACHE_TTL) return cached;
-
-  const result = await githubRead();
-  if (result) {
-    cached = result;
-    cacheTime = now;
-    return result;
+async function getStore(): Promise<{ data: NotesStore; sha: string; source: 'github' | 'memory' }> {
+  const token = getToken();
+  if (token) {
+    const result = await githubRead(token);
+    if (result) return { ...result, source: 'github' };
   }
-
-  // Fallback
-  const fallback: NotesFile = { lastUpdated: new Date().toISOString(), notes: [] };
-  return { data: fallback, sha: '' };
+  return { data: memoryStore, sha: '', source: 'memory' };
 }
 
-// GET /api/notes — Read all notes
+// GET /api/notes
 export async function GET() {
   try {
-    const { data } = await getNotes();
+    const { data, source } = await getStore();
     return NextResponse.json({
       notes: data.notes.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()),
       lastUpdated: data.lastUpdated,
       count: data.notes.length,
+      storage: source,
     });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
 
-// POST /api/notes — Add a new note
+// POST /api/notes
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { author, content } = body;
+    const { author, content: noteContent } = body;
 
-    if (!author || !content) {
-      return NextResponse.json({ error: 'Author and content are required' }, { status: 400 });
+    if (!author || !noteContent) {
+      return NextResponse.json({ error: 'Autor y contenido son requeridos' }, { status: 400 });
+    }
+    if (String(noteContent).length > 500) {
+      return NextResponse.json({ error: 'Maximo 500 caracteres' }, { status: 400 });
     }
 
-    if (content.length > 500) {
-      return NextResponse.json({ error: 'Note too long (max 500 chars)' }, { status: 400 });
-    }
-
-    const { data, sha } = await getNotes();
-
+    const store = await getStore();
     const newNote: CommunityNote = {
-      id: `n${Date.now()}`,
+      id: 'n' + Date.now() + Math.random().toString(36).slice(2, 6),
       author: String(author).slice(0, 30),
-      content: String(content).slice(0, 500),
+      content: String(noteContent).slice(0, 500),
       timestamp: new Date().toISOString(),
       status: 'idea',
     };
 
-    data.notes.push(newNote);
-    data.lastUpdated = new Date().toISOString();
+    store.data.notes.push(newNote);
+    store.data.lastUpdated = new Date().toISOString();
 
-    const success = await githubWrite(data, sha);
-    if (!success) {
-      return NextResponse.json({ error: 'Failed to save note' }, { status: 500 });
+    const token = getToken();
+    if (token && store.sha) {
+      await githubWrite(token, store.data, store.sha);
+    } else {
+      // Fallback to memory
+      memoryStore = store.data;
     }
 
-    // Invalidate cache
-    cached = null;
-    cacheTime = 0;
-
-    return NextResponse.json({ note: newNote, count: data.notes.length });
+    return NextResponse.json({ note: newNote, count: store.data.notes.length, storage: token ? 'github' : 'memory' });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
 
-// DELETE /api/notes — Remove a note by id
+// DELETE /api/notes
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID requerido' }, { status: 400 });
 
-    if (!id) {
-      return NextResponse.json({ error: 'Note id is required' }, { status: 400 });
+    const store = await getStore();
+    const before = store.data.notes.length;
+    store.data.notes = store.data.notes.filter(n => n.id !== id);
+    if (store.data.notes.length === before) {
+      return NextResponse.json({ error: 'Nota no encontrada' }, { status: 404 });
+    }
+    store.data.lastUpdated = new Date().toISOString();
+
+    const token = getToken();
+    if (token && store.sha) {
+      await githubWrite(token, store.data, store.sha);
+    } else {
+      memoryStore = store.data;
     }
 
-    const { data, sha } = await getNotes();
-    const before = data.notes.length;
-    data.notes = data.notes.filter(n => n.id !== id);
-
-    if (data.notes.length === before) {
-      return NextResponse.json({ error: 'Note not found' }, { status: 404 });
-    }
-
-    data.lastUpdated = new Date().toISOString();
-    const success = await githubWrite(data, sha);
-    if (!success) {
-      return NextResponse.json({ error: 'Failed to delete note' }, { status: 500 });
-    }
-
-    cached = null;
-    cacheTime = 0;
-
-    return NextResponse.json({ deleted: id, count: data.notes.length });
+    return NextResponse.json({ deleted: id, count: store.data.notes.length, storage: token ? 'github' : 'memory' });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
