@@ -3,64 +3,117 @@
 ## TICK ACTUAL: #5
 
 ## DEV CRON ROTATION
-El TICK existente (93015) debería disparar esta rotación cíclica de 4 tareas:
+| Ciclo | Task | Frecuencia | Feed |
+|-------|------|-----------|------|
+| 1 | DEV_PATCHES | Cada 2h | patches-feed.json |
+| 2 | DEV_TIERLIST | Cada 4h | tierlist-feed.json |
+| 3 | DEV_GUIDES | Cada 6h | guides-feed.json |
+| 4 | DEV_MAINTENANCE | Daily | activity-feed.json |
 
-| Ciclo | Task | Frecuencia sugerida | Feed actualizado |
-|-------|------|---------------------|------------------|
-| 1 | DEV_PATCHES | Cada 2h | public/patches-feed.json |
-| 2 | DEV_TIERLIST | Cada 4h | public/tierlist-feed.json |
-| 3 | DEV_GUIDES | Cada 6h | public/guides-feed.json |
-| 4 | DEV_MAINTENANCE | Daily | public/activity-feed.json |
+## TAREAS COMPLETADAS (Esta Sesión)
 
-### Payload sugerido para TICK 93015:
-```
-Eres moba-sage dev bot. Lee TASKS.md y ejecuta la siguiente rotación:
+### [x] F1: Beaufort font en headings/labels
+- .lol-title y .lol-label en globals.css
+- Aplicado en tier-list, broken-stuff, patches, combos, competitive, coaching
 
-Si (tick_number % 4 == 1): Ejecuta DEV_PATCHES — web search "LoL patch notes", "Valorant patch", "Dota patch", "CS2 update". Actualiza public/patches-feed.json con nuevos patches. Push con git.
+### [x] F3: Campanita de notificaciones
+- Bell icon en header con red dot badge (count)
+- Dropdown con entries del día desde activity-feed.json
+- Click outside to close, animación framer-motion
 
-Si (tick_number % 4 == 2): Ejecuta DEV_TIERLIST — web search "LoL tier list", "Valorant tier list", "CS2 tier list". Actualiza public/tierlist-feed.json. Push con git.
+### [x] F4: Popup Novedades mejorado
+- Más visual, Beaufort font, spring animation
+- localStorage para "no volver a mostrar"
 
-Si (tick_number % 4 == 3): Ejecuta DEV_GUIDES — web search "LoL guide", "Valorant meta". Genera guides en data/guides/ y actualiza public/guides-feed.json. Push con git.
+### [x] F5: Patches actualizados con análisis profundo
+- patches-feed.json con brokenChampions, metaShifts, tierBefore/tierAfter
+- patch-analysis.json con keyChanges, systemChanges, itemImpact
 
-Si (tick_number % 4 == 0): Ejecuta DEV_MAINTENANCE — limpiar data stale, actualizar public/activity-feed.json con fecha actual. Push con git.
+### [x] F6: Tab COACHING nueva
+- Mecánicas fundamentales (6 tips: last hitting, wave management, trading, creep block, map awareness, powerspikes)
+- Warding por rol (Top, Jungle, Mid, ADC, Support)
+- Composiciones Pro (5 comps: Engage, Poke, Split Push, Pick, Protect ADC)
 
-Siempre usar git config user.email "bautiarmanijuegos@gmail.com" y user.name "bautiarmanijuegos" antes de push.
-Repo: gamer-frog/moba-sage, branch: main.
-```
+### [x] F7: ANÁLISIS DE PARCHE en Cosas Rotas
+- Sección nueva al inicio con patch info + quién queda roto/caído
+- Datos desde patch-analysis.json
+
+### [x] F8: Comps Pro en Coaching Tab
+- 5 composiciones reales con campeones, playstyle, descripción
+
+### [x] F9: Guide modales funcionales
+- Click en card abre modal con champ icon, key points, tags
+- Animación spring con framer-motion
+
+### [x] F10: Merge Ideas + Roadmap
+- Una sola tab con sub-tabs Ideas | Roadmap
+- Roadmap eliminada como tab separada
+
+### [x] F11: Combos expandibles inline
+- Click en combo card muestra stats completos (WR, diff, description)
+
+### [x] F12: Competitive Tab mobile cards
+- Card layout en mobile (ProPickCard expandible)
+- Tabla en desktop
+
+### [x] F13: Ability tooltips en Champion Modal
+- Hover Q/W/E/R muestra tooltip con nombre real + descripción
+- 30 campeones mapeados con nombres de habilidades
+
+### [x] F14: Dev tabs con [DEV] prefix
+- Labels en #5b5a56, prefix [DEV] en sidebar
+
+### [x] F15: Landing Page actualizada
+- Tab count dinámico (11), nueva card Coaching IA
+
+### [x] F16: Favicon 🔮
+- Emoji SVG inline, removido CDN genérico
+
+### [x] F17: prefers-reduced-motion
+- CSS media query + GoldParticles respetan la preferencia
+
+### [x] T5: Splash art en Cosas Rotas
+- A-tier con SplashArtIcon + gold glow hover (sesión anterior)
 
 ## TAREAS PENDIENTES
 
-### [ ] T4: Configurar CRON de mantenimiento
-- Descripción: TICK 93015 necesita payload actualizado con rotación DEV (ver sección DEV CRON ROTATION arriba). El servicio de crons retorna 401 desde esta sandbox — requiere acceso admin.
-- Prioridad: ALTA
-- Notas: Payload listo arriba. Solo falta aplicarlo al cron 93015 desde interfaz admin.
-
-### [ ] T5: Mejorar Cosas Rotas con splash arts
-- Descripción: Agregar imágenes de splash art de campeones en la sección Cosas Rotas
-- Prioridad: MEDIA
-- Notas: Ya tiene TinyChampionIcon. Mejorar con splash art más grande.
+### [ ] T4: Configurar TICK 93015
+- Cron 401 desde sandbox. Payload documentado en TASKS.md.
+- Requiere acceso admin para aplicar.
 
 ### [ ] T6: Datos de Wild Rift reales
-- Descripción: Agregar campeones, tier list y datos para Wild Rift (no solo "coming soon")
-- Prioridad: MEDIA
-- Notas: Requiere datos de Riot para Wild Rift.
+- Agregar campeones WR a data.ts
+- Coaching tab WR placeholder ya existe
 
 ### [ ] T7: Runas óptimas por campeón
-- Descripción: Agregar runas recomendadas para cada campeón S/A tier
-- Prioridad: MEDIA
-- Notas: Agregar campo `runes` con página + fragmentos óptimos.
+- Campo `runes` con página + fragmentos en cada campeón
 
-### [ ] T8: Mejorar tier list con más data visual
-- Descripción: Agregar sparklines de win rate, mini gráficos comparativos
-- Prioridad: BAJA
-- Notas: Mejora visual para la experiencia de usuario.
+### [ ] T8: Sparklines de win rate
+- Mini gráficos comparativos en tier list
 
 ### [ ] T9: PWA support
-- Descripción: Agregar manifest.json, service worker, soporte offline
-- Prioridad: BAJA
-- Notas: Hacer la app instalable en móviles.
+- manifest.json, service worker, offline
 
-## TAREAS COMPLETADAS
-- [x] T1: Setup inicial CHECKLIST (DASHBOARD.md + TASKS.md)
-- [x] T2: Fix y push de cambios staged — Sync con remote + patch update 14.8→16.8
-- [x] T3: Documentar pipeline TAREAS — Pipeline documentado en DASHBOARD.md (14 tareas + CRONS)
+### [ ] T20: Theme system real (Blue/Red/Prestige)
+- CSS vars definidas pero no consumidas. Reemplazar inline styles.
+
+### [ ] T21: URL routing
+- Deep linking, browser back/forward, shareable URLs
+
+### [ ] T22: Riot API real para Profile
+- Actualmente demo mode. Conectar con API key.
+
+### [ ] T23: Pro data más completo
+- Agregar VCS, PCS, CBLOL regions a competitive tab
+- Links a VODs y match data
+
+### [ ] T24: Unified wrColor() helper
+- Extraer a helpers.ts, eliminar 3 duplicados
+
+### [ ] T25: Match History (API)
+- Historial de partidas en Profile tab
+
+## TAREAS HISTÓRICAS
+- [x] T1: Setup inicial
+- [x] T2: Fix + push sync
+- [x] T3: Pipeline documentado
