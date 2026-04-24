@@ -317,13 +317,26 @@ export function TierListTab({
               </span>
               <span className="text-[9px] text-[#5b5a56]">Patch {feedData?.lol?.patch || '26.8'}</span>
             </div>
-            <div className="flex items-center gap-1 text-[9px] text-[#5b5a56]">
-              <Clock className="w-3 h-3" />
-              {feedLastUpdated || 'Actualizado hoy'}
+            <div className="flex items-center gap-2">
+              {/* Green/Red legend */}
+              <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-0.5">
+                  <div className="w-2 h-2 rounded-sm bg-[#0fba81]" />
+                  <span className="text-[8px] text-[#5b5a56]">Sube</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <div className="w-2 h-2 rounded-sm bg-[#e84057]" />
+                  <span className="text-[8px] text-[#5b5a56]">Baja</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-[9px] text-[#5b5a56]">
+                <Clock className="w-3 h-3" />
+                {feedLastUpdated || 'Actualizado hoy'}
+              </div>
             </div>
           </div>
 
-          {/* Bar chart — horizontal bars for weekly changes */}
+          {/* Bar chart — horizontal bars for weekly changes, GREEN=up RED=down */}
           <div className="space-y-2">
             {weeklyTop.map((mover, i) => {
               const champ = gameChampions.find(c => c.name === mover.name);
@@ -362,24 +375,45 @@ export function TierListTab({
                         <span className="text-[11px] font-semibold text-[#f0e6d2] truncate">{mover.name}</span>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <RoleBadge role={mover.role} />
-                          <span className="text-[10px] font-mono font-bold" style={{ color: barColor }}>
-                            {isPositive ? '+' : ''}{mover.change.toFixed(1)}%
+                          {/* Clear direction indicator */}
+                          <span
+                            className="text-[11px] font-mono font-black px-1.5 py-0.5 rounded"
+                            style={{
+                              color: barColor,
+                              background: `${barColor}12`,
+                              border: `1px solid ${barColor}25`,
+                            }}
+                          >
+                            {isPositive ? '↑' : '↓'}{Math.abs(mover.change).toFixed(1)}%
                           </span>
-                          <span className="text-[9px] text-[#a09b8c] font-mono">{mover.currentWR}% WR</span>
+                          <span className="text-[9px] text-[#a09b8c] font-mono">{mover.currentWR}%</span>
                         </div>
                       </div>
-                      {/* Animated bar */}
-                      <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.1)' }}>
-                        <motion.div
-                          className="h-full rounded-full"
-                          style={{
-                            background: `linear-gradient(90deg, ${barColor}60, ${barColor})`,
-                            marginLeft: isPositive ? 'auto' : undefined,
-                          }}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${barWidth}%` }}
-                          transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
-                        />
+                      {/* Animated bar — GREEN fills right if positive, RED fills left if negative */}
+                      <div className="w-full h-2 rounded-full overflow-hidden relative" style={{ background: 'rgba(120,90,40,0.08)' }}>
+                        {isPositive ? (
+                          <motion.div
+                            className="absolute right-0 top-0 h-full rounded-full"
+                            style={{
+                              background: `linear-gradient(270deg, ${barColor}, ${barColor}50)`,
+                              boxShadow: `0 0 8px ${barColor}30`,
+                            }}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${barWidth}%` }}
+                            transition={{ duration: 0.7, delay: i * 0.05, ease: 'easeOut' }}
+                          />
+                        ) : (
+                          <motion.div
+                            className="absolute left-0 top-0 h-full rounded-full"
+                            style={{
+                              background: `linear-gradient(90deg, ${barColor}, ${barColor}50)`,
+                              boxShadow: `0 0 8px ${barColor}30`,
+                            }}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${barWidth}%` }}
+                            transition={{ duration: 0.7, delay: i * 0.05, ease: 'easeOut' }}
+                          />
+                        )}
                       </div>
                     </div>
                   </button>

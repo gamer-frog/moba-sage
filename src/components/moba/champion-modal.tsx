@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle, Eye, RefreshCw, ShieldCheck, TrendingUp } from 'lucide-react';
+import { ExternalLink, Info, Sparkles, Crosshair, Users, Wrench, AlertTriangle, Eye, ShieldCheck, TrendingUp, X, Star } from 'lucide-react';
 import { TIER_CONFIG } from './constants';
 import { getChampionImageUrl, getBuildExternalUrl, getItemIconUrl, parseBuildItems, getChampionSplashUrl } from './helpers';
 import { RuneIcon } from './rune-icon';
@@ -11,7 +11,7 @@ import { ChampionIcon, SplashArtIcon, TinyChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
 import { CollapsibleSection } from './collapsible-section';
 import { CopyBuildButton } from './copy-build-button';
-import { AbilityBar, SkillIcon } from './skill-icon';
+import { SkillIcon } from './skill-icon';
 import { VisionMap } from './vision-map';
 import { WeeklyWRChart as SharedWeeklyWRChart } from './weekly-wr-chart';
 import type { Champion } from './types';
@@ -65,12 +65,10 @@ function getAbilityName(championName: string, skill: 'Q'|'W'|'E'|'R'): string {
 }
 
 function getAbilityDescription(champion: Champion, skill: 'Q'|'W'|'E'|'R'): string {
-  // Check if brokenThings mentions the ability
   if (champion.brokenThings && champion.brokenThings.length > 0) {
     const skillMention = champion.brokenThings.find(t => t.toLowerCase().includes(skill.toLowerCase()));
     if (skillMention) return skillMention;
   }
-  // Check if aiAnalysis mentions the ability
   if (champion.aiAnalysis) {
     const lines = champion.aiAnalysis.split(/[.\n]/);
     const relevant = lines.find(l => l.toLowerCase().includes(skill.toLowerCase()));
@@ -96,7 +94,7 @@ function AbilityBarWithTooltips({
 }) {
   const skills: Array<'Q' | 'W' | 'E' | 'R'> = ['Q', 'W', 'E', 'R'];
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-2">
       {skills.map(skill => (
         <div
           key={skill}
@@ -106,19 +104,19 @@ function AbilityBarWithTooltips({
           onTouchStart={() => onHoverAbility(hoveredAbility === skill ? null : skill)}
         >
           <div
-            className="rounded-lg transition-all duration-150 cursor-pointer"
+            className="rounded-xl transition-all duration-200 cursor-pointer"
             style={{
-              outline: hoveredAbility === skill ? '2px solid' : 'none',
+              outline: hoveredAbility === skill ? '2.5px solid' : '1.5px solid rgba(120,90,40,0.3)',
               outlineColor: hoveredAbility === skill
                 ? (skill === 'Q' ? '#0acbe6' : skill === 'W' ? '#0fba81' : skill === 'E' ? '#f0c646' : '#e84057')
                 : 'transparent',
-              outlineOffset: '2px',
+              outlineOffset: '3px',
               boxShadow: hoveredAbility === skill
-                ? `0 0 12px ${(skill === 'Q' ? '#0acbe6' : skill === 'W' ? '#0fba81' : skill === 'E' ? '#f0c646' : '#e84057')}40`
-                : 'none',
+                ? `0 0 16px ${(skill === 'Q' ? '#0acbe6' : skill === 'W' ? '#0fba81' : skill === 'E' ? '#f0c646' : '#e84057')}50`
+                : '0 2px 8px rgba(0,0,0,0.4)',
             }}
           >
-            <SkillIcon championName={championName} skill={skill} size={32} />
+            <SkillIcon championName={championName} skill={skill} size={36} />
           </div>
         </div>
       ))}
@@ -128,8 +126,6 @@ function AbilityBarWithTooltips({
 
 const SKIN_VARIANTS = [0, 1, 2, 3, 4];
 
-// Nombres reales de skins del DDragon para campeones populares
-// Formato: skinIndex -> nombre. 0 = 'Clásica' por defecto.
 const SKIN_NAMES: Record<string, Record<number, string>> = {
   'Jinx':          { 0: 'Clásica', 1: 'Crimson Delirium', 2: 'Zombie Slayer', 3: 'Star Guardian', 4: 'Mafia', 5: 'Firecracker', 6: 'Battlecast', 7: 'Lux', 8: 'Arcane', 9: 'Spirit Blossom' },
   'Ahri':          { 0: 'Clásica', 1: 'Dinámica', 2: 'Foxfire', 3: 'Popstar', 4: 'Academy', 5: 'Challenger', 6: 'Midnight', 7: 'Dawnbringer', 8: 'Elderwood', 9: 'K/DA', 10: 'K/DA ALL OUT', 11: 'Arcade', 12: 'Empyrean' },
@@ -174,8 +170,14 @@ function timeAgoMeta(ts: string): string {
   return `hace ${days}d`;
 }
 
+function wrStatColor(wr: number, label: string): string {
+  if (label === 'WR') return wr >= 53 ? '#0fba81' : wr >= 51 ? '#0acbe6' : wr >= 49 ? '#f0c646' : '#e84057';
+  if (label === 'Ban') return wr > 5 ? '#e84057' : '#a09b8c';
+  return '#f0c646';
+}
+
 // ============================================================
-// Champion Modal
+// Champion Modal — Enhanced LoL Card Design
 // ============================================================
 
 export function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () => void }) {
@@ -187,7 +189,6 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
   const [metaBuild, setMetaBuild] = useState<any>(null);
   const [hoveredAbility, setHoveredAbility] = useState<'Q' | 'W' | 'E' | 'R' | null>(null);
 
-  // Fetch live meta builds for S-tier champions
   useEffect(() => {
     if (champion.tier !== 'S') return;
     fetch('/api/meta-builds?refresh=false')
@@ -212,438 +213,536 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
   };
 
   const currentSplashUrl = getChampionSplashUrl(champion.name, activeSkin);
+  const championTileUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${champion.name.replace(/['\s.]/g, '')}_${activeSkin}.jpg`;
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label={`Detalles de ${champion.name}`}
-      style={{ backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
+      style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(12px)' }}
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl"
+        initial={{ scale: 0.92, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.92, opacity: 0, y: 20 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+        className="w-full max-w-[480px] max-h-[92vh] overflow-hidden rounded-2xl flex flex-col"
         style={{
-          background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
-          border: `1.5px solid ${cfg.color}40`,
-          boxShadow: `0 0 60px ${cfg.color}15, 0 25px 50px rgba(0,0,0,0.5)`,
+          background: 'linear-gradient(180deg, rgba(20,24,30,0.99), rgba(10,14,26,0.99))',
+          border: `2px solid ${cfg.color}50`,
+          boxShadow: `0 0 80px ${cfg.color}12, 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 ${cfg.color}20`,
         }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Header with splash art */}
-        <div className="relative p-5 pb-4" style={{ borderBottom: `1px solid ${cfg.color}20` }}>
-          <button onClick={onClose} className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors z-10" aria-label={`Cerrar detalles de ${champion.name}`}>
-            <span className="text-[#a09b8c] text-lg font-light">×</span>
-          </button>
+        {/* Scrollable content */}
+        <div className="overflow-y-auto flex-1 scrollbar-thin">
 
-          {/* Splash art background with animated transition */}
-          <div className="absolute inset-0 overflow-hidden rounded-t-2xl">
+          {/* ===== HERO SECTION — Full Splash Art Card ===== */}
+          <div className="relative" style={{ minHeight: '280px' }}>
+            {/* Close button */}
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/15 hover:scale-110"
+              style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}
+              aria-label={`Cerrar detalles de ${champion.name}`}
+            >
+              <X className="w-4 h-4 text-[#a09b8c]" />
+            </button>
+
+            {/* Splash art — full width, prominent */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSkin}
-                className="absolute inset-0 opacity-10"
+                className="absolute inset-0"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.1 }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.5 }}
               >
                 {!imgError && !failedSkins.has(activeSkin) ? (
                   <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentSplashUrl})` }}
+                    style={{
+                      backgroundImage: `url(${currentSplashUrl})`,
+                      filter: 'brightness(0.55) contrast(1.15) saturate(1.3)',
+                    }}
                     onError={() => setImgError(true)}
                   />
                 ) : (
                   <div
                     className="absolute inset-0"
                     style={{
-                      background: `linear-gradient(135deg, ${cfg.color}15, transparent)`,
+                      background: `linear-gradient(135deg, ${cfg.color}20, rgba(10,14,26,0.8))`,
                     }}
                   />
                 )}
               </motion.div>
             </AnimatePresence>
-          </div>
 
-          <div className="relative flex items-start gap-4">
-            <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0" style={{ border: `3px solid ${cfg.color}`, boxShadow: `0 0 20px ${cfg.color}30` }}>
-              <SplashArtIcon name={champion.name} />
-            </div>
-            <div className="flex-1 min-w-0 pt-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-xl font-black text-[#f0e6d2]">{champion.name}</h2>
-                <span className="px-2 py-0.5 rounded text-[10px] font-black" style={{ backgroundColor: cfg.color, color: '#0a0e1a' }}>{champion.tier}</span>
-              </div>
-              <p className="text-xs text-[#a09b8c] mb-2 italic">{champion.title}</p>
-              <div className="flex items-center gap-3">
-                <RoleBadge role={champion.role} />
-                <span className="text-[10px] text-[#5b5a56]">Patch {champion.patch}</span>
-              </div>
-            </div>
-          </div>
+            {/* Gradient overlays — LoL card style */}
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(to bottom, rgba(10,14,26,0.2) 0%, rgba(10,14,26,0.1) 30%, rgba(10,14,26,0.5) 60%, rgba(10,14,26,0.95) 85%, rgba(10,14,26,0.99) 100%)',
+            }} />
+            {/* Side vignette */}
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(to right, rgba(10,14,26,0.3) 0%, transparent 30%, transparent 70%, rgba(10,14,26,0.3) 100%)',
+            }} />
 
-          {/* Splash Art Gallery */}
-          <div className="relative mt-4">
-            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
-              {SKIN_VARIANTS.map((skinNum) => {
-                const splashUrl = getChampionSplashUrl(champion.name, skinNum);
-                const isFailed = failedSkins.has(skinNum);
-                const isActive = activeSkin === skinNum;
+            {/* Gold corner accents — LoL card style */}
+            <div className="absolute top-0 left-0 w-10 h-10" style={{
+              borderTop: `2px solid ${cfg.color}60`,
+              borderLeft: `2px solid ${cfg.color}60`,
+              borderTopLeftRadius: '14px',
+            }} />
+            <div className="absolute top-0 right-0 w-10 h-10" style={{
+              borderTop: `2px solid ${cfg.color}60`,
+              borderRight: `2px solid ${cfg.color}60`,
+              borderTopRightRadius: '14px',
+            }} />
 
-                return (
-                  <motion.button
-                    key={skinNum}
-                    onClick={() => handleSelectSkin(skinNum)}
-                    className="relative shrink-0 rounded-lg overflow-hidden cursor-pointer"
-                    style={{
-                      width: 120,
-                      height: 68,
-                      border: isActive
-                        ? `2px solid ${cfg.color}`
-                        : '2px solid rgba(120,90,40,0.2)',
-                      boxShadow: isActive
-                        ? `0 0 12px ${cfg.color}40`
-                        : 'none',
-                      opacity: isFailed ? 0.3 : 1,
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    disabled={isFailed}
-                    aria-label={getSkinLabel(champion.name, skinNum)}
+            {/* Champion info OVER splash art */}
+            <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+              {/* Champion tile icon */}
+              <div className="flex items-end gap-4">
+                <motion.div
+                  className="w-20 h-20 rounded-xl overflow-hidden shrink-0 relative"
+                  style={{
+                    border: `3px solid ${cfg.color}`,
+                    boxShadow: `0 0 24px ${cfg.color}40, 0 4px 16px rgba(0,0,0,0.5)`,
+                  }}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.15, type: 'spring', damping: 20 }}
+                >
+                  {!imgError ? (
+                    <div
+                      className="absolute inset-0 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${championTileUrl})` }}
+                      onError={() => setImgError(true)}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center" style={{ background: `${cfg.color}30` }}>
+                      <span className="text-2xl font-black" style={{ color: cfg.color }}>{champion.name[0]}</span>
+                    </div>
+                  )}
+                </motion.div>
+
+                <div className="flex-1 min-w-0 pb-0.5">
+                  {/* Tier diamond badge + Name */}
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <motion.div
+                      className="px-2.5 py-1 relative"
+                      style={{
+                        background: `linear-gradient(135deg, ${cfg.color}50, ${cfg.color}25)`,
+                        border: `1.5px solid ${cfg.color}70`,
+                        borderRadius: '3px',
+                        clipPath: 'polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%)',
+                        backdropFilter: 'blur(6px)',
+                      }}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: 'spring', damping: 15 }}
+                    >
+                      <span className="text-[11px] font-black tracking-widest" style={{ color: '#0a0e1a', textShadow: 'none' }}>
+                        {champion.tier}
+                      </span>
+                    </motion.div>
+                    <motion.h2
+                      className="text-2xl font-black text-[#f0e6d2] tracking-wide"
+                      style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.5)' }}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      {champion.name}
+                    </motion.h2>
+                  </div>
+                  {/* Title + Role + Patch */}
+                  <motion.div
+                    className="flex items-center gap-2 flex-wrap"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    {!isFailed ? (
-                      <div
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{
-                          backgroundImage: `url(${splashUrl})`,
-                          filter: 'brightness(0.7)',
-                        }}
-                        onError={() => handleSkinError(skinNum)}
-                      />
-                    ) : (
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          background: `linear-gradient(135deg, ${cfg.color}10, rgba(10,14,26,0.5))`,
-                        }}
-                      />
-                    )}
-                    {/* Glass overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                    {/* Skin number label */}
-                    <span className="absolute bottom-1 left-1.5 text-[8px] text-[#a09b8c] font-medium truncate max-w-[110px]">
-                      {getSkinLabel(champion.name, skinNum)}
-                    </span>
-                    {/* Active indicator */}
-                    {isActive && (
-                      <motion.div
-                        className="absolute inset-0 rounded-lg"
-                        style={{ border: `2px solid ${cfg.color}` }}
-                        layoutId="active-skin-border"
-                        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                      />
-                    )}
-                  </motion.button>
-                );
-              })}
+                    <span className="text-xs text-[#a09b8c] italic">{champion.title}</span>
+                    <div className="w-px h-3 bg-[#785a28]/40" />
+                    <RoleBadge role={champion.role} />
+                    <span className="text-[10px] text-[#5b5a56] font-mono">P{champion.patch}</span>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Stats row — card-like overlay */}
+              <motion.div
+                className="flex items-stretch gap-2 mt-4 rounded-xl overflow-hidden"
+                style={{
+                  background: 'rgba(10,14,26,0.6)',
+                  border: `1px solid ${cfg.color}20`,
+                  backdropFilter: 'blur(16px)',
+                }}
+                initial={{ y: 15, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.25 }}
+              >
+                {[
+                  { label: 'Win Rate', value: champion.winRate, suffix: '%' },
+                  { label: 'Pick Rate', value: champion.pickRate, suffix: '%' },
+                  { label: 'Ban Rate', value: champion.banRate, suffix: '%' },
+                  ...(champion.proPickRate ? [{ label: 'Pro Pick', value: champion.proPickRate, suffix: '%' }] : []),
+                ].map((stat, i) => (
+                  <div
+                    key={stat.label}
+                    className="flex-1 text-center px-2 py-2.5"
+                    style={{
+                      borderRight: i < 3 ? '1px solid rgba(120,90,40,0.15)' : 'none',
+                    }}
+                  >
+                    <p
+                      className="text-lg font-mono font-bold leading-tight"
+                      style={{
+                        color: wrStatColor(stat.value, stat.label),
+                        textShadow: `0 0 12px ${wrStatColor(stat.value, stat.label)}30`,
+                      }}
+                    >
+                      {stat.value}{stat.suffix}
+                    </p>
+                    <p className="text-[8px] text-[#5b5a56] uppercase tracking-widest mt-0.5">{stat.label}</p>
+                  </div>
+                ))}
+              </motion.div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 mt-4">
-            {[
-              { label: 'WR', value: champion.winRate, good: champion.winRate >= 52, color: '#0acbe6' },
-              { label: 'Pick', value: champion.pickRate, good: champion.pickRate >= 10, color: '#f0c646' },
-              { label: 'Ban', value: champion.banRate, good: champion.banRate > 5, color: '#e84057' },
-            ].map(stat => (
-              <div key={stat.label} className="flex-1 text-center">
-                <p className="text-lg font-mono font-bold" style={{ color: stat.value >= (stat.good ? 52 : 5) || stat.label === 'Pick' ? stat.color : '#a09b8c' }}>
-                  {stat.value}%
-                </p>
-                <p className="text-[9px] text-[#5b5a56] uppercase tracking-wider">{stat.label}</p>
+          {/* ===== BODY ===== */}
+          <div className="p-5 space-y-4">
+
+            {/* Skin Gallery */}
+            <div className="rounded-xl overflow-hidden" style={{ background: 'rgba(20,24,30,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}>
+              <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none p-2">
+                {SKIN_VARIANTS.map((skinNum) => {
+                  const splashUrl = getChampionSplashUrl(champion.name, skinNum);
+                  const isFailed = failedSkins.has(skinNum);
+                  const isActive = activeSkin === skinNum;
+
+                  return (
+                    <motion.button
+                      key={skinNum}
+                      onClick={() => handleSelectSkin(skinNum)}
+                      className="relative shrink-0 rounded-lg overflow-hidden cursor-pointer"
+                      style={{
+                        width: 100,
+                        height: 56,
+                        border: isActive
+                          ? `2px solid ${cfg.color}`
+                          : '2px solid rgba(120,90,40,0.15)',
+                        boxShadow: isActive
+                          ? `0 0 14px ${cfg.color}50`
+                          : 'none',
+                        opacity: isFailed ? 0.3 : 1,
+                      }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      disabled={isFailed}
+                      aria-label={getSkinLabel(champion.name, skinNum)}
+                    >
+                      {!isFailed ? (
+                        <div
+                          className="absolute inset-0 bg-cover bg-center"
+                          style={{ backgroundImage: `url(${splashUrl})`, filter: 'brightness(0.6) saturate(1.2)' }}
+                          onError={() => handleSkinError(skinNum)}
+                        />
+                      ) : (
+                        <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cfg.color}10, rgba(10,14,26,0.5))` }} />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      <span className="absolute bottom-0.5 left-1.5 text-[7px] text-[#a09b8c] font-medium truncate max-w-[90px]">
+                        {getSkinLabel(champion.name, skinNum)}
+                      </span>
+                      {isActive && (
+                        <motion.div
+                          className="absolute inset-0 rounded-lg pointer-events-none"
+                          style={{ border: `2px solid ${cfg.color}`, boxShadow: `inset 0 0 12px ${cfg.color}20` }}
+                          layoutId="modal-active-skin"
+                          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                        />
+                      )}
+                    </motion.button>
+                  );
+                })}
               </div>
-            ))}
-            {champion.proPickRate && (
-              <div className="text-center">
-                <p className="text-lg font-mono font-bold text-[#f0c646]">{champion.proPickRate}%</p>
-                <p className="text-[9px] text-[#5b5a56] uppercase tracking-wider">Pro</p>
+            </div>
+
+            {/* Abilities */}
+            <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(10,203,230,0.06), rgba(10,203,230,0.02))', border: '1px solid rgba(10,203,230,0.15)' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4 text-[#0acbe6]" />
+                <span className="text-[10px] font-semibold text-[#0acbe6] uppercase tracking-wider">Habilidades</span>
+                <span className="text-[9px] text-[#5b5a56] ml-auto">Hover para info</span>
               </div>
+              <AbilityBarWithTooltips championName={champion.name} hoveredAbility={hoveredAbility} onHoverAbility={setHoveredAbility} />
+              <AnimatePresence>
+                {hoveredAbility && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: 'auto' }}
+                    exit={{ opacity: 0, y: -4, height: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="mt-3 rounded-lg p-3 overflow-hidden"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(30,35,40,0.95), rgba(10,14,26,0.95))',
+                      border: '1px solid rgba(10,203,230,0.2)',
+                      backdropFilter: 'blur(12px)',
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-sm font-black" style={{ color: hoveredAbility === 'Q' ? '#0acbe6' : hoveredAbility === 'W' ? '#0fba81' : hoveredAbility === 'E' ? '#f0c646' : '#e84057' }}>{hoveredAbility}</span>
+                      <span className="text-xs font-semibold text-[#f0e6d2]">{getAbilityName(champion.name, hoveredAbility)}</span>
+                    </div>
+                    <p className="text-[10px] text-[#a09b8c] leading-relaxed">
+                      {getAbilityDescription(champion, hoveredAbility)}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Weekly WR History */}
+            <CollapsibleSection title="Historial Win Rate" icon={TrendingUp} color="#0acbe6" defaultOpen={true}>
+              <SharedWeeklyWRChart championName={champion.name} currentWR={champion.winRate} />
+            </CollapsibleSection>
+
+            {/* S-tier Live Build */}
+            {champion.tier === 'S' && metaBuild && metaBuild.coreItems && metaBuild.coreItems.length > 0 && (
+              <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(15,186,129,0.08), rgba(15,186,129,0.02))', border: '1px solid rgba(15,186,129,0.2)' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[#0fba81]" />
+                    <span className="text-[10px] font-semibold text-[#0fba81] uppercase tracking-wider">Build Meta Live</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] animate-pulse" />
+                    <span className="text-[9px] text-[#0fba81] font-medium">
+                      {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'Live'}
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {metaBuild.boots && (
+                      <span className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.2)', color: '#0fba81' }}>
+                        {metaBuild.boots}
+                      </span>
+                    )}
+                    {metaBuild.coreItems.map((item: string, i: number) => (
+                      <span key={i} className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)', color: '#c8aa6e' }}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  {metaBuild.runes && metaBuild.runes.length > 0 && (
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[9px] text-[#5b5a56]">Runas:</span>
+                      {metaBuild.runes.map((rune: string, i: number) => (
+                        <span key={i} className="text-[9px] text-[#0fba81]">{rune}</span>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
+                </div>
+              </div>
+            )}
+
+            {/* External Build Links */}
+            <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Info className="w-4 h-4 text-[#c8aa6e]" />
+                  <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">
+                    Builds de Referencia
+                  </span>
+                </div>
+              </div>
+              <p className="text-[10px] text-[#785a28] mb-3">Fuentes externas con builds siempre actualizadas:</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(0,203,230,0.12)', border: '1.5px solid rgba(0,203,230,0.35)', color: '#0acbe6', boxShadow: '0 0 12px rgba(0,203,230,0.08)' }}>
+                  <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(0,203,230,0.2)', border: '1px solid rgba(0,203,230,0.3)' }}>UG</div>
+                  U.GG
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+                <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(79,140,255,0.12)', border: '1.5px solid rgba(79,140,255,0.35)', color: '#4f8cff', boxShadow: '0 0 12px rgba(79,140,255,0.08)' }}>
+                  <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(79,140,255,0.2)', border: '1px solid rgba(79,140,255,0.3)' }}>OP</div>
+                  OP.GG
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+                <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(157,72,224,0.12)', border: '1.5px solid rgba(157,72,224,0.35)', color: '#9d48e0', boxShadow: '0 0 12px rgba(157,72,224,0.08)' }}>
+                  <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(157,72,224,0.2)', border: '1px solid rgba(157,72,224,0.3)' }}>MA</div>
+                  Mobalytics
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+                <a href={`https://www.probuilds.net/champions/details/${champion.name.toLowerCase().replace(/ /g, '').replace(/'/g, '')}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(200,170,110,0.1)', border: '1.5px solid rgba(200,170,110,0.3)', color: '#c8aa6e', boxShadow: '0 0 12px rgba(200,170,110,0.06)' }}>
+                  <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(200,170,110,0.2)', border: '1px solid rgba(200,170,110,0.3)' }}>PB</div>
+                  ProBuilds
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+              </div>
+            </div>
+
+            {/* Broken Things */}
+            {champion.brokenThings && champion.brokenThings.length > 0 && (
+              <CollapsibleSection title="Cosas Rotas" icon={AlertTriangle} color="#e84057">
+                <div className="space-y-1.5">
+                  {champion.brokenThings.map((thing, i) => (
+                    <div key={i} className="flex items-start gap-2 text-[11px]">
+                      <span className="text-[#e84057] mt-0.5">▸</span>
+                      <span className="text-[#a09b8c]">{thing}</span>
+                    </div>
+                  ))}
+                </div>
+              </CollapsibleSection>
+            )}
+
+            {/* Reference Builds */}
+            {champion.builds && champion.builds.length > 0 && (
+              <CollapsibleSection title="Builds de Referencia" icon={Wrench} color="#c8aa6e">
+                <div className="space-y-2">
+                  {champion.builds.map((build, i) => {
+                    const items = parseBuildItems(build.items);
+                    return (
+                      <div key={i} className="rounded-lg p-3" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.1)' }}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-semibold text-[#f0e6d2]">{build.name}</span>
+                          <div className="flex items-center gap-2">
+                            <CopyBuildButton buildName={build.name} itemsStr={build.items} />
+                            <span className="text-[10px] font-mono" style={{ color: build.winRate >= 53 ? '#0acbe6' : '#a09b8c' }}>
+                              {build.winRate}% WR
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 mb-2">
+                          {items.map((item, j) => {
+                            const iconUrl = getItemIconUrl(item);
+                            return (
+                              <div key={j} className="relative group/item flex flex-col items-center gap-0.5">
+                                {iconUrl ? (
+                                  <Image src={iconUrl} alt={item} width={28} height={28} className="w-7 h-7 rounded" style={{ border: '1px solid rgba(200,170,110,0.2)' }} loading="lazy" unoptimized />
+                                ) : (
+                                  <div className="w-7 h-7 rounded bg-[#1e2328] flex items-center justify-center text-[8px] text-[#5b5a56] border border-[#785a28]/20">
+                                    {item[0]}
+                                  </div>
+                                )}
+                                <span className="text-[7px] text-[#785a28] leading-none text-center max-w-[56px] truncate">{item}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                            <ExternalLink className="w-2.5 h-2.5" /> U.GG
+                          </a>
+                          <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                            <ExternalLink className="w-2.5 h-2.5" /> Mobalytics
+                          </a>
+                          <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
+                            <ExternalLink className="w-2.5 h-2.5" /> OP.GG
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CollapsibleSection>
+            )}
+
+            {/* Runes */}
+            {champion.runes && (
+              <CollapsibleSection title="Runas" icon={Sparkles} color="#f0c646" defaultOpen={false}>
+                <div className="rounded-lg p-3 space-y-2" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.12)' }}>
+                  <div className="flex items-center gap-2.5">
+                    <RuneIcon runeName={champion.runes.primary} size={20} />
+                    <span className="text-[11px] text-[#a09b8c]">{champion.runes.primary}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <RuneIcon runeName={champion.runes.secondary} size={20} />
+                    <span className="text-[11px] text-[#a09b8c]">{champion.runes.secondary}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-5 h-5 rounded shrink-0 flex items-center justify-center" style={{ background: 'rgba(240,198,70,0.15)', border: '1px solid rgba(240,198,70,0.3)' }}>
+                      <span className="text-[8px] text-[#f0c646] font-bold">F</span>
+                    </div>
+                    <span className="text-[11px] text-[#a09b8c]">{champion.runes.shards}</span>
+                  </div>
+                </div>
+              </CollapsibleSection>
+            )}
+
+            {/* Vision Map */}
+            <CollapsibleSection title="Mapa de Visión" icon={Eye} color="#0fba81" defaultOpen={false}>
+              <VisionMap role={champion.role} />
+            </CollapsibleSection>
+
+            {/* Counters + Synergy */}
+            <div className="grid grid-cols-2 gap-3">
+              {champion.counterPick && (() => {
+                const counterNames = champion.counterPick.split(/[,;\—]/).map(s => s.replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name);
+                return (
+                  <div className="rounded-lg p-3" style={{ background: 'rgba(232,64,87,0.06)', border: '1px solid rgba(232,64,87,0.15)' }}>
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Crosshair className="w-3.5 h-3.5 text-[#e84057]" />
+                      <h4 className="text-[10px] font-semibold text-[#e84057] uppercase tracking-wider">Counters</h4>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {counterNames.slice(0, 3).map((name) => (
+                        <div key={name} className="flex flex-col items-center gap-1">
+                          <TinyChampionIcon name={name} />
+                          <span className="text-[8px] text-[#a09b8c] leading-none truncate max-w-[40px] text-center">{name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+              {champion.synergy && (() => {
+                const synNames = champion.synergy.split(/[,;—]/).map(s => s.replace(/—.*/g, '').replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name && n.length < 25);
+                return (
+                  <div className="rounded-lg p-3" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.15)' }}>
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Users className="w-3.5 h-3.5 text-[#0acbe6]" />
+                      <h4 className="text-[10px] font-semibold text-[#0acbe6] uppercase tracking-wider">Sinergia</h4>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {synNames.slice(0, 3).map((name) => (
+                        <div key={name} className="flex flex-col items-center gap-1">
+                          <TinyChampionIcon name={name} />
+                          <span className="text-[8px] text-[#a09b8c] leading-none truncate max-w-[40px] text-center">{name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* AI Analysis */}
+            {champion.aiAnalysis && (
+              <CollapsibleSection title="Análisis" icon={Sparkles} color="#c8aa6e" defaultOpen={false}>
+                <div className="rounded-lg p-4" style={{ background: 'rgba(200,170,110,0.05)', border: '1px solid rgba(200,170,110,0.15)' }}>
+                  <p className="text-[11px] text-[#a09b8c] leading-relaxed whitespace-pre-wrap">{champion.aiAnalysis}</p>
+                </div>
+              </CollapsibleSection>
             )}
           </div>
         </div>
 
-        {/* Body */}
-        <div className="p-5 space-y-4">
-          {/* Ability Bar with Tooltips */}
-          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(10,203,230,0.06), rgba(10,203,230,0.02))', border: '1px solid rgba(10,203,230,0.15)' }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#0acbe6]" />
-                <span className="text-[10px] font-semibold text-[#0acbe6] uppercase tracking-wider">Habilidades</span>
-              </div>
-            </div>
-            <div className="mt-2">
-              <AbilityBarWithTooltips championName={champion.name} hoveredAbility={hoveredAbility} onHoverAbility={setHoveredAbility} brokenThings={champion.brokenThings} aiAnalysis={champion.aiAnalysis} />
-            </div>
-            {/* Tooltip */}
-            <AnimatePresence>
-              {hoveredAbility && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.15 }}
-                  className="mt-3 rounded-lg p-3"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(30,35,40,0.95), rgba(10,14,26,0.95))',
-                    border: '1px solid rgba(10,203,230,0.2)',
-                    backdropFilter: 'blur(12px)',
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-sm font-black" style={{ color: hoveredAbility === 'Q' ? '#0acbe6' : hoveredAbility === 'W' ? '#0fba81' : hoveredAbility === 'E' ? '#f0c646' : '#e84057' }}>{hoveredAbility}</span>
-                    <span className="text-xs font-semibold text-[#f0e6d2]">{getAbilityName(champion.name, hoveredAbility)}</span>
-                  </div>
-                  <p className="text-[10px] text-[#a09b8c] leading-relaxed">
-                    {getAbilityDescription(champion, hoveredAbility)}
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Weekly WR History */}
-          <CollapsibleSection title="Historial Win Rate" icon={TrendingUp} color="#0acbe6" defaultOpen={true}>
-            <SharedWeeklyWRChart championName={champion.name} currentWR={champion.winRate} />
-          </CollapsibleSection>
-
-          {/* Build Section — Only shows live scraped data when available */}
-          {champion.tier === 'S' && metaBuild && metaBuild.coreItems && metaBuild.coreItems.length > 0 && (
-            <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(15,186,129,0.08), rgba(15,186,129,0.02))', border: '1px solid rgba(15,186,129,0.2)' }}>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#0fba81]" />
-                  <span className="text-[10px] font-semibold text-[#0fba81] uppercase tracking-wider">Build Meta Live</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] animate-pulse" />
-                  <span className="text-[9px] text-[#0fba81] font-medium">
-                    {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'Live'}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 flex-wrap">
-                  {metaBuild.boots && (
-                    <span className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.2)', color: '#0fba81' }}>
-                      {metaBuild.boots}
-                    </span>
-                  )}
-                  {metaBuild.coreItems.map((item: string, i: number) => (
-                    <span key={i} className="text-[10px] px-2 py-1 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)', color: '#c8aa6e' }}>
-                      {item}
-                    </span>
-                  ))}
-                </div>
-                {metaBuild.runes && metaBuild.runes.length > 0 && (
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[9px] text-[#5b5a56]">Runas:</span>
-                    {metaBuild.runes.map((rune: string, i: number) => (
-                      <span key={i} className="text-[9px] text-[#0fba81]">{rune}</span>
-                    ))}
-                  </div>
-                )}
-                <p className="text-[8px] text-[#5b5a56]">Fuente: {metaBuild.source} | Patch {metaBuild.patch}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="rounded-xl p-3" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))', border: '1px solid rgba(200,170,110,0.2)' }}>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Info className="w-4 h-4 text-[#c8aa6e]" />
-                <span className="text-[10px] font-semibold text-[#c8aa6e] uppercase tracking-wider">
-                  Builds de Referencia
-                  {champion.tier !== 'S' && <span className="ml-1.5 text-[#5b5a56] font-normal normal-case">— Patch {champion.patch}</span>}
-                </span>
-              </div>
-              {champion.tier !== 'S' && (
-                <span className="text-[8px] px-1.5 py-0.5 rounded text-[#785a28] font-medium" style={{ background: 'rgba(120,90,40,0.1)', border: '1px solid rgba(120,90,40,0.15)' }}>
-                  Datos estáticos
-                </span>
-              )}
-            </div>
-            <p className="text-[10px] text-[#785a28] mb-3">Fuentes externas con builds siempre actualizadas:</p>
-            <div className="flex items-center gap-2 flex-wrap">
-              <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(0,203,230,0.12)', border: '1.5px solid rgba(0,203,230,0.35)', color: '#0acbe6', boxShadow: '0 0 12px rgba(0,203,230,0.08)' }}>
-                <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(0,203,230,0.2)', border: '1px solid rgba(0,203,230,0.3)' }}>UG</div>
-                U.GG
-                <ExternalLink className="w-3 h-3 opacity-60" />
-              </a>
-              <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(79,140,255,0.12)', border: '1.5px solid rgba(79,140,255,0.35)', color: '#4f8cff', boxShadow: '0 0 12px rgba(79,140,255,0.08)' }}>
-                <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(79,140,255,0.2)', border: '1px solid rgba(79,140,255,0.3)' }}>OP</div>
-                OP.GG
-                <ExternalLink className="w-3 h-3 opacity-60" />
-              </a>
-              <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(157,72,224,0.12)', border: '1.5px solid rgba(157,72,224,0.35)', color: '#9d48e0', boxShadow: '0 0 12px rgba(157,72,224,0.08)' }}>
-                <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(157,72,224,0.2)', border: '1px solid rgba(157,72,224,0.3)' }}>MA</div>
-                Mobalytics
-                <ExternalLink className="w-3 h-3 opacity-60" />
-              </a>
-              <a href={`https://www.probuilds.net/champions/details/${champion.name.toLowerCase().replace(/ /g, '').replace(/'/g, '')}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 hover:shadow-lg" style={{ background: 'rgba(200,170,110,0.1)', border: '1.5px solid rgba(200,170,110,0.3)', color: '#c8aa6e', boxShadow: '0 0 12px rgba(200,170,110,0.06)' }}>
-                <div className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-black" style={{ background: 'rgba(200,170,110,0.2)', border: '1px solid rgba(200,170,110,0.3)' }}>PB</div>
-                ProBuilds
-                <ExternalLink className="w-3 h-3 opacity-60" />
-              </a>
-            </div>
-          </div>
-
-          {champion.brokenThings && champion.brokenThings.length > 0 && (
-            <CollapsibleSection title="Cosas Rotas" icon={AlertTriangle} color="#e84057">
-              <div className="space-y-1.5">
-                {champion.brokenThings.map((thing, i) => (
-                  <div key={i} className="flex items-start gap-2 text-[11px]">
-                    <span className="text-[#e84057] mt-0.5">▸</span>
-                    <span className="text-[#a09b8c]">{thing}</span>
-                  </div>
-                ))}
-              </div>
-            </CollapsibleSection>
-          )}
-
-          {champion.builds && champion.builds.length > 0 && (
-            <CollapsibleSection title="Builds de Referencia" icon={Wrench} color="#c8aa6e">
-              <div className="space-y-2">
-                {champion.builds.map((build, i) => {
-                  const items = parseBuildItems(build.items);
-                  return (
-                    <div key={i} className="rounded-lg p-3" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.1)' }}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold text-[#f0e6d2]">{build.name}</span>
-                        <div className="flex items-center gap-2">
-                          <CopyBuildButton buildName={build.name} itemsStr={build.items} />
-                          <span className="text-[10px] font-mono" style={{ color: build.winRate >= 53 ? '#0acbe6' : '#a09b8c' }}>
-                            {build.winRate}% WR
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 mb-2">
-                        {items.map((item, j) => {
-                          const iconUrl = getItemIconUrl(item);
-                          return (
-                            <div key={j} className="relative group/item flex flex-col items-center gap-0.5">
-                              {iconUrl ? (
-                                <Image src={iconUrl} alt={item} width={28} height={28} className="w-7 h-7 rounded" style={{ border: '1px solid rgba(200,170,110,0.2)' }} loading="lazy" unoptimized />
-                              ) : (
-                                <div className="w-7 h-7 rounded bg-[#1e2328] flex items-center justify-center text-[8px] text-[#5b5a56] border border-[#785a28]/20">
-                                  {item[0]}
-                                </div>
-                              )}
-                              <span className="text-[7px] text-[#785a28] leading-none text-center max-w-[56px] truncate">{item}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <a href={extUrls.ugg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
-                          <ExternalLink className="w-2.5 h-2.5" /> U.GG
-                        </a>
-                        <a href={extUrls.mobalytics} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
-                          <ExternalLink className="w-2.5 h-2.5" /> Mobalytics
-                        </a>
-                        <a href={extUrls.opgg} target="_blank" rel="noopener noreferrer" className="text-[9px] text-[#5b5a56] hover:text-[#0acbe6] flex items-center gap-0.5 transition-colors">
-                          <ExternalLink className="w-2.5 h-2.5" /> OP.GG
-                        </a>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </CollapsibleSection>
-          )}
-
-          {champion.runes && (
-            <CollapsibleSection title="Runas" icon={Sparkles} color="#f0c646" defaultOpen={false}>
-              <div className="rounded-lg p-3 space-y-2" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.12)' }}>
-                <div className="flex items-center gap-2.5">
-                  <RuneIcon runeName={champion.runes.primary} size={20} />
-                  <span className="text-[11px] text-[#a09b8c]">{champion.runes.primary}</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <RuneIcon runeName={champion.runes.secondary} size={20} />
-                  <span className="text-[11px] text-[#a09b8c]">{champion.runes.secondary}</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded shrink-0 flex items-center justify-center" style={{ background: 'rgba(240,198,70,0.15)', border: '1px solid rgba(240,198,70,0.3)' }}>
-                    <span className="text-[8px] text-[#f0c646] font-bold">F</span>
-                  </div>
-                  <span className="text-[11px] text-[#a09b8c]">{champion.runes.shards}</span>
-                </div>
-              </div>
-            </CollapsibleSection>
-          )}
-
-          {/* Vision Map Section */}
-          <CollapsibleSection title="Mapa de Visión" icon={Eye} color="#0fba81" defaultOpen={false}>
-            <VisionMap role={champion.role} />
-          </CollapsibleSection>
-
-          <div className="grid grid-cols-2 gap-3">
-            {champion.counterPick && (() => {
-              const counterNames = champion.counterPick.split(/[,;\—]/).map(s => s.replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name);
-              return (
-                <div className="rounded-lg p-3" style={{ background: 'rgba(232,64,87,0.06)', border: '1px solid rgba(232,64,87,0.15)' }}>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Crosshair className="w-3.5 h-3.5 text-[#e84057]" />
-                    <h4 className="text-[10px] font-semibold text-[#e84057] uppercase tracking-wider">Counters</h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {counterNames.slice(0, 3).map((name) => (
-                      <div key={name} className="flex flex-col items-center gap-1">
-                        <TinyChampionIcon name={name} />
-                        <span className="text-[8px] text-[#a09b8c] leading-none truncate max-w-[40px] text-center">{name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
-            {champion.synergy && (() => {
-              const synNames = champion.synergy.split(/[,;—]/).map(s => s.replace(/—.*/g, '').replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name && n.length < 25);
-              return (
-                <div className="rounded-lg p-3" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.15)' }}>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Users className="w-3.5 h-3.5 text-[#0acbe6]" />
-                    <h4 className="text-[10px] font-semibold text-[#0acbe6] uppercase tracking-wider">Sinergia</h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {synNames.slice(0, 3).map((name) => (
-                      <div key={name} className="flex flex-col items-center gap-1">
-                        <TinyChampionIcon name={name} />
-                        <span className="text-[8px] text-[#a09b8c] leading-none truncate max-w-[40px] text-center">{name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
-
-          {champion.aiAnalysis && (
-            <CollapsibleSection title="Análisis" icon={Sparkles} color="#c8aa6e" defaultOpen={false}>
-              <div className="rounded-lg p-4" style={{ background: 'rgba(200,170,110,0.05)', border: '1px solid rgba(200,170,110,0.15)' }}>
-                <p className="text-[11px] text-[#a09b8c] leading-relaxed whitespace-pre-wrap">{champion.aiAnalysis}</p>
-              </div>
-            </CollapsibleSection>
-          )}
-        </div>
+        {/* Bottom gold accent line */}
+        <div className="h-1 w-full" style={{
+          background: `linear-gradient(90deg, transparent, ${cfg.color}60, transparent)`,
+        }} />
       </motion.div>
     </motion.div>
   );
