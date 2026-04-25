@@ -1,13 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Trophy, AlertTriangle, BookOpen, GraduationCap, MoreHorizontal, GitCompare } from 'lucide-react';
+import { Trophy, AlertTriangle, ScrollText, BookOpen, GraduationCap, MoreHorizontal } from 'lucide-react';
 
 // 5 primary tabs + Más (sidebar)
 const PRIMARY_BOTTOM_TABS = [
   { id: 'tierlist', label: 'Tier List', icon: Trophy },
   { id: 'broken', label: 'Rotas', icon: AlertTriangle },
-  { id: 'comparison', label: 'Comparar', icon: GitCompare },
+  { id: 'patches', label: 'Parches', icon: ScrollText },
   { id: 'guides', label: 'Guías', icon: BookOpen },
   { id: 'coaching', label: 'Coaching', icon: GraduationCap },
 ];
