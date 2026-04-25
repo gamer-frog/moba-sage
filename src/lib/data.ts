@@ -408,7 +408,7 @@ const CHAMPIONS_DATA: Omit<Champion, 'id' | 'createdAt' | 'updatedAt'>[] = [
     proPickRate: 5.8,
     runes: {"primary":"Valor — Guardián","secondary":"Brujería — Debilidad","shards":"Armadura + Fuerza + Resistencia"},
   },
-  { name: 'Garen', title: 'el Poder de Demacia', role: 'Top', tier: 'S', winRate: 51.3, pickRate: 7.2, banRate: 2.5, image: '', aiInsight: '', build: '', counters: '', synergies: '', patch: '26.8', game: 'LoL',
+  { name: 'Garen', title: 'el Poder de Demacia', role: 'Top', tier: 'A', winRate: 51.3, pickRate: 7.2, banRate: 2.5, image: '', aiInsight: '', build: '', counters: '', synergies: '', patch: '26.8', game: 'LoL',
     metaUpdated: true, metaSources: ['Blitz.gg', 'Mobalytics'],
     brokenThings: ['E CD reducido → más spins más daño', 'Passive sustain → nunca backea', 'Villain → punish carries sin esfuerzo'],
     buildLinks: [{"label": "U.GG", "url": "https://u.gg/lol/champions/garen/build"}, {"label": "Mobalytics", "url": "https://www.mobalytics.com/lol/champions/garen"}, {"label": "OP.GG", "url": "https://www.op.gg/champions/garen"}],
