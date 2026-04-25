@@ -1,7 +1,16 @@
 {
   "version": "1.6",
-  "lastUpdated": "2026-04-25T10:11:00Z",
+  "lastUpdated": "2026-04-25T13:56:00Z",
   "entries": [
+    {
+      "id": "ralph-loop-033",
+      "type": "fix",
+      "title": "3 fixes: matchup icons rotos + tier mismatches + coaching EN labels",
+      "description": "(1) Modal campeón: NON_CHAMP_WORDS filter para counters/synergy parsing — description text después de '—' ya no genera íconos rotos (afectaba ~30 campeones: Nocturne, Briar, Malphite, etc.). (2) Tier mismatches: Blitzcrank/Brand/K'Sante aiAnalysis decían 'S-tier' pero eran tier A — corregido texto a 'Tier A'. (3) Coaching tab: 'snowballelan'→'hacen snowball', 'Conqueror'→'Conquistador' (ADC keystone), comps 'Engage & Teamfight'→'Engage y Teamfight', 'Protect the ADC'→'Proteger al ADC', badges Primary→Principal, Secondary→Secundaria, Shards→Fragmentos. Build OK.",
+      "timestamp": "2026-04-25T13:56:00Z",
+      "commit": "pending",
+      "category": "fix"
+    },
     {
       "id": "ralph-loop-032",
       "type": "fix",

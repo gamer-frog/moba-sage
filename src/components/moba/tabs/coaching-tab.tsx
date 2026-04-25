@@ -65,11 +65,11 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
   ];
 
   const comps: CompEntry[] = [
-    { name: 'Engage & Teamfight', champions: ['Malphite', 'Jarvan IV', 'Orianna', 'Jinx', 'Thresh'], playstyle: 'Engage brutal + follow-up', description: 'Malphite R + Jarvan EQ + Orianna R = team wipe. Jinx limpiando. Thresh protege y engancha stragglers. Comp muy fuerte en el meta 26.8-26.9 por la cantidad de AP bruisers.' },
+    { name: 'Engage y Teamfight', champions: ['Malphite', 'Jarvan IV', 'Orianna', 'Jinx', 'Thresh'], playstyle: 'Engage brutal + follow-up', description: 'Malphite R + Jarvan EQ + Orianna R = team wipe. Jinx limpiando. Thresh protege y engancha stragglers. Comp muy fuerte en el meta 26.8-26.9 por la cantidad de AP bruisers.' },
     { name: 'Poke & Siege', champions: ['Jayce', 'Zoe', 'Varus', 'Lulu', 'Karma'], playstyle: 'Dolor a distancia + disengage', description: 'Jayce y Zoe pokean desde fuera de rango. Varus R + Lulu R = pelea forzada a tu favor. Karma shield + speedboost para kiting. Excelente en objective setups.' },
     { name: 'Split Push', champions: ['Fiora', 'Nidalee', 'Trundle', 'Sivir', 'Shen'], playstyle: 'Presión lateral + respuesta global', description: 'Fiora/Trundle splitanean. Shen R + Sivir R para responder a 4v4. Nidalee controla jungle y objetivos. Funciona con comunicación de team.' },
     { name: 'Pick Comp', champions: ['Blitzcrank', 'Elise', 'LeBlanc', 'Ezreal', 'Nautilus'], playstyle: 'Catchear y eliminar', description: 'Blitz/Nautilus hook + Elise/LB burst = muerte instantánea. Ezreal limpia desde lejos. Excelente en ranked donde un catch = Baron/Nexus.' },
-    { name: 'Protect the ADC', champions: ['Ornn', 'Lee Sin', 'Orianna', 'Jinx', 'Yuumi'], playstyle: 'Peel intenso + hiper carry', description: 'Todo el team protege a Jinx. Ornn items para todo el team. Yuumi unbound a Jinx = inmortal en late game. Lee Sin kick para peel.' },
+    { name: 'Proteger al ADC', champions: ['Ornn', 'Lee Sin', 'Orianna', 'Jinx', 'Yuumi'], playstyle: 'Peel intenso + hiper carry', description: 'Todo el team protege a Jinx. Ornn items para todo el team. Yuumi unbound a Jinx = inmortal en late game. Lee Sin kick para peel.' },
   ];
 
   // Section 4: Counter Tips
@@ -99,7 +99,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
     {
       role: 'Jungle',
       keystones: [
-        { name: 'Cosecha Oscura', when: 'Junglers burst-oriented que snowballelan (Kayn, Evelynn, Shaco). Se resetea con kills y es brutal en early.' },
+        { name: 'Cosecha Oscura', when: 'Junglers burst-oriented que hacen snowball (Kayn, Evelynn, Shaco). Se resetea con kills y es brutal en early.' },
         { name: 'Tempo Letal', when: 'Junglers farm-heavy o auto-attackers (Master Yi, Jax, Shyvana). Mejora DPS significativamente en clears y fights.' },
         { name: 'Conmoción', when: 'Tank junglers con CC (Nautilus, Malphite, Sejuani). Da resistencias después de enganchar — perfecto para ganks.' },
       ],
@@ -117,7 +117,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
       keystones: [
         { name: 'Tempo Letal', when: 'Hyper carries (Jinx, Kog\'Maw, Vayne). Stack attack speed con cada auto — devastador en teamfights.' },
         { name: 'Pies Veloces', when: 'ADCs que necesitan seguridad en lane (Sivir, Ezreal, Ashe). Sustain y MS para kiting y escapar ganks.' },
-        { name: 'Conqueror', when: 'Bruiser ADCs (Lucian, Varus, Samira). Stacks en peleas sostenidas — fuerte en el meta de bruiser items.' },
+        { name: 'Conquistador', when: 'Bruiser ADCs (Lucian, Varus, Samira). Stacks en peleas sostenidas — fuerte en el meta de bruiser items.' },
       ],
     },
     {
@@ -348,7 +348,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                         <span className="text-xs text-[#f0e6d2] font-semibold">{cr.keystone}</span>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="text-[10px] px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.2)' }}>Primary</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.2)' }}>Principal</span>
                         <div>
                           <p className="text-[11px] text-[#a09b8c]">{cr.primaryTree}</p>
                           <div className="flex flex-wrap gap-1 mt-0.5">
@@ -359,7 +359,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="text-[10px] px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(15,186,129,0.1)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.2)' }}>Secondary</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(15,186,129,0.1)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.2)' }}>Secundaria</span>
                         <div>
                           <p className="text-[11px] text-[#a09b8c]">{cr.secondaryTree}</p>
                           <div className="flex flex-wrap gap-1 mt-0.5">
@@ -370,7 +370,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] px-2 py-0.5 rounded" style={{ background: 'rgba(232,64,87,0.1)', color: '#e84057', border: '1px solid rgba(232,64,87,0.2)' }}>Shards</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded" style={{ background: 'rgba(232,64,87,0.1)', color: '#e84057', border: '1px solid rgba(232,64,87,0.2)' }}>Fragmentos</span>
                         <span className="text-[11px] text-[#a09b8c]">{cr.shards}</span>
                       </div>
                     </div>

@@ -952,9 +952,12 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
             </CollapsibleSection>
 
             {/* Counters + Synergy */}
+            {(() => {
+              const NON_CHAMP_WORDS = ['para', 'con', 'que', 'follow', 'peel', 'comp', 'root', 'poke', 'engage', 'chase', 'hyper', 'maxim', 'protecc', 'lock', 'total', 'crea', 'prep', 'burst', 'elim', 'devasta', 'buena', 'buen', 'fuerte', 'activar', 'rapida', 'invenc', 'trampa', 'mortal', 'masivo', 'fights', 'carry', 'mejor', 'detect', 'perder', 'sino', 'util', 'cuando'];
+            return (
             <div className="grid grid-cols-2 gap-3">
               {champion.counterPick && (() => {
-                const counterNames = champion.counterPick.split(/[,;\—]/).map(s => s.replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name);
+                const counterNames = champion.counterPick.split(/[,;\—]/).map(s => s.replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name && !NON_CHAMP_WORDS.some(w => n.toLowerCase().includes(w)));
                 return (
                   <div className="rounded-lg p-3" style={{ background: 'rgba(232,64,87,0.06)', border: '1px solid rgba(232,64,87,0.15)' }}>
                     <div className="flex items-center gap-1.5 mb-2">
@@ -973,7 +976,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                 );
               })()}
               {champion.synergy && (() => {
-                const synNames = champion.synergy.split(/[,;—]/).map(s => s.replace(/—.*/g, '').replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name && n.length < 25);
+                const synNames = champion.synergy.split(/[,;—]/).map(s => s.replace(/—.*/g, '').replace(/\(.*?\)/g, '').trim()).filter(n => n.length > 0 && n !== champion.name && !NON_CHAMP_WORDS.some(w => n.toLowerCase().includes(w)));
                 return (
                   <div className="rounded-lg p-3" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.15)' }}>
                     <div className="flex items-center gap-1.5 mb-2">
@@ -992,6 +995,8 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                 );
               })()}
             </div>
+            );
+            })()}
 
             {/* AI Analysis */}
             {champion.aiAnalysis && (
