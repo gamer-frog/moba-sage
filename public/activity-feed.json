@@ -1,7 +1,16 @@
 {
   "version": "1.7",
-  "lastUpdated": "2026-04-25T17:06:57Z",
+  "lastUpdated": "2026-04-25T18:17:52Z",
   "entries": [
+    {
+      "id": "ralph-loop-037",
+      "type": "feature",
+      "title": "Major UI Redesign — Tab restructure + Tier List overhaul + Parches analysis",
+      "description": "(1) REMOVIDO: Tab 'Comparar' de navegación (constants.ts + page.tsx). (2) TIER LIST: Board view default, data sources bar arriba estilo Bloomberg, cartas S-tier 2x ancho con borde dorado, auto-sort por WR con #rank, bordes por rol, filtros más grandes arriba de campeones. (3) PARCHES: Top Ganadores/Perdedores con iconos, Dirección del Meta section, badges buff/nerf. (4) COACHING: Fusionada sección Guías (guide modals + feed). (5) GUÍAS: Banner redirect a Coaching. Ralph Loop v2 cycle #4. Build pending verify.",
+      "timestamp": "2026-04-25T18:17:52Z",
+      "commit": "bc16619",
+      "category": "feature"
+    },
     {
       "id": "ralph-loop-036",
       "type": "improvement",
@@ -165,15 +174,6 @@
       "description": "(1) Coaching tab: 6 títulos EN→ES (Last Hitting→Último Golpe, Wave Management→Manejo de Oleadas, Trading Stance→Postura de Trading, Creep Block→Bloqueo de Minions, Map Awareness→Conciencia del Mapa, Powerspikes→Picos de Poder) + MOBA Coach→Entrenador MOBA. (2) Tier List AVG→PROM. (3) Notas Oficiales link en-us→es-es (LoL + WR). Build OK.",
       "timestamp": "2026-04-25T00:41:00Z",
       "commit": "5562823",
-      "category": "fix"
-    },
-    {
-      "id": "ralph-loop-024",
-      "type": "fix",
-      "title": "3 fixes: matchup rotos + 6 runas icon + Deploy→Despliegue",
-      "description": "(1) CRÍTICO: matchup icons rotos en Yasuo ('engages con knock-up') y K'Sante ('Comps con follow-up y CC') → nombres campeones reales. (2) 6 runas agregadas a RUNE_ICON_MAP: Segunda Vida, Presencia de Campeón, Sobrecrecimiento, Revitalizar, Frailidad, Golpe de Gracia (40+ campeones afectados). (3) Label 'Deploy'→'Despliegue' en activity-tab. Build OK.",
-      "timestamp": "2026-04-25T00:35:00Z",
-      "commit": "0bc0696",
       "category": "fix"
     }
   ],
