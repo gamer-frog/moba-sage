@@ -6,9 +6,9 @@
       "id": "ralph-loop-031",
       "type": "fix",
       "title": "3 fixes: rune icon map 15 entradas Spanish + spanglish data.ts + coaching typo",
-      "description": "(1) RUNE_ICON_MAP: 15 nuevas entradas Spanish — Tempo Letal, Impulso de Fase, Agarre del No Muerto, Conmoción, Aumento Glacial, Blindaje Óseo, Inquebrantable, Golpe Bajo, Colección de Ojos, Cazador Definitivo, Banda de Maná, Quemadura, Triunfo, Leyenda: Diligencia, Leyenda: Linaje. Coaching tab ahora muestra íconos correctos para todas las runas. (2) Spanglish en data.ts: intargetable→intocable (x2), repositioning→reposicionamiento, landscape→panorama, now escala→ahora escala, pick-and-roll→composiciones de pick. (3) Coaching: 'bateau'→'batea' (palabra francesa corregida a español). Build OK.",
+      "description": "(1) RUNE_ICON_MAP: 15 nuevas entradas Spanish — Tempo Letal, Impulso de Fase, Agarre del No Muerto, Conmoción, Aumento Glacial, Blindaje Óseo, Inquebrantable, Golpe Bajo, Colección de Ojos, Cazador Definitivo, Banda de Maná, Quemadura, Triunfo, Leyenda: Diligencia, Leyenda: Linaje. (2) Spanglish: intargetable→intocable (x2), repositioning→reposicionamiento, landscape→panorama, now escala→ahora escala, pick-and-roll→composiciones de pick. (3) Coaching: 'bateau'→'batea'. Build OK.",
       "timestamp": "2026-04-25T07:56:00Z",
-      "commit": "pending",
+      "commit": "62fd02f",
       "category": "fix"
     },
     {
