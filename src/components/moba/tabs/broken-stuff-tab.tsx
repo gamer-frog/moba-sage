@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
-import { SplashArtIcon, TinyChampionIcon } from '../champion-icon';
+import { SplashArtIcon, TinyChampionIcon, ChampionIcon } from '../champion-icon';
 import { RoleBadge, CategoryBadge } from '../badges';
 import { ItemIcon } from '../item-icon';
 import { ChampionCard } from '../champion-card';
@@ -631,55 +631,155 @@ export function BrokenStuffTab({
         </div>
       )}
 
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <Sparkles className="w-4 h-4 text-[#f0c646]" />
-          <span className="lol-label text-xs font-semibold text-[#a09b8c]">Insights de IA</span>
-          <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(240,198,70,0.2), transparent)' }} />
-          <span className="text-[10px] text-[#5b5a56]">{metaInsights.length} insights</span>
-        </div>
-        {loading ? (
-          Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="glass-card rounded-xl p-5 space-y-3 mb-3">
-              <Skeleton className="h-5 w-24" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-2 w-32 rounded-full" />
-            </div>
-          ))
-        ) : (
-          <div className="space-y-3">
-            {metaInsights.map(insight => (
-              <motion.div key={insight.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }} className="glass-card rounded-xl p-4 border-l-4 hover:border-[#c8aa6e]/30 transition-colors" style={{ borderLeftColor: insight.category === 'meta' ? '#f0c646' : '#0acbe6' }}>
-                <div className="flex items-start gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <TinyChampionIcon name={insight.champion} />
-                      <span className="font-semibold text-[#f0e6d2] text-sm">{insight.champion}</span>
-                      <CategoryBadge category={insight.category} />
-                      {insight.category === 'meta' && (
-                        <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[10px]">
-                          <AlertTriangle className="w-3 h-3 mr-1" />
-                          ROTO OP
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-[#a09b8c] leading-relaxed mb-3">{insight.content}</p>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <span className="text-[10px] text-[#5b5a56] shrink-0">Confianza</span>
-                        <Progress value={insight.confidence * 100} className="h-1.5 flex-1" />
-                        <span className="text-[10px] font-mono text-[#c8aa6e] shrink-0">{(insight.confidence * 100).toFixed(0)}%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-[#785a28] shrink-0 mt-1" />
-                </div>
-              </motion.div>
-            ))}
+      {/* ===== COSAS ROTAS — Grouped Cards ===== */}
+      {!loading && metaInsights.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="w-4 h-4 text-[#f0c646]" />
+            <span className="lol-label text-xs font-semibold text-[#a09b8c]">Insights de IA</span>
+            <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(240,198,70,0.2), transparent)' }} />
+            <span className="text-[10px] text-[#5b5a56]">{metaInsights.length} insights</span>
           </div>
-        )}
-      </div>
+          {loading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="glass-card rounded-xl p-5 space-y-3 mb-3">
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-2 w-32 rounded-full" />
+              </div>
+            ))
+          ) : (
+            <div className="space-y-6">
+              {/* Combos Rotos group */}
+              {metaInsights.filter(i => i.category === 'meta').length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm font-bold text-[#e84057]">💥 Combos Rotos</span>
+                    <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.2), transparent)' }} />
+                    <span className="text-[9px] text-[#5b5a56]">{metaInsights.filter(i => i.category === 'meta').length}</span>
+                  </div>
+                  <div className="space-y-3">
+                    {metaInsights.filter(i => i.category === 'meta').map((insight, i) => {
+                      const metaImpact = Math.min(insight.confidence * 100, 100);
+                      return (
+                        <motion.div
+                          key={insight.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2, delay: i * 0.04 }}
+                          className="glass-card rounded-xl p-4 border-l-4 hover:border-[#e84057]/40 transition-colors"
+                          style={{ borderLeftColor: '#e84057' }}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                <ChampionIcon name={insight.champion} tier={gameChampions.find(c => c.name === insight.champion)?.tier || 'A'} />
+                                <div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-semibold text-[#f0e6d2] text-sm">{insight.champion}</span>
+                                    <Badge className="bg-[#e84057]/20 text-[#e84057] border border-[#e84057]/30 text-[9px] px-1.5 py-0">
+                                      <AlertTriangle className="w-3 h-3 mr-0.5" />
+                                      ROTO
+                                    </Badge>
+                                  </div>
+                                  <CategoryBadge category={insight.category} />
+                                </div>
+                              </div>
+                              <p className="text-sm text-[#a09b8c] leading-relaxed mb-3">{insight.content}</p>
+                              {/* Meta Impact rating bar */}
+                              <div className="flex items-center gap-3">
+                                <span className="text-[10px] text-[#5b5a56] shrink-0 font-semibold">Meta Impact</span>
+                                <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(232,64,87,0.12)' }}>
+                                  <motion.div
+                                    className="h-full rounded-full"
+                                    style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.4), #e84057)', boxShadow: '0 0 6px rgba(232,64,87,0.3)' }}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${metaImpact}%` }}
+                                    transition={{ duration: 0.8, delay: i * 0.1 }}
+                                  />
+                                </div>
+                                <span className="text-[10px] font-mono font-bold text-[#e84057] shrink-0">{metaImpact.toFixed(0)}%</span>
+                              </div>
+                              {/* Confidence */}
+                              <div className="flex items-center gap-2 mt-2">
+                                <span className="text-[10px] text-[#5b5a56] shrink-0">Confianza</span>
+                                <Progress value={insight.confidence * 100} className="h-1.5 flex-1" />
+                                <span className="text-[10px] font-mono text-[#c8aa6e] shrink-0">{(insight.confidence * 100).toFixed(0)}%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {/* Buffs / Items Rotas group */}
+              {metaInsights.filter(i => i.category === 'buff').length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm font-bold text-[#0acbe6]">🔧 Items & Buffs</span>
+                    <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(10,203,230,0.2), transparent)' }} />
+                    <span className="text-[9px] text-[#5b5a56]">{metaInsights.filter(i => i.category === 'buff').length}</span>
+                  </div>
+                  <div className="space-y-3">
+                    {metaInsights.filter(i => i.category === 'buff').map((insight, i) => {
+                      const metaImpact = Math.min(insight.confidence * 100, 100);
+                      return (
+                        <motion.div
+                          key={insight.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2, delay: i * 0.04 }}
+                          className="glass-card rounded-xl p-4 border-l-4 hover:border-[#0acbe6]/40 transition-colors"
+                          style={{ borderLeftColor: '#0acbe6' }}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                <ChampionIcon name={insight.champion} tier={gameChampions.find(c => c.name === insight.champion)?.tier || 'A'} />
+                                <div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-semibold text-[#f0e6d2] text-sm">{insight.champion}</span>
+                                    <Badge className="bg-[#0acbe6]/20 text-[#0acbe6] border border-[#0acbe6]/30 text-[9px] px-1.5 py-0">
+                                      BUFF
+                                    </Badge>
+                                  </div>
+                                  <CategoryBadge category={insight.category} />
+                                </div>
+                              </div>
+                              <p className="text-sm text-[#a09b8c] leading-relaxed mb-3">{insight.content}</p>
+                              <div className="flex items-center gap-3">
+                                <span className="text-[10px] text-[#5b5a56] shrink-0 font-semibold">Meta Impact</span>
+                                <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(10,203,230,0.12)' }}>
+                                  <motion.div
+                                    className="h-full rounded-full"
+                                    style={{ background: 'linear-gradient(90deg, rgba(10,203,230,0.4), #0acbe6)', boxShadow: '0 0 6px rgba(10,203,230,0.3)' }}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${metaImpact}%` }}
+                                    transition={{ duration: 0.8, delay: i * 0.1 }}
+                                  />
+                                </div>
+                                <span className="text-[10px] font-mono font-bold text-[#0acbe6] shrink-0">{metaImpact.toFixed(0)}%</span>
+                              </div>
+                              <div className="flex items-center gap-2 mt-2">
+                                <span className="text-[10px] text-[#5b5a56] shrink-0">Confianza</span>
+                                <Progress value={insight.confidence * 100} className="h-1.5 flex-1" />
+                                <span className="text-[10px] font-mono text-[#c8aa6e] shrink-0">{(insight.confidence * 100).toFixed(0)}%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
