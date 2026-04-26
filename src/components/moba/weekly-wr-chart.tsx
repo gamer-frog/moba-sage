@@ -6,10 +6,9 @@ import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 interface WeeklyDataPoint {
   week: string;
   wr: number;
-  change: number; // change from previous week
+  change: number;
 }
 
-// Deterministic pseudo-random based on seed string
 function seededRandom(seed: string, index: number): number {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -42,11 +41,10 @@ export function getWeeklyWRHistory(name: string, currentWR: number): WeeklyDataP
   return weeks;
 }
 
-// Direction-aware color: GREEN if WR went UP, RED if DOWN
 function directionColor(change: number): string {
-  if (change > 0.1) return '#0fba81';  // verde = sube
-  if (change < -0.1) return '#e84057'; // rojo = baja
-  return '#c8aa6e';                     // amarillo = neutral
+  if (change > 0.1) return '#0fba81';
+  if (change < -0.1) return '#e84057';
+  return '#c8aa6e';
 }
 
 export function WeeklyWRChart({
@@ -65,7 +63,7 @@ export function WeeklyWRChart({
   const overallTrend = data[data.length - 1].wr - data[0].wr;
   const trendColor = overallTrend > 0.3 ? '#0fba81' : overallTrend < -0.3 ? '#e84057' : '#c8aa6e';
 
-  // Compact sparkline — each bar colored by DIRECTION (green up, red down)
+  // Compact sparkline
   if (compact) {
     return (
       <div className="flex items-end gap-[2px] h-5">
@@ -88,11 +86,25 @@ export function WeeklyWRChart({
     );
   }
 
-  // Full chart — clear GREEN/RED per bar with change arrows
+  // Full chart — OP.GG inspired with line chart + area fill + dot markers
+  const chartHeight = 80;
+  const padding = 4;
+
+  // Calculate SVG path points
+  const points = data.map((d, i) => {
+    const x = padding + (i / (data.length - 1)) * (100 - 2 * padding);
+    const y = padding + (1 - (d.wr - minWR + range * 0.1) / (range * 1.2)) * (chartHeight - 2 * padding);
+    return { x, y, wr: d.wr, change: d.change };
+  });
+
+  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+  const areaPath = `${linePath} L ${points[points.length - 1].x} ${chartHeight - padding} L ${points[0].x} ${chartHeight - padding} Z`;
+
   return (
     <div className="space-y-2">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <span className="text-[9px] text-[#5b5a56] uppercase tracking-wider">Tendencia 4 Semanas</span>
+        <span className="text-[9px] text-[#5b5a56] uppercase tracking-wider font-semibold">Tendencia 4 Semanas</span>
         <div className="flex items-center gap-1.5">
           <span className="text-[10px] font-mono font-bold" style={{ color: trendColor }}>
             {overallTrend > 0 ? '+' : ''}{overallTrend.toFixed(1)}%
@@ -104,6 +116,101 @@ export function WeeklyWRChart({
           ) : (
             <Minus className="w-3 h-3" style={{ color: trendColor }} />
           )}
+        </div>
+      </div>
+
+      {/* Chart area */}
+      <div className="relative rounded-lg overflow-hidden" style={{ background: 'rgba(10,14,26,0.4)', border: '1px solid rgba(120,90,40,0.1)' }}>
+        {/* Grid lines */}
+        <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="w-full h-px" style={{ background: 'rgba(120,90,40,0.08)' }} />
+          ))}
+        </div>
+
+        <svg viewBox={`0 0 100 ${chartHeight}`} className="w-full" style={{ height: '80px' }} preserveAspectRatio="none">
+          {/* Area fill gradient */}
+          <defs>
+            <linearGradient id={`wr-gradient-${championName}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={trendColor} stopOpacity="0.3" />
+              <stop offset="100%" stopColor={trendColor} stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+
+          {/* Area */}
+          <motion.path
+            d={areaPath}
+            fill={`url(#wr-gradient-${championName})`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          />
+
+          {/* Line */}
+          <motion.path
+            d={linePath}
+            fill="none"
+            stroke={trendColor}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          />
+
+          {/* Dot markers with WR labels */}
+          {points.map((p, i) => {
+            const color = directionColor(p.change);
+            const isLast = i === points.length - 1;
+            return (
+              <g key={i}>
+                {/* Dot */}
+                <motion.circle
+                  cx={p.x}
+                  cy={p.y}
+                  r={isLast ? 3 : 2}
+                  fill={color}
+                  stroke="#0a0e1a"
+                  strokeWidth="1"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3 + i * 0.1, type: 'spring', stiffness: 300 }}
+                />
+                {/* Glow for last point */}
+                {isLast && (
+                  <motion.circle
+                    cx={p.x}
+                    cy={p.y}
+                    r="5"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="0.5"
+                    opacity="0.5"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.5 }}
+                    transition={{ delay: 0.6, duration: 0.4 }}
+                  />
+                )}
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Bottom labels row */}
+        <div className="flex items-center justify-between px-2 py-1.5" style={{ borderTop: '1px solid rgba(120,90,40,0.08)' }}>
+          {data.map((d, i) => {
+            const color = directionColor(d.change);
+            const isLast = i === data.length - 1;
+            return (
+              <div key={i} className="flex flex-col items-center gap-0.5 flex-1">
+                <span className={`font-mono font-bold ${isLast ? 'text-[10px]' : 'text-[9px]'}`} style={{ color }}>
+                  {d.wr}%
+                </span>
+                <span className="text-[7px] text-[#5b5a56]">{d.week}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -121,62 +228,6 @@ export function WeeklyWRChart({
           <div className="w-2 h-2 rounded-sm bg-[#c8aa6e]" />
           <span className="text-[#5b5a56]">Estable</span>
         </div>
-      </div>
-
-      <div className="flex items-end gap-2 h-20 px-1">
-        {data.map((d, i) => {
-          const height = 20 + ((d.wr - minWR) / range) * 80;
-          const isLast = i === data.length - 1;
-          const color = directionColor(d.change);
-          const bgGrad = `linear-gradient(to top, ${color}40, ${color})`;
-
-          return (
-            <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
-              {/* WR value */}
-              <motion.span
-                className="text-[9px] font-mono font-bold leading-none"
-                style={{ color }}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 + 0.2 }}
-              >
-                {d.wr}%
-              </motion.span>
-              {/* Change indicator */}
-              <motion.div
-                className="flex items-center gap-0.5"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: i * 0.08 + 0.3 }}
-              >
-                {d.change > 0.1 ? (
-                  <span className="text-[8px] font-mono font-bold text-[#0fba81]">+{d.change.toFixed(1)}</span>
-                ) : d.change < -0.1 ? (
-                  <span className="text-[8px] font-mono font-bold text-[#e84057]">{d.change.toFixed(1)}</span>
-                ) : (
-                  <span className="text-[8px] font-mono text-[#c8aa6e]">0.0</span>
-                )}
-              </motion.div>
-              {/* Bar */}
-              <div className="w-full h-12 flex items-end">
-                <motion.div
-                  className="w-full rounded-t"
-                  style={{
-                    background: bgGrad,
-                    opacity: isLast ? 1 : 0.75,
-                    boxShadow: isLast ? `0 0 8px ${color}40` : 'none',
-                    border: isLast ? `1px solid ${color}60` : '1px solid transparent',
-                  }}
-                  initial={{ height: 0 }}
-                  animate={{ height: `${height}%` }}
-                  transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
-                />
-              </div>
-              {/* Week label */}
-              <span className="text-[7px] text-[#5b5a56] font-mono">{d.week}</span>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
