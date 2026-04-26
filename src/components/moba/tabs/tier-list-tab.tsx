@@ -890,6 +890,12 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
   onToggleFavorite: (id: number) => void;
   trendMap?: Record<string, 'rising' | 'falling'>;
 }) {
+  const tierTopGradient: Record<string, string> = {
+    S: 'linear-gradient(90deg, #c8aa6e, #f0c646, #c8aa6e)',
+    A: 'linear-gradient(90deg, rgba(10,203,230,0.5), #0acbe6, rgba(10,203,230,0.5))',
+    B: 'linear-gradient(90deg, rgba(15,186,129,0.5), #0fba81, rgba(15,186,129,0.5))',
+  };
+
   return (
     <div className="space-y-5">
       {['S', 'A', 'B'].map(tier => {
@@ -912,6 +918,9 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
               {tierChamps.map((champ, idx) => {
                 const roleCfg = ROLE_CONFIG[champ.role];
                 const roleColor = roleCfg?.color || '#5b5a56';
+                const isBroken = champ.winRate > 52 && champ.banRate > 4;
+                const isRoto = champ.winRate > 52 && !isBroken;
+                const isAltoBan = champ.banRate > 4 && !isBroken;
                 return (
                   <motion.div
                     key={champ.id}
@@ -938,10 +947,58 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                       whileHover={{ scale: 1.03, y: -4 }}
                       whileTap={{ scale: 0.97 }}
                     >
-                      {/* S-tier gold glow */}
+                      {/* Tier gradient top border */}
+                      <div className="absolute top-0 left-0 right-0 h-[3px] z-10" style={{ background: tierTopGradient[tier] || 'transparent' }} />
+
+                      {/* Role-colored bottom accent line */}
+                      <div className="absolute bottom-0 left-0 right-0 h-[2px] z-10 opacity-60" style={{ background: roleColor }} />
+
+                      {/* S-tier shimmer effect */}
                       {isSTier && (
-                        <div className="absolute inset-0 pointer-events-none"
-                          style={{ boxShadow: `inset 0 0 40px rgba(200,170,110,0.08)` }} />
+                        <>
+                          <div className="absolute inset-0 pointer-events-none"
+                            style={{ boxShadow: 'inset 0 0 40px rgba(200,170,110,0.08)' }} />
+                          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                            <motion.div
+                              className="absolute -inset-full"
+                              style={{ background: 'linear-gradient(90deg, transparent, rgba(200,170,110,0.06), transparent)' }}
+                              animate={{ x: ['-100%', '200%'] }}
+                              transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay: idx * 0.5 }}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {/* Broken indicator badges */}
+                      {(isBroken || isRoto || isAltoBan) && (
+                        <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
+                          {isBroken && (
+                            <motion.span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
+                              style={{ background: 'rgba(232,64,87,0.9)', color: '#fff', boxShadow: '0 0 12px rgba(232,64,87,0.6), 0 0 24px rgba(232,64,87,0.3)', border: '1px solid rgba(255,255,255,0.2)' }}
+                              animate={{ scale: [1, 1.1, 1] }}
+                              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                            >
+                              {'💀 Broken'}
+                            </motion.span>
+                          )}
+                          {isRoto && (
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
+                              style={{ background: 'rgba(232,64,87,0.85)', color: '#fff', boxShadow: '0 0 10px rgba(232,64,87,0.5)', border: '1px solid rgba(232,64,87,0.3)' }}
+                            >
+                              {'🔥 Roto'}
+                            </span>
+                          )}
+                          {isAltoBan && (
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
+                              style={{ background: 'rgba(240,198,70,0.85)', color: '#0a0e1a', boxShadow: '0 0 10px rgba(240,198,70,0.4)', border: '1px solid rgba(240,198,70,0.3)' }}
+                            >
+                              {'⚠️ Alto Ban'}
+                            </span>
+                          )}
+                        </div>
                       )}
 
                       {/* Champion icon + name */}
