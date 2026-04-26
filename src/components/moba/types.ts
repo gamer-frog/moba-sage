@@ -37,6 +37,9 @@ export interface PatchNote {
   digest: string;
   date: string;
   sourceGame: string;
+  highlights?: string[];
+  changes?: Record<string, string[]>;
+  feedStatus?: string;
 }
 
 export interface AiInsight {

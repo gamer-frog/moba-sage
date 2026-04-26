@@ -8,7 +8,6 @@ import { ChampionIcon } from '../champion-icon';
 import { RoleBadge } from '../badges';
 import { TierSection, TierSectionSkeleton } from '../tier-section';
 import { ROLE_CONFIG, TIER_CONFIG, TOURNAMENT_REGIONS } from '../constants';
-import { RoleBadge, TournamentBadge } from '../badges';
 import { TinyChampionIcon } from '../champion-icon';
 import { ChampionCard } from '../champion-card';
 import { WeeklyWRChart } from '../weekly-wr-chart';
@@ -813,11 +812,11 @@ export function TierListTab({
               <button
                 key={r.value || 'all'}
                 onClick={() => onProRegionFilterChange(r.value)}
-                className={\`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-200
-                  \${proRegionFilter === r.value
+                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-200
+                  ${proRegionFilter === r.value
                     ? 'bg-[#f0c646]/15 text-[#f0c646] border border-[#f0c646]/30'
                     : 'text-[#5b5a56] hover:text-[#a09b8c] hover:bg-[#1e2328]/40 border border-transparent'
-                  }\`}
+                  }`}
               >
                 {r.label}
               </button>
@@ -1039,8 +1038,8 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                           )}
                         </div>
                       </div>
-                    </div>
                   </motion.div>
+                </motion.div>
                 );
               })}
             </div>

@@ -658,14 +658,14 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
               )}
 
               {/* Highlights from feed data */}
-              {(patch as any).highlights && (patch as any).highlights.length > 0 && (
+              {patch.highlights && patch.highlights.length > 0 && (
                 <div className="mb-4">
                   <div className="flex items-center gap-2 mb-2.5">
                     <Target className="w-3.5 h-3.5 text-[#f0c646]" />
                     <h4 className="lol-label text-xs font-semibold text-[#f0c646]">Highlights del Meta</h4>
                   </div>
                   <div className="space-y-1.5">
-                    {(patch as any).highlights.map((h: string, i: number) => (
+                    {patch.highlights.map((h: string, i: number) => (
                       <div key={i} className="flex items-start gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.1)' }}>
                         <span className="text-[10px] font-bold text-[#f0c646] shrink-0 mt-0.5">{i + 1}</span>
                         <span className="text-xs text-[#a09b8c] leading-relaxed">{h}</span>
@@ -676,14 +676,14 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
               )}
 
               {/* Detailed changes from feed data */}
-              {(patch as any).changes && Object.keys((patch as any).changes).length > 0 && (
+              {patch.changes && Object.keys(patch.changes).length > 0 && (
                 <div className="mb-4">
                   <div className="flex items-center gap-2 mb-2.5">
                     <Zap className="w-3.5 h-3.5 text-[#c8aa6e]" />
                     <h4 className="lol-label text-xs font-semibold text-[#c8aa6e]">Cambios Detallados</h4>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {Object.entries((patch as any).changes).map(([category, items]: [string, string[]]) => {
+                    {Object.entries(patch.changes).map(([category, items]: [string, string[]]) => {
                       const catColors: Record<string, string> = {
                         buffs: '#0fba81', nerfs: '#e84057', adjustments: '#f0c646',
                         newItems: '#0acbe6', reworkedItems: '#9d48e0', removedItems: '#5b5a56',

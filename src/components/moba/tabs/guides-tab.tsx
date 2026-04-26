@@ -236,7 +236,7 @@ export function GuidesTab() {
             >
               Ir a Coaching
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </motion.button>
           </div>
         </div>
       </motion.div>

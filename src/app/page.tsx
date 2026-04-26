@@ -65,7 +65,7 @@ function TabContent({
       case 'patches': return <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />;
       case 'broken': return <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />;
       case 'combos': return <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />;
-                  case 'coaching': return <CoachingTab selectedGame={selectedGame || ''} />;
+      case 'coaching': return <CoachingTab selectedGame={selectedGame || ''} />;
       case 'profile': return <ProfileTab summonerName={summonerName} onSummonerNameChange={onSummonerNameChange} summonerRegion={summonerRegion} onSummonerRegionChange={onSummonerRegionChange} summonerData={summonerData} summonerLoading={summonerLoading} summonerError={summonerError} onSearchSummoner={onSearchSummoner} />;
       case 'novedades': return <ActivityTab />;
       case 'ideas': return <IdeasTab />;
