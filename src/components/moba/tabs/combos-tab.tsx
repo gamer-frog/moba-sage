@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, X, ChevronRight, ChevronDown, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair, Users } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TinyChampionIcon, SplashArtIcon } from '../champion-icon';
+import { TinyChampionIcon, SplashArtIcon, MicroChampionIcon } from '../champion-icon';
 import type { BrokenCombo, GameSelection } from '../types';
 
 // Combo type detection from description keywords
@@ -143,16 +143,25 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.04 }}
-                  className="glass-card rounded-xl p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group"
+                  className="glass-card rounded-xl p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group relative overflow-hidden"
                   style={{ border: '1px solid rgba(120,90,40,0.12)' }}
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => setExpandedCombo(isExpanded ? null : combo.id)}
                 >
-                  <div className="flex items-center gap-2 mb-3">
+                  {/* Subtle gradient top accent */}
+                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: combo.winRate >= 57 ? 'linear-gradient(90deg, transparent, #0acbe6, transparent)' : 'linear-gradient(90deg, transparent, #e8405780, transparent)' }} />
+
+                  {/* Champion icons row */}
+                  <div className="flex items-center gap-1.5 mb-3">
                     {combo.champions.map((name, i) => (
-                      <div key={name} className="flex items-center gap-2">
-                        <TinyChampionIcon name={name} />
+                      <div key={name} className="flex items-center gap-1.5">
+                        <div className="relative">
+                          <SplashArtIcon name={name} />
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-black" style={{ background: '#0a0e1a', color: '#f0e6d2', border: '1px solid rgba(200,170,110,0.3)' }}>
+                            {i + 1}
+                          </div>
+                        </div>
                         {i < combo.champions.length - 1 && (
                           <span className="text-[10px] text-[#785a28] font-bold">+</span>
                         )}
@@ -164,10 +173,17 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
 
                   {/* Badges row */}
                   <div className="flex items-center gap-2 mt-3 flex-wrap">
-                    {/* Win Rate */}
-                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style={{ backgroundColor: combo.winRate >= 57 ? 'rgba(10,203,230,0.1)' : 'rgba(160,155,140,0.1)', color: combo.winRate >= 57 ? '#0acbe6' : '#a09b8c', border: `1px solid ${combo.winRate >= 57 ? 'rgba(10,203,230,0.3)' : 'rgba(160,155,140,0.2)'}` }}>
+                    {/* Win Rate badge */}
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md" style={{ backgroundColor: combo.winRate >= 57 ? 'rgba(10,203,230,0.12)' : 'rgba(160,155,140,0.1)', color: combo.winRate >= 57 ? '#0acbe6' : '#a09b8c', border: `1px solid ${combo.winRate >= 57 ? 'rgba(10,203,230,0.3)' : 'rgba(160,155,140,0.2)'}`, boxShadow: combo.winRate >= 57 ? '0 0 8px rgba(10,203,230,0.15)' : 'none' }}>
                       {combo.winRate}% WR
                     </span>
+
+                    {/* Meta badge for high WR */}
+                    {combo.winRate >= 57 && (
+                      <span className="text-[9px] font-black px-2 py-0.5 rounded-md" style={{ background: 'rgba(200,170,110,0.15)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}>
+                        {'👑 META'}
+                      </span>
+                    )}
 
                     {/* Difficulty label */}
                     <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
@@ -185,9 +201,15 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                       </span>
                     )}
 
-                    <span className="text-[9px] text-[#5b5a56] ml-auto">
-                      {combo.champions.length} campeón{combo.champions.length > 1 ? 'es' : ''}
-                    </span>
+                    {/* Champion count visual */}
+                    <div className="ml-auto flex items-center gap-1">
+                      <div className="flex -space-x-2">
+                        {combo.champions.slice(0, 5).map((name, i) => (
+                          <MicroChampionIcon key={name} name={name} />
+                        ))}
+                      </div>
+                      <span className="text-[9px] text-[#5b5a56] font-mono">{combo.champions.length}</span>
+                    </div>
                     <motion.div
                       animate={{ rotate: isExpanded ? 90 : 0 }}
                       transition={{ duration: 0.2 }}
@@ -196,10 +218,21 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                     </motion.div>
                   </div>
 
-                  {/* Difficulty Stars */}
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-[9px] text-[#5b5a56]">Dificultad:</span>
-                    <DifficultyStars rating={diffRating} />
+                  {/* Difficulty bar */}
+                  <div className="mt-2.5">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[9px] text-[#5b5a56]">Dificultad</span>
+                      <DifficultyStars rating={diffRating} />
+                    </div>
+                    <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.1)' }}>
+                      <motion.div
+                        className="h-full rounded-full"
+                        style={{ background: `linear-gradient(90deg, ${dc.text}40, ${dc.text})`, boxShadow: `0 0 4px ${dc.text}30` }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(diffRating / 3) * 100}%` }}
+                        transition={{ duration: 0.6, delay: idx * 0.04 }}
+                      />
+                    </div>
                   </div>
                 </motion.div>
 
