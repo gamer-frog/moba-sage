@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, X, ChevronRight, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair } from 'lucide-react';
+import { Flame, X, ChevronRight, ChevronDown, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair, Users } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TinyChampionIcon, SplashArtIcon } from '../champion-icon';
 import type { BrokenCombo, GameSelection } from '../types';
@@ -52,6 +52,24 @@ function DifficultyStars({ rating }: { rating: number }) {
     </div>
   );
 }
+
+
+
+// ============ COMPOSICIONES PRO ============
+interface CompEntry {
+  name: string;
+  champions: string[];
+  playstyle: string;
+  description: string;
+}
+
+const proComps: CompEntry[] = [
+  { name: 'Engage y Teamfight', champions: ['Malphite', 'Jarvan IV', 'Orianna', 'Jinx', 'Thresh'], playstyle: 'Engage brutal + follow-up', description: 'Malphite R + Jarvan EQ + Orianna R = team wipe. Jinx limpiando. Thresh protege y engancha stragglers. Comp muy fuerte en el meta actual por la cantidad de AP bruisers.' },
+  { name: 'Poke & Siege', champions: ['Jayce', 'Zoe', 'Varus', 'Lulu', 'Karma'], playstyle: 'Dolor a distancia + disengage', description: 'Jayce y Zoe pokean desde fuera de rango. Varus R + Lulu R = pelea forzada a tu favor. Karma shield + speedboost para kiting. Excelente en objective setups.' },
+  { name: 'Split Push', champions: ['Fiora', 'Nidalee', 'Trundle', 'Sivir', 'Shen'], playstyle: 'Presión lateral + respuesta global', description: 'Fiora/Trundle splitanean. Shen R + Sivir R para responder a 4v4. Nidalee controla jungle y objetivos. Funciona con comunicación de team.' },
+  { name: 'Pick Comp', champions: ['Blitzcrank', 'Elise', 'LeBlanc', 'Ezreal', 'Nautilus'], playstyle: 'Catchear y eliminar', description: 'Blitz/Nautilus hook + Elise/LB burst = muerte instantánea. Ezreal limpia desde lejos. Excelente en ranked donde un catch = Baron/Nexus.' },
+  { name: 'Proteger al ADC', champions: ['Ornn', 'Lee Sin', 'Orianna', 'Jinx', 'Yuumi'], playstyle: 'Peel intenso + hiper carry', description: 'Todo el team protege a Jinx. Ornn items para todo el team. Yuumi unbound a Jinx = inmortal en late game. Lee Sin kick para peel.' },
+];
 
 export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCombo[]; loading: boolean; selectedGame: GameSelection }) {
   const [sizeFilter, setSizeFilter] = useState<number | null>(null);
@@ -279,6 +297,40 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
           <p className="text-sm">No hay combos para este filtro</p>
         </div>
       )}
+
+      {/* ============ COMPOSICIONES PRO ============ */}
+      <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(120,90,40,0.2)' }}>
+        <div className="flex items-center gap-3 mb-4">
+          <Users className="w-5 h-5 text-[#c8aa6e]" />
+          <div>
+            <h2 className="lol-title text-lg text-[#f0e6d2]">Composiciones Pro</h2>
+            <p className="text-xs text-[#5b5a56]">Team comps más fuertes del meta actual</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {proComps.map((comp, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.05 }}
+              className="p-4 rounded-xl"
+              style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-[#f0e6d2]">{comp.name}</h3>
+                <span className="text-[10px] px-2 py-0.5 rounded" style={{ background: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.2)' }}>{comp.playstyle}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {comp.champions.map(c => (
+                  <span key={c} className="text-[10px] px-2 py-0.5 rounded" style={{ background: 'rgba(10,203,230,0.08)', color: '#0acbe6', border: '1px solid rgba(10,203,230,0.15)' }}>{c}</span>
+                ))}
+              </div>
+              <p className="text-xs text-[#a09b8c] leading-relaxed">{comp.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
