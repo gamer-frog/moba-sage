@@ -1,114 +1,119 @@
 {
-  "lastUpdated": "2026-04-26T15:00:00Z",
-  "currentPatch": "26.8",
-  "nextPatch": "26.9 PBE",
-  "patchDate": "2026-04-29",
+  "lastUpdated": "2026-04-27T03:00:00Z",
+  "currentPatch": "26.9",
+  "nextPatch": "26.10 PBE",
+  "patchDate": "2026-05-06",
   "keyChanges": [
-    "Taliyah: Buff significativo a W (Seismic Shove) y E (Unraveled Earth) — wave clear y roam dominante",
-    "Warwick: Jungle sustain fortalecido + R range buff — ganks post-6 más letales",
-    "Zeri: Rework completo — diferenciación builds AD/AP, nueva mecánica Q chain",
-    "Ambessa: Nerf a burst y survivability — caída de S-tier directa",
-    "Briar: Nerf a dive sostenido — menos tiempo inmune en R",
-    "Shyvana: Reajuste iterativo — incentivos para builds AP/AD diferenciados",
-    "Gragas: Ajustes a ratios — reposicionamiento en meta jungle",
-    "Ezreal: Ajuste de Q damage + sinergia con nuevos Doran's"
+    "Zaahen: Nuevo campeón dominando top lane con WR 53.8% y 5.4% pick rate",
+    "Katarina: Sin cambios negativos, sigue como mid laner más tóxico con WR 53.4%",
+    "Nilah: Meta ADC con WR 53%, sinergia con supports peel es devastadora",
+    "Malphite: Sigue rompiendo con combo R + items tank AP, WR 52.8%",
+    "Aurelion Sol: Control de ola insano, ban rate subiendo con el meta actual",
+    "Briar: Nerf a sustain — baja de S pero sigue viable con WR 52.4%",
+    "Mordekaiser: Item nerfs significativos, caída fuerte a WR 45.2%",
+    "Ambessa: Nerf a burst y survivability, fuera del meta competitivo",
+    "Kha'Zix: Base damage nerf, menos impacto en jungle early game",
+    "Camille: Buff de stabilize — sube lentamente con WR 49.9%"
   ],
   "systemChanges": [
-    "Season 2 Pandemonium — ranked reset completo",
-    "Nuevos items de inicio: Doran's Helm (bruisers), Doran's Bow (ADCs)",
-    "Gluttonous Greaves — immortalización al kill",
-    "Omnivamp Boots (1.5%) — sustain para carries",
-    "Trailblazer y Opportunity removidos",
-    "WASD keybinds por campeón",
-    "Endless Hunger buff — buffs de mapa más valiosos",
-    "Más de 10 runas ajustadas"
+    "Ajustes de balance general para temporada 26.9",
+    "Nerfs a items de omni-vamp para assassins",
+    "Revisión de jungle pathing y timers",
+    "Ajustes a torres y resistencias base",
+    "Cambios en runas de dominación y brujería",
+    "Nuevas skin lines anunciadas"
   ],
   "brokenChampions": [
-    { "name": "Taliyah", "reason": "Buff 26.9 la catapulta a S-tier. Wave clear + roam dominante. Mejor mid laner post-patch.", "tier": "S" },
-    { "name": "K'Sante", "reason": "Sigue dominando top lane con WR 51%+. Sin nerfs en 26.9. Doran's Helm lo beneficia.", "tier": "S" },
-    { "name": "Hwei", "reason": "Sin cambios negativos. Burst combo sigue siendo top mid. Meta de teamfight le favorece.", "tier": "S" },
-    { "name": "Nocturne", "reason": "Sin nerfs. R global sigue siendo devastador. Meta bruiser jungle le favorece.", "tier": "S" },
-    { "name": "Warwick", "reason": "Buff a sustain y R range. Posible A+ post-patch. Excelente para gankar post-6.", "tier": "A+" }
+    {
+      "name": "Zaahen",
+      "reason": "Nuevo campeón rompiendo top lane. WR 53.8% con pick rate saludable. Build versátil.",
+      "tier": "S"
+    },
+    {
+      "name": "Katarina",
+      "reason": "Sin nerfs en 26.9. Burst combo sigue siendo top mid. Meta de teamfight le favorece.",
+      "tier": "S"
+    },
+    {
+      "name": "Nilah",
+      "reason": "Meta ADC dominante. Sinergia peel con supports es devastadora. WR 53% sostenido.",
+      "tier": "S"
+    },
+    {
+      "name": "Malphite",
+      "reason": "Combo R sigue siendo devastador. Meta tank AP le favorece enormemente. WR 52.8%.",
+      "tier": "S"
+    },
+    {
+      "name": "Aurelion Sol",
+      "reason": "Wave clear insano. Ban rate subiendo. Meta control de mapa le favorece.",
+      "tier": "S"
+    },
+    {
+      "name": "Veigar",
+      "reason": "Burst mage con CC infinito. Meta de teamfight prolongado. WR 52.5%.",
+      "tier": "S"
+    },
+    {
+      "name": "Jinx",
+      "reason": "Hypercarry con pick rate 10.8%. Item changes la benefician. WR 52.2%.",
+      "tier": "S"
+    },
+    {
+      "name": "Ornn",
+      "reason": "Tank con utilidad de equipo. Meta bruiser/tank le favorece. WR 52.1%.",
+      "tier": "S"
+    },
+    {
+      "name": "Diana",
+      "reason": "Jungle AP con burst fuerte. Sin nerfs recientes. WR 52.4%.",
+      "tier": "S"
+    },
+    {
+      "name": "Garen",
+      "reason": "Top lane consistente. WR 54.7% — el más alto del juego. Build simple efectivo.",
+      "tier": "S"
+    }
   ],
   "fallenChampions": [
-    { "name": "Ambessa", "reason": "Nerf significativo 26.9 a burst y survivability. Baja de S a B directa.", "tier": "B" },
-    { "name": "Briar", "reason": "Sustain reducido. Menos tiempo inmune en R. Ya no domina early game jungle.", "tier": "A" },
-    { "name": "Shyvana", "reason": "Reajuste iterativo — podría mejorar pero necesita testing. Tier incierto.", "tier": "A" }
+    {
+      "name": "Mordekaiser",
+      "reason": "Item nerfs significativos en 26.9. Caída directa a WR 45.2%. B-tier definitivo.",
+      "tier": "B"
+    },
+    {
+      "name": "Briar",
+      "reason": "Nerf a sustain en R. Menos tiempo inmune. Sigue fuerte pero no rota.",
+      "tier": "A"
+    },
+    {
+      "name": "Ambessa",
+      "reason": "Nerf a burst y survivability. Fuera de meta competitivo.",
+      "tier": "B"
+    },
+    {
+      "name": "Kha'Zix",
+      "reason": "Base damage nerf. Menos impacto en early game jungle.",
+      "tier": "B"
+    },
+    {
+      "name": "Azir",
+      "reason": "WR 43.8% — el más bajo del meta. Requiere demasiada inversión.",
+      "tier": "B"
+    }
   ],
   "itemImpact": {
     "winners": [
-      "Doran's Helm beneficia bruisers/tanks (Ornn, Darius, K'Sante)",
-      "Doran's Bow fortalece ADCs en early (Nilah, Jinx)",
-      "Omnivamp Boots da sustain a carries",
-      "Gluttonous Greaves fortalece assassins y divers (Zed, Katarina)",
       "Jak'Sho se beneficia del meta prolongado de teamfights",
-      "Black Cleaver más relevante por el meta de bruisers en top"
+      "Black Cleaver más relevante por meta de bruisers en top",
+      "Filo de la Noche sigue siendo staple de assassins",
+      "Rabadón buff indirecto para mages de burst"
     ],
     "losers": [
-      "Trailblazer removido — mages sin item de inicio ideal",
-      "Opportunity removido — ciertos ADCs pierden su item preferido",
-      "Randuin's Omen menos efectivo con el meta de AP bruisers",
-      "Force of Nature perde valor contra comps mixtas"
+      "Nerfs a omni-vamp golpean a builds de assassins",
+      "Trailblazer removido — junglers de clear rápido pierden herramienta",
+      "Item nerfs afectan directamente a Mordekaiser"
     ]
   },
-  "proTips": [
-    {
-      "player": "Chovy",
-      "tip": "En el meta de Season 2, el wave management en mid lane es más importante que nunca. Con los nuevos Doran's items, el early game se decide en los primeros 3 minutos de CS.",
-      "champion": "Taliyah"
-    },
-    {
-      "player": "369",
-      "tip": "Doran's Helm hace que los bruisers de top sean inmensamente fuertes en short trades. Grasp + Black Cleaver es el core que todo bruiser debería considerar.",
-      "champion": "K'Sante"
-    },
-    {
-      "player": "Ruler",
-      "tip": "Doran's Bow cambia el lane phase para ADCs. Si tu support no es engage-heavy, podés priorizar farming seguro con el sustain extra del nuevo item.",
-      "champion": "Jinx"
-    },
-    {
-      "player": "Peanut",
-      "tip": "Con los cambios a sustains en jungle, los junglers que pueden gankar post-6 sin depender de items son los más fuertes. Warwick y Nocturne son top tier por esto.",
-      "champion": "Warwick"
-    },
-    {
-      "player": "Keria",
-      "tip": "Glacial Augment es el keystone más subestimado para supports engage. El slow de las piezas + tu CC base garantiza catches en ranked. Thresh y Nautilus la rompen.",
-      "champion": "Thresh"
-    }
-  ],
-  "runeChanges": [
-    {
-      "rune": "Grasp of the Undying",
-      "change": "Ajustado el heal scaling — menos sustain en early, más en late game. Afecta principalmente a bruisers de top.",
-      "impact": "medium"
-    },
-    {
-      "rune": "Dark Harvest",
-      "change": "Reset timer reducido de 3s a 2s. Mejor para snowball en teamfights. Warwick y junglers burst se benefician.",
-      "impact": "high"
-    },
-    {
-      "rune": "Phase Rush",
-      "change": "MS buff duration aumentado de 1.5s a 2s. Más tiempo para kiting y disengage. Taliyah y mages mobiles ganan valor.",
-      "impact": "medium"
-    },
-    {
-      "rune": "Lethal Tempo",
-      "change": "AS cap reducido de 110% a 100%. Hyper carries como Jinx y Kog'Maw pierden algo de DPS máximo pero ganan stack speed.",
-      "impact": "medium"
-    },
-    {
-      "rune": "Glacial Augment",
-      "change": "Cooldown de item actives reducido 15%. Items como Frostfire Gauntlet y Everfrost son más spameables.",
-      "impact": "low"
-    },
-    {
-      "rune": "Aftershock",
-      "change": "Resistencias granted reducidas 5%. Tank junglers ligeramente más débiles en early ganks.",
-      "impact": "low"
-    }
-  ],
-  "summary": "Patch 26.9 redefine el meta con nuevos items de inicio que cambian la fase de lanes. Taliyah y Warwick son los principales beneficiados. Ambessa y Briar caen tras nerfs directos. La Season 2 Pandemonium trae ranked reset y cambios sistémicos masivos. Dark Harvest se consolida como keystone top para junglers, mientras que Grasp pierde algo de fuerza en early pero compensa en late."
+  "summary": "Patch 26.9 consolidó a Zaahen y Katarina como los campeones más dominantes del meta. Malphite y Aurelion Sol se mantienen como picks S-tier con kits muy fuertes para el meta actual. Mordekaiser recibió los nerfs más duros, cayendo a B-tier con WR 45.2%. La tendencia general es hacia un meta de bruisers/tanks en top lane, con mages de burst dominando mid y hypercarries en ADC."
 }
