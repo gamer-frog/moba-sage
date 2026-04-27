@@ -69,6 +69,11 @@ export function ActivityPopup() {
           setFeed(data);
           setMounted(true);
           setTimeout(() => { if (!cancelled) setShow(true); }, 800);
+            // Auto-dismiss after 8 seconds
+            setTimeout(() => { if (!cancelled) {
+              setShow(false);
+              sessionStorage.setItem('moba-sage-popup-seen', 'true');
+            }}, 8000);
         }
       } catch (err) {
         console.error('Failed to load activity feed for popup:', err);
