@@ -1,7 +1,32 @@
 {
-  "version": "1.7",
+  "version": "1.8",
   "lastUpdated": "2026-04-27T04:55:00Z",
   "entries": [
+    {
+      "id": "e23",
+      "type": "improvement",
+      "title": "Layout más ancho (max-w-6xl) + Tier cards mejoradas",
+      "description": "Cards A/B más anchas con gap-4, grid optimizado de 5 columnas en xl",
+      "timestamp": "2026-04-27T05:22:49.148337+00:00",
+      "category": "ui",
+      "commit": "abc1e8d3"
+    },
+    {
+      "id": "e24",
+      "type": "fix",
+      "title": "Fonts arregladas — Google Fonts Cinzel reemplaza Riot CDN",
+      "description": "Eliminados 4 errores 403 de consola. Cinzel da estilo épico medieval similar a Beaufort",
+      "timestamp": "2026-04-27T05:22:49.148337+00:00",
+      "commit": "d6407c52"
+    },
+    {
+      "id": "e25",
+      "type": "feature",
+      "title": "Tips por Rol en Coaching (15 nuevos tips)",
+      "description": "Top, Jungle, Mid, ADC, Support — 3 tips específicos por rol con estrategia detallada",
+      "timestamp": "2026-04-27T05:22:49.148337+00:00",
+      "commit": "8c7cd3f4"
+    },
     {
       "id": "fix-rotas-crash",
       "type": "fix",
@@ -181,10 +206,11 @@
     }
   ],
   "highlights": [
-    "6 improvements deployed today",
+    "10+ improvements total",
+    "Font errors eliminated",
+    "Coaching: 25+ tips",
+    "Tier List: wider cards + WR default",
     "Rotas tab crash fixed",
-    "Meta data synced to patch 26.9",
-    "Counter/Synergy visual upgrade",
-    "Parches timeline enriched"
+    "All tabs verified working"
   ]
 }
