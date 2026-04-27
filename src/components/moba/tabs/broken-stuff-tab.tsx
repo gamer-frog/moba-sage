@@ -577,7 +577,7 @@ export function BrokenStuffTab({
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: idx * 0.03 }}
-                className="flex items-start gap-3 p-3 rounded-xl group cursor-pointer transition-all duration-300"
+                className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-xl group cursor-pointer transition-all duration-300"
                 style={{
                   background: 'rgba(10,203,230,0.04)',
                   border: '1px solid rgba(10,203,230,0.12)',
@@ -641,7 +641,7 @@ export function BrokenStuffTab({
           </div>
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="glass-card rounded-xl p-5 space-y-3 mb-3">
+              <div key={i} className="glass-card rounded-xl p-3 sm:p-5 space-y-3 mb-3">
                 <Skeleton className="h-5 w-24" />
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-3/4" />
@@ -667,7 +667,7 @@ export function BrokenStuffTab({
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.2, delay: i * 0.04 }}
-                          className="glass-card rounded-xl p-4 border-l-4 hover:border-[#e84057]/40 transition-colors"
+                          className="glass-card rounded-xl p-3 sm:p-4 border-l-4 hover:border-[#e84057]/40 transition-colors"
                           style={{ borderLeftColor: '#e84057', background: 'linear-gradient(135deg, rgba(232,64,87,0.03), rgba(30,35,40,0.5))' }}
                         >
                           <div className="flex items-start gap-3">
@@ -731,7 +731,7 @@ export function BrokenStuffTab({
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.2, delay: i * 0.04 }}
-                          className="glass-card rounded-xl p-4 border-l-4 hover:border-[#0acbe6]/40 transition-colors"
+                          className="glass-card rounded-xl p-3 sm:p-4 border-l-4 hover:border-[#0acbe6]/40 transition-colors"
                           style={{ borderLeftColor: '#0acbe6', background: 'linear-gradient(135deg, rgba(10,203,230,0.03), rgba(30,35,40,0.5))' }}
                         >
                           <div className="flex items-start gap-3">
