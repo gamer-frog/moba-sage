@@ -1014,16 +1014,15 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                         whileTap={{ scale: 0.97 }}
                       >
                         {/* Splash art background */}
-                        <div className="absolute inset-0">
-                          <Image
-                            src={getChampionSplashUrl(champ.name)}
-                            alt={champ.name}
-                            fill
-                            className="object-cover"
-                            style={{ filter: 'brightness(0.4) saturate(1.2)' }}
-                            loading="lazy"
-                            unoptimized
-                          />
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            backgroundImage: `url(${getChampionSplashUrl(champ.name)})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center center',
+                            filter: 'brightness(0.4) saturate(1.2)',
+                          }}
+                        >
                           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 10%, rgba(10,14,26,0.5) 40%, rgba(10,14,26,0.95) 75%, rgba(10,14,26,1) 100%)' }} />
                         </div>
                         {/* Shimmer */}
