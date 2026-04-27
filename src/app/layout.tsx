@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/error-boundary";
@@ -13,6 +13,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "900"],
 });
 
 export const viewport: Viewport = {
@@ -61,7 +67,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="dark theme-blue-essence" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable + " " + cinzel.variable} ${geistMono.variable} antialiased`}
         style={{ backgroundColor: '#0a0e1a', color: '#f0e6d2' }}
       >
         <MobaThemeProvider>
