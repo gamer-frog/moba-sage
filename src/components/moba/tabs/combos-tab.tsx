@@ -142,7 +142,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.04 }}
-                  className="glass-card rounded-xl p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group relative overflow-hidden"
+                  className="glass-card rounded-xl p-3 sm:p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group relative overflow-hidden"
                   style={{ border: '1px solid rgba(120,90,40,0.12)' }}
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
@@ -257,7 +257,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                         </div>
 
                         {/* Stats */}
-                        <div className="grid grid-cols-3 gap-2 mb-3">
+                        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3">
                           <div className="text-center p-2 rounded-lg" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.1)' }}>
                             <Trophy className="w-3.5 h-3.5 mx-auto mb-1 text-[#0acbe6]" />
                             <span className="text-xs font-mono font-bold text-[#0acbe6]">{combo.winRate}%</span>
@@ -342,7 +342,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.05 }}
-              className="p-4 rounded-xl relative overflow-hidden"
+              className="p-3 sm:p-4 rounded-xl relative overflow-hidden"
               style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.06), rgba(30,35,40,0.5))', border: '1px solid rgba(200,170,110,0.2)' }}
             >
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, #c8aa6e, #c8aa6e40)' }} />
