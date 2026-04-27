@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, ChevronUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TinyChampionIcon, SplashArtIcon } from '../champion-icon';
+import { ChampionIcon, SplashArtIcon } from '../champion-icon';
 import { RoleBadge, TournamentBadge } from '../badges';
 import { TOURNAMENT_REGIONS } from '../constants';
 import type { ProPick, GameSelection } from '../types';
@@ -100,7 +100,7 @@ export function CompetitiveTab({
                       transition={{ delay: idx * 0.03 }}
                       className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#1e2328]/40 transition-colors"
                     >
-                      <TinyChampionIcon name={pick.champion} />
+                      <ChampionIcon name={pick.champion} tier="A" />
                       <div className="flex-1 min-w-0">
                         <span className="text-sm font-medium text-[#f0e6d2]">{pick.champion}</span>
                       </div>
