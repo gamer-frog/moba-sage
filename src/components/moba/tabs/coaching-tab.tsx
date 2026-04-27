@@ -105,7 +105,7 @@ const severityConfig = {
 // ============ COMPONENT ============
 export function CoachingTab({ selectedGame }: { selectedGame: string }) {
   const [openCategory, setOpenCategory] = useState<string | null>('fase-de-linea');
-  const [openSection, setOpenSection] = useState<string | null>(null);
+  const [openSection, setOpenSection] = useState<string | null>('mecanicas');
 
   const toggleCategory = (id: string) => setOpenCategory(prev => prev === id ? null : id);
   const toggleSection = (id: string) => setOpenSection(prev => prev === id ? null : id);
@@ -121,18 +121,23 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
   }
 
   const topSections = [
-    { id: 'mecanicas', label: 'Mecánicas Fundamentales', icon: <Swords className="w-4 h-4" /> },
-    { id: 'warding', label: 'Warding por Rol', icon: <Eye className="w-4 h-4" /> },
-    { id: 'errores', label: 'Errores a Evitar', icon: <AlertOctagon className="w-4 h-4" /> },
+    { id: 'mecanicas', label: 'Mecánicas Fundamentales', icon: <Swords className="w-4 h-4" />, count: 10, color: '#e84057' },
+    { id: 'warding', label: 'Warding por Rol', icon: <Eye className="w-4 h-4" />, count: 5, color: '#0acbe6' },
+    { id: 'errores', label: 'Errores a Evitar', icon: <AlertOctagon className="w-4 h-4" />, count: 10, color: '#f0c646' },
   ];
 
   return (
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <GraduationCap className="w-5 h-5 text-[#c8aa6e]" />
-        <div>
-          <h2 className="text-lg font-bold text-[#f0e6d2] lol-title">Entrenador MOBA</h2>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(200,170,110,0.05))', border: '1.5px solid rgba(200,170,110,0.3)', boxShadow: '0 0 16px rgba(200,170,110,0.15)' }}>
+          <GraduationCap className="w-5 h-5 text-[#c8aa6e]" />
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-bold text-[#f0e6d2] lol-title">Entrenador MOBA</h2>
+            <span className="text-[8px] px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(200,170,110,0.12)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}>IA</span>
+          </div>
           <p className="text-xs text-[#5b5a56]">Mecánicas, visión, errores comunes y más para mejorar tu juego</p>
         </div>
       </div>
@@ -152,8 +157,11 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
               className="w-full flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer"
               style={btnStyle}
             >
-              <div style={{ color: isOpen ? '#c8aa6e' : '#a09b8c' }}>{section.icon}</div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: isOpen ? 'rgba(200,170,110,0.15)' : 'rgba(200,170,110,0.06)', border: '1px solid ' + (isOpen ? 'rgba(200,170,110,0.3)' : 'rgba(120,90,40,0.15)') }}>
+                {section.icon}
+              </div>
               <span className="text-sm font-semibold text-[#f0e6d2] flex-1 text-left">{section.label}</span>
+              {'count' in section && <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: 'rgba(120,90,40,0.1)', color: '#785a28' }}>{section.count}</span>}
               {isOpen ? <ChevronUp className="w-4 h-4 text-[#c8aa6e]" /> : <ChevronDown className="w-4 h-4 text-[#5b5a56]" />}
             </button>
 
@@ -204,7 +212,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                                       animate={{ opacity: 1, x: 0 }}
                                       transition={{ delay: i * 0.04 }}
                                       className="p-3 rounded-lg"
-                                      style={{ background: 'rgba(20,25,32,0.5)', border: '1px solid rgba(120,90,40,0.08)' }}
+                                      style={{ background: `${cat.color}04`, border: '1px solid ' + `${cat.color}15`, borderLeft: `2px solid ${cat.color}` }}
                                     >
                                       <div className="flex items-center gap-2 mb-1.5">
                                         {tip.icon}
@@ -223,19 +231,27 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                   )}
 
                   {/* WARDING */}
-                  {section.id === 'warding' && wardingTips.map((tip, i) => (
+                  {section.id === 'warding' && wardingTips.map((tip, i) => {
+                    const wColor = 'color' in tip ? tip.color : '#c8aa6e';
+                    return (
                     <motion.div
                       key={i}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
                       className="p-4 rounded-xl"
-                      style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}
+                      style={{ background: `${wColor}06`, border: `1px solid ${wColor}20`, borderLeft: `3px solid ${wColor}` }}
                     >
-                      <div className="flex items-center gap-2 mb-2">{tip.icon}<h3 className="text-sm font-semibold text-[#f0e6d2]">{tip.title}</h3></div>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${wColor}15`, border: '1px solid ' + `${wColor}25` }}>
+                          <div style={{ color: wColor }}>{tip.icon}</div>
+                        </div>
+                        <h3 className="text-sm font-semibold text-[#f0e6d2]">{tip.title}</h3>
+                      </div>
                       <p className="text-xs text-[#a09b8c] leading-relaxed">{tip.description}</p>
                     </motion.div>
-                  ))}
+                    );
+                  })}
 
                   {/* ERRORES A EVITAR */}
                   {section.id === 'errores' && (
