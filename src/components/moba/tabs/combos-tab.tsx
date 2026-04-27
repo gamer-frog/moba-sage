@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, X, ChevronRight, ChevronDown, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair, Users } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TinyChampionIcon, SplashArtIcon, MicroChampionIcon } from '../champion-icon';
+import { ChampionIcon, TinyChampionIcon, SplashArtIcon, MicroChampionIcon } from '../champion-icon';
 import type { BrokenCombo, GameSelection } from '../types';
 
 // Combo type detection from description keywords
@@ -20,11 +20,10 @@ const COMBO_TYPE_CONFIG: Record<string, { color: string; bg: string; border: str
 
 function detectComboType(description: string): ComboType {
   const desc = description.toLowerCase();
-  if (/burst|explosi|one-shot|instakill|daño instant|eliminaci.rápida|burstear/.test(desc)) return 'Burst';
+  if (/burst|explosi|one-shot|instakill|daño instant|eliminaci.rápida|burstear|inmune|inmortal|triple/.test(desc)) return 'Burst';
   if (/poke|daño sostenido| harass|ataque a distancia|pokear|dac/.test(desc)) return 'Poke';
-  if (/engage|iniciar|iniciaci.hroe|teamfight|entrar|engagear|start/.test(desc)) return 'Engage';
+  if (/engage|iniciar|iniciaci.hroe|teamfight|entrar|engagear|start|protect|peel/.test(desc)) return 'Engage';
   if (/dive|sumergir|salto|saltar|profundidad|inmersion|bruscar/.test(desc)) return 'Dive';
-  if (/peel|proteger|guardi.hroe de acompa.ar|defender|supresar|cc/.test(desc)) return 'Peel';
   return null;
 }
 
@@ -152,13 +151,18 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                   {/* Subtle gradient top accent */}
                   <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: combo.winRate >= 57 ? 'linear-gradient(90deg, transparent, #0acbe6, transparent)' : 'linear-gradient(90deg, transparent, #e8405780, transparent)' }} />
 
-                  {/* Champion icons row */}
-                  <div className="flex items-center gap-1.5 mb-3">
+                  {/* Champion portraits row — circular with tier glow */}
+                  <div className="flex items-center gap-2 mb-3">
                     {combo.champions.map((name, i) => (
-                      <div key={name} className="flex items-center gap-1.5">
-                        <div className="relative">
-                          <SplashArtIcon name={name} />
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-black" style={{ background: '#0a0e1a', color: '#f0e6d2', border: '1px solid rgba(200,170,110,0.3)' }}>
+                      <div key={name} className="flex items-center gap-2">
+                        <div
+                          className="relative"
+                          style={{
+                            filter: combo.winRate >= 57 ? 'drop-shadow(0 0 6px rgba(232,64,87,0.4))' : 'none',
+                          }}
+                        >
+                          <ChampionIcon name={name} tier={combo.winRate >= 57 ? 'S' : 'A'} />
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-black z-10" style={{ background: '#0a0e1a', color: '#f0e6d2', border: '1px solid rgba(200,170,110,0.3)' }}>
                             {i + 1}
                           </div>
                         </div>
@@ -201,18 +205,10 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                       </span>
                     )}
 
-                    {/* Champion count visual */}
-                    <div className="ml-auto flex items-center gap-1">
-                      <div className="flex -space-x-2">
-                        {combo.champions.slice(0, 5).map((name, i) => (
-                          <MicroChampionIcon key={name} name={name} />
-                        ))}
-                      </div>
-                      <span className="text-[9px] text-[#5b5a56] font-mono">{combo.champions.length}</span>
-                    </div>
                     <motion.div
                       animate={{ rotate: isExpanded ? 90 : 0 }}
                       transition={{ duration: 0.2 }}
+                      className="ml-auto"
                     >
                       <ChevronRight className="w-4 h-4 text-[#785a28]" />
                     </motion.div>
@@ -247,15 +243,13 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                       className="overflow-hidden"
                     >
                       <div className="mt-2 p-4 rounded-xl" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.15)' }}>
-                        {/* Champions with icons */}
+                        {/* Champions with portraits */}
                         <div className="mb-3">
                           <span className="lol-label text-[10px] text-[#c8aa6e] mb-2 block">Campeones</span>
                           <div className="flex items-center gap-3 flex-wrap">
                             {combo.champions.map((name) => (
-                              <div key={name} className="flex items-center gap-2 px-2 py-1 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.12)' }}>
-                                <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0" style={{ border: '1.5px solid rgba(200,170,110,0.3)' }}>
-                                  <SplashArtIcon name={name} />
-                                </div>
+                              <div key={name} className="flex items-center gap-2 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.12)' }}>
+                                <ChampionIcon name={name} tier={combo.winRate >= 57 ? 'S' : 'A'} />
                                 <span className="text-xs font-semibold text-[#f0e6d2]">{name}</span>
                               </div>
                             ))}
@@ -309,7 +303,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                         {/* Close button */}
                         <button
                           onClick={(e) => { e.stopPropagation(); setExpandedCombo(null); }}
-                          className="mt-3 w-full py-1.5 rounded-lg text-[10px] text-[#5b5a56] hover:text-[#a09b8c] transition-colors text-center"
+                          className="mt-3 w-full py-1.5 rounded-lg text-[10px] text-[#5b5a56] hover:text-[#a09b8c] transition-colors text-center cursor-pointer"
                           style={{ background: 'rgba(120,90,40,0.08)', border: '1px solid rgba(120,90,40,0.1)' }}
                         >
                           Cerrar detalle
@@ -356,12 +350,10 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                 <h3 className="text-sm font-bold text-[#f0e6d2]">{comp.name}</h3>
                 <span className="text-[9px] px-2 py-0.5 rounded-md font-bold" style={{ background: 'rgba(200,170,110,0.12)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}>{comp.playstyle}</span>
               </div>
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
                 {comp.champions.map(c => (
                   <div key={c} className="flex items-center gap-1.5 px-1.5 py-1 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.15)' }}>
-                    <div className="w-7 h-7 rounded-full overflow-hidden shrink-0" style={{ border: '1.5px solid rgba(200,170,110,0.4)', boxShadow: '0 0 6px rgba(200,170,110,0.15)' }}>
-                      <TinyChampionIcon name={c} />
-                    </div>
+                    <ChampionIcon name={c} tier="A" />
                     <span className="text-[10px] font-semibold text-[#f0e6d2]">{c}</span>
                   </div>
                 ))}
