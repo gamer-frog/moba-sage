@@ -354,8 +354,7 @@ body > * {
   box-shadow: 0 0 var(--glow, 6px) rgba(200, 170, 110, 0.3);
 }
 
-/* Cinzel font for LoL-style epic headings (replaces broken Riot CDN Beaufort) */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap');
+/* Cinzel font loaded via next/font/google in layout.tsx (replaces broken Riot CDN Beaufort) */
 
 @font-face {
   font-family: 'Beaufort';
