@@ -354,46 +354,46 @@ body > * {
   box-shadow: 0 0 var(--glow, 6px) rgba(200, 170, 110, 0.3);
 }
 
-/* Beaufort LoL font for headings */
+/* Cinzel font for LoL-style epic headings (replaces broken Riot CDN Beaufort) */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap');
+
 @font-face {
   font-family: 'Beaufort';
-  src: url('https://ddragon.leagueoflegends.com/cdn/lol-beaufont/BeaufortforLOL-Bold.woff2') format('woff2'),
-       url('https://ddragon.leagueoflegends.com/cdn/lol-beaufont/BeaufortforLOL-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
+  src: local('Cinzel Bold'), local('Cinzel-Bold');
 }
 
 @font-face {
   font-family: 'Beaufort';
-  src: url('https://ddragon.leagueoflegends.com/cdn/lol-beaufont/BeaufortforLOL-Regular.woff2') format('woff2'),
-       url('https://ddragon.leagueoflegends.com/cdn/lol-beaufont/BeaufortforLOL-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  src: local('Cinzel Regular'), local('Cinzel-Regular');
 }
 
 .lol-heading {
-  font-family: 'Beaufort', 'Geist Sans', serif;
+  font-family: 'Beaufort', 'Cinzel', 'Geist Sans', serif;
 }
 
 /* Beaufort utility classes — LoL typography system */
 .lol-label {
-  font-family: 'Beaufort for LOL', 'Beaufort', serif;
+  font-family: 'Beaufort for LOL', 'Beaufort', 'Cinzel', serif;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-weight: 400;
 }
 
 .lol-title {
-  font-family: 'Beaufort for LOL', 'Beaufort', serif;
+  font-family: 'Beaufort for LOL', 'Beaufort', 'Cinzel', serif;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
 }
 
 .lol-subtitle {
-  font-family: 'Beaufort', 'Geist Sans', serif;
+  font-family: 'Beaufort', 'Cinzel', 'Geist Sans', serif;
   font-weight: 400;
   letter-spacing: 0.05em;
   font-size: 0.8rem;
