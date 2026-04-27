@@ -310,7 +310,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
             style={{ border: '1px solid rgba(200,170,110,0.25)' }}
           >
             <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #c8aa6e, transparent)' }} />
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Zap className="w-4 h-4 text-[#c8aa6e]" />
                 <span className="lol-label text-xs font-bold text-[#c8aa6e] uppercase tracking-wider">Meta Impact</span>
@@ -365,7 +365,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
       })()}
 
       {/* ===== Patch Timeline ===== */}
-      <div className="glass-card rounded-xl p-5" style={{ border: '1px solid rgba(200,170,110,0.2)' }}>
+      <div className="glass-card rounded-xl p-3 sm:p-5" style={{ border: '1px solid rgba(200,170,110,0.2)' }}>
         <div className="flex items-center gap-2 mb-4">
           <Clock className="w-4 h-4 text-[#c8aa6e]" />
           <h3 className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Línea de Tiempo</h3>
@@ -565,7 +565,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
 
                 {/* Meta Direction */}
                 {metaDirection && metaDirection.length > 0 && (
-                  <div className="mt-4 rounded-xl p-4" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.15)' }}>
+                  <div className="mt-4 rounded-xl p-3 sm:p-4" style={{ background: 'rgba(240,198,70,0.04)', border: '1px solid rgba(240,198,70,0.15)' }}>
                     <div className="flex items-center gap-2 mb-2.5">
                       <Compass className="w-4 h-4 text-[#f0c646]" />
                       <h5 className="lol-label text-sm font-semibold text-[#f0c646] uppercase tracking-wider">
@@ -657,7 +657,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="glass-card rounded-xl p-5 border border-[#785a28]/25 hover:border-[#c8aa6e]/20 transition-all duration-300"
+              className="glass-card rounded-xl p-3 sm:p-5 border border-[#785a28]/25 hover:border-[#c8aa6e]/20 transition-all duration-300"
             >
               <div className="flex items-start gap-3 mb-4">
                 <div className="flex items-center gap-2 shrink-0">
@@ -800,7 +800,7 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
               )}
 
               {patch.digest && (
-                <div className="rounded-lg p-4 border border-[#0acbe6]/15 bg-[#0acbe6]/5">
+                <div className="rounded-lg p-3 sm:p-4 border border-[#0acbe6]/15 bg-[#0acbe6]/5">
                   <div className="flex items-center gap-2 mb-2">
                     <Brain className="w-4 h-4 text-[#0acbe6]" />
                     <h4 className="lol-label text-xs font-semibold text-[#0acbe6]">Análisis IA</h4>
