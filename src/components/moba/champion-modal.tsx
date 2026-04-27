@@ -1043,9 +1043,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
             );
             })()}
 
-            {/* AI Analysis */}
-            {champion.aiAnalysis && (
-                          {/* Counter Strategies */}
+            {/* Counter Strategies */}
             {(() => {
               const counterStrats = getCounterStrategies(champion);
               if (counterStrats.length === 0) return null;
@@ -1070,7 +1068,9 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
               );
             })()}
 
-            <CollapsibleSection title="Análisis" icon={Sparkles} color="#c8aa6e" defaultOpen={false}>
+            {/* AI Analysis */}
+            {champion.aiAnalysis && (
+              <CollapsibleSection title="Análisis" icon={Sparkles} color="#c8aa6e" defaultOpen={false}>
                 <div className="rounded-lg p-4" style={{ background: 'rgba(200,170,110,0.05)', border: '1px solid rgba(200,170,110,0.15)' }}>
                   <p className="text-[11px] text-[#a09b8c] leading-relaxed whitespace-pre-wrap">{champion.aiAnalysis}</p>
                 </div>
