@@ -896,7 +896,7 @@ export function TierListTab({
           </div>
           <div className="overflow-x-auto">
             <div className="glass-card rounded-xl overflow-hidden">
-              <div className="grid grid-cols-[2rem_1fr_3.5rem_3.5rem_3.5rem_3.5rem] gap-2 px-3 py-2 lol-label text-[8px] text-[#5b5a56]" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
+              <div className="grid grid-cols-[3rem_1fr_3.5rem_3.5rem_3.5rem_3.5rem] gap-2 px-3 py-2 lol-label text-[8px] text-[#5b5a56]" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
                 <div />
                 <div>Campeón</div>
                 <div>Rol</div>
@@ -905,22 +905,33 @@ export function TierListTab({
                 <div className="text-right">WR%</div>
               </div>
               <div className="divide-y divide-[#785a28]/10">
-                {(proRegionFilter ? proPicks.filter(p => p.region === proRegionFilter) : proPicks).map((pick, idx) => (
+                {(proRegionFilter ? proPicks.filter(p => p.region === proRegionFilter) : proPicks).map((pick, idx) => {
+                  const isRotoPro = pick.winRate >= 54;
+                  return (
                   <motion.div
                     key={pick.id}
                     initial={{ opacity: 0, x: -5 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.02 }}
-                    className="flex items-center gap-2 px-3 py-2 hover:bg-[#1e2328]/40 transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2.5 hover:bg-[#1e2328]/40 transition-colors"
                   >
-                    <TinyChampionIcon name={pick.champion} />
-                    <span className="text-sm font-medium text-[#f0e6d2] flex-1 truncate">{pick.champion}</span>
+                    <div className="relative">
+                      <ChampionIcon name={pick.champion} tier="A" />
+                      {isRotoPro && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-black z-10"
+                          style={{ background: '#e84057', color: '#fff', boxShadow: '0 0 6px rgba(232,64,87,0.5)' }}>
+                          🔥
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-sm font-semibold text-[#f0e6d2] flex-1 truncate">{pick.champion}</span>
                     <div className="w-14 shrink-0"><RoleBadge role={pick.role} /></div>
                     <span className="text-[11px] font-mono font-semibold text-[#0acbe6] w-12 text-right">{pick.pickRate}%</span>
                     <span className="text-[11px] font-mono font-semibold w-12 text-right" style={{ color: pick.banRate > 10 ? '#e84057' : '#a09b8c' }}>{pick.banRate}%</span>
-                    <span className="text-[11px] font-mono font-semibold w-12 text-right" style={{ color: pick.winRate >= 54 ? '#0acbe6' : pick.winRate >= 50 ? '#a09b8c' : '#e84057' }}>{pick.winRate}%</span>
+                    <span className="text-[11px] font-mono font-semibold w-12 text-right" style={{ color: pick.winRate >= 54 ? '#0fba81' : pick.winRate >= 50 ? '#a09b8c' : '#e84057' }}>{pick.winRate}%</span>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -1194,12 +1205,23 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                           border: `2px solid ${cfg.color}40`,
                           borderLeft: `4px solid ${roleColor}`,
                           boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
-                          background: 'rgba(20,25,32,0.8)',
                         }}
                         onClick={() => onChampionClick(champ)}
                         whileHover={{ scale: 1.03, y: -4 }}
                         whileTap={{ scale: 0.97 }}
                       >
+                        {/* Subtle splash art background */}
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            backgroundImage: `url(${getChampionSplashUrl(champ.name)})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center center',
+                            filter: 'brightness(0.25) saturate(1.1)',
+                          }}
+                        >
+                          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(10,14,26,0.7) 0%, rgba(10,14,26,0.85) 50%, rgba(10,14,26,0.95) 100%)' }} />
+                        </div>
                         <div className="absolute top-0 left-0 right-0 h-[3px] z-10" style={{ background: tierTopGradient[tier] || 'transparent' }} />
                         <div className="absolute bottom-0 left-0 right-0 h-[2px] z-10 opacity-60" style={{ background: roleColor }} />
                         {(isBroken || isRoto || isAltoBan) && (
@@ -1224,7 +1246,7 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                             )}
                           </div>
                         )}
-                        <div className="p-3">
+                        <div className="p-3 relative z-10">
                           <div className="flex items-start gap-2.5 mb-2">
                             {/* Circular champion portrait with tier glow */}
                             <div className="relative shrink-0">
