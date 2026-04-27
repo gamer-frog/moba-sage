@@ -168,8 +168,8 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
           )}
         </div>
 
-        {/* Keyboard shortcut hints */}
-        <div className="mt-2 pt-2 border-t border-[#785a28]/8 space-y-1">
+        {/* Keyboard shortcut hints — desktop only */}
+        <div className="mt-2 pt-2 border-t border-[#785a28]/8 space-y-1 hidden lg:block">
           <p className="text-[9px] text-[#5b5a56]/60 flex items-center gap-1.5">
             <span className="inline-flex px-1 py-0.5 rounded text-[8px] font-mono" style={{ background: 'rgba(30,35,40,0.6)', border: '1px solid rgba(120,90,40,0.15)' }}>Ctrl+K</span>
             Buscar campeón

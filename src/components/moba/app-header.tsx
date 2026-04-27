@@ -199,7 +199,7 @@ export function AppHeader({
           {selectedGame && (
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('moba-sage-open-search'))}
-              className="flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 hover:bg-[#1e2328]/40"
+              className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 hover:bg-[#1e2328]/40"
               style={{ color: '#a09b8c' }}
               aria-label="Buscar campeón (Ctrl+K)"
               title="Buscar campeón (Ctrl+K)"
@@ -213,7 +213,7 @@ export function AppHeader({
             <button
               ref={bellRef}
               onClick={() => setNotifOpen(prev => !prev)}
-              className="relative flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200"
+              className="relative flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200"
               style={{
                 color: hasNotifs ? '#c8aa6e' : '#a09b8c',
                 filter: hasNotifs ? 'drop-shadow(0 0 6px rgba(200,170,110,0.4))' : 'none',
@@ -224,7 +224,7 @@ export function AppHeader({
             >
               <Bell className="w-4 h-4" fill={hasNotifs ? '#c8aa6e' : 'none'} />
               {hasNotifs && (
-                <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full text-[9px] font-bold"
+                <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[9px] font-bold"
                   style={{ backgroundColor: '#e84057', color: '#fff', boxShadow: '0 0 6px rgba(232,64,87,0.5)' }}>
                   {notifCount}
                 </span>
@@ -240,7 +240,7 @@ export function AppHeader({
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -5 }}
                   transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                  className="absolute right-0 top-full mt-2 w-80 rounded-xl overflow-hidden z-50"
+                  className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-xl overflow-hidden z-50"
                   style={{
                     background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
                     border: '1px solid rgba(200,170,110,0.25)',

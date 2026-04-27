@@ -491,7 +491,7 @@ export function BrokenStuffTab({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="shrink-0 w-full sm:w-[180px] h-[220px] rounded-xl overflow-hidden relative group"
+                  className="shrink-0 w-[160px] sm:w-[180px] h-[220px] rounded-xl overflow-hidden relative group"
                   style={{ border: `2px solid rgba(200,170,110,0.3)`, boxShadow: '0 0 20px rgba(200,170,110,0.1)' }}
                 >
                   {/* Splash background */}

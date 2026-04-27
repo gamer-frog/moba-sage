@@ -239,12 +239,12 @@ export function TierListTab({
         >
           {/* Header row */}
           <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid rgba(200,170,110,0.1)' }}>
-            <div className="flex items-center gap-2">
-              <Database className="w-4 h-4 text-[#c8aa6e]" />
-              <span className="lol-label text-xs font-bold text-[#c8aa6e] uppercase tracking-wider">Fuentes de Datos</span>
-              <span className="text-[9px] text-[#5b5a56]">· {dataSources.length} fuentes activas</span>
+            <div className="flex items-center gap-2 min-w-0">
+              <Database className="w-4 h-4 text-[#c8aa6e] shrink-0" />
+              <span className="lol-label text-xs font-bold text-[#c8aa6e] uppercase tracking-wider truncate">Fuentes de Datos</span>
+              <span className="text-[9px] text-[#5b5a56] hidden sm:inline">· {dataSources.length} fuentes activas</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <span className="text-[10px] font-mono text-[#a09b8c]">{versionData?.gamePatch || '26.9'}</span>
               <span
                 className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold"
@@ -560,7 +560,7 @@ export function TierListTab({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card rounded-xl p-4 space-y-3"
+          className="glass-card rounded-xl p-3 sm:p-4 space-y-3 overflow-hidden"
           style={{ border: '1px solid rgba(200,170,110,0.15)' }}
         >
           <div className="flex items-center justify-between">
@@ -629,7 +629,7 @@ export function TierListTab({
                         <div className="flex items-center gap-1.5 shrink-0">
                           <RoleBadge role={mover.role} />
                           <span
-                            className="text-[11px] font-mono font-black px-1.5 py-0.5 rounded"
+                            className="text-[11px] font-mono font-black px-1.5 py-0.5 rounded hidden sm:inline-flex"
                             style={{
                               color: barColor,
                               background: `${barColor}12`,
@@ -676,7 +676,7 @@ export function TierListTab({
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="pl-14 pr-2 pt-1 pb-2">
+                        <div className="pl-10 sm:pl-14 pr-2 pt-1 pb-2">
                           <WeeklyWRChart championName={mover.name} currentWR={mover.currentWR} />
                         </div>
                       </motion.div>
@@ -702,7 +702,7 @@ export function TierListTab({
             <span className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">Meta Overview</span>
             <span className="ml-auto text-[9px] text-[#5b5a56]">{gameChampions.length} campeones</span>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <StatCard
               label="Total Campeones"
               value={`${gameChampions.length}`}
@@ -845,7 +845,7 @@ export function TierListTab({
               <button
                 key={r.value || 'all'}
                 onClick={() => onProRegionFilterChange(r.value)}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-200
+                className={`px-3 py-2 rounded-md text-[11px] font-medium transition-all duration-200 min-h-[36px] sm:min-h-[40px]
                   ${proRegionFilter === r.value
                     ? 'bg-[#f0c646]/15 text-[#f0c646] border border-[#f0c646]/30'
                     : 'text-[#5b5a56] hover:text-[#a09b8c] hover:bg-[#1e2328]/40 border border-transparent'

@@ -77,7 +77,7 @@ export function GameSelectorLanding({ onSelectGame }: { onSelectGame: (game: Gam
 
   return (
     <motion.div
-      className="min-h-[calc(100vh-57px)] flex flex-col items-center justify-center px-4 py-12 relative"
+      className="min-h-[calc(100vh-57px)] flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden max-w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.97 }}
