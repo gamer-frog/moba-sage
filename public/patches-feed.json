@@ -8,14 +8,47 @@
     "date": "2026-04-29",
     "sourceGame": "lol",
     "changes": {
-      "newRunes": ["Deathfire Touch", "Stormraider's Surge"],
-      "removedRunes": ["Phase Rush"],
-      "reworkedItems": ["Statikk Shiv", "Dusk and Dawn", "Hail of Blades"],
-      "newItems": ["Doran's Bow", "Doran's Helm", "Gluttonous Greaves", "Immortal Path"],
-      "removedItems": ["Trailblazer", "Opportunity"],
-      "buffs": ["Gragas W", "Tahm Kench", "Taliyah", "Warwick"],
-      "nerfs": ["Ambessa (cast time ult)", "Briar (HP growth)"],
-      "adjustments": ["Zeri (passive/Q/W/E/R)", "Shyvana", "Ezreal (AP build)", "Kennen (on-hit)", "Teemo", "Udyr", "Xin Zhao"]
+      "newRunes": [
+        "Deathfire Touch",
+        "Stormraider's Surge"
+      ],
+      "removedRunes": [
+        "Phase Rush"
+      ],
+      "reworkedItems": [
+        "Statikk Shiv",
+        "Dusk and Dawn",
+        "Hail of Blades"
+      ],
+      "newItems": [
+        "Doran's Bow",
+        "Doran's Helm",
+        "Gluttonous Greaves",
+        "Immortal Path"
+      ],
+      "removedItems": [
+        "Trailblazer",
+        "Opportunity"
+      ],
+      "buffs": [
+        "Gragas W",
+        "Tahm Kench",
+        "Taliyah",
+        "Warwick"
+      ],
+      "nerfs": [
+        "Ambessa (cast time ult)",
+        "Briar (HP growth)"
+      ],
+      "adjustments": [
+        "Zeri (passive/Q/W/E/R)",
+        "Shyvana",
+        "Ezreal (AP build)",
+        "Kennen (on-hit)",
+        "Teemo",
+        "Udyr",
+        "Xin Zhao"
+      ]
     },
     "highlights": [
       "DFT top: Karthus (BROKEN), Brand, Malzahar, Teemo",
@@ -35,14 +68,109 @@
     "date": "2026-04-01",
     "sourceGame": "lol",
     "changes": {
-      "nerfs": ["Mel", "Ambessa"],
-      "buffs": ["K'Sante", "Syndra"],
-      "newChampions": ["Zaahen"]
+      "nerfs": [
+        "Mel",
+        "Ambessa"
+      ],
+      "buffs": [
+        "K'Sante",
+        "Syndra"
+      ],
+      "newChampions": [
+        "Zaahen"
+      ]
     },
     "highlights": [
       "AP Bot Lane: Karthus 55.1%, Hwei +4.2pp",
       "K'Sante back in top meta",
       "Sion Mid 54.6%, Garen Mid 54.7%"
+    ]
+  },
+  {
+    "id": "patch-26-7",
+    "version": "26.7",
+    "title": "Dawn of Heroes — Pre-Season Adjustments",
+    "summary": "Ajustes pretemporada. Assassin itemización revisada. Tank jungle recibe buffs. ADC crit build reworked. Nuevas runas experimentales. Camille y Jinx dominan el meta con WR > 53%.",
+    "digest": "Camille buff a E shield ratio. Jinx Q attack speed buff. Ornn item upgrade CD reducido. Ekko jungle clear mejorado. Zyra E root duration nerf. Lulu W cooldown ajustado. Blitzcrank Q speed aumentado. Nautilus R cooldown reducido. Doran's Blade AD reducido. Long Sword precio ajustado.",
+    "date": "2026-04-15",
+    "sourceGame": "lol",
+    "changes": {
+      "newRunes": [
+        "First Strike (revamp)"
+      ],
+      "removedRunes": [],
+      "reworkedItems": [],
+      "newItems": [
+        "Dawnstone (support mythic)"
+      ],
+      "removedItems": [],
+      "buffs": [
+        "Camille E",
+        "Jinx Q",
+        "Ornn upgrades",
+        "Ekko E",
+        "Blitzcrank Q",
+        "Nautilus R"
+      ],
+      "nerfs": [
+        "Zyra E",
+        "Lulu W",
+        "Doran's Blade",
+        "Long Sword"
+      ],
+      "adjustments": [
+        "Master Yi (meditation)",
+        "Darius (passive)",
+        "Thresh (Q cooldown)",
+        "Morgana E",
+        "Ashe W"
+      ]
+    },
+    "highlights": [
+      "Camille 54.1% WR — best top laner",
+      "Jinx 53.8% WR — ADC dominante",
+      "Support meta shift: engage > poke",
+      "Tank jungle viable de nuevo"
+    ]
+  },
+  {
+    "id": "patch-26-6",
+    "version": "26.6",
+    "title": "Rift Stability — Balance Pass",
+    "summary": "Parche de estabilidad. Múltiples ajustes de balance a campeones populares. AP junglers reciben atención. ADC items ajustados. Support items reworked parcialmente. Zaahen announced.",
+    "digest": "Katarina Q damage ajustado. Diana R shield buff. Malphite W CD reducido. Nocturne R speed buff. Ahri E charm duration nerf. Ezreal Q mana cost reducido. Vayne R cooldown ajustado. Caitlyn headshot ratio nerf.",
+    "date": "2026-04-01",
+    "sourceGame": "lol",
+    "changes": {
+      "newRunes": [],
+      "removedRunes": [],
+      "reworkedItems": [],
+      "newItems": [],
+      "removedItems": [],
+      "buffs": [
+        "Katarina Q",
+        "Diana R",
+        "Malphite W",
+        "Nocturne R",
+        "Ezreal Q"
+      ],
+      "nerfs": [
+        "Ahri E",
+        "Vayne R",
+        "Caitlyn passive"
+      ],
+      "adjustments": [
+        "Orianna Q",
+        "Syndra E",
+        "Varus Q",
+        "Jhin W"
+      ]
+    },
+    "highlights": [
+      "Katarina sube a S-tier con WR 53.2%",
+      "Diana jungle viable",
+      "ADC meta shift: Varus > Jinx temporalmente",
+      "Zaahen announced for 26.9"
     ]
   },
   {
@@ -54,8 +182,13 @@
     "date": "2026-04-15",
     "sourceGame": "wildrift",
     "changes": {
-      "buffs": ["ARAM speed"],
-      "meta": ["Jhin + MF ADC", "Vayne Top"]
+      "buffs": [
+        "ARAM speed"
+      ],
+      "meta": [
+        "Jhin + MF ADC",
+        "Vayne Top"
+      ]
     },
     "highlights": [
       "Jhin + MF best ADC duo WR 7.1c",
