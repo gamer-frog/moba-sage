@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-27T03:00:00Z",
+  "lastUpdated": "2026-04-27T05:53:08.090836+00:00",
   "currentPatch": "26.9",
   "nextPatch": "26.10 PBE",
   "patchDate": "2026-05-06",
@@ -104,16 +104,91 @@
   ],
   "itemImpact": {
     "winners": [
-      "Jak'Sho se beneficia del meta prolongado de teamfights",
-      "Black Cleaver más relevante por meta de bruisers en top",
-      "Filo de la Noche sigue siendo staple de assassins",
-      "Rabadón buff indirecto para mages de burst"
+      "Rabadon's Deathcap",
+      "Jak'Sho, The Protean",
+      "Lich Bane",
+      "Horizon Focus",
+      "Eclipse"
     ],
     "losers": [
-      "Nerfs a omni-vamp golpean a builds de assassins",
-      "Trailblazer removido — junglers de clear rápido pierden herramienta",
-      "Item nerfs afectan directamente a Mordekaiser"
+      "Kraken Slayer",
+      "Sundered Sky",
+      "Dead Man's Plate",
+      "Hullbreaker",
+      "Turbo Chemtank"
     ]
   },
-  "summary": "Patch 26.9 consolidó a Zaahen y Katarina como los campeones más dominantes del meta. Malphite y Aurelion Sol se mantienen como picks S-tier con kits muy fuertes para el meta actual. Mordekaiser recibió los nerfs más duros, cayendo a B-tier con WR 45.2%. La tendencia general es hacia un meta de bruisers/tanks en top lane, con mages de burst dominando mid y hypercarries en ADC."
+  "summary": "Patch 26.9 trae a Zaahen como nuevo campeón rompiendo top lane. Nerfs significativos a Mordekaiser, Briar y Ambessa. Buffs a Viktor y Camille. Meta shift hacia hypercarries ADC y enchanters support. Items de omni-vamp nerfeados afectan assassins.",
+  "patchChanges": [
+    {
+      "name": "Zaahen",
+      "changeType": "new",
+      "description": "Nuevo campeón — combo de daño alto en top lane. Build versátil bruiser/tank.",
+      "tierBefore": null,
+      "tierAfter": "S"
+    },
+    {
+      "name": "Viktor",
+      "changeType": "buff",
+      "description": "Q damage aumentado 10%. Mejor waveclear y trade en lane.",
+      "tierBefore": "A",
+      "tierAfter": "S"
+    },
+    {
+      "name": "Mordekaiser",
+      "changeType": "nerf",
+      "description": "Nerf a Demonio + Jak'Sho. Sustain reducido 15%. WR cayó a 45.2%.",
+      "tierBefore": "A",
+      "tierAfter": "B"
+    },
+    {
+      "name": "Briar",
+      "changeType": "nerf",
+      "description": "R sustain reducido. Menos tiempo invulnerable en ultimate.",
+      "tierBefore": "S",
+      "tierAfter": "A"
+    },
+    {
+      "name": "Ambessa",
+      "changeType": "nerf",
+      "description": "Burst damage reducido 8%. Shield reducido. Fuera de meta competitivo.",
+      "tierBefore": "A",
+      "tierAfter": "B"
+    },
+    {
+      "name": "Kha'Zix",
+      "changeType": "nerf",
+      "description": "Base damage Q reducido. Menos one-shot potential en early game.",
+      "tierBefore": "A",
+      "tierAfter": "B"
+    },
+    {
+      "name": "Camille",
+      "changeType": "buff",
+      "description": "Stabilize buff — E cooldown reducido. Subiendo lentamente en tier.",
+      "tierBefore": "B",
+      "tierAfter": "A"
+    },
+    {
+      "name": "Nami",
+      "changeType": "adjustment",
+      "description": "Heal amplificado con items de support. Meta enchanter le favorece.",
+      "tierBefore": "A",
+      "tierAfter": "S"
+    },
+    {
+      "name": "Zeri",
+      "changeType": "buff",
+      "description": "ADC crit buffs. Mejor scaling en late game. Subiendo en pick rate.",
+      "tierBefore": "B",
+      "tierAfter": "A"
+    },
+    {
+      "name": "Nasus",
+      "changeType": "adjustment",
+      "description": "Ghost interaction mejorado. Split push meta le favorece enormemente.",
+      "tierBefore": "A",
+      "tierAfter": "A"
+    }
+  ]
 }
