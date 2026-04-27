@@ -285,7 +285,8 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-start gap-2.5"
+                className="flex items-start gap-2.5 p-2 rounded-lg"
+                style={{ background: 'rgba(15,186,129,0.04)', borderLeft: '2px solid #0fba81' }}
               >
                 <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0" style={{ border: '1.5px solid #0fba8180' }}>
                   <TinyChampionIcon name={champ.name} />
@@ -294,6 +295,7 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-semibold text-[#f0e6d2]">{champ.name}</span>
                     <TierBadge tier={champ.tier} />
+                    <span className="ml-auto text-[8px] px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(15,186,129,0.15)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.3)' }}>BUFFED</span>
                   </div>
                   <p className="text-[10px] text-[#a09b8c] leading-snug mt-0.5">{champ.reason}</p>
                 </div>
@@ -315,7 +317,8 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 + 0.15 }}
-                className="flex items-start gap-2.5"
+                className="flex items-start gap-2.5 p-2 rounded-lg"
+                style={{ background: 'rgba(232,64,87,0.04)', borderLeft: '2px solid #e84057' }}
               >
                 <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0" style={{ border: '1.5px solid #e8405780' }}>
                   <TinyChampionIcon name={champ.name} />
@@ -324,6 +327,7 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-semibold text-[#f0e6d2]">{champ.name}</span>
                     <TierBadge tier={champ.tier} />
+                    <span className="ml-auto text-[8px] px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(232,64,87,0.15)', color: '#e84057', border: '1px solid rgba(232,64,87,0.3)' }}>NERFED</span>
                   </div>
                   <p className="text-[10px] text-[#a09b8c] leading-snug mt-0.5">{champ.reason}</p>
                 </div>
@@ -386,7 +390,7 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
               transition={{ delay: i * 0.03 }}
               className="flex items-start gap-2"
             >
-              <div className="w-1 h-1 rounded-full bg-[#f0c646]/60 shrink-0 mt-1.5" />
+              <div className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: '#f0c646', boxShadow: '0 0 4px rgba(240,198,70,0.4)' }} />
               <span className="text-[11px] text-[#a09b8c] leading-snug">{change}</span>
             </motion.div>
           ))}
@@ -669,7 +673,7 @@ export function BrokenStuffTab({
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.2, delay: i * 0.04 }}
                           className="glass-card rounded-xl p-4 border-l-4 hover:border-[#e84057]/40 transition-colors"
-                          style={{ borderLeftColor: '#e84057' }}
+                          style={{ borderLeftColor: '#e84057', background: 'linear-gradient(135deg, rgba(232,64,87,0.03), rgba(30,35,40,0.5))' }}
                         >
                           <div className="flex items-start gap-3">
                             <div className="flex-1 min-w-0">
@@ -733,7 +737,7 @@ export function BrokenStuffTab({
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.2, delay: i * 0.04 }}
                           className="glass-card rounded-xl p-4 border-l-4 hover:border-[#0acbe6]/40 transition-colors"
-                          style={{ borderLeftColor: '#0acbe6' }}
+                          style={{ borderLeftColor: '#0acbe6', background: 'linear-gradient(135deg, rgba(10,203,230,0.03), rgba(30,35,40,0.5))' }}
                         >
                           <div className="flex items-start gap-3">
                             <div className="flex-1 min-w-0">
