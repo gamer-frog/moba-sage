@@ -462,7 +462,7 @@ export default function Home() {
       {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
 
       {/* Content — offset for sidebar on desktop, bottom nav on mobile */}
-      <main className={`flex-1 w-full px-4 py-6 transition-all duration-300 ${selectedGame ? 'lg:ml-[220px] pb-24 lg:pb-6' : ''}`}>
+      <main className={`flex-1 w-full px-3 sm:px-4 py-4 sm:py-6 transition-all duration-300 overflow-x-hidden ${selectedGame ? 'lg:ml-[220px] pb-24 lg:pb-6' : ''}`}>
         <div className={selectedGame ? 'max-w-6xl mx-auto' : ''}>
           <AnimatePresence mode="popLayout">
             {!selectedGame ? (
