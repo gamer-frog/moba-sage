@@ -232,7 +232,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
 
                   {/* WARDING */}
                   {section.id === 'warding' && wardingTips.map((tip, i) => {
-                    const wColor = 'color' in tip ? tip.color : '#c8aa6e';
+                    const wColor = ('color' in tip ? tip.color : '#c8aa6e') as string;
                     return (
                     <motion.div
                       key={i}
