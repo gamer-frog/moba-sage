@@ -12,7 +12,7 @@ import { ROLE_CONFIG, TIER_CONFIG, TOURNAMENT_REGIONS } from '../constants';
 import { TinyChampionIcon } from '../champion-icon';
 import { ChampionCard } from '../champion-card';
 import { ItemIcon } from '../item-icon';
-import { parseBuildItems, getChampionImageUrl } from '../helpers';
+import { parseBuildItems, getChampionImageUrl, getChampionSplashUrl } from '../helpers';
 import { WeeklyWRChart } from '../weekly-wr-chart';
 import type { Champion, GameSelection, ProPick } from '../types';
 
@@ -975,6 +975,7 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
         if (tierChamps.length === 0) return null;
         const cfg = TIER_CONFIG[tier];
         const isSTier = tier === 'S';
+        const isATier = tier === 'A';
         return (
           <div key={tier}>
             <div className="flex items-center gap-3 mb-3">
@@ -983,71 +984,65 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
               <span className="text-xs text-[#5b5a56]">{tierChamps.length} campeones</span>
               <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${cfg.color}30, transparent)` }} />
             </div>
-            <div className={isSTier
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
-              : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3'
-            }>
-              {tierChamps.map((champ, idx) => {
-                const roleCfg = ROLE_CONFIG[champ.role];
-                const roleColor = roleCfg?.color || '#5b5a56';
-                const isBroken = champ.winRate > 52 && champ.banRate > 4;
-                const isRoto = champ.winRate > 52 && !isBroken;
-                const isAltoBan = champ.banRate > 4 && !isBroken;
-                return (
-                  <motion.div
-                    key={champ.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2, delay: idx * 0.02 }}
-                    className={isSTier ? 'sm:col-span-1' : ''}
-                  >
+            {/* S-TIER: Hero cards with splash art background + champion portrait */}
+            {isSTier ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {tierChamps.map((champ, idx) => {
+                  const roleCfg = ROLE_CONFIG[champ.role];
+                  const roleColor = roleCfg?.color || '#5b5a56';
+                  const isBroken = champ.winRate > 52 && champ.banRate > 4;
+                  const isRoto = champ.winRate > 52 && !isBroken;
+                  const isAltoBan = champ.banRate > 4 && !isBroken;
+                  return (
                     <motion.div
-                      className="relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 group"
-                      style={{
-                        border: `2px solid ${cfg.color}40`,
-                        borderLeft: `4px solid ${roleColor}`,
-                        boxShadow: isSTier
-                          ? `0 4px 24px rgba(0,0,0,0.5), 0 0 20px ${cfg.color}15, inset 0 0 30px rgba(200,170,110,0.03)`
-                          : `0 4px 16px rgba(0,0,0,0.4)`,
-                        background: isSTier
-                          ? `linear-gradient(135deg, rgba(200,170,110,0.06), rgba(10,14,26,0.8))`
-                          : 'rgba(20,25,32,0.8)',
-                      }}
-                      onClick={() => onChampionClick(champ)}
-                      whileHover={{ scale: 1.03, y: -4 }}
-                      whileTap={{ scale: 0.97 }}
+                      key={champ.id}
+                      layout
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.3, delay: idx * 0.04 }}
                     >
-                      {/* Tier gradient top border */}
-                      <div className="absolute top-0 left-0 right-0 h-[3px] z-10" style={{ background: tierTopGradient[tier] || 'transparent' }} />
-
-                      {/* Role-colored bottom accent line */}
-                      <div className="absolute bottom-0 left-0 right-0 h-[2px] z-10 opacity-60" style={{ background: roleColor }} />
-
-                      {/* S-tier shimmer effect */}
-                      {isSTier && (
-                        <>
-                          <div className="absolute inset-0 pointer-events-none"
-                            style={{ boxShadow: 'inset 0 0 40px rgba(200,170,110,0.08)' }} />
-                          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                            <motion.div
-                              className="absolute -inset-full"
-                              style={{ background: 'linear-gradient(90deg, transparent, rgba(200,170,110,0.06), transparent)' }}
-                              animate={{ x: ['-100%', '200%'] }}
-                              transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay: idx * 0.5 }}
-                            />
-                          </div>
-                        </>
-                      )}
-
-                      {/* Broken indicator badges */}
-                      {(isBroken || isRoto || isAltoBan) && (
-                        <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
+                      <motion.div
+                        className="relative rounded-xl overflow-hidden cursor-pointer group"
+                        style={{
+                          minHeight: '185px',
+                          border: '2px solid rgba(200,170,110,0.3)',
+                          boxShadow: '0 4px 24px rgba(0,0,0,0.5), 0 0 24px rgba(200,170,110,0.1)',
+                        }}
+                        onClick={() => onChampionClick(champ)}
+                        whileHover={{ scale: 1.03, y: -4 }}
+                        whileTap={{ scale: 0.97 }}
+                      >
+                        {/* Splash art background */}
+                        <div className="absolute inset-0">
+                          <Image
+                            src={getChampionSplashUrl(champ.name)}
+                            alt={champ.name}
+                            fill
+                            className="object-cover"
+                            style={{ filter: 'brightness(0.4) saturate(1.2)' }}
+                            loading="lazy"
+                            unoptimized
+                          />
+                          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 10%, rgba(10,14,26,0.5) 40%, rgba(10,14,26,0.95) 75%, rgba(10,14,26,1) 100%)' }} />
+                        </div>
+                        {/* Shimmer */}
+                        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                          <motion.div
+                            className="absolute -inset-full"
+                            style={{ background: 'linear-gradient(90deg, transparent, rgba(200,170,110,0.08), transparent)' }}
+                            animate={{ x: ['-100%', '200%'] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay: idx * 0.5 }}
+                          />
+                        </div>
+                        {/* Tier gradient top border */}
+                        <div className="absolute top-0 left-0 right-0 h-[3px] z-10" style={{ background: tierTopGradient[tier] }} />
+                        {/* Badges */}
+                        <div className="absolute top-2.5 right-2.5 z-20 flex flex-col items-end gap-1">
                           {isBroken && (
                             <motion.span
                               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
-                              style={{ background: 'rgba(232,64,87,0.9)', color: '#fff', boxShadow: '0 0 12px rgba(232,64,87,0.6), 0 0 24px rgba(232,64,87,0.3)', border: '1px solid rgba(255,255,255,0.2)' }}
+                              style={{ background: 'rgba(232,64,87,0.9)', color: '#fff', boxShadow: '0 0 12px rgba(232,64,87,0.6)', border: '1px solid rgba(255,255,255,0.2)' }}
                               animate={{ scale: [1, 1.1, 1] }}
                               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                             >
@@ -1055,141 +1050,288 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                             </motion.span>
                           )}
                           {isRoto && (
-                            <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
-                              style={{ background: 'rgba(232,64,87,0.85)', color: '#fff', boxShadow: '0 0 10px rgba(232,64,87,0.5)', border: '1px solid rgba(232,64,87,0.3)' }}
-                            >
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
+                              style={{ background: 'rgba(232,64,87,0.85)', color: '#fff', boxShadow: '0 0 10px rgba(232,64,87,0.5)', border: '1px solid rgba(232,64,87,0.3)' }}>
                               {'🔥 Roto'}
                             </span>
                           )}
                           {isAltoBan && (
-                            <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
-                              style={{ background: 'rgba(240,198,70,0.85)', color: '#0a0e1a', boxShadow: '0 0 10px rgba(240,198,70,0.4)', border: '1px solid rgba(240,198,70,0.3)' }}
-                            >
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black"
+                              style={{ background: 'rgba(240,198,70,0.85)', color: '#0a0e1a', boxShadow: '0 0 10px rgba(240,198,70,0.4)', border: '1px solid rgba(240,198,70,0.3)' }}>
                               {'⚠️ Alto Ban'}
                             </span>
                           )}
                         </div>
-                      )}
-
-                      {/* Splash art + name + build items */}
-                      <div className="p-3">
-                        <div className="flex items-start gap-3 mb-2">
-                          <div className="relative shrink-0 w-16 h-16 rounded-xl overflow-hidden"
-                            style={{ border: `2px solid ${cfg.color}60`, boxShadow: `0 0 12px ${cfg.color}20` }}>
-                            <SplashArtIcon name={champ.name} />
-                            {/* Rank number badge on splash */}
-                            <div
-                              className="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black z-10"
-                              style={{ background: cfg.color, color: '#0a0e1a', border: '1px solid #0a0e1a' }}
-                            >
-                              {idx + 1}
+                        {/* Content overlay */}
+                        <div className="relative z-10 p-4 flex flex-col" style={{ minHeight: '185px' }}>
+                          <div className="flex items-center gap-3 mb-3">
+                            {/* Champion portrait with gold glow */}
+                            <div className="relative shrink-0">
+                              <div
+                                className="w-14 h-14 rounded-full overflow-hidden"
+                                style={{
+                                  border: '3px solid #c8aa6e',
+                                  boxShadow: '0 0 16px rgba(200,170,110,0.4), 0 0 32px rgba(200,170,110,0.15), inset 0 0 6px rgba(200,170,110,0.2)',
+                                }}
+                              >
+                                <Image
+                                  src={getChampionImageUrl(champ.name)}
+                                  alt={champ.name}
+                                  width={56}
+                                  height={56}
+                                  className="w-full h-full object-cover"
+                                  loading="lazy"
+                                  unoptimized
+                                />
+                              </div>
+                              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black z-10"
+                                style={{ background: '#c8aa6e', color: '#0a0e1a', border: '2px solid #0a0e1a', boxShadow: '0 0 8px rgba(200,170,110,0.5)' }}>
+                                {idx + 1}
+                              </div>
+                              {trendMap?.[champ.name] && (
+                                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#0a0e1a] flex items-center justify-center z-10"
+                                  style={{ border: `1.5px solid ${trendMap[champ.name] === 'rising' ? '#0fba81' : '#e84057'}` }}>
+                                  <span className="text-[7px] font-black" style={{ color: trendMap[champ.name] === 'rising' ? '#0fba81' : '#e84057' }}>
+                                    {trendMap[champ.name] === 'rising' ? '↑' : '↓'}
+                                  </span>
+                                </div>
+                              )}
                             </div>
-                            {/* Trend arrow */}
-                            {trendMap?.[champ.name] && (
-                              <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-[#0a0e1a] flex items-center justify-center z-10"
-                                style={{ border: `1.5px solid ${trendMap[champ.name] === 'rising' ? '#0fba81' : '#e84057'}` }}>
-                                <span className="text-[7px] font-black" style={{ color: trendMap[champ.name] === 'rising' ? '#0fba81' : '#e84057' }}>
-                                  {trendMap[champ.name] === 'rising' ? '↑' : '↓'}
-                                </span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1.5 mb-0.5">
+                                <h3 className="text-base font-bold lol-title text-[#f0e6d2] leading-tight truncate"
+                                  style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+                                  {champ.name}
+                                </h3>
+                                <button onClick={e => { e.stopPropagation(); onToggleFavorite(champ.id); }} className="shrink-0 cursor-pointer">
+                                  <Star className="w-3.5 h-3.5 transition-colors"
+                                    style={{ color: favorites.has(champ.id) ? '#f0c646' : '#5b5a56' }}
+                                    fill={favorites.has(champ.id) ? '#f0c646' : 'none'} />
+                                </button>
+                              </div>
+                              <RoleBadge role={champ.role} />
+                            </div>
+                          </div>
+                          {/* Stats */}
+                          <div className="space-y-1.5 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] text-[#785a28] w-7 shrink-0">WR</span>
+                              <div className="flex-1 h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.15)' }}>
+                                <motion.div className="h-full rounded-full"
+                                  style={{ background: `linear-gradient(90deg, ${wrColor(champ.winRate)}60, ${wrColor(champ.winRate)})` }}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min((champ.winRate / 58) * 100, 100)}%` }}
+                                  transition={{ duration: 0.8, ease: 'easeOut' }} />
+                              </div>
+                              <span className="text-xs font-bold font-mono w-10 text-right" style={{ color: wrColor(champ.winRate) }}>{champ.winRate}%</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] text-[#785a28] w-7 shrink-0">Pick</span>
+                              <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.1)' }}>
+                                <motion.div className="h-full rounded-full"
+                                  style={{ background: 'linear-gradient(90deg, rgba(91,138,245,0.3), #5b8af5)' }}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min((champ.pickRate / 30) * 100, 100)}%` }}
+                                  transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} />
+                              </div>
+                              <span className="text-xs font-bold font-mono w-10 text-right text-[#a09b8c]">{champ.pickRate}%</span>
+                            </div>
+                            {champ.banRate > 0 && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] text-[#785a28] w-7 shrink-0">Ban</span>
+                                <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.1)' }}>
+                                  <motion.div className="h-full rounded-full"
+                                    style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.3), #e84057)' }}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${Math.min((champ.banRate / 40) * 100, 100)}%` }}
+                                    transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }} />
+                                </div>
+                                <span className="text-xs font-bold font-mono w-10 text-right" style={{ color: champ.banRate > 5 ? '#e84057' : '#a09b8c' }}>{champ.banRate}%</span>
                               </div>
                             )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5 mb-0.5">
-                              <h3 className="text-base font-bold lol-title text-[#f0e6d2] leading-tight truncate"
-                                style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
-                                {champ.name}
-                              </h3>
-                              {/* Favorite */}
-                              <button
-                                onClick={e => { e.stopPropagation(); onToggleFavorite(champ.id); }}
-                                className="shrink-0 cursor-pointer"
-                              >
-                                <Star className="w-3.5 h-3.5 transition-colors"
-                                  style={{ color: favorites.has(champ.id) ? '#f0c646' : '#5b5a56' }}
-                                  fill={favorites.has(champ.id) ? '#f0c646' : 'none'} />
-                              </button>
-                            </div>
-                            <RoleBadge role={champ.role} />
-                          </div>
+                          {/* Build items */}
+                          {(() => {
+                            const buildItems = champ.builds?.[0]?.items ? parseBuildItems(champ.builds[0].items) : [];
+                            if (buildItems.length === 0) return null;
+                            return (
+                              <div className="flex items-center gap-1 mt-2 pt-2" style={{ borderTop: '1px solid rgba(200,170,110,0.15)' }}>
+                                {buildItems.slice(0, 6).map((item, i) => (
+                                  <div key={i} className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <ItemIcon name={item} />
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          })()}
                         </div>
-
-                        {/* Stats bars */}
-                        <div className="space-y-1.5">
-                          {/* Win Rate */}
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-[#785a28] w-8 shrink-0">WR</span>
-                            <div className="flex-1 h-3 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.12)' }}>
-                              <motion.div
-                                className="h-full rounded-full"
-                                style={{ background: `linear-gradient(90deg, ${wrColor(champ.winRate)}60, ${wrColor(champ.winRate)})` }}
-                                initial={{ width: 0 }}
-                                animate={{ width: `${Math.min((champ.winRate / 58) * 100, 100)}%` }}
-                                transition={{ duration: 0.8, ease: 'easeOut' }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold font-mono w-12 text-right" style={{ color: wrColor(champ.winRate) }}>
-                              {champ.winRate}%
-                            </span>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            ) : (
+              /* A and B tiers - Cards with circular champion portraits */
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                {tierChamps.map((champ, idx) => {
+                  const roleCfg = ROLE_CONFIG[champ.role];
+                  const roleColor = roleCfg?.color || '#5b5a56';
+                  const isBroken = champ.winRate > 52 && champ.banRate > 4;
+                  const isRoto = champ.winRate > 52 && !isBroken;
+                  const isAltoBan = champ.banRate > 4 && !isBroken;
+                  const portraitSize = isATier ? 44 : 36;
+                  return (
+                    <motion.div
+                      key={champ.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2, delay: idx * 0.02 }}
+                    >
+                      <motion.div
+                        className="relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 group"
+                        style={{
+                          border: `2px solid ${cfg.color}40`,
+                          borderLeft: `4px solid ${roleColor}`,
+                          boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                          background: 'rgba(20,25,32,0.8)',
+                        }}
+                        onClick={() => onChampionClick(champ)}
+                        whileHover={{ scale: 1.03, y: -4 }}
+                        whileTap={{ scale: 0.97 }}
+                      >
+                        <div className="absolute top-0 left-0 right-0 h-[3px] z-10" style={{ background: tierTopGradient[tier] || 'transparent' }} />
+                        <div className="absolute bottom-0 left-0 right-0 h-[2px] z-10 opacity-60" style={{ background: roleColor }} />
+                        {(isBroken || isRoto || isAltoBan) && (
+                          <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
+                            {isBroken && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black"
+                                style={{ background: 'rgba(232,64,87,0.9)', color: '#fff', boxShadow: '0 0 8px rgba(232,64,87,0.5)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                                {'💀 Broken'}
+                              </span>
+                            )}
+                            {isRoto && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black"
+                                style={{ background: 'rgba(232,64,87,0.85)', color: '#fff', boxShadow: '0 0 8px rgba(232,64,87,0.4)', border: '1px solid rgba(232,64,87,0.3)' }}>
+                                {'🔥 Roto'}
+                              </span>
+                            )}
+                            {isAltoBan && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black"
+                                style={{ background: 'rgba(240,198,70,0.85)', color: '#0a0e1a', boxShadow: '0 0 8px rgba(240,198,70,0.3)', border: '1px solid rgba(240,198,70,0.3)' }}>
+                                {'⚠️ Alto Ban'}
+                              </span>
+                            )}
                           </div>
-                          {/* Pick Rate */}
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-[#785a28] w-8 shrink-0">Pick</span>
-                            <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.08)' }}>
-                              <motion.div
-                                className="h-full rounded-full"
-                                style={{ background: 'linear-gradient(90deg, rgba(91,138,245,0.3), #5b8af5)' }}
-                                initial={{ width: 0 }}
-                                animate={{ width: `${Math.min((champ.pickRate / 30) * 100, 100)}%` }}
-                                transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold font-mono w-12 text-right text-[#a09b8c]">
-                              {champ.pickRate}%
-                            </span>
-                          </div>
-                          {/* Ban Rate */}
-                          {champ.banRate > 0 && (
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-[#785a28] w-8 shrink-0">Ban</span>
-                              <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.08)' }}>
-                                <motion.div
-                                  className="h-full rounded-full"
-                                  style={{ background: `linear-gradient(90deg, rgba(232,64,87,0.3), #e84057)` }}
-                                  initial={{ width: 0 }}
-                                  animate={{ width: `${Math.min((champ.banRate / 40) * 100, 100)}%` }}
-                                  transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+                        )}
+                        <div className="p-3">
+                          <div className="flex items-start gap-2.5 mb-2">
+                            {/* Circular champion portrait with tier glow */}
+                            <div className="relative shrink-0">
+                              <div
+                                className="rounded-full overflow-hidden"
+                                style={{
+                                  width: portraitSize,
+                                  height: portraitSize,
+                                  border: `2.5px solid ${cfg.color}`,
+                                  boxShadow: `0 0 12px ${cfg.color}40, inset 0 0 4px ${cfg.color}20`,
+                                }}
+                              >
+                                <Image
+                                  src={getChampionImageUrl(champ.name)}
+                                  alt={champ.name}
+                                  width={portraitSize}
+                                  height={portraitSize}
+                                  className="w-full h-full object-cover"
+                                  loading="lazy"
+                                  unoptimized
                                 />
                               </div>
-                              <span className="text-sm font-bold font-mono w-12 text-right" style={{ color: champ.banRate > 5 ? '#e84057' : '#a09b8c' }}>
-                                {champ.banRate}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Build items row */}
-                        {(() => {
-                          const buildItems = champ.builds?.[0]?.items ? parseBuildItems(champ.builds[0].items) : [];
-                          if (buildItems.length === 0) return null;
-                          return (
-                            <div className="flex items-center gap-1 mt-2 pt-2" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
-                              {buildItems.slice(0, 6).map((item, i) => (
-                                <div key={i} className="w-7 h-7">
-                                  <ItemIcon name={item} />
+                              {trendMap?.[champ.name] && (
+                                <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-[#0a0e1a] flex items-center justify-center z-10"
+                                  style={{ border: `1.5px solid ${trendMap[champ.name] === 'rising' ? '#0fba81' : '#e84057'}` }}>
+                                  <span className="text-[7px] font-black" style={{ color: trendMap[champ.name] === 'rising' ? '#0fba81' : '#e84057' }}>
+                                    {trendMap[champ.name] === 'rising' ? '↑' : '↓'}
+                                  </span>
                                 </div>
-                              ))}
+                              )}
                             </div>
-                          );
-                        })()}
-                      </div>
-                  </motion.div>
-                </motion.div>
-                );
-              })}
-            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1 mb-0.5">
+                                <h3 className={`font-bold lol-title text-[#f0e6d2] leading-tight truncate ${isATier ? 'text-sm' : 'text-xs'}`}
+                                  style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+                                  {champ.name}
+                                </h3>
+                                <button onClick={e => { e.stopPropagation(); onToggleFavorite(champ.id); }} className="shrink-0 cursor-pointer">
+                                  <Star className="w-3 h-3 transition-colors"
+                                    style={{ color: favorites.has(champ.id) ? '#f0c646' : '#5b5a56' }}
+                                    fill={favorites.has(champ.id) ? '#f0c646' : 'none'} />
+                                </button>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <RoleBadge role={champ.role} />
+                                <span className="text-[10px] font-bold font-mono" style={{ color: wrColor(champ.winRate) }}>{champ.winRate}%</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[9px] text-[#785a28] w-6 shrink-0">WR</span>
+                              <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.12)' }}>
+                                <motion.div className="h-full rounded-full"
+                                  style={{ background: `linear-gradient(90deg, ${wrColor(champ.winRate)}60, ${wrColor(champ.winRate)})` }}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min((champ.winRate / 58) * 100, 100)}%` }}
+                                  transition={{ duration: 0.8, ease: 'easeOut' }} />
+                              </div>
+                              <span className="text-[10px] font-bold font-mono w-9 text-right" style={{ color: wrColor(champ.winRate) }}>{champ.winRate}%</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[9px] text-[#785a28] w-6 shrink-0">Pick</span>
+                              <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.08)' }}>
+                                <motion.div className="h-full rounded-full"
+                                  style={{ background: 'linear-gradient(90deg, rgba(91,138,245,0.3), #5b8af5)' }}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min((champ.pickRate / 30) * 100, 100)}%` }}
+                                  transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} />
+                              </div>
+                              <span className="text-[10px] font-bold font-mono w-9 text-right text-[#a09b8c]">{champ.pickRate}%</span>
+                            </div>
+                            {champ.banRate > 0 && (
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[9px] text-[#785a28] w-6 shrink-0">Ban</span>
+                                <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.08)' }}>
+                                  <motion.div className="h-full rounded-full"
+                                    style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.3), #e84057)' }}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${Math.min((champ.banRate / 40) * 100, 100)}%` }}
+                                    transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }} />
+                                </div>
+                                <span className="text-[10px] font-bold font-mono w-9 text-right" style={{ color: champ.banRate > 5 ? '#e84057' : '#a09b8c' }}>{champ.banRate}%</span>
+                              </div>
+                            )}
+                          </div>
+                          {(() => {
+                            const buildItems = champ.builds?.[0]?.items ? parseBuildItems(champ.builds[0].items) : [];
+                            if (buildItems.length === 0) return null;
+                            return (
+                              <div className="flex items-center gap-1 mt-2 pt-1.5" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
+                                {buildItems.slice(0, 6).map((item, i) => (
+                                  <div key={i} className="w-5 h-5">
+                                    <ItemIcon name={item} />
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
