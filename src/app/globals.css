@@ -687,6 +687,29 @@ body > * {
   overflow-x: hidden;
 }
 
+/* Global overflow safety — prevent any element from causing horizontal scroll */
+@media (min-width: 1024px) {
+  .lg\:ml-\[220px\] {
+    /* Ensure main content doesn't exceed viewport when sidebar is present */
+  }
+}
+
+/* Prevent images and media from causing overflow */
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Scrollable containers should only scroll vertically unless explicitly allowed */
+.overflow-y-auto {
+  overflow-x: hidden;
+}
+
+/* Ensure all grid/flex children respect container width */
+.grid, .flex {
+  min-width: 0;
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
