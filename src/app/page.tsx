@@ -462,7 +462,7 @@ export default function Home() {
       {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
 
       {/* Content — offset for sidebar on desktop, bottom nav on mobile */}
-      <main className={`flex-1 w-full px-3 sm:px-4 py-4 sm:py-6 transition-all duration-300 overflow-x-hidden ${selectedGame ? 'lg:ml-[220px] pb-24 lg:pb-6' : ''}`}>
+      <main className={`flex-1 w-full px-3 sm:px-4 py-4 sm:py-6 transition-all duration-300 overflow-x-hidden ${selectedGame ? 'lg:ml-[220px] lg:w-[calc(100vw-220px)] pb-24 lg:pb-6' : ''}`}>
         <div className={selectedGame ? 'max-w-6xl mx-auto' : ''}>
           <AnimatePresence mode="popLayout">
             {!selectedGame ? (
@@ -540,7 +540,7 @@ export default function Home() {
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={scrollToTop}
-            className="fixed bottom-20 lg:bottom-8 right-4 w-10 h-10 rounded-full flex items-center justify-center z-30 cursor-pointer"
+            className="fixed bottom-[104px] lg:bottom-8 right-4 w-10 h-10 rounded-full flex items-center justify-center z-30 cursor-pointer"
             style={{
               background: 'linear-gradient(135deg, #c8aa6e, #785a28)',
               boxShadow: '0 0 20px rgba(200,170,110,0.3), 0 4px 12px rgba(0,0,0,0.4)',
