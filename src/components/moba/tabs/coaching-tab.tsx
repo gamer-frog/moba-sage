@@ -369,7 +369,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                   {section.id === 'errores' && (
                     <>
                       {/* Severity legend */}
-                      <div className="flex items-center gap-3 px-1 mb-2">
+                      <div className="flex items-center gap-1.5 sm:gap-3 flex-wrap px-1 mb-2">
                         {Object.entries(severityConfig).map(([key, cfg]) => (
                           <div key={key} className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full" style={{ background: cfg.color }} />

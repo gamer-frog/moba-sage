@@ -108,7 +108,7 @@ function ChampionPatchCard({ change, index }: { change: PatchChampionChange; ind
       title={tooltipText}
     >
       <div
-        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-all duration-200 hover:scale-[1.01]"
+        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-all duration-200 hover:scale-[1.01] flex-wrap gap-y-1.5"
         style={{
           background: `${dir.color}06`,
           border: `1px solid ${dir.color}18`,
@@ -351,7 +351,7 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
           </div>
           
           {/* Legend */}
-          <div className="flex items-center gap-4 mb-3 px-1">
+          <div className="flex items-center gap-2 sm:gap-4 flex-wrap mb-3 px-1">
             <span className="flex items-center gap-1.5 text-[9px] text-[#5b5a56]">
               <span className="w-3 h-1.5 rounded-full inline-block" style={{ background: '#0fba81' }} /> Tier sube
             </span>

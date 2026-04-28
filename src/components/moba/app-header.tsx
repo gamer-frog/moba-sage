@@ -173,13 +173,13 @@ export function AppHeader({
             </motion.div>
           )}
         </button>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 flex-wrap">
           <ThemeToggle />
           {selectedGame === 'lol' && (
-            <Badge variant="outline" className="lol-label text-[10px] border-[#c8aa6e]/30 text-[#c8aa6e]">League of Legends</Badge>
+            <Badge variant="outline" className="lol-label text-[10px] border-[#c8aa6e]/30 text-[#c8aa6e] hidden sm:inline-flex">League of Legends</Badge>
           )}
           {selectedGame === 'wildrift' && (
-            <Badge variant="outline" className="lol-label text-[10px] border-[#0acbe6]/30 text-[#0acbe6]">Wild Rift</Badge>
+            <Badge variant="outline" className="lol-label text-[10px] border-[#0acbe6]/30 text-[#0acbe6] hidden sm:inline-flex">Wild Rift</Badge>
           )}
           <Badge variant="outline" className="lol-label text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? `Patch ${liveVersions.wr || '6.4'}` : `Patch ${liveVersions.gamePatch || liveVersions.lol || '16.8'}`}</Badge>
           {isNewPatch && (
@@ -240,7 +240,7 @@ export function AppHeader({
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -5 }}
                   transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                  className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-xl overflow-hidden z-50"
+                  className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-80 rounded-xl overflow-hidden z-50"
                   style={{
                     background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
                     border: '1px solid rgba(200,170,110,0.25)',

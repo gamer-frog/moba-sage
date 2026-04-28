@@ -152,7 +152,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
                   <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: combo.winRate >= 57 ? 'linear-gradient(90deg, transparent, #0acbe6, transparent)' : 'linear-gradient(90deg, transparent, #e8405780, transparent)' }} />
 
                   {/* Champion portraits row — circular with tier glow */}
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
                     {combo.champions.map((name, i) => (
                       <div key={name} className="flex items-center gap-2">
                         <div

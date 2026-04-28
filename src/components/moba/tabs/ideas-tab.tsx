@@ -219,7 +219,7 @@ function ProgressBar({ data }: { data: { items: Idea[] }[] }) {
     <div className="rounded-lg px-4 py-3" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.15)' }}>
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs text-[#a09b8c] font-medium">Progreso General</span>
-        <div className="flex items-center gap-3 text-[10px]">
+        <div className="flex items-center gap-2 sm:gap-3 text-[10px] flex-wrap">
           <span className="flex items-center gap-1"><Check className="w-3 h-3 text-[#0fba81]" />{totalDone} listas</span>
           <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-[#f0c646]" />{totalPending} pendientes</span>
           <span className="flex items-center gap-1"><X className="w-3 h-3 text-[#5b5a56]" />{totalCancelled} canceladas</span>

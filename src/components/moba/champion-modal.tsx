@@ -576,7 +576,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
         onClick={e => e.stopPropagation()}
       >
         {/* Scrollable content */}
-        <div className="overflow-y-auto flex-1 scrollbar-thin">
+        <div className="overflow-y-auto overflow-x-hidden flex-1 scrollbar-thin">
 
           {/* ===== HERO SECTION — Full Splash Art Card ===== */}
           <div className="relative" style={{ minHeight: '280px' }}>

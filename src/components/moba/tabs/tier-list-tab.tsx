@@ -238,7 +238,7 @@ export function TierListTab({
           style={{ background: 'rgba(200,170,110,0.04)', border: '1px solid rgba(200,170,110,0.15)' }}
         >
           {/* Header row */}
-          <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid rgba(200,170,110,0.1)' }}>
+          <div className="flex items-center justify-between flex-wrap gap-2 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(200,170,110,0.1)' }}>
             <div className="flex items-center gap-2 min-w-0">
               <Database className="w-4 h-4 text-[#c8aa6e] shrink-0" />
               <span className="lol-label text-xs font-bold text-[#c8aa6e] uppercase tracking-wider truncate">Fuentes de Datos</span>
@@ -267,11 +267,11 @@ export function TierListTab({
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-4 py-2 transition-colors hover:bg-[#c8aa6e]/5"
+                  className="flex items-center gap-3 px-4 py-2 transition-colors hover:bg-[#c8aa6e]/5 min-w-0"
                   style={{ borderBottom: i < dataSources.length - 1 ? '1px solid rgba(200,170,110,0.08)' : 'none' }}
                 >
-                  <span className="flex-1 text-sm font-semibold text-[#f0e6d2] truncate">{source.name}</span>
-                  <span className="text-[10px] text-[#5b5a56] font-mono shrink-0">
+                  <span className="flex-1 text-sm font-semibold text-[#f0e6d2] truncate min-w-0">{source.name}</span>
+                  <span className="text-[10px] text-[#5b5a56] font-mono shrink-0 hidden sm:inline">
                     {new Date(source.lastScraped).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </span>
                   <span
@@ -443,7 +443,7 @@ export function TierListTab({
                       style={{
                         background: 'linear-gradient(135deg, rgba(15,186,129,0.08), rgba(15,186,129,0.02))',
                         border: '1.5px solid rgba(15,186,129,0.15)',
-                        minWidth: '130px',
+                        minWidth: '120px',
                       }}
                       onClick={() => { const c = gameChampions.find(ch => ch.name === name); if (c) onChampionClick(c); }}
                     >
@@ -511,7 +511,7 @@ export function TierListTab({
                       style={{
                         background: 'linear-gradient(135deg, rgba(232,64,87,0.08), rgba(232,64,87,0.02))',
                         border: '1.5px solid rgba(232,64,87,0.15)',
-                        minWidth: '130px',
+                        minWidth: '120px',
                       }}
                       onClick={() => { const c = gameChampions.find(ch => ch.name === name); if (c) onChampionClick(c); }}
                     >
@@ -563,15 +563,15 @@ export function TierListTab({
           className="glass-card rounded-xl p-3 sm:p-4 space-y-3 overflow-hidden"
           style={{ border: '1px solid rgba(200,170,110,0.15)' }}
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-[#c8aa6e]" />
-              <span className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <TrendingUp className="w-4 h-4 text-[#c8aa6e] shrink-0" />
+              <span className="lol-label text-xs font-semibold text-[#c8aa6e] uppercase tracking-wider truncate">
                 Top Movimientos Semanales
               </span>
-              <span className="text-[9px] text-[#5b5a56]">Patch {feedData?.lol?.patch || '26.8'}</span>
+              <span className="text-[9px] text-[#5b5a56] shrink-0">Patch {feedData?.lol?.patch || '26.8'}</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <div className="flex items-center gap-1.5">
                 <div className="flex items-center gap-0.5">
                   <div className="w-2 h-2 rounded-sm bg-[#0fba81]" />

@@ -659,8 +659,8 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
               transition={{ duration: 0.3 }}
               className="glass-card rounded-xl p-3 sm:p-5 border border-[#785a28]/25 hover:border-[#c8aa6e]/20 transition-all duration-300"
             >
-              <div className="flex items-start gap-3 mb-4">
-                <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-start gap-3 mb-4 flex-wrap">
+                <div className="flex items-center gap-2 shrink-0 flex-wrap">
                   <Badge className="bg-[#c8aa6e] text-[#0a0e1a] font-bold text-sm px-3 py-1">{patch.version}</Badge>
                   {/* Game source badge */}
                   <span

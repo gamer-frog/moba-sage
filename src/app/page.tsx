@@ -339,7 +339,7 @@ export default function Home() {
 
   // ============ RENDER ============
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#0a0e1a', maxWidth: '100vw' }}>
+    <div className="min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundColor: '#0a0e1a', width: '100%' }}>
       {/* Loading Screen (initial only) */}
       <AnimatePresence>
         {!initialLoadDone && <LoadingScreen />}
