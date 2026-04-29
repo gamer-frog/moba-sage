@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Search, ArrowUp, RefreshCw, WifiOff } from 'lucide-react';
+import { Brain, Search, ArrowUp, RefreshCw, WifiOff, Shield, Swords, TrendingUp, Trophy, Flame, Sparkles, Zap } from 'lucide-react';
 import { ChampionIcon } from '@/components/moba/champion-icon';
 import { RoleBadge } from '@/components/moba/badges';
 import { updateDdVersion } from '@/components/moba/helpers';
@@ -20,7 +20,7 @@ import { BottomNav } from '@/components/moba/bottom-nav';
 import { GameSelectorLanding } from '@/components/moba/game-selector';
 import { WildRiftHeader } from '@/components/moba/wr-banner';
 import { ChampionModal } from '@/components/moba/champion-modal';
-import { LoadingScreen } from '@/components/moba/loading-screen';
+import { LoadingScreen, type LoadingSource, type LoadingScreenProps } from '@/components/moba/loading-screen';
 import { MinimapDecoration } from '@/components/moba/minimap-decoration';
 import { ActivityPopup } from '@/components/moba/activity-popup';
 import { FloatingNotes } from '@/components/moba/floating-notes';
@@ -150,6 +150,35 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [loadStartTime] = useState(Date.now);
+
+  // Loading screen: track per-source progress
+  const [loadingVersion, setLoadingVersion] = useState<LoadingScreenProps['version']>(null);
+  const [loadingSources, setLoadingSources] = useState<LoadingSource[]>([
+    { id: 'ddragon', name: 'Data Dragon', icon: <Shield className="w-3.5 h-3.5" />, color: '#c8aa6e', status: 'pending', detail: 'Conectando...' },
+    { id: 'champions', name: 'Base de Campeones', icon: <Swords className="w-3.5 h-3.5" />, color: '#0acbe6', status: 'pending', detail: 'Conectando...' },
+    { id: 'tierlist', name: 'Tier List Meta', icon: <TrendingUp className="w-3.5 h-3.5" />, color: '#0fba81', status: 'pending', detail: 'Conectando...' },
+    { id: 'probuilds', name: 'Pro Builds & Picks', icon: <Trophy className="w-3.5 h-3.5" />, color: '#f0c646', status: 'pending', detail: 'Conectando...' },
+    { id: 'insights', name: 'IA Insights', icon: <Sparkles className="w-3.5 h-3.5" />, color: '#a78bfa', status: 'pending', detail: 'Conectando...' },
+    { id: 'combos', name: 'Combos Rotos', icon: <Flame className="w-3.5 h-3.5" />, color: '#e84057', status: 'pending', detail: 'Conectando...' },
+    { id: 'patches', name: 'Patch Notes', icon: <Zap className="w-3.5 h-3.5" />, color: '#785a28', status: 'pending', detail: 'Conectando...' },
+  ]);
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  const updateLoadingSource = useCallback((id: string, updates: Partial<LoadingSource>) => {
+    setLoadingSources(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
+  }, []);
+
+  // Minimum loading screen display time (2.5s)
+  const [showLoading, setShowLoading] = useState(true);
+
+  // Once initialLoadDone is true, wait 500ms for exit animation, then hide
+  useEffect(() => {
+    if (initialLoadDone) {
+      const timer = setTimeout(() => setShowLoading(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [initialLoadDone]);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('Todos');
   const [proRegionFilter, setProRegionFilter] = useState('');
@@ -212,24 +241,63 @@ export default function Home() {
     };
 
     try {
-      const [champsData, patchesData, insightsData, tasksData, proData, combosData, versionData] = await Promise.all<Promise<unknown>>([
-        safeJson('/api/champions'),
-        safeJson('/api/patches'),
-        safeJson('/api/insights'),
-        safeJson('/api/tasks'),
-        safeJson('/api/pro-picks'),
-        safeJson('/api/combos'),
-        safeJson('/api/version'),
-      ]) as [Champion[], PatchNote[], AiInsight[], TaskItem[], ProPick[], BrokenCombo[], { lol: string; wr: string; gamePatch: string; metaLastUpdated: string; fetchedAt?: string } | null];
+      // Step 1: Fetch version (DDragon) first
+      setLoadingStep(1);
+      updateLoadingSource('ddragon', { status: 'loading', detail: 'Consultando versiones...' });
+      const versionData = await safeJson('/api/version') as { lol: string; wr: string; gamePatch: string; metaLastUpdated: string; fetchedAt?: string; ddragonStatus?: string } | null;
+      if (versionData) {
+        setLoadingVersion(versionData);
+        updateLoadingSource('ddragon', { status: 'done', detail: `v${versionData.lol} (CDN ${versionData.ddragonStatus || 'live'})` });
+      } else {
+        updateLoadingSource('ddragon', { status: 'done', detail: 'Fallback local' });
+      }
 
-      // Apply results — only update state for successful fetches
-      if (champsData) setChampions(champsData as Champion[]);
-      if (patchesData) setPatches(patchesData as PatchNote[]);
-      if (insightsData) setInsights(insightsData as AiInsight[]);
-      if (tasksData) setTasks(tasksData as TaskItem[]);
-      if (proData) setProPicks(proData as ProPick[]);
-      if (combosData) setCombos(combosData as BrokenCombo[]);
+      // Step 2: Fetch champions
+      setLoadingStep(2);
+      updateLoadingSource('champions', { status: 'loading', detail: 'Descargando campeones...' });
+      const champsData = await safeJson('/api/champions') as Champion[] | null;
+      if (champsData) {
+        setChampions(champsData);
+        updateLoadingSource('champions', { status: 'done', detail: `${champsData.length} campeones cargados`, records: `${champsData.length} champs` });
+      } else {
+        updateLoadingSource('champions', { status: 'done', detail: 'Datos cacheados' });
+      }
 
+      // Step 3: Fetch meta data (insights + pro picks in parallel)
+      setLoadingStep(3);
+      updateLoadingSource('tierlist', { status: 'loading', detail: 'Calculando tier list...' });
+      updateLoadingSource('probuilds', { status: 'loading', detail: 'Cargando pro picks...' });
+      updateLoadingSource('insights', { status: 'loading', detail: 'Generando insights...' });
+
+      const [insightsData, proData, tasksData] = await Promise.all([
+        safeJson('/api/insights') as Promise<AiInsight[] | null>,
+        safeJson('/api/pro-picks') as Promise<ProPick[] | null>,
+        safeJson('/api/tasks') as Promise<TaskItem[] | null>,
+      ]);
+
+      if (insightsData) { setInsights(insightsData); updateLoadingSource('tierlist', { status: 'done', detail: `${insightsData.length} insights`, records: `${insightsData.length}` }); }
+      else updateLoadingSource('tierlist', { status: 'done', detail: 'Disponible' });
+      if (proData) { setProPicks(proData); updateLoadingSource('probuilds', { status: 'done', detail: `${proData.length} picks`, records: `${proData.length} picks` }); }
+      else updateLoadingSource('probuilds', { status: 'done', detail: 'Disponible' });
+      if (tasksData) setTasks(tasksData);
+      updateLoadingSource('insights', { status: 'done', detail: 'Modelo preparado' });
+
+      // Step 4: Fetch combos + patches in parallel
+      setLoadingStep(4);
+      updateLoadingSource('combos', { status: 'loading', detail: 'Buscando combos rotos...' });
+      updateLoadingSource('patches', { status: 'loading', detail: 'Cargando notas de parche...' });
+
+      const [combosData, patchesData] = await Promise.all([
+        safeJson('/api/combos') as Promise<BrokenCombo[] | null>,
+        safeJson('/api/patches') as Promise<PatchNote[] | null>,
+      ]);
+
+      if (combosData) { setCombos(combosData); updateLoadingSource('combos', { status: 'done', detail: `${combosData.length} combos`, records: `${combosData.length}` }); }
+      else updateLoadingSource('combos', { status: 'done', detail: 'Disponible' });
+      if (patchesData) { setPatches(patchesData); updateLoadingSource('patches', { status: 'done', detail: `${patchesData.length} parches`, records: `${patchesData.length}` }); }
+      else updateLoadingSource('patches', { status: 'done', detail: 'Disponible' });
+
+      // Apply version data
       if (versionData?.lol) {
         const fullVer = versionData.lol;
         setLiveVersions({
@@ -260,10 +328,21 @@ export default function Home() {
       console.error('Unexpected error in fetchData:', err);
       setFetchError(true);
     } finally {
+      // Final step: preparing UI
+      setLoadingStep(5);
       setLoading(false);
+
+      // Ensure minimum display time of 2.5s for the loading screen
+      const elapsed = Date.now() - loadStartTime();
+      const remaining = Math.max(0, 2500 - elapsed);
+      if (remaining > 0) {
+        await new Promise(r => setTimeout(r, remaining));
+      }
+
+      setLoadingStep(5);
       setInitialLoadDone(true);
     }
-  }, []);
+  }, [loadStartTime, updateLoadingSource]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -423,9 +502,16 @@ export default function Home() {
         Ir al contenido principal
       </a>
 
-      {/* Loading Screen (initial only) */}
+      {/* Loading Screen (initial only) — z-210, above all popups */}
       <AnimatePresence>
-        {!initialLoadDone && <LoadingScreen />}
+        {!showLoading ? null : (
+          <LoadingScreen
+            version={loadingVersion}
+            sources={loadingSources}
+            champCount={champions.length || null}
+            step={loadingStep}
+          />
+        )}
       </AnimatePresence>
 
       {/* Global Search Overlay (Command Palette) */}
@@ -511,8 +597,8 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Activity Popup (once per session) */}
-      <ActivityPopup />
+      {/* Activity Popup (once per session — only after loading is done) */}
+      {initialLoadDone && <ActivityPopup />}
 
       {/* Gold Particles */}
       <GoldParticles />
