@@ -17,6 +17,43 @@ const REPO_OWNER = 'gamer-frog';
 const REPO_NAME = 'moba-sage';
 const NOTES_PATH = 'data/community-notes.json';
 
+// Rate limiting: max 5 notes per IP per hour
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const rateLimitMap = new Map<string, { count: number; windowStart: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(ip, { count: 1, windowStart: now });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count++;
+  return true;
+}
+
+// Sanitize input: strip HTML tags, trim, normalize whitespace
+function sanitizeInput(str: string, maxLength: number): string {
+  return str
+    .replace(/<[^>]*>/g, '') // strip HTML tags
+    .replace(/&[^;]+;/g, '') // strip HTML entities
+    .trim()
+    .replace(/\s+/g, ' ')
+    .slice(0, maxLength);
+}
+
+// Clean up stale rate limit entries every 10 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitMap) {
+    if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+      rateLimitMap.delete(key);
+    }
+  }
+}, 10 * 60 * 1000);
+
 // In-memory fallback when GITHUB_TOKEN is not set
 let memoryStore: NotesStore = { lastUpdated: '', notes: [] };
 let hasToken: boolean | null = null;
@@ -101,21 +138,34 @@ export async function GET() {
 // POST /api/notes
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting by IP
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ error: 'Demasiadas notas. Intentá de nuevo en una hora.' }, { status: 429 });
+    }
+
     const body = await request.json();
     const { author, content: noteContent } = body;
 
     if (!author || !noteContent) {
       return NextResponse.json({ error: 'Autor y contenido son requeridos' }, { status: 400 });
     }
-    if (String(noteContent).length > 500) {
-      return NextResponse.json({ error: 'Maximo 500 caracteres' }, { status: 400 });
+
+    const sanitizedAuthor = sanitizeInput(String(author), 30);
+    const sanitizedContent = sanitizeInput(String(noteContent), 500);
+
+    if (!sanitizedAuthor || !sanitizedContent) {
+      return NextResponse.json({ error: 'Autor y contenido no pueden estar vacíos' }, { status: 400 });
+    }
+    if (sanitizedContent.length < 3) {
+      return NextResponse.json({ error: 'El contenido debe tener al menos 3 caracteres' }, { status: 400 });
     }
 
     const store = await getStore();
     const newNote: CommunityNote = {
       id: 'n' + Date.now() + Math.random().toString(36).slice(2, 6),
-      author: String(author).slice(0, 30),
-      content: String(noteContent).slice(0, 500),
+      author: sanitizedAuthor,
+      content: sanitizedContent,
       timestamp: new Date().toISOString(),
       status: 'idea',
     };
