@@ -34,11 +34,14 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-// Sanitize input: strip HTML tags, trim, normalize whitespace
+// Sanitize input: strip HTML, markdown links, URLs, normalize whitespace
 function sanitizeInput(str: string, maxLength: number): string {
   return str
-    .replace(/<[^>]*>/g, '') // strip HTML tags
-    .replace(/&[^;]+;/g, '') // strip HTML entities
+    .replace(/<[^>]*>/g, '')         // strip HTML tags
+    .replace(/&[^;]+;/g, '')          // strip HTML entities
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')  // strip markdown links [text](url)
+    .replace(/https?:\/\/[^\s]+/g, '')          // strip bare URLs
+    .replace(/javascript:/gi, '')                   // strip javascript: protocol
     .trim()
     .replace(/\s+/g, ' ')
     .slice(0, maxLength);
@@ -162,6 +165,15 @@ export async function POST(request: NextRequest) {
     }
 
     const store = await getStore();
+
+    // Duplicate detection: reject if the same author posted the same content in the last 5 minutes
+    const fiveMinAgo = Date.now() - 5 * 60 * 1000;
+    const isDuplicate = store.data.notes.some(
+      n => n.author === sanitizedAuthor && n.content === sanitizedContent && new Date(n.timestamp).getTime() > fiveMinAgo
+    );
+    if (isDuplicate) {
+      return NextResponse.json({ error: 'Nota duplicada. Ya publicaste algo similar hace poco.' }, { status: 429 });
+    }
     const newNote: CommunityNote = {
       id: 'n' + Date.now() + Math.random().toString(36).slice(2, 6),
       author: sanitizedAuthor,
