@@ -502,7 +502,7 @@ export default function Home() {
             )}
           </AnimatePresence>
         </div>
-            <FloatingNotes />
+            {selectedGame && <FloatingNotes />}
     </main>
 
       {/* Champion Modal */}
