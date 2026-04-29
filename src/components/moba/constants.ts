@@ -70,8 +70,7 @@ export const TOURNAMENT_REGIONS = [
 // Game tabs — LoL / Wild Rift content
 export const GAME_TAB_ITEMS = [
   { id: 'tierlist', label: 'Tier List', icon: Trophy },
-  { id: 'patches', label: 'Parches', icon: ScrollText },
-  { id: 'broken', label: 'Cosas Rotas', icon: AlertTriangle },
+  { id: 'patches', label: 'Parches & Meta', icon: ScrollText },
   { id: 'combos', label: 'Combos', icon: Flame },
   { id: 'comparison', label: 'Comparar', icon: GitCompare },
   { id: 'coaching', label: 'Coaching', icon: GraduationCap },

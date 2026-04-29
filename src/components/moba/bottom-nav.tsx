@@ -1,13 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Trophy, AlertTriangle, ScrollText, Flame, GraduationCap, GitCompare, User, MoreHorizontal } from 'lucide-react';
+import { Trophy, ScrollText, Flame, GraduationCap, GitCompare, User, MoreHorizontal } from 'lucide-react';
 
 // 7 primary tabs — key features always accessible on mobile
 const PRIMARY_BOTTOM_TABS = [
   { id: 'tierlist', label: 'Tier List', icon: Trophy },
-  { id: 'patches', label: 'Parches', icon: ScrollText },
-  { id: 'broken', label: 'Rotas', icon: AlertTriangle },
+  { id: 'patches', label: 'Meta', icon: ScrollText },
   { id: 'combos', label: 'Combos', icon: Flame },
   { id: 'comparison', label: 'Comparar', icon: GitCompare },
   { id: 'coaching', label: 'Coaching', icon: GraduationCap },

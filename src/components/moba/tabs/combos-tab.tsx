@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, X, ChevronRight, ChevronDown, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair, Users } from 'lucide-react';
+import { Flame, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair, Users, ChevronLeft, CircleDot, Sparkles } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ChampionIcon, TinyChampionIcon, SplashArtIcon, MicroChampionIcon } from '../champion-icon';
+import { ChampionIcon, SplashArtIcon, TinyChampionIcon, MicroChampionIcon } from '../champion-icon';
+import { getChampionSplashUrl } from '../helpers';
 import type { BrokenCombo, GameSelection } from '../types';
 
 // Combo type detection from description keywords
@@ -32,16 +33,23 @@ function getDifficultyRating(difficulty: string): number {
   const d = difficulty.toLowerCase();
   if (/dif.cil|hard|expert|avanzado|difícil|alta/.test(d)) return 3;
   if (/media|medium|moderada|moderate|intermed/.test(d)) return 2;
-  return 1; // fácil / easy / low
+  return 1;
 }
 
-function DifficultyStars({ rating }: { rating: number }) {
+const DIFF_COLORS: Record<string, { bg: string; border: string; text: string }> = {
+  fácil: { bg: 'rgba(15,186,129,0.1)', border: 'rgba(15,186,129,0.3)', text: '#0fba81' },
+  media: { bg: 'rgba(10,203,230,0.1)', border: 'rgba(10,203,230,0.3)', text: '#0acbe6' },
+  difícil: { bg: 'rgba(232,64,87,0.1)', border: 'rgba(232,64,87,0.3)', text: '#e84057' },
+};
+
+function DifficultyStars({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'lg' }) {
+  const cls = size === 'lg' ? 'w-5 h-5' : 'w-3 h-3';
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3].map(i => (
         <Star
           key={i}
-          className="w-3 h-3"
+          className={cls}
           style={{
             color: i <= rating ? '#c8aa6e' : 'rgba(120,90,40,0.25)',
             fill: i <= rating ? '#c8aa6e' : 'transparent',
@@ -51,7 +59,6 @@ function DifficultyStars({ rating }: { rating: number }) {
     </div>
   );
 }
-
 
 
 // ============ COMPOSICIONES PRO ============
@@ -70,13 +77,382 @@ const proComps: CompEntry[] = [
   { name: 'Proteger al ADC', champions: ['Ornn', 'Lee Sin', 'Orianna', 'Jinx', 'Yuumi'], playstyle: 'Peel intenso + hiper carry', description: 'Todo el team protege a Jinx. Ornn items para todo el team. Yuumi unbound a Jinx = inmortal en late game. Lee Sin kick para peel.' },
 ];
 
+// ============ LEFT PANEL: Combo List Card ============
+function ComboListCard({
+  combo,
+  isSelected,
+  onClick,
+  index,
+}: {
+  combo: BrokenCombo;
+  isSelected: boolean;
+  onClick: () => void;
+  index: number;
+}) {
+  const comboType = detectComboType(combo.description);
+  const comboTypeCfg = comboType ? COMBO_TYPE_CONFIG[comboType] : null;
+  const isMeta = combo.winRate >= 57;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -12 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.03, duration: 0.25 }}
+      onClick={onClick}
+      className={`
+        relative cursor-pointer rounded-lg overflow-hidden transition-all duration-200 group
+        ${isSelected
+          ? 'ring-1 ring-[#c8aa6e]/60 shadow-lg shadow-[#c8aa6e]/10'
+          : 'hover:ring-1 hover:ring-[#c8aa6e]/25'
+        }
+      `}
+      style={{
+        background: isSelected
+          ? 'linear-gradient(135deg, rgba(200,170,110,0.12), rgba(30,35,40,0.7))'
+          : 'linear-gradient(135deg, rgba(30,35,40,0.5), rgba(20,24,30,0.4))',
+        border: isSelected
+          ? '1px solid rgba(200,170,110,0.35)'
+          : '1px solid rgba(120,90,40,0.12)',
+      }}
+    >
+      {/* Top accent line */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[2px]"
+        style={{
+          background: isMeta
+            ? 'linear-gradient(90deg, #c8aa6e, #f0c646, #c8aa6e)'
+            : isSelected
+              ? 'linear-gradient(90deg, #c8aa6e, #c8aa6e40)'
+              : 'linear-gradient(90deg, transparent, #5b5a56, transparent)',
+        }}
+      />
+
+      {/* Selected indicator bar */}
+      <div
+        className={`
+          absolute left-0 top-0 bottom-0 w-[3px] transition-all duration-200
+          ${isSelected ? 'opacity-100' : 'opacity-0'}
+        `}
+        style={{
+          background: 'linear-gradient(180deg, #c8aa6e, #f0c646)',
+        }}
+      />
+
+      <div className="p-3">
+        {/* Champion portrait strip — like a mini team comp */}
+        <div className="flex items-center gap-1 mb-2.5">
+          {combo.champions.map((name, i) => (
+            <div key={name} className="relative -ml-0.5 first:ml-0">
+              <div
+                className="transition-transform duration-200 group-hover:scale-105"
+                style={{
+                  filter: isMeta ? 'drop-shadow(0 0 4px rgba(232,64,87,0.35))' : 'none',
+                }}
+              >
+                <TinyChampionIcon name={name} />
+              </div>
+              {i < combo.champions.length - 1 && (
+                <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 z-10">
+                  <span className="text-[7px] text-[#c8aa6e] font-bold">+</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Combo name */}
+        <h3
+          className={`
+            text-xs font-bold leading-tight transition-colors duration-200
+            ${isSelected ? 'text-[#f0e6d2]' : 'text-[#a09b8c] group-hover:text-[#f0e6d2]'}
+          `}
+        >
+          {combo.name}
+        </h3>
+
+        {/* Badges row */}
+        <div className="flex items-center gap-1.5 mt-2">
+          {/* Win Rate */}
+          <span
+            className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded"
+            style={{
+              backgroundColor: isMeta ? 'rgba(10,203,230,0.12)' : 'rgba(160,155,140,0.08)',
+              color: isMeta ? '#0acbe6' : '#a09b8c',
+              border: `1px solid ${isMeta ? 'rgba(10,203,230,0.25)' : 'rgba(160,155,140,0.15)'}`,
+            }}
+          >
+            {combo.winRate}% WR
+          </span>
+
+          {/* Meta tag */}
+          {isMeta && (
+            <span
+              className="text-[8px] font-black px-1.5 py-0.5 rounded"
+              style={{ background: 'rgba(200,170,110,0.15)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}
+            >
+              META
+            </span>
+          )}
+
+          {/* Combo type */}
+          {comboTypeCfg && (
+            <span
+              className="text-[8px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5"
+              style={{ backgroundColor: comboTypeCfg.bg, color: comboTypeCfg.color, border: `1px solid ${comboTypeCfg.border}` }}
+            >
+              {(() => { const Icon = comboTypeCfg.icon; return <Icon className="w-2.5 h-2.5" />; })()}
+              {comboType}
+            </span>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ============ RIGHT PANEL: Combo Detail ============
+function ComboDetailPanel({ combo }: { combo: BrokenCombo }) {
+  const dc = DIFF_COLORS[combo.difficulty] || DIFF_COLORS.media;
+  const diffRating = getDifficultyRating(combo.difficulty);
+  const comboType = detectComboType(combo.description);
+  const comboTypeCfg = comboType ? COMBO_TYPE_CONFIG[comboType] : null;
+  const isMeta = combo.winRate >= 57;
+  const primaryChamp = combo.champions[0] || '';
+  const splashUrl = getChampionSplashUrl(primaryChamp, 0);
+
+  return (
+    <motion.div
+      key={combo.id}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -16 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className="h-full flex flex-col"
+    >
+      {/* Hero banner with splash art background */}
+      <div className="relative w-full h-40 sm:h-52 md:h-60 overflow-hidden rounded-t-xl">
+        {/* Splash art bg */}
+        <div className="absolute inset-0">
+          <img
+            src={splashUrl}
+            alt={primaryChamp}
+            className="w-full h-full object-cover object-top"
+            loading="lazy"
+          />
+          {/* Dark overlay gradient */}
+          <div className="absolute inset-0" style={{
+            background: 'linear-gradient(180deg, rgba(10,14,26,0.3) 0%, rgba(10,14,26,0.6) 40%, rgba(10,14,26,0.95) 85%, #0a0e1a 100%)',
+          }} />
+          {/* Side fade for readability */}
+          <div className="absolute inset-0" style={{
+            background: 'linear-gradient(90deg, rgba(10,14,26,0.4), transparent 30%, transparent 70%, rgba(10,14,26,0.4))',
+          }} />
+        </div>
+
+        {/* Content overlay */}
+        <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5">
+          {/* Meta badge */}
+          {isMeta && (
+            <div className="mb-2">
+              <span className="text-[9px] font-black px-2.5 py-1 rounded-md inline-flex items-center gap-1" style={{
+                background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(240,198,70,0.15))',
+                color: '#c8aa6e',
+                border: '1px solid rgba(200,170,110,0.4)',
+                boxShadow: '0 0 12px rgba(200,170,110,0.15)',
+              }}>
+                <Sparkles className="w-3 h-3" />
+                META — {combo.winRate}% Win Rate
+              </span>
+            </div>
+          )}
+
+          {/* Combo name */}
+          <h2 className="lol-title text-xl sm:text-2xl md:text-3xl text-[#f0e6d2] leading-tight drop-shadow-lg">
+            {combo.name}
+          </h2>
+
+          {/* Champion portrait strip overlay */}
+          <div className="flex items-end gap-2 mt-3 -mb-1">
+            {combo.champions.map((name, i) => (
+              <motion.div
+                key={name}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.06, duration: 0.25 }}
+                className="flex flex-col items-center"
+              >
+                <div
+                  className="relative rounded-lg overflow-hidden"
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    border: `2px solid ${isMeta ? 'rgba(200,170,110,0.5)' : 'rgba(120,90,40,0.35)'}`,
+                    boxShadow: `0 2px 8px rgba(0,0,0,0.4), 0 0 10px ${isMeta ? 'rgba(200,170,110,0.15)' : 'rgba(0,0,0,0.2)'}`,
+                    marginTop: `${i * 4}px`,
+                  }}
+                >
+                  <SplashArtIcon name={name} />
+                  {/* Role number */}
+                  <div className="absolute bottom-0 inset-x-0 py-0.5 text-center" style={{
+                    background: 'linear-gradient(transparent, rgba(10,14,26,0.9))',
+                  }}>
+                    <span className="text-[7px] font-black text-[#c8aa6e]">{i + 1}</span>
+                  </div>
+                </div>
+                <span className="text-[8px] sm:text-[9px] font-semibold text-[#a09b8c] mt-1 max-w-[60px] truncate text-center">{name}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Stats section */}
+      <div className="glass-card rounded-b-xl flex-1 overflow-y-auto scrollbar-thin" style={{ borderTop: 'none', borderTopLeftRadius: 0, borderTopRightRadius: 0, maxHeight: 'calc(100vh - 420px)' }}>
+        <div className="p-4 sm:p-5 space-y-4">
+          {/* Stats grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {/* Win Rate */}
+            <div
+              className="p-3 rounded-lg text-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(10,203,230,0.08), rgba(10,203,230,0.03))',
+                border: '1px solid rgba(10,203,230,0.15)',
+              }}
+            >
+              <Trophy className="w-4 h-4 mx-auto mb-1.5" style={{ color: '#0acbe6' }} />
+              <span className="text-lg font-mono font-bold block" style={{ color: isMeta ? '#0acbe6' : '#a09b8c' }}>{combo.winRate}%</span>
+              <p className="text-[9px] text-[#5b5a56] mt-0.5">Win Rate</p>
+            </div>
+
+            {/* Difficulty */}
+            <div
+              className="p-3 rounded-lg text-center"
+              style={{ background: `${dc.bg}`, border: `1px solid ${dc.border}` }}
+            >
+              <Target className="w-4 h-4 mx-auto mb-1.5" style={{ color: dc.text }} />
+              <span className="text-sm font-bold block" style={{ color: dc.text }}>{combo.difficulty}</span>
+              <div className="mt-1">
+                <DifficultyStars rating={diffRating} />
+              </div>
+            </div>
+
+            {/* Combo Type */}
+            <div
+              className="p-3 rounded-lg text-center"
+              style={{
+                background: comboTypeCfg ? comboTypeCfg.bg : 'rgba(160,155,140,0.06)',
+                border: comboTypeCfg ? `1px solid ${comboTypeCfg.border}` : '1px solid rgba(160,155,140,0.15)',
+              }}
+            >
+              {comboTypeCfg ? (() => { const Icon = comboTypeCfg.icon; return <Icon className="w-4 h-4 mx-auto mb-1.5" style={{ color: comboTypeCfg.color }} />; })() : <CircleDot className="w-4 h-4 mx-auto mb-1.5 text-[#5b5a56]" />}
+              <span className="text-sm font-bold block" style={{ color: comboTypeCfg ? comboTypeCfg.color : '#5b5a56' }}>
+                {comboType || 'Mixto'}
+              </span>
+              <p className="text-[9px] text-[#5b5a56] mt-0.5">Tipo</p>
+            </div>
+
+            {/* Champion Count */}
+            <div
+              className="p-3 rounded-lg text-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.03))',
+                border: '1px solid rgba(200,170,110,0.15)',
+              }}
+            >
+              <Users className="w-4 h-4 mx-auto mb-1.5 text-[#c8aa6e]" />
+              <span className="text-lg font-bold block text-[#c8aa6e]">{combo.champions.length}</span>
+              <p className="text-[9px] text-[#5b5a56] mt-0.5">
+                {combo.champions.length === 2 ? 'Dúo' : combo.champions.length === 3 ? 'Trío' : combo.champions.length === 4 ? 'Cuarteto' : 'Equipo'}
+              </p>
+            </div>
+          </div>
+
+          {/* Difficulty progress bar */}
+          <div className="p-3 rounded-lg" style={{ background: 'rgba(10,14,26,0.4)', border: '1px solid rgba(120,90,40,0.1)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="lol-label text-[9px] text-[#5b5a56]">Dificultad de ejecución</span>
+              <DifficultyStars rating={diffRating} size="lg" />
+            </div>
+            <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.08)' }}>
+              <motion.div
+                className="h-full rounded-full"
+                style={{
+                  background: `linear-gradient(90deg, ${dc.text}30, ${dc.text})`,
+                  boxShadow: `0 0 8px ${dc.text}25`,
+                }}
+                initial={{ width: 0 }}
+                animate={{ width: `${(diffRating / 3) * 100}%` }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+              />
+            </div>
+          </div>
+
+          {/* Champions list with roles */}
+          <div>
+            <span className="lol-label text-[10px] text-[#c8aa6e] mb-2.5 block">Campeones</span>
+            <div className="space-y-1.5">
+              {combo.champions.map((name, i) => (
+                <motion.div
+                  key={name}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + i * 0.05 }}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-150 hover:bg-[rgba(200,170,110,0.06)]"
+                  style={{ background: 'rgba(200,170,110,0.03)', border: '1px solid rgba(200,170,110,0.08)' }}
+                >
+                  <ChampionIcon name={name} tier={isMeta ? 'S' : 'A'} />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-bold text-[#f0e6d2] block truncate">{name}</span>
+                    <span className="text-[9px] text-[#5b5a56]">Posición {i + 1}</span>
+                  </div>
+                  {i === 0 && (
+                    <span className="text-[8px] font-bold px-2 py-0.5 rounded" style={{
+                      background: 'rgba(200,170,110,0.12)',
+                      color: '#c8aa6e',
+                      border: '1px solid rgba(200,170,110,0.3)',
+                    }}>
+                      KEY
+                    </span>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <span className="lol-label text-[10px] text-[#c8aa6e] mb-2 block">Por qué funciona</span>
+            <p className="text-xs text-[#a09b8c] leading-relaxed">{combo.description}</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+
+// ============ MAIN COMPONENT ============
 export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCombo[]; loading: boolean; selectedGame: GameSelection }) {
   const [sizeFilter, setSizeFilter] = useState<number | null>(null);
-  const [expandedCombo, setExpandedCombo] = useState<number | null>(null);
+  const [selectedComboId, setSelectedComboId] = useState<number | null>(null);
+  
   const gameFilter = selectedGame === 'wildrift' ? 'WR' : 'LoL';
   const filtered = combos
     .filter(c => c.game === gameFilter)
     .filter(c => sizeFilter === null || c.champions.length === sizeFilter);
+
+  // Derive effective selection — auto-select first if current is not in list
+  const effectiveId = selectedComboId !== null && filtered.some(c => c.id === selectedComboId)
+    ? selectedComboId
+    : (filtered.length > 0 ? filtered[0].id : null);
+
+  const selectedCombo = effectiveId !== null ? filtered.find(c => c.id === effectiveId) ?? null : null;
+
+  // When user changes filter, reset to first item
+  const handleSizeFilter = (val: number | null) => {
+    setSizeFilter(val);
+    setSelectedComboId(null); // will auto-resolve via effectiveId
+  };
 
   const sizeOptions = [
     { value: null, label: 'Todos' },
@@ -86,31 +462,29 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
     { value: 5, label: 'Equipos (5)' },
   ];
 
-  const diffColors: Record<string, { bg: string; border: string; text: string }> = {
-    fácil: { bg: 'rgba(15,186,129,0.1)', border: 'rgba(15,186,129,0.3)', text: '#0fba81' },
-    media: { bg: 'rgba(10,203,230,0.1)', border: 'rgba(10,203,230,0.3)', text: '#0acbe6' },
-    difícil: { bg: 'rgba(232,64,87,0.1)', border: 'rgba(232,64,87,0.3)', text: '#e84057' },
-  };
-
   return (
     <div className="space-y-4">
+      {/* Header */}
       <div className="flex items-center gap-3">
-        <Flame className="w-5 h-5 text-[#e84057]" />
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(232,64,87,0.12)', border: '1px solid rgba(232,64,87,0.25)' }}>
+          <Flame className="w-4 h-4 text-[#e84057]" />
+        </div>
         <div>
           <h2 className="lol-title text-lg text-[#f0e6d2]">Combos Rotos</h2>
-          <p className="text-xs text-[#5b5a56]">Combinaciones más tóxicas del meta — Ordenadas por win rate</p>
+          <p className="text-xs text-[#5b5a56]">Combinaciones más tóxicas del meta — Selecciona un combo para ver detalles</p>
         </div>
       </div>
 
+      {/* Filter bar */}
       <div className="flex flex-wrap gap-2">
         {sizeOptions.map(opt => (
           <button
             key={String(opt.value)}
-            onClick={() => setSizeFilter(opt.value)}
+            onClick={() => handleSizeFilter(opt.value)}
             className={`
               px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200
               ${sizeFilter === opt.value
-                ? 'bg-[#e84057]/15 text-[#e84057] border border-[#e84057]/30'
+                ? 'bg-[#c8aa6e]/15 text-[#c8aa6e] border border-[#c8aa6e]/30 shadow-sm shadow-[#c8aa6e]/10'
                 : 'text-[#5b5a56] hover:text-[#a09b8c] hover:bg-[#1e2328]/40 border border-transparent'
               }
             `}
@@ -121,218 +495,175 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
         ))}
       </div>
 
+      {/* Loading state */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-32 rounded-xl" />
-          ))}
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Left panel skeleton */}
+          <div className="w-full md:w-[320px] lg:w-[340px] shrink-0 space-y-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-24 rounded-lg" />
+            ))}
+          </div>
+          {/* Right panel skeleton */}
+          <div className="flex-1 hidden md:block">
+            <Skeleton className="h-[400px] rounded-xl" />
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {filtered.map((combo, idx) => {
-            const dc = diffColors[combo.difficulty] || diffColors.media;
-            const isExpanded = expandedCombo === combo.id;
-            const diffRating = getDifficultyRating(combo.difficulty);
-            const comboType = detectComboType(combo.description);
-            const comboTypeCfg = comboType ? COMBO_TYPE_CONFIG[comboType] : null;
-
-            return (
-              <div key={combo.id}>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.04 }}
-                  className="glass-card rounded-xl p-3 sm:p-4 cursor-pointer hover:border-[#e84057]/30 transition-all duration-300 group relative overflow-hidden"
-                  style={{ border: '1px solid rgba(120,90,40,0.12)' }}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  onClick={() => setExpandedCombo(isExpanded ? null : combo.id)}
-                >
-                  {/* Subtle gradient top accent */}
-                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: combo.winRate >= 57 ? 'linear-gradient(90deg, transparent, #0acbe6, transparent)' : 'linear-gradient(90deg, transparent, #e8405780, transparent)' }} />
-
-                  {/* Champion portraits row — circular with tier glow */}
-                  <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    {combo.champions.map((name, i) => (
-                      <div key={name} className="flex items-center gap-2">
-                        <div
-                          className="relative"
-                          style={{
-                            filter: combo.winRate >= 57 ? 'drop-shadow(0 0 6px rgba(232,64,87,0.4))' : 'none',
-                          }}
-                        >
-                          <ChampionIcon name={name} tier={combo.winRate >= 57 ? 'S' : 'A'} />
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-black z-10" style={{ background: '#0a0e1a', color: '#f0e6d2', border: '1px solid rgba(200,170,110,0.3)' }}>
-                            {i + 1}
-                          </div>
-                        </div>
-                        {i < combo.champions.length - 1 && (
-                          <span className="text-[10px] text-[#785a28] font-bold">+</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <h3 className="text-sm font-bold text-[#f0e6d2] group-hover:text-[#e84057] transition-colors">{combo.name}</h3>
-                  <p className="text-[11px] text-[#a09b8c] mt-1 leading-relaxed line-clamp-2">{combo.description}</p>
-
-                  {/* Badges row */}
-                  <div className="flex items-center gap-2 mt-3 flex-wrap">
-                    {/* Win Rate badge */}
-                    <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md" style={{ backgroundColor: combo.winRate >= 57 ? 'rgba(10,203,230,0.12)' : 'rgba(160,155,140,0.1)', color: combo.winRate >= 57 ? '#0acbe6' : '#a09b8c', border: `1px solid ${combo.winRate >= 57 ? 'rgba(10,203,230,0.3)' : 'rgba(160,155,140,0.2)'}`, boxShadow: combo.winRate >= 57 ? '0 0 8px rgba(10,203,230,0.15)' : 'none' }}>
-                      {combo.winRate}% WR
-                    </span>
-
-                    {/* Meta badge for high WR */}
-                    {combo.winRate >= 57 && (
-                      <span className="text-[9px] font-black px-2 py-0.5 rounded-md" style={{ background: 'rgba(200,170,110,0.15)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}>
-                        {'👑 META'}
-                      </span>
-                    )}
-
-                    {/* Difficulty label */}
-                    <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
-                      {combo.difficulty}
-                    </span>
-
-                    {/* Combo Type Badge */}
-                    {comboTypeCfg && (
-                      <span
-                        className="text-[9px] font-bold px-2 py-0.5 rounded flex items-center gap-1"
-                        style={{ backgroundColor: comboTypeCfg.bg, color: comboTypeCfg.color, border: `1px solid ${comboTypeCfg.border}` }}
-                      >
-                        {(() => { const Icon = comboTypeCfg.icon; return <Icon className="w-2.5 h-2.5" />; })()}
-                        {comboType}
-                      </span>
-                    )}
-
-                    <motion.div
-                      animate={{ rotate: isExpanded ? 90 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="ml-auto"
-                    >
-                      <ChevronRight className="w-4 h-4 text-[#785a28]" />
-                    </motion.div>
-                  </div>
-
-                  {/* Difficulty bar */}
-                  <div className="mt-2.5">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[9px] text-[#5b5a56]">Dificultad</span>
-                      <DifficultyStars rating={diffRating} />
-                    </div>
-                    <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.1)' }}>
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{ background: `linear-gradient(90deg, ${dc.text}40, ${dc.text})`, boxShadow: `0 0 4px ${dc.text}30` }}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(diffRating / 3) * 100}%` }}
-                        transition={{ duration: 0.6, delay: idx * 0.04 }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Inline Expansion Detail */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-2 p-4 rounded-xl" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.15)' }}>
-                        {/* Champions with portraits */}
-                        <div className="mb-3">
-                          <span className="lol-label text-[10px] text-[#c8aa6e] mb-2 block">Campeones</span>
-                          <div className="flex items-center gap-3 flex-wrap">
-                            {combo.champions.map((name) => (
-                              <div key={name} className="flex items-center gap-2 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.12)' }}>
-                                <ChampionIcon name={name} tier={combo.winRate >= 57 ? 'S' : 'A'} />
-                                <span className="text-xs font-semibold text-[#f0e6d2]">{name}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Stats */}
-                        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3">
-                          <div className="text-center p-2 rounded-lg" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.1)' }}>
-                            <Trophy className="w-3.5 h-3.5 mx-auto mb-1 text-[#0acbe6]" />
-                            <span className="text-xs font-mono font-bold text-[#0acbe6]">{combo.winRate}%</span>
-                            <p className="text-[9px] text-[#5b5a56]">Win Rate</p>
-                          </div>
-                          <div className="text-center p-2 rounded-lg" style={{ background: dc.bg, border: `1px solid ${dc.border}` }}>
-                            <Target className="w-3.5 h-3.5 mx-auto mb-1" style={{ color: dc.text }} />
-                            <span className="text-xs font-semibold" style={{ color: dc.text }}>{combo.difficulty}</span>
-                            <p className="text-[9px] text-[#5b5a56]">Dificultad</p>
-                          </div>
-                          <div className="text-center p-2 rounded-lg" style={{ background: 'rgba(200,170,110,0.06)', border: '1px solid rgba(200,170,110,0.1)' }}>
-                            <Flame className="w-3.5 h-3.5 mx-auto mb-1 text-[#c8aa6e]" />
-                            <span className="text-xs font-semibold text-[#c8aa6e]">{combo.champions.length}</span>
-                            <p className="text-[9px] text-[#5b5a56]">Campeones</p>
-                          </div>
-                        </div>
-
-                        {/* Combo Type + Difficulty Stars in detail */}
-                        <div className="flex items-center gap-4 mb-3 p-2 rounded-lg" style={{ background: 'rgba(10,14,26,0.4)', border: '1px solid rgba(120,90,40,0.1)' }}>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[9px] text-[#5b5a56]">Tipo:</span>
-                            {comboTypeCfg ? (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1" style={{ backgroundColor: comboTypeCfg.bg, color: comboTypeCfg.color, border: `1px solid ${comboTypeCfg.border}` }}>
-                                {(() => { const Icon = comboTypeCfg.icon; return <Icon className="w-3 h-3" />; })()}
-                                {comboType}
-                              </span>
-                            ) : (
-                              <span className="text-[10px] text-[#5b5a56]">Mixto</span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[9px] text-[#5b5a56]">Dificultad:</span>
-                            <DifficultyStars rating={diffRating} />
-                          </div>
-                        </div>
-
-                        {/* Full description */}
-                        <div>
-                          <span className="lol-label text-[10px] text-[#c8aa6e] mb-1 block">Por qué funciona</span>
-                          <p className="text-xs text-[#a09b8c] leading-relaxed">{combo.description}</p>
-                        </div>
-
-                        {/* Close button */}
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setExpandedCombo(null); }}
-                          className="mt-3 w-full py-1.5 rounded-lg text-[10px] text-[#5b5a56] hover:text-[#a09b8c] transition-colors text-center cursor-pointer"
-                          style={{ background: 'rgba(120,90,40,0.08)', border: '1px solid rgba(120,90,40,0.1)' }}
-                        >
-                          Cerrar detalle
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {!loading && filtered.length === 0 && (
-        <div className="text-center py-12 text-[#5b5a56]">
+      ) : filtered.length === 0 ? (
+        /* Empty state */
+        <div className="text-center py-16 text-[#5b5a56]">
           <Flame className="w-12 h-12 mx-auto mb-3 opacity-20" />
           <p className="text-sm">No hay combos para este filtro</p>
         </div>
+      ) : (
+        /* ============ CHAMPION SELECT LAYOUT ============ */
+        <>
+          {/* Desktop: Side-by-side layout */}
+          <div className="hidden md:flex gap-4" style={{ minHeight: '520px' }}>
+            {/* LEFT PANEL — Combo List */}
+            <div
+              className="w-[320px] lg:w-[340px] shrink-0 flex flex-col gap-2 overflow-y-auto pr-1 scrollbar-thin"
+              style={{ maxHeight: 'calc(100vh - 280px)' }}
+            >
+              <div className="flex items-center gap-2 px-1 mb-1">
+                <span className="lol-label text-[9px] text-[#c8aa6e]">
+                  {filtered.length} COMBO{filtered.length !== 1 ? 'S' : ''}
+                </span>
+                <div className="flex-1 h-[1px]" style={{ background: 'rgba(200,170,110,0.15)' }} />
+              </div>
+              {filtered.map((combo, idx) => (
+                <ComboListCard
+                  key={combo.id}
+                  combo={combo}
+                  isSelected={effectiveId === combo.id}
+                  onClick={() => setSelectedComboId(combo.id)}
+                  index={idx}
+                />
+              ))}
+            </div>
+
+            {/* RIGHT PANEL — Detail */}
+            <div className="flex-1 glass-card rounded-xl overflow-hidden" style={{ border: '1px solid rgba(120,90,40,0.15)' }}>
+              <AnimatePresence mode="wait">
+                {selectedCombo ? (
+                  <ComboDetailPanel combo={selectedCombo} />
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="h-full flex items-center justify-center text-[#5b5a56]"
+                    style={{ minHeight: '400px' }}
+                  >
+                    <div className="text-center">
+                      <ChevronLeft className="w-8 h-8 mx-auto mb-2 opacity-30" />
+                      <p className="text-sm">Selecciona un combo</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Mobile: Stacked layout — horizontal scroll strip + detail below */}
+          <div className="md:hidden space-y-4">
+            {/* Horizontal scroll strip */}
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-2 px-1">
+                <span className="lol-label text-[9px] text-[#c8aa6e]">
+                  {filtered.length} COMBO{filtered.length !== 1 ? 'S' : ''}
+                </span>
+                <div className="flex-1 h-[1px]" style={{ background: 'rgba(200,170,110,0.15)' }} />
+              </div>
+              <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+                {filtered.map((combo, idx) => {
+                  const isMeta = combo.winRate >= 57;
+                  return (
+                    <motion.button
+                      key={combo.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: idx * 0.03 }}
+                      onClick={() => setSelectedComboId(combo.id)}
+                      className={`
+                        shrink-0 snap-start rounded-lg overflow-hidden transition-all duration-200 text-left
+                        ${effectiveId === combo.id
+                          ? 'ring-1 ring-[#c8aa6e]/60'
+                          : 'opacity-70 hover:opacity-100'
+                        }
+                      `}
+                      style={{
+                        width: '180px',
+                        background: effectiveId === combo.id
+                          ? 'linear-gradient(135deg, rgba(200,170,110,0.12), rgba(30,35,40,0.7))'
+                          : 'rgba(30,35,40,0.5)',
+                        border: effectiveId === combo.id
+                          ? '1px solid rgba(200,170,110,0.35)'
+                          : '1px solid rgba(120,90,40,0.12)',
+                      }}
+                    >
+                      <div className="p-2.5">
+                        <div className="flex items-center gap-1 mb-2">
+                          {combo.champions.map((name) => (
+                            <div key={name} className="w-6 h-6 rounded-full overflow-hidden" style={{ border: '1px solid rgba(120,90,40,0.3)' }}>
+                              <MicroChampionIcon name={name} />
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-[10px] font-bold text-[#f0e6d2] leading-tight truncate">{combo.name}</p>
+                        <div className="flex items-center gap-1.5 mt-1.5">
+                          <span className="text-[9px] font-mono font-bold" style={{ color: isMeta ? '#0acbe6' : '#a09b8c' }}>
+                            {combo.winRate}%
+                          </span>
+                          {isMeta && (
+                            <span className="text-[7px] font-black px-1 py-0.5 rounded" style={{ background: 'rgba(200,170,110,0.15)', color: '#c8aa6e' }}>META</span>
+                          )}
+                        </div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Mobile detail panel */}
+            <AnimatePresence mode="wait">
+              {selectedCombo ? (
+                <motion.div
+                  key={selectedCombo.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ComboDetailPanel combo={selectedCombo} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="glass-card rounded-xl p-8 text-center text-[#5b5a56]"
+                >
+                  <ChevronLeft className="w-6 h-6 mx-auto mb-2 opacity-30 rotate-90" />
+                  <p className="text-xs">Desliza y selecciona un combo arriba</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </>
       )}
 
       {/* ============ COMPOSICIONES PRO ============ */}
       <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(120,90,40,0.2)' }}>
         <div className="flex items-center gap-3 mb-4">
-          <Users className="w-5 h-5 text-[#c8aa6e]" />
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(200,170,110,0.12)', border: '1px solid rgba(200,170,110,0.25)' }}>
+            <Users className="w-4 h-4 text-[#c8aa6e]" />
+          </div>
           <div>
             <h2 className="lol-title text-lg text-[#f0e6d2]">Composiciones Pro</h2>
-            <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(200,170,110,0.12)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}>{proComps.length} comps</span>
-            <p className="text-xs text-[#5b5a56]">Team comps más fuertes del meta actual</p>
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(200,170,110,0.12)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}>{proComps.length} comps</span>
+              <p className="text-xs text-[#5b5a56]">Team comps más fuertes del meta actual</p>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

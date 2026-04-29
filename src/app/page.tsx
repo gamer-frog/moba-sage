@@ -27,8 +27,7 @@ import { FloatingNotes } from '@/components/moba/floating-notes';
 
 // Tabs — core tabs loaded eagerly, secondary tabs lazy loaded
 import { TierListTab } from '@/components/moba/tabs/tier-list-tab';
-import { PatchesTab } from '@/components/moba/tabs/patches-tab';
-import { BrokenStuffTab } from '@/components/moba/tabs/broken-stuff-tab';
+import { PatchesMetaTab } from '@/components/moba/tabs/patches-meta-tab';
 import { CoachingTab } from '@/components/moba/tabs/coaching-tab';
 import { ProfileTab } from '@/components/moba/tabs/profile-tab';
 
@@ -88,8 +87,7 @@ function TabContent({
   const renderTab = () => {
     switch (activeTab) {
       case 'tierlist': return <TierListTab champions={champions} loading={loading} selectedGame={selectedGame} searchQuery={searchQuery} onSearchChange={onSearchChange} roleFilter={roleFilter} onRoleFilterChange={onRoleFilterChange} favorites={favorites} onToggleFavorite={onToggleFavorite} onChampionClick={onChampionClick} metaLastUpdated={liveVersions.metaLastUpdated} proPicks={proPicks} proRegionFilter={proRegionFilter} onProRegionFilterChange={onProRegionFilterChange} />;
-      case 'patches': return <PatchesTab patches={patches} loading={loading} selectedGame={selectedGame} />;
-      case 'broken': return <BrokenStuffTab champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />;
+      case 'patches': return <PatchesMetaTab patches={patches} champions={champions} insights={insights} loading={loading} selectedGame={selectedGame} />;
       case 'combos': return <CombosTab combos={combos} loading={loading} selectedGame={selectedGame} />;
       case 'comparison': return <ComparisonTab champions={champions} loading={loading} selectedGame={selectedGame} onChampionClick={onChampionClick} />;
       case 'coaching': return <CoachingTab selectedGame={selectedGame || ''} />;
