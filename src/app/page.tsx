@@ -197,31 +197,39 @@ export default function Home() {
   // ============ FETCH DATA ============
   const fetchData = useCallback(async () => {
     setLoading(true);
+    setFetchError(false);
+
+    // Fetch each endpoint independently — one failure won't crash the entire app
+    const safeJson = async <T,>(url: string): Promise<T | null> => {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`${res.status}`);
+        return await res.json() as T;
+      } catch (e) {
+        console.warn(`[MOBA SAGE] Failed: ${url}`, e);
+        return null;
+      }
+    };
+
     try {
-      const [champsRes, patchesRes, insightsRes, tasksRes, proRes, combosRes, versionRes] = await Promise.all([
-        fetch('/api/champions'),
-        fetch('/api/patches'),
-        fetch('/api/insights'),
-        fetch('/api/tasks'),
-        fetch('/api/pro-picks'),
-        fetch('/api/combos'),
-        fetch('/api/version'),
-      ]);
       const [champsData, patchesData, insightsData, tasksData, proData, combosData, versionData] = await Promise.all([
-        champsRes.json(),
-        patchesRes.json(),
-        insightsRes.json(),
-        tasksRes.json(),
-        proRes.json(),
-        combosRes.json(),
-        versionRes.json(),
+        safeJson('/api/champions'),
+        safeJson('/api/patches'),
+        safeJson('/api/insights'),
+        safeJson('/api/tasks'),
+        safeJson('/api/pro-picks'),
+        safeJson('/api/combos'),
+        safeJson('/api/version'),
       ]);
-      setChampions(champsData);
-      setPatches(patchesData);
-      setInsights(insightsData);
-      setTasks(tasksData);
-      setProPicks(proData);
-      setCombos(combosData);
+
+      // Apply results — only update state for successful fetches
+      if (champsData) setChampions(champsData);
+      if (patchesData) setPatches(patchesData);
+      if (insightsData) setInsights(insightsData);
+      if (tasksData) setTasks(tasksData);
+      if (proData) setProPicks(proData);
+      if (combosData) setCombos(combosData);
+
       if (versionData?.lol) {
         const fullVer = versionData.lol;
         setLiveVersions({
@@ -243,8 +251,13 @@ export default function Home() {
         const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         setLastUpdate(`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`);
       }
+
+      // Only show full error if ALL endpoints failed
+      if (!champsData && !patchesData && !insightsData && !tasksData && !proData && !combosData && !versionData) {
+        setFetchError(true);
+      }
     } catch (err) {
-      console.error('Error fetching data:', err);
+      console.error('Unexpected error in fetchData:', err);
       setFetchError(true);
     } finally {
       setLoading(false);
