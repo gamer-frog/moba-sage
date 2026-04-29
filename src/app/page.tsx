@@ -159,6 +159,8 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (showLoading) {
+        setInitialLoadDone(true);
+        setAppReady(true);
         setShowLoading(false);
       }
     }, 30000);
@@ -407,8 +409,12 @@ export default function Home() {
     try {
       const res = await fetch(`/api/summoner?name=${encodeURIComponent(summonerName)}&region=${summonerRegion}`);
       if (!res.ok) {
-        const errData = await res.json();
-        setSummonerError(errData.error || 'Error al buscar invocador');
+        try {
+          const errData = await res.json();
+          setSummonerError(errData.error || 'Error al buscar invocador');
+        } catch {
+          setSummonerError(`Error ${res.status}: No se pudo buscar el invocador`);
+        }
         return;
       }
       const data = await res.json();
@@ -430,6 +436,10 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: task.id, status: nextStatus }),
       });
+      if (!res.ok) {
+        console.error('Task update failed:', res.status);
+        return;
+      }
       const updated = await res.json();
       setTasks(prev => prev.map(t => t.id === task.id ? { ...t, status: updated.status } : t));
     } catch (err) {
@@ -618,7 +628,7 @@ export default function Home() {
 
       {/* Champion Modal */}
       <AnimatePresence>
-        {selectedChampion && (
+        {selectedChampion && !showLoading && (
           <ChampionModal key={selectedChampion.id} champion={selectedChampion} onClose={() => setSelectedChampion(null)} />
         )}
       </AnimatePresence>
