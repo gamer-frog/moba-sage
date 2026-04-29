@@ -156,3 +156,25 @@ Stage Summary:
 - 2 files changed, 539 insertions, 194 deletions
 - Commit 8d4e44f pushed as electronica-frog
 - Loading screen now shows real data: version info, 7 data sources with status, latency, record counts, timestamps
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Fix loading screen — too short, popup overlap, crash bug
+
+Work Log:
+- Found bug: `useState(Date.now)` stores a number, but `loadStartTime()` tried to call it as function → runtime crash in finally block
+- Found ActivityPopup z-index 201 > LoadingScreen z-index 200 → popup appeared on top of loading
+- Found minimum display time too short (2.5s)
+- Rewrote loading-screen.tsx v4.0: fully self-contained, 5-second animated timeline, only fetches /api/version
+- Simplified page.tsx: removed all loading tracking state (loadingVersion, loadingSources, loadingStep, updateLoadingSource)
+- page.tsx back to simple parallel Promise.all fetches with 5s minimum before setting appReady
+- ActivityPopup now gated on appReady (loading gone + 400ms)
+- Fixed next.config.ts: removed eslint config (not valid in Next.js 16)
+- Build error from parent project (unrelated), Vercel builds fine
+
+Stage Summary:
+- 3 files changed, 211 insertions, 476 deletions (net -265 lines — simpler)
+- Commit 474bc17 pushed as electronica-frog
+- Loading screen now reliably shows for 5 seconds with animated data source progress
+- No popup interference possible during loading
