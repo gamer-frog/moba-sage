@@ -1,194 +1,134 @@
 {
-  "lastUpdated": "2026-04-27T05:53:08.090836+00:00",
-  "currentPatch": "26.9",
-  "nextPatch": "26.10 PBE",
-  "patchDate": "2026-05-06",
-  "keyChanges": [
-    "Zaahen: Nuevo campeón dominando top lane con WR 53.8% y 5.4% pick rate",
-    "Katarina: Sin cambios negativos, sigue como mid laner más tóxico con WR 53.4%",
-    "Nilah: Meta ADC con WR 53%, sinergia con supports peel es devastadora",
-    "Malphite: Sigue rompiendo con combo R + items tank AP, WR 52.8%",
-    "Aurelion Sol: Control de ola insano, ban rate subiendo con el meta actual",
-    "Briar: Nerf a sustain — baja de S pero sigue viable con WR 52.4%",
-    "Mordekaiser: Item nerfs significativos, caída fuerte a WR 45.2%",
-    "Ambessa: Nerf a burst y survivability, fuera del meta competitivo",
-    "Kha'Zix: Base damage nerf, menos impacto en jungle early game",
-    "Camille: Buff de stabilize — sube lentamente con WR 49.9%"
+  "version": "26.9",
+  "patchFull": "16.9.1",
+  "date": "2026-04-29",
+  "status": "current",
+  "season": "Season 2 — Pandemonium",
+  "previousPatch": "26.8",
+  "summary": "Patch 26.9 trae el inicio de Season 2 Pandemonium con nuevos items, controles WASD, y cambios significativos a campeones. Briar recibe nerfs a su sustain, Ambessa pierde burst + supervivencia, mientras que Taliyah, Warwick y Tahm Kench reciben buffs. El meta de split push se fortalece con Nasus, y los enchanters como Nami ganan terreno.",
+  "digest": "Season 2 Pandemonium llega con Patch 26.9. Meta shift hacia teamfighting y split push. Bruisers y enchanters fortalecidos. Assassins debilitados por nerfs a items lethality. Briar pierde su dominio en jungle.",
+  "highlights": [
+    "Inicio de Season 2 Pandemonium con temática de demonios",
+    "Briar nerf: R sustain reducido — pierde dominio en jungle y ranked bajo",
+    "Ambessa nerf: burst + survivability reducidos significativamente",
+    "Taliyah buff: mejoras en field check y utilidad en mid",
+    "Warwick buff: sustain y clear speed mejorados",
+    "Tahm Kench buff: viabilidad aumentada en support",
+    "Nasus rise: split push meta favorito con ghost buff",
+    "Viktor buff: Q damage aumentado — viable en mid/support",
+    "Zeri rise: ADC buffs por adjustments en items crit",
+    "Controles WASD opcionales — calidad de vida mejorada",
+    "Role quests ajustados — penalidades corregidas",
+    "Items mythic nuevos y reworks existentes"
   ],
-  "systemChanges": [
-    "Ajustes de balance general para temporada 26.9",
-    "Nerfs a items de omni-vamp para assassins",
-    "Revisión de jungle pathing y timers",
-    "Ajustes a torres y resistencias base",
-    "Cambios en runas de dominación y brujería",
-    "Nuevas skin lines anunciadas"
-  ],
-  "brokenChampions": [
-    {
-      "name": "Zaahen",
-      "reason": "Nuevo campeón rompiendo top lane. WR 53.8% con pick rate saludable. Build versátil.",
-      "tier": "S"
-    },
-    {
-      "name": "Katarina",
-      "reason": "Sin nerfs en 26.9. Burst combo sigue siendo top mid. Meta de teamfight le favorece.",
-      "tier": "S"
-    },
-    {
-      "name": "Nilah",
-      "reason": "Meta ADC dominante. Sinergia peel con supports es devastadora. WR 53% sostenido.",
-      "tier": "S"
-    },
-    {
-      "name": "Malphite",
-      "reason": "Combo R sigue siendo devastador. Meta tank AP le favorece enormemente. WR 52.8%.",
-      "tier": "S"
-    },
-    {
-      "name": "Aurelion Sol",
-      "reason": "Wave clear insano. Ban rate subiendo. Meta control de mapa le favorece.",
-      "tier": "S"
-    },
-    {
-      "name": "Veigar",
-      "reason": "Burst mage con CC infinito. Meta de teamfight prolongado. WR 52.5%.",
-      "tier": "S"
-    },
-    {
-      "name": "Jinx",
-      "reason": "Hypercarry con pick rate 10.8%. Item changes la benefician. WR 52.2%.",
-      "tier": "S"
-    },
-    {
-      "name": "Ornn",
-      "reason": "Tank con utilidad de equipo. Meta bruiser/tank le favorece. WR 52.1%.",
-      "tier": "S"
-    },
-    {
-      "name": "Diana",
-      "reason": "Jungle AP con burst fuerte. Sin nerfs recientes. WR 52.4%.",
-      "tier": "S"
-    },
-    {
-      "name": "Garen",
-      "reason": "Top lane consistente. WR 54.7% — el más alto del juego. Build simple efectivo.",
-      "tier": "S"
-    }
-  ],
-  "fallenChampions": [
-    {
-      "name": "Mordekaiser",
-      "reason": "Item nerfs significativos en 26.9. Caída directa a WR 45.2%. B-tier definitivo.",
-      "tier": "B"
-    },
-    {
-      "name": "Briar",
-      "reason": "Nerf a sustain en R. Menos tiempo inmune. Sigue fuerte pero no rota.",
-      "tier": "A"
-    },
-    {
-      "name": "Ambessa",
-      "reason": "Nerf a burst y survivability. Fuera de meta competitivo.",
-      "tier": "B"
-    },
-    {
-      "name": "Kha'Zix",
-      "reason": "Base damage nerf. Menos impacto en early game jungle.",
-      "tier": "B"
-    },
-    {
-      "name": "Azir",
-      "reason": "WR 43.8% — el más bajo del meta. Requiere demasiada inversión.",
-      "tier": "B"
-    }
-  ],
-  "itemImpact": {
-    "winners": [
-      "Rabadon's Deathcap",
-      "Jak'Sho, The Protean",
-      "Lich Bane",
-      "Horizon Focus",
-      "Eclipse"
+  "changes": {
+    "buffs": [
+      {
+        "champion": "Taliyah",
+        "details": "Mejoras en field check, utilidad general aumentada",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Warwick",
+        "details": "Sustain y clear speed mejorados",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Tahm Kench",
+        "details": "Viabilidad aumentada, stats buffeadas",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Viktor",
+        "details": "Q damage aumentado",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Zeri",
+        "details": "ADC buffs por adjustments en items crit",
+        "severity": "LOW"
+      },
+      {
+        "champion": "Nami",
+        "details": "Enchanter renaissance — peel meta favorece",
+        "severity": "LOW"
+      },
+      {
+        "champion": "Fiora",
+        "details": "Conqueror buffs — duelistas top",
+        "severity": "LOW"
+      },
+      {
+        "champion": "Camille",
+        "details": "Stabilize buff — WR subiendo de 49.9%",
+        "severity": "LOW"
+      }
     ],
-    "losers": [
-      "Kraken Slayer",
-      "Sundered Sky",
-      "Dead Man's Plate",
-      "Hullbreaker",
-      "Turbo Chemtank"
+    "nerfs": [
+      {
+        "champion": "Briar",
+        "details": "R sustain nerf — sustain y supervivencia reducidos",
+        "severity": "HIGH"
+      },
+      {
+        "champion": "Ambessa",
+        "details": "Burst + survivability nerfs significativos",
+        "severity": "HIGH"
+      },
+      {
+        "champion": "Kha'Zix",
+        "details": "Base damage nerf",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Mordekaiser",
+        "details": "Item nerfs indirectos — meta shift",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Yasuo",
+        "details": "Crit item adjustments — indirect nerf",
+        "severity": "LOW"
+      },
+      {
+        "champion": "Pyke",
+        "details": "Assassin item nerfs",
+        "severity": "MEDIUM"
+      }
+    ],
+    "adjustments": [
+      {
+        "champion": "Items lethality",
+        "details": "Ajustes en items de crit — impacto en ADCs y assassins",
+        "severity": "MEDIUM"
+      },
+      {
+        "champion": "Role quests",
+        "details": "Penalidades corregidas — menos punish por dodge",
+        "severity": "LOW"
+      },
+      {
+        "champion": "Controles",
+        "details": "WASD opcionales como mejora de QoL",
+        "severity": "LOW"
+      }
     ]
   },
-  "summary": "Patch 26.9 trae a Zaahen como nuevo campeón rompiendo top lane. Nerfs significativos a Mordekaiser, Briar y Ambessa. Buffs a Viktor y Camille. Meta shift hacia hypercarries ADC y enchanters support. Items de omni-vamp nerfeados afectan assassins.",
-  "patchChanges": [
-    {
-      "name": "Zaahen",
-      "changeType": "new",
-      "description": "Nuevo campeón — combo de daño alto en top lane. Build versátil bruiser/tank.",
-      "tierBefore": null,
-      "tierAfter": "S"
-    },
-    {
-      "name": "Viktor",
-      "changeType": "buff",
-      "description": "Q damage aumentado 10%. Mejor waveclear y trade en lane.",
-      "tierBefore": "A",
-      "tierAfter": "S"
-    },
-    {
-      "name": "Mordekaiser",
-      "changeType": "nerf",
-      "description": "Nerf a Demonio + Jak'Sho. Sustain reducido 15%. WR cayó a 45.2%.",
-      "tierBefore": "A",
-      "tierAfter": "B"
-    },
-    {
-      "name": "Briar",
-      "changeType": "nerf",
-      "description": "R sustain reducido. Menos tiempo invulnerable en ultimate.",
-      "tierBefore": "S",
-      "tierAfter": "A"
-    },
-    {
-      "name": "Ambessa",
-      "changeType": "nerf",
-      "description": "Burst damage reducido 8%. Shield reducido. Fuera de meta competitivo.",
-      "tierBefore": "A",
-      "tierAfter": "B"
-    },
-    {
-      "name": "Kha'Zix",
-      "changeType": "nerf",
-      "description": "Base damage Q reducido. Menos one-shot potential en early game.",
-      "tierBefore": "A",
-      "tierAfter": "B"
-    },
-    {
-      "name": "Camille",
-      "changeType": "buff",
-      "description": "Stabilize buff — E cooldown reducido. Subiendo lentamente en tier.",
-      "tierBefore": "B",
-      "tierAfter": "A"
-    },
-    {
-      "name": "Nami",
-      "changeType": "adjustment",
-      "description": "Heal amplificado con items de support. Meta enchanter le favorece.",
-      "tierBefore": "A",
-      "tierAfter": "S"
-    },
-    {
-      "name": "Zeri",
-      "changeType": "buff",
-      "description": "ADC crit buffs. Mejor scaling en late game. Subiendo en pick rate.",
-      "tierBefore": "B",
-      "tierAfter": "A"
-    },
-    {
-      "name": "Nasus",
-      "changeType": "adjustment",
-      "description": "Ghost interaction mejorado. Split push meta le favorece enormemente.",
-      "tierBefore": "A",
-      "tierAfter": "A"
-    }
-  ]
+  "metaDirection": [
+    "Teamfighting y split push meta se fortalecen — bruisers y enchanters suben",
+    "Assassins debilitados por nerfs a items lethality y Briar/Ambessa",
+    "Enchanters meta renacido: Nami, Soraka, Zyra ganan terreno",
+    "Top lane diversificación: Nasus, Fiora, Ornn como picks sólidos",
+    "Jungle control meta: Karthus, Nocturne, Viego mantienen dominance"
+  ],
+  "nextPatch": {
+    "version": "26.10",
+    "scheduledDate": "2026-05-13",
+    "pbeStatus": "active",
+    "source": "https://www.surrenderat20.net/pbe/changes/"
+  },
+  "officialNotes": {
+    "en": "https://www.leagueoflegends.com/en-us/news/game-updates/league-of-legends-patch-26-9-notes/",
+    "es": "https://www.leagueoflegends.com/es-es/news/game-updates/league-of-legends-patch-26-9-notes/"
+  }
 }
