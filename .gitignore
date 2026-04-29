@@ -67,3 +67,10 @@ tier_list*.png
 combos_tab.png
 --timeout
 /moba-sage
+
+# Root-level screenshots (Puppeteer audit artifacts)
+/*.png
+!/public/**/*.png
+/download/
+payload*.json
+/upload/

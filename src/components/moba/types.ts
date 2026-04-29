@@ -19,6 +19,17 @@ export interface Champion {
   banRate: number;
   patch: string;
   game: string;
+  // Data layer fields (Prisma / embedded fallback)
+  image?: string;
+  aiInsight?: string;
+  build?: string;
+  counters?: string;
+  synergies?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  metaUpdated?: boolean;
+  metaSources?: string[];
+  // UI / meta analysis fields
   builds?: ChampionBuild[];
   counterPick?: string;
   synergy?: string;

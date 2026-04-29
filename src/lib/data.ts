@@ -3,86 +3,10 @@
 // Fallback: Prisma (local) → Embedded data (Vercel/serverless)
 // ============================================================
 
-export interface Champion {
-  id: number;
-  name: string;
-  title: string;
-  role: string;
-  tier: string;
-  winRate: number;
-  pickRate: number;
-  banRate: number;
-  image: string;
-  aiInsight: string;
-  build: string;
-  counters: string;
-  synergies: string;
-  patch: string;
-  game: string;
-  createdAt?: string;
-  updatedAt?: string;
-  // New fields
-  builds?: { name: string; items: string; winRate: number }[];
-  counterPick?: string;
-  synergy?: string;
-  aiAnalysis?: string;
-  proPickRate?: number;
-  brokenThings?: string[];
-  buildLinks?: { label: string; url: string }[];
-  runes?: { primary: string; secondary: string; shards: string };
-  metaUpdated?: boolean; // true = datos verificados con fuentes reales del parche actual
-  metaSources?: string[]; // fuentes: ['U.GG', 'Mobalytics', 'Blitz', ...]
-}
-
-export interface PatchNote {
-  id: number;
-  version: string;
-  title: string;
-  summary: string;
-  digest: string;
-  date: string;
-  sourceGame: string;
-}
-
-export interface AiInsight {
-  id: number;
-  champion: string;
-  category: string;
-  content: string;
-  confidence: number;
-  date: string;
-}
-
-export interface TaskItem {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-  pointer: number;
-  interval: number;
-}
-
-export interface ProPick {
-  id: number;
-  champion: string;
-  role: string;
-  tournament: string;
-  region: string;
-  pickRate: number;
-  banRate: number;
-  winRate: number;
-  patch: string;
-}
-
-export interface BrokenCombo {
-  id: number;
-  name: string;
-  champions: string[];      // champion names
-  description: string;      // why it's broken
-  winRate: number;
-  game: string;             // 'LoL' or 'WR'
-  difficulty: 'fácil' | 'media' | 'difícil';
-}
+// Re-export canonical types from components/moba/types.ts
+// All type definitions live in ONE place to avoid drift
+export type { Champion, PatchNote, AiInsight, TaskItem, ProPick, BrokenCombo } from '@/components/moba/types';
+import type { Champion, PatchNote, AiInsight, TaskItem, ProPick, BrokenCombo } from '@/components/moba/types';
 
 // ============================================================
 // EMBEDDED DATA (fallback when Prisma/SQLite isn't available)
