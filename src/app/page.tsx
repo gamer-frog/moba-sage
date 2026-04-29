@@ -280,6 +280,12 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Scroll to top when switching tabs
+  const handleTabChange = useCallback((tab: string) => {
+    setActiveTab(tab);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   // Listen for notification bell tab switch + search button
   useEffect(() => {
     function handleTabSwitch(e: Event) {
@@ -536,7 +542,7 @@ export default function Home() {
       />
 
       {/* Sidebar Navigation — desktop fixed + mobile drawer */}
-      {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
+      {selectedGame && <SidebarNav activeTab={activeTab} onTabChange={handleTabChange} gamePatch={selectedGame === 'wildrift' ? liveVersions.wr : liveVersions.gamePatch} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
 
       {/* Content — offset for sidebar on desktop, bottom nav on mobile */}
       <main id="main-content" className={`flex-1 w-full px-3 sm:px-4 py-4 sm:py-6 transition-all duration-300 overflow-x-hidden ${selectedGame ? 'lg:ml-[220px] lg:w-[calc(100%-220px)] pb-24 lg:pb-6' : ''}`} role="main">
@@ -595,7 +601,7 @@ export default function Home() {
       {!selectedGame && <MinimapDecoration />}
 
       {/* Bottom Navigation — mobile only */}
-      {selectedGame && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} onOpenSidebar={() => setSidebarOpen(true)} />}
+      {selectedGame && <BottomNav activeTab={activeTab} onTabChange={handleTabChange} onOpenSidebar={() => setSidebarOpen(true)} />}
 
       <div className="lol-divider" />
 
