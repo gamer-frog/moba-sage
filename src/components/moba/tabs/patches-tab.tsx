@@ -158,8 +158,15 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
       try {
         const res = await fetch('/patches-feed.json');
         if (res.ok) {
-          const data: PatchesFeed = await res.json();
-          setFeedPatches(data.patches || []);
+          const raw = await res.json();
+          // Handle both plain array and { patches: [...] } format
+          if (Array.isArray(raw)) {
+            setFeedPatches(raw);
+          } else if (raw?.patches && Array.isArray(raw.patches)) {
+            setFeedPatches(raw.patches);
+          } else {
+            setFeedPatches([]);
+          }
         }
       } catch (err) {
         console.error('Error loading patches feed:', err);
