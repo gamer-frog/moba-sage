@@ -607,8 +607,9 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                       backgroundImage: `url(${currentSplashUrl})`,
                       filter: 'brightness(0.55) contrast(1.15) saturate(1.3)',
                     }}
-                    onError={() => setImgError(true)}
-                  />
+                  >
+                    <img src={currentSplashUrl} alt="" className="hidden" onError={() => setImgError(true)} />
+                  </div>
                 ) : (
                   <div
                     className="absolute inset-0"
@@ -657,8 +658,9 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                     <div
                       className="absolute inset-0 bg-cover bg-center"
                       style={{ backgroundImage: `url(${championTileUrl})` }}
-                      onError={() => setImgError(true)}
-                    />
+                    >
+                      <img src={championTileUrl} alt="" className="hidden" onError={() => setImgError(true)} />
+                    </div>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center" style={{ background: `${cfg.color}30` }}>
                       <span className="text-2xl font-black" style={{ color: cfg.color }}>{champion.name[0]}</span>
@@ -784,8 +786,9 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                         <div
                           className="absolute inset-0 bg-cover bg-center"
                           style={{ backgroundImage: `url(${splashUrl})`, filter: 'brightness(0.6) saturate(1.2)' }}
-                          onError={() => handleSkinError(skinNum)}
-                        />
+                        >
+                          <img src={splashUrl} alt="" className="hidden" onError={() => handleSkinError(skinNum)} />
+                        </div>
                       ) : (
                         <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cfg.color}10, rgba(10,14,26,0.5))` }} />
                       )}
