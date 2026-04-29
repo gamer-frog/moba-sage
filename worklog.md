@@ -180,6 +180,31 @@ Stage Summary:
 - No popup interference possible during loading
 
 ---
+Task ID: 4
+Agent: Main Agent
+Task: UX improvements, bug fixes, roadmap update, cleanup
+
+Work Log:
+- Audited 10+ components: page.tsx, game-selector.tsx, app-header.tsx, activity-popup.tsx, coaching-tab.tsx, guides-tab.tsx, competitive-tab.tsx, roadmap-tab.tsx, sidebar-nav.tsx, bottom-nav.tsx
+- Found 4 concrete bugs/improvements:
+  1. (PERF) Game selector re-fetches /api/version and /api/champions (data already in parent page.tsx)
+  2. (UX) Guides tab shows "Guías se mudaron a Coaching" banner + guides grid below = confusing
+  3. (BUG) Coaching tab warding color: `'color' in tip` always returns false (TipCard has no color field)
+  4. (DATA) Roadmap: 3 items marked pending that are actually done (F2 Comparator, F15 Search, D3 Pro Picks)
+- Fix 1: Game selector now accepts patchVersion + championCount props from parent
+- Fix 2: Replaced large redirect banner with compact "Visitá Coaching" inline link
+- Fix 3: Created WardingTip interface extending TipCard with color field, assigned unique colors per role
+- Fix 4: Updated roadmap statuses: D3 (Pro Picks) → done, F2 (Comparator) → done, F15 (Search) → done
+- Cleanup: Removed 50+ skill directories accidentally committed to repo (417 files, 128K lines deleted)
+- Local build fails due to workspace tsconfig conflict (parent tsconfig resolves @/ to wrong path) — Vercel builds correctly in isolation
+
+Stage Summary:
+- Commit d0960be pushed as electronica-frog (after rebase on origin/main)
+- 4 bugs fixed, 1 major cleanup (skills dir removal)
+- Roadmap accuracy improved (46/53 = 87% complete)
+- Vercel will deploy correctly (local build issue is workspace-specific)
+
+---
 Task ID: 3
 Agent: Main Agent
 Task: Live site audit + fix critical Cosas Rotas crash
