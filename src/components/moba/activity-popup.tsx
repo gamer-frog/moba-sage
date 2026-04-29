@@ -194,11 +194,11 @@ export function ActivityPopup() {
                             href={`https://github.com/gamer-frog/moba-sage/commit/${latestEntry.commit}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-[8px] text-[#0acbe6] hover:text-[#f0e6d2] transition-colors font-mono"
+                            title={`Commit: ${latestEntry.commit.slice(0, 7)}`}\n                            className="flex items-center gap-1 text-[8px] text-[#0acbe6] hover:text-[#f0e6d2] transition-colors font-mono"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <GitCommit className="w-2.5 h-2.5" />
-                            {latestEntry.commit.slice(0, 7)}
+                            Ver commit
                             <ExternalLink className="w-2 h-2" />
                           </a>
                         )}
@@ -250,7 +250,7 @@ export function ActivityPopup() {
                             className="font-mono text-[#0acbe6] hover:text-[#f0e6d2] transition-colors"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            {entry.commit.slice(0, 7)}
+                            Ver commit
                           </a>
                         )}
                       </div>
