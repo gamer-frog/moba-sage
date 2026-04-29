@@ -224,3 +224,25 @@ Stage Summary:
 - Commit 85db875 pushed as electronica-frog
 - Cosas Rotas tab now loads properly with available data
 - 4 remaining bugs documented for next improvement cycle
+---
+Task ID: 1
+Agent: Main Agent
+Task: Loading screen v6 — longer timeline + "Entrar" button, no auto-dismiss
+
+Work Log:
+- Read current loading-screen.tsx (v5.0) and page.tsx
+- Found v5 had 8s timeline with skip button appearing at 3s (too early)
+- Extended all 7 data source animations from 8s to 12s spread
+- Each source now takes 2-3s to complete (was 1.5s)
+- Changed button: "Entrar a MOBA SAGE" appears ONLY after all sources finish (~12.5s)
+- Button has prominent gold gradient, pulsing green "Todos los datos cargados" indicator
+- Removed auto-dismiss on appReady — user controls when to enter
+- Added 30s safety fallback auto-dismiss
+- Fixed missing AnimatePresence import in loading-screen.tsx
+- Updated page.tsx: removed premature 400ms auto-dismiss, added 30s fallback timer
+- Build successful, pushed to main
+
+Stage Summary:
+- Loading screen v6 deployed — 12s readable animation + user-controlled "Entrar" button
+- Commit: a3b402e (local) / 87dc3e3 (remote)
+- No more auto-dismiss — loading stays until user clicks or 30s timeout
