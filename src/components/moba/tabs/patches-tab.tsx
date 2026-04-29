@@ -158,15 +158,8 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
       try {
         const res = await fetch('/patches-feed.json');
         if (res.ok) {
-          const raw = await res.json();
-          // Handle both plain array and { patches: [...] } format
-          if (Array.isArray(raw)) {
-            setFeedPatches(raw);
-          } else if (raw?.patches && Array.isArray(raw.patches)) {
-            setFeedPatches(raw.patches);
-          } else {
-            setFeedPatches([]);
-          }
+          const data: PatchesFeed = await res.json();
+          setFeedPatches(data.patches || []);
         }
       } catch (err) {
         console.error('Error loading patches feed:', err);
@@ -177,12 +170,12 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
     fetchFeed();
   }, []);
 
-  // Merge API patches with feed patches, deduplicate by version — exclude Valorant patches
+  // Merge API patches with feed patches — feed data wins on duplicate versions (richer content)
   const mergedPatches = useMemo(() => {
     const seenVersions = new Set<string>();
     const result: Array<PatchNote & { feedStatus?: string }> = [];
 
-    // First add API patches
+    // First add API patches (baseline)
     for (const p of patches) {
       if (p.sourceGame === 'VAL' || p.sourceGame === 'Valorant') continue;
       const key = `${p.sourceGame}-${p.version}`;
@@ -192,12 +185,13 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
       }
     }
 
-    // Then add feed patches (only if not already present, exclude Valorant)
+    // Then merge feed patches — if version already exists, ENRICH the existing entry with feed data
     for (const fp of feedPatches) {
       const normalizedGame = normalizeGame(fp.game);
       if (normalizedGame === 'VAL') continue;
       const key = `${normalizedGame}-${fp.version}`;
       if (!seenVersions.has(key)) {
+        // New patch from feed not in API
         seenVersions.add(key);
         result.push({
           id: typeof fp.id === 'number' ? fp.id : Date.now() + Math.random(),
@@ -212,13 +206,36 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
           changes: fp.changes,
         });
       } else {
-        // Update status if feed has one
+        // Existing patch — enrich with feed's richer data (highlights, changes, digest, better title/summary)
         const existing = result.find(r => `${r.sourceGame}-${r.version}` === key);
-        if (existing && fp.status && !('feedStatus' in existing)) {
-          (existing as PatchNote & { feedStatus?: string }).feedStatus = fp.status;
+        if (existing) {
+          if (fp.highlights && (!existing.highlights || existing.highlights.length === 0)) {
+            existing.highlights = fp.highlights;
+          }
+          if (fp.changes && Object.keys(fp.changes).length > 0 && (!existing.changes || Object.keys(existing.changes).length === 0)) {
+            existing.changes = fp.changes;
+          }
+          if (fp.digest && !existing.digest) {
+            existing.digest = fp.digest;
+          }
+          if (fp.title && fp.title.length > (existing.title?.length || 0)) {
+            existing.title = fp.title;
+          }
+          if (fp.summary && fp.summary.length > (existing.summary?.length || 0)) {
+            existing.summary = fp.summary;
+          }
+          if (fp.status) {
+            (existing as PatchNote & { feedStatus?: string }).feedStatus = fp.status;
+          }
+          if (fp.url) {
+            existing.url = fp.url;
+          }
         }
       }
     }
+
+    // Sort by date descending (newest first)
+    result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return result;
   }, [patches, feedPatches]);
