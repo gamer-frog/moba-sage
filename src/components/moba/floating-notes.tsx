@@ -146,6 +146,7 @@ export function FloatingNotes() {
         animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         title="Cosas para Mejorar"
+        aria-label={isOpen ? 'Cerrar panel de notas' : 'Abrir Cosas para Mejorar'}
       >
         <AnimatePresence mode="wait">
           {isOpen ? (

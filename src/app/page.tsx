@@ -212,7 +212,7 @@ export default function Home() {
     };
 
     try {
-      const [champsData, patchesData, insightsData, tasksData, proData, combosData, versionData] = await Promise.all([
+      const [champsData, patchesData, insightsData, tasksData, proData, combosData, versionData] = await Promise.all<Promise<unknown>>([
         safeJson('/api/champions'),
         safeJson('/api/patches'),
         safeJson('/api/insights'),
@@ -220,15 +220,15 @@ export default function Home() {
         safeJson('/api/pro-picks'),
         safeJson('/api/combos'),
         safeJson('/api/version'),
-      ]);
+      ]) as [Champion[], PatchNote[], AiInsight[], TaskItem[], ProPick[], BrokenCombo[], { lol: string; wr: string; gamePatch: string; metaLastUpdated: string; fetchedAt?: string } | null];
 
       // Apply results — only update state for successful fetches
-      if (champsData) setChampions(champsData);
-      if (patchesData) setPatches(patchesData);
-      if (insightsData) setInsights(insightsData);
-      if (tasksData) setTasks(tasksData);
-      if (proData) setProPicks(proData);
-      if (combosData) setCombos(combosData);
+      if (champsData) setChampions(champsData as Champion[]);
+      if (patchesData) setPatches(patchesData as PatchNote[]);
+      if (insightsData) setInsights(insightsData as AiInsight[]);
+      if (tasksData) setTasks(tasksData as TaskItem[]);
+      if (proData) setProPicks(proData as ProPick[]);
+      if (combosData) setCombos(combosData as BrokenCombo[]);
 
       if (versionData?.lol) {
         const fullVer = versionData.lol;

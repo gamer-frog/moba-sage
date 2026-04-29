@@ -1,32 +1,32 @@
 {
-  "lastUpdated": "2026-04-29T01:15:00.000Z",
+  "lastUpdated": "2026-04-30T02:00:00.000Z",
   "source": "Ralph Loop v3 — MOBA SAGE auto-update (web search + CDragon + DDragon)",
-  "version": 9,
+  "version": 10,
   "sources": [
     {
       "name": "Mobalytics",
       "url": "https://mobalytics.gg/lol/tier-list",
-      "lastScraped": "2026-04-29T01:15:00Z"
+      "lastScraped": "2026-04-30T02:00:00Z"
     },
     {
       "name": "U.GG",
       "url": "https://u.gg/lol/tier-list",
-      "lastScraped": "2026-04-29T01:15:00Z"
+      "lastScraped": "2026-04-30T02:00:00Z"
     },
     {
       "name": "Skill Capped",
       "url": "https://www.skill-capped.com/lol#TierList2609",
-      "lastScraped": "2026-04-29T01:15:00Z"
+      "lastScraped": "2026-04-30T02:00:00Z"
     },
     {
       "name": "Riot Phroxzon (X)",
       "url": "https://x.com/RiotPhroxzon",
-      "lastScraped": "2026-04-29T01:15:00Z"
+      "lastScraped": "2026-04-30T02:00:00Z"
     },
     {
       "name": "DDragon 16.9.1",
       "url": "https://ddragon.leagueoflegends.com/cdn/16.9.1",
-      "lastScraped": "2026-04-29T01:15:00Z"
+      "lastScraped": "2026-04-30T02:00:00Z"
     }
   ],
   "lol": {
@@ -267,7 +267,7 @@
     "rising": [],
     "falling": []
   },
-  "metaLastUpdated": "2026-04-29T01:15:00Z",
+  "metaLastUpdated": "2026-04-30T02:00:00Z",
   "patch": "26.9 — Season 2 Pandemonium (live)",
   "nextPatch": {
     "version": "26.10",

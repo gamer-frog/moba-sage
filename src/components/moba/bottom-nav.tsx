@@ -1,4 +1,3 @@
-SHA: e2d1238d3cf16d318876c24c67fb66957a8ce046
 'use client';
 
 import { motion } from 'framer-motion';
@@ -68,4 +67,3 @@ export function BottomNav({ activeTab, onTabChange, onOpenSidebar }: { activeTab
     </nav>
   );
 }
-
