@@ -191,11 +191,14 @@ export function TierListTab({
     if (tierChamps.length > 0) groupedChampions[tier] = tierChamps;
   });
 
-  // Meta overview stats
-  const sTiers = gameChampions.filter(c => c.tier === 'S');
-  const topWR = [...gameChampions].sort((a, b) => b.winRate - a.winRate).slice(0, 3);
-  const topBan = [...gameChampions].sort((a, b) => b.banRate - a.banRate).slice(0, 3);
-  const topPick = [...gameChampions].sort((a, b) => b.pickRate - a.pickRate).slice(0, 3);
+  // Meta overview stats (memoized — expensive sorts on 160+ champions)
+  const { sTiers, topWR, topBan, topPick } = useMemo(() => {
+    const s = gameChampions.filter(c => c.tier === 'S');
+    const twr = [...gameChampions].sort((a, b) => b.winRate - a.winRate).slice(0, 3);
+    const tb = [...gameChampions].sort((a, b) => b.banRate - a.banRate).slice(0, 3);
+    const tp = [...gameChampions].sort((a, b) => b.pickRate - a.pickRate).slice(0, 3);
+    return { sTiers: s, topWR: twr, topBan: tb, topPick: tp };
+  }, [gameChampions]);
 
   // Rising & falling data from feed
   const risingChampions = feedData?.lol?.rising || [];

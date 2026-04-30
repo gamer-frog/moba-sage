@@ -29,6 +29,8 @@ export function ActivityPopup() {
     if (sessionStorage.getItem('moba-sage-popup-seen')) return;
 
     let cancelled = false;
+    let showTimer: ReturnType<typeof setTimeout>;
+    let dismissTimer: ReturnType<typeof setTimeout>;
     (async () => {
       try {
         const res = await fetch('/activity-feed.json');
@@ -36,18 +38,21 @@ export function ActivityPopup() {
           const data = await res.json();
           setFeed(data);
           setMounted(true);
-          setTimeout(() => { if (!cancelled) setShow(true); }, 800);
-            // Auto-dismiss after 8 seconds
-            setTimeout(() => { if (!cancelled) {
-              setShow(false);
-              sessionStorage.setItem('moba-sage-popup-seen', 'true');
-            }}, 8000);
+          showTimer = setTimeout(() => { if (!cancelled) setShow(true); }, 800);
+          dismissTimer = setTimeout(() => { if (!cancelled) {
+            setShow(false);
+            sessionStorage.setItem('moba-sage-popup-seen', 'true');
+          }}, 8000);
         }
       } catch (err) {
         console.error('Failed to load activity feed for popup:', err);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      clearTimeout(showTimer);
+      clearTimeout(dismissTimer);
+    };
   }, []);
 
   // Escape key handler

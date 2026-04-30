@@ -184,7 +184,7 @@ export default function Home() {
     activeTab, selectedGame, champions, patches, insights, tasks, combos, proPicks,
     loading, fetchError, searchQuery, roleFilter, proRegionFilter, favorites,
     summonerName, summonerRegion, summonerData, summonerLoading, summonerError,
-    liveVersions, toggleFavorite, handleToggleChampion, handleSearchSummoner, fetchData, fetchError,
+    liveVersions, toggleFavorite, handleToggleChampion, handleSearchSummoner, fetchData, handleToggleTask,
   ]);
 
   // ============ RENDER ============

@@ -101,33 +101,42 @@ export function useGameData() {
 
   // Initial data fetch (with loading overlay)
   const fetchData = useCallback(async () => {
+    const controller = new AbortController();
     setLoading(true);
     setFetchError(false);
     try {
       const data = await fetchAllEndpoints();
+      if (controller.signal.aborted) return;
       const allFailed = applyData(data);
       if (allFailed) setFetchError(true);
     } catch (err) {
+      if (controller.signal.aborted) return;
       console.error('Unexpected error in fetchData:', err);
       setFetchError(true);
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) setLoading(false);
     }
+    return () => controller.abort();
   }, [applyData]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
   // Silent refresh (no loading overlay — no flicker)
   const handleRefresh = useCallback(async () => {
+    const controller = new AbortController();
     setIsRefreshing(true);
     setFetchError(false);
     try {
-      await fetchAllEndpoints().then(applyData);
+      const data = await fetchAllEndpoints();
+      if (controller.signal.aborted) return;
+      await applyData(data);
     } catch (err) {
+      if (controller.signal.aborted) return;
       console.error('Silent refresh error:', err);
     } finally {
-      setIsRefreshing(false);
+      if (!controller.signal.aborted) setIsRefreshing(false);
     }
+    return () => controller.abort();
   }, [applyData]);
 
   return {

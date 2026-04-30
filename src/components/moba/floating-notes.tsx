@@ -110,6 +110,7 @@ export function FloatingNotes() {
     if (diffHours < 24) return `hace ${Math.floor(diffHours)}h`;
 
     return date.toLocaleDateString('es-AR', {
+      timeZone: 'America/Argentina/Buenos_Aires',
       day: '2-digit',
       month: '2-digit',
       hour: '2-digit',

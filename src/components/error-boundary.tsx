@@ -1,6 +1,7 @@
 'use client';
 
 import { Component, type ReactNode } from 'react';
+import { Sword } from 'lucide-react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -33,7 +34,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       return (
         <div className="min-h-screen flex flex-col items-center justify-center p-8" style={{ backgroundColor: '#0a0e1a' }}>
           <div className="text-center max-w-md">
-            <div className="text-6xl mb-4">⚔️</div>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #c8aa6e, #785a28)', boxShadow: '0 0 30px rgba(200,170,110,0.3)' }}>
+              <Sword className="w-8 h-8 text-[#0a0e1a]" />
+            </div>
             <h1
               className="text-3xl font-black mb-3 lol-heading"
               style={{ color: '#c8aa6e', textShadow: '0 0 30px rgba(200,170,110,0.3)' }}

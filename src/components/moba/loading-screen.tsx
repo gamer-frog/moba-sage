@@ -129,7 +129,11 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
   }, [handleKeyDown]);
 
   const getGreeting = () => {
-    const h = new Date().getHours();
+    const h = parseInt(new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Argentina/Buenos_Aires',
+      hour: 'numeric',
+      hour12: false,
+    }).format(new Date()), 10);
     if (h >= 5 && h < 12) return 'Buenos dias';
     if (h >= 12 && h < 19) return 'Buenas tardes';
     return 'Buenas noches';
