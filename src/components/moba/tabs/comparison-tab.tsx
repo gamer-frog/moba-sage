@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GitCompare, Search, X, Sparkles, AlertTriangle, Crosshair, Users } from 'lucide-react';
 import { ChampionIcon, TinyChampionIcon } from '../champion-icon';
 import { RoleBadge } from '../badges';
-import { TIER_CONFIG, ROLE_CONFIG } from '../constants';
+import { TIER_CONFIG } from '../constants';
 import { getChampionSplashUrl } from '../helpers';
 import type { Champion, GameSelection } from '../types';
 
@@ -231,7 +231,6 @@ function ChampionSelector({
 // ============================================================
 function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 'left' | 'right' }) {
   const cfg = TIER_CONFIG[champion.tier];
-  const [imgError] = useState(false);
   const splashUrl = getChampionSplashUrl(champion.name, 0);
 
   const counterNames = champion.counterPick
@@ -251,14 +250,10 @@ function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 
     >
       {/* Splash Art Header */}
       <div className="relative rounded-xl overflow-hidden" style={{ height: '140px', border: `1.5px solid ${cfg.color}40` }}>
-        {!imgError ? (
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${splashUrl})`, filter: 'brightness(0.5) contrast(1.1) saturate(1.2)' }}
-          />
-        ) : (
-          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cfg.color}20, rgba(10,14,26,0.8))` }} />
-        )}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${splashUrl})`, filter: 'brightness(0.5) contrast(1.1) saturate(1.2)' }}
+        />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 20%, rgba(10,14,26,0.95) 100%)' }} />
         {/* Gold accent top */}
         <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, transparent, ${cfg.color}, transparent)` }} />

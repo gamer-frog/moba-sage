@@ -76,6 +76,8 @@ export function TabContent() {
           favorites={ctx.favorites} onToggleFavorite={ctx.onToggleFavorite}
           onChampionClick={ctx.onChampionClick}
           metaLastUpdated={ctx.liveVersions.metaLastUpdated}
+          proPicks={ctx.proPicks}
+          proRegionFilter={ctx.proRegionFilter} onProRegionFilterChange={ctx.onProRegionFilterChange}
         />
       );
     }

@@ -14,6 +14,104 @@ function isRecent(ts: string): boolean {
   return diff >= 0 && diff <= sevenDaysMs;
 }
 
+function NotifDetailPopup({ notif, onClose }: { notif: ActivityEntry; onClose: () => void }) {
+  const notifColor = TYPE_COLORS[notif.type] || '#a09b8c';
+  const NotifIcon = TYPE_ICONS[notif.type] || Sparkles;
+  return (
+    <motion.div
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.85, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+        className="w-full max-w-md rounded-2xl overflow-hidden relative"
+        style={{
+          background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
+          border: `1.5px solid ${notifColor}40`,
+          boxShadow: `0 0 60px ${notifColor}15, 0 25px 50px rgba(0,0,0,0.6)`,
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Detail Header */}
+        <div className="p-6 pb-4" style={{ borderBottom: `1px solid ${notifColor}15` }}>
+          <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Cerrar">
+            <X className="w-4 h-4 text-lol-muted" />
+          </button>
+
+          {/* Type icon + badge */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+              style={{ background: `${notifColor}18`, border: `1.5px solid ${notifColor}30`, boxShadow: `0 0 20px ${notifColor}15` }}>
+              <NotifIcon className="w-6 h-6" style={{ color: notifColor }} />
+            </div>
+            <span className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider lol-label"
+              style={{ background: `${notifColor}15`, color: notifColor, border: `1px solid ${notifColor}30` }}>
+              {notif.type}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-lg font-bold text-lol-text lol-title mb-2" style={{ color: notifColor === '#c8aa6e' ? '#c8aa6e' : '#f0e6d2' }}>
+            {notif.title}
+          </h2>
+
+          {/* Timestamp */}
+          <div className="flex items-center gap-2 text-[10px] text-lol-dim">
+            <Clock className="w-3 h-3" />
+            <span>{formatTimestamp(notif.timestamp)}</span>
+            <span className="text-lol-gold-dark">·</span>
+            <span>{timeAgo(notif.timestamp)}</span>
+          </div>
+        </div>
+
+        {/* Detail Body */}
+        <div className="p-6 space-y-4">
+          {/* Description */}
+          <div className="rounded-xl p-4" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}>
+            <p className="text-sm text-lol-muted leading-relaxed">{notif.description}</p>
+          </div>
+
+          {/* Category badge */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-lol-dim uppercase tracking-wider">Categoría:</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.08)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.15)' }}>
+              {notif.category}
+            </span>
+          </div>
+
+          {/* Commit link */}
+          {notif.commit && (
+            <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(15,186,129,0.06)', border: '1px solid rgba(15,186,129,0.15)' }}>
+              <Rocket className="w-4 h-4 text-lol-green shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] text-lol-dim uppercase tracking-wider">Commit</p>
+                <p className="text-xs text-lol-muted font-mono truncate">{notif.commit}</p>
+              </div>
+              <a
+                href={`https://github.com/gamer-frog/moba-sage/commit/${notif.commit}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all hover:scale-105 shrink-0"
+                style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.3)', color: '#0fba81' }}
+              >
+                <ExternalLink className="w-3 h-3" />
+                Ver en GitHub
+              </a>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export function AppHeader({
   selectedGame,
   liveVersions,
@@ -304,103 +402,9 @@ export function AppHeader({
 
       {/* Notification Detail Popup — Full Screen Overlay */}
       <AnimatePresence>
-        {selectedNotif && (() => {
-          const notifColor = TYPE_COLORS[selectedNotif.type] || '#a09b8c';
-          const NotifIcon = TYPE_ICONS[selectedNotif.type] || Sparkles;
-          return (
-            <motion.div
-              className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-              style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedNotif(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.85, opacity: 0 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-                className="w-full max-w-md rounded-2xl overflow-hidden relative"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
-                  border: `1.5px solid ${notifColor}40`,
-                  boxShadow: `0 0 60px ${notifColor}15, 0 25px 50px rgba(0,0,0,0.6)`,
-                }}
-                onClick={e => e.stopPropagation()}
-              >
-                {/* Detail Header */}
-                <div className="p-6 pb-4" style={{ borderBottom: `1px solid ${notifColor}15` }}>
-                  <button onClick={() => setSelectedNotif(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Cerrar">
-                    <X className="w-4 h-4 text-lol-muted" />
-                  </button>
-
-                  {/* Type icon + badge */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-                      style={{ background: `${notifColor}18`, border: `1.5px solid ${notifColor}30`, boxShadow: `0 0 20px ${notifColor}15` }}>
-                      <NotifIcon className="w-6 h-6" style={{ color: notifColor }} />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider lol-label"
-                      style={{ background: `${notifColor}15`, color: notifColor, border: `1px solid ${notifColor}30` }}>
-                      {selectedNotif.type}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h2 className="text-lg font-bold text-lol-text lol-title mb-2" style={{ color: notifColor === '#c8aa6e' ? '#c8aa6e' : '#f0e6d2' }}>
-                    {selectedNotif.title}
-                  </h2>
-
-                  {/* Timestamp */}
-                  <div className="flex items-center gap-2 text-[10px] text-lol-dim">
-                    <Clock className="w-3 h-3" />
-                    <span>{formatTimestamp(selectedNotif.timestamp)}</span>
-                    <span className="text-lol-gold-dark">·</span>
-                    <span>{timeAgo(selectedNotif.timestamp)}</span>
-                  </div>
-                </div>
-
-                {/* Detail Body */}
-                <div className="p-6 space-y-4">
-                  {/* Description */}
-                  <div className="rounded-xl p-4" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}>
-                    <p className="text-sm text-lol-muted leading-relaxed">{selectedNotif.description}</p>
-                  </div>
-
-                  {/* Category badge */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-lol-dim uppercase tracking-wider">Categoría:</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.08)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.15)' }}>
-                      {selectedNotif.category}
-                    </span>
-                  </div>
-
-                  {/* Commit link */}
-                  {selectedNotif.commit && (
-                    <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(15,186,129,0.06)', border: '1px solid rgba(15,186,129,0.15)' }}>
-                      <Rocket className="w-4 h-4 text-lol-green shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] text-lol-dim uppercase tracking-wider">Commit</p>
-                        <p className="text-xs text-lol-muted font-mono truncate">{selectedNotif.commit}</p>
-                      </div>
-                      <a
-                        href={`https://github.com/gamer-frog/moba-sage/commit/${selectedNotif.commit}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all hover:scale-105 shrink-0"
-                        style={{ background: 'rgba(15,186,129,0.1)', border: '1px solid rgba(15,186,129,0.3)', color: '#0fba81' }}
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        Ver en GitHub
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            </motion.div>
-          );
-        })()}
+        {selectedNotif && (
+          <NotifDetailPopup notif={selectedNotif} onClose={() => setSelectedNotif(null)} />
+        )}
       </AnimatePresence>
     </header>
   );

@@ -66,7 +66,7 @@ export function FloatingNotes() {
   async function handleSubmit() {
     if (!newNote.trim() || !authorName.trim()) return;
 
-    const author = authorName.trim() || 'Anónimo';
+    const author = authorName.trim();
     setSubmitting(true);
 
     try {

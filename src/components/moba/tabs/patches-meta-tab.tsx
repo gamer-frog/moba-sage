@@ -645,6 +645,8 @@ export function PatchesMetaTab({
     const champInGame = gameChampions.some(c => c.name === i.champion);
     return (i.category === 'meta' || i.category === 'buff') && champInGame;
   });
+  const metaCategoryInsights = metaInsights.filter(i => i.category === 'meta');
+  const buffCategoryInsights = metaInsights.filter(i => i.category === 'buff');
   const sTierChamps = gameChampions.filter(c => c.tier === 'S');
   const aTierChamps = gameChampions.filter(c => c.tier === 'A').slice(0, 12);
   const bTierChamps = gameChampions.filter(c => c.tier === 'B');
@@ -996,15 +998,15 @@ export function PatchesMetaTab({
                 </div>
                 <div className="space-y-6">
                   {/* Combos Rotos */}
-                  {metaInsights.filter(i => i.category === 'meta').length > 0 && (
+                  {metaCategoryInsights.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 mb-3">
                         <span className="text-sm font-bold text-lol-danger">💥 Combos Rotos</span>
                         <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.2), transparent)' }} />
-                        <span className="text-[10px] text-lol-dim">{metaInsights.filter(i => i.category === 'meta').length}</span>
+                        <span className="text-[10px] text-lol-dim">{metaCategoryInsights.length}</span>
                       </div>
                       <div className="space-y-3">
-                        {metaInsights.filter(i => i.category === 'meta').map((insight, i) => {
+                        {metaCategoryInsights.map((insight, i) => {
                           const metaImpact = Math.min(insight.confidence * 100, 100);
                           return (
                             <motion.div key={insight.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: i * 0.04 }} className="glass-card rounded-xl p-3 sm:p-4 border-l-4 hover:border-lol-danger/40 transition-colors" style={{ borderLeftColor: '#e84057', background: 'linear-gradient(135deg, rgba(232,64,87,0.03), rgba(30,35,40,0.5))' }}>
@@ -1042,15 +1044,15 @@ export function PatchesMetaTab({
                     </div>
                   )}
                   {/* Items & Buffs */}
-                  {metaInsights.filter(i => i.category === 'buff').length > 0 && (
+                  {buffCategoryInsights.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 mb-3">
                         <span className="text-sm font-bold text-lol-success">🔧 Items & Buffs</span>
                         <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(10,203,230,0.2), transparent)' }} />
-                        <span className="text-[10px] text-lol-dim">{metaInsights.filter(i => i.category === 'buff').length}</span>
+                        <span className="text-[10px] text-lol-dim">{buffCategoryInsights.length}</span>
                       </div>
                       <div className="space-y-3">
-                        {metaInsights.filter(i => i.category === 'buff').map((insight, i) => {
+                        {buffCategoryInsights.map((insight, i) => {
                           const metaImpact = Math.min(insight.confidence * 100, 100);
                           return (
                             <motion.div key={insight.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: i * 0.04 }} className="glass-card rounded-xl p-3 sm:p-4 border-l-4 hover:border-lol-success/40 transition-colors" style={{ borderLeftColor: '#0acbe6', background: 'linear-gradient(135deg, rgba(10,203,230,0.03), rgba(30,35,40,0.5))' }}>

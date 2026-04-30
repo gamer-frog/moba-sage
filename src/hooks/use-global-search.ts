@@ -47,7 +47,8 @@ export function useGlobalSearch(selectedGame: GameSelection, champions: Champion
   // Auto-focus search input when opened
   useEffect(() => {
     if (globalSearchOpen && globalSearchRef.current) {
-      setTimeout(() => globalSearchRef.current?.focus(), 100);
+      const timer = setTimeout(() => globalSearchRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
     }
   }, [globalSearchOpen]);
 

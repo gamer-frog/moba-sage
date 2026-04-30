@@ -179,10 +179,11 @@ export function ProfileTab({
       <div className="glass-card rounded-xl p-5 space-y-4">
         <div className="space-y-3">
           <div>
-            <label className="text-xs font-medium text-lol-muted mb-1.5 block tracking-wide uppercase">Nombre de Invocador</label>
+            <label htmlFor="summoner-name" className="text-xs font-medium text-lol-muted mb-1.5 block tracking-wide uppercase">Nombre de Invocador</label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-lol-dim" />
               <Input
+                id="summoner-name"
                 placeholder="Ej: Faker"
                 value={summonerName}
                 onChange={e => onSummonerNameChange(e.target.value)}
@@ -192,10 +193,11 @@ export function ProfileTab({
             </div>
           </div>
           <div>
-            <label className="text-xs font-medium text-lol-muted mb-1.5 block tracking-wide uppercase">Región</label>
+            <label htmlFor="summoner-region" className="text-xs font-medium text-lol-muted mb-1.5 block tracking-wide uppercase">Región</label>
             <div className="relative">
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-lol-dim pointer-events-none" />
               <select
+                id="summoner-region"
                 value={summonerRegion}
                 onChange={e => onSummonerRegionChange(e.target.value)}
                 className="w-full pl-10 pr-8 h-10 rounded-lg bg-lol-bg/60 border-lol-gold-dark/30 text-lol-text text-sm appearance-none cursor-pointer focus:outline-none focus:border-lol-gold focus:ring-[#c8aa6e]/20"
