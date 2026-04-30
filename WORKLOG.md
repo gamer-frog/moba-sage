@@ -34,3 +34,21 @@ Work Log:
 Stage Summary:
 - 7 fixes across 7 files: loading-screen.tsx, activity-popup.tsx, floating-notes.tsx, tier-list-tab.tsx, use-game-data.ts, page.tsx, error-boundary.tsx
 - Build passes clean, pushed as electronica-frog as commit a4949d8
+
+---
+Task ID: 6
+Agent: main
+Task: Round 6 — 7 codebase improvements
+
+Work Log:
+- Fixed champion-card tile URL to use CHAMPION_NAME_MAP (Wukong, Fiddlesticks, K'Sante etc. had 404s)
+- Added aria-current to dev nav sidebar items (a11y consistency with game nav)
+- Wrapped 5 page.tsx handlers in useCallback (fixes defeated contextValue useMemo)
+- Wired AbortController cleanup in useGameData useEffect (return value was discarded)
+- Guarded patches-meta-tab selectedTimelinePatch index + removed redundant sorts on pre-sorted array
+- Memoized getWeeklyWRHistory in WeeklyWRChart + sanitized SVG gradient ID (perf + edge case)
+- Refactored CopyBuildButton setTimeout to useEffect cleanup pattern (memory leak fix)
+
+Stage Summary:
+- 7 fixes across 7 files: champion-card.tsx, sidebar-nav.tsx, page.tsx, use-game-data.ts, patches-meta-tab.tsx, weekly-wr-chart.tsx, copy-build-button.tsx
+- Build passes clean, pushed as electronica-frog as commit fd7a2bd
