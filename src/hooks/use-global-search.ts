@@ -8,12 +8,13 @@ export function useGlobalSearch(selectedGame: GameSelection, champions: Champion
   const [globalSearchQuery, setGlobalSearchQuery] = useState('');
   const globalSearchRef = useRef<HTMLInputElement>(null);
 
-  // Filter champions by search query (memoized)
+  // Filter champions by search query and selected game (memoized)
   const searchResults = useMemo(() => {
+    const filtered = champions.filter(c => !selectedGame || c.game === selectedGame);
     return globalSearchQuery.trim().length > 0
-      ? champions.filter(c => c.name.toLowerCase().includes(globalSearchQuery.toLowerCase())).slice(0, 8)
-      : champions.slice(0, 8);
-  }, [globalSearchQuery, champions]);
+      ? filtered.filter(c => c.name.toLowerCase().includes(globalSearchQuery.toLowerCase())).slice(0, 8)
+      : filtered.slice(0, 8);
+  }, [globalSearchQuery, champions, selectedGame]);
 
   // Listen for custom search open event
   useEffect(() => {

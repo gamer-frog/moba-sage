@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 export function GoldParticles() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -13,18 +13,19 @@ export function GoldParticles() {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // If user prefers reduced motion, render minimal static particles (no animation)
-  const particleCount = reducedMotion ? 0 : 25;
-
-  const particles = Array.from({ length: particleCount }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    size: `${2 + Math.random() * 3}px`,
-    duration: `${10 + Math.random() * 15}s`,
-    delay: `${Math.random() * 10}s`,
-    drift: `${-30 + Math.random() * 60}px`,
-    glow: `${4 + Math.random() * 8}px`,
-  }));
+  // Memoize particles so random positions are stable across re-renders
+  const particles = useMemo(() => {
+    const count = reducedMotion ? 0 : 25;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      size: `${2 + Math.random() * 3}px`,
+      duration: `${10 + Math.random() * 15}s`,
+      delay: `${Math.random() * 10}s`,
+      drift: `${-30 + Math.random() * 60}px`,
+      glow: `${4 + Math.random() * 8}px`,
+    }));
+  }, [reducedMotion]);
 
   return (
     <div className="lol-gold-particles" aria-hidden="true">

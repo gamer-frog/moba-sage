@@ -46,16 +46,15 @@ export function formatDateShort(iso: string): string {
   }
 }
 
-/** Full timestamp — "30 Abr 2026 · 14:08" */
+/** Full timestamp — "30 Abr 2026 · 14:08" (ARG timezone) */
 export function formatTimestamp(ts: string): string {
   try {
     const d = new Date(ts);
-    const day = d.getDate();
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const month = months[d.getMonth()];
-    const hours = d.getHours().toString().padStart(2, '0');
-    const mins = d.getMinutes().toString().padStart(2, '0');
-    return `${day} ${month} ${d.getFullYear()} · ${hours}:${mins}`;
+    const day = d.toLocaleDateString('es-AR', { timeZone: TZ, day: 'numeric' });
+    const month = d.toLocaleDateString('es-AR', { timeZone: TZ, month: 'short' });
+    const year = d.toLocaleDateString('es-AR', { timeZone: TZ, year: 'numeric' });
+    const time = d.toLocaleTimeString('es-AR', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false });
+    return `${day} ${month} ${year} · ${time}`;
   } catch {
     return '';
   }

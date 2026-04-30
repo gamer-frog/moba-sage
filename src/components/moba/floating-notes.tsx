@@ -20,7 +20,6 @@ export function FloatingNotes() {
   const [authorName, setAuthorName] = useState('');
   const [newNote, setNewNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [, setExpandedNote] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -95,7 +94,6 @@ export function FloatingNotes() {
       const res = await fetch(`/api/notes?id=${id}`, { method: 'DELETE' });
       if (res.ok) {
         await fetchNotes();
-        setExpandedNote(null);
       }
     } catch (err) {
       console.error('Failed to delete note:', err);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, Clock, X, ExternalLink, Search, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -41,28 +41,29 @@ export function AppHeader({
   const bellRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    async function loadActivity() {
-      try {
-        const res = await fetch('/activity-feed.json');
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.entries) {
-            setRecentEntries(
-              data.entries
-                .filter((e: ActivityEntry) => isRecent(e.timestamp))
-                .sort((a: ActivityEntry, b: ActivityEntry) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-            );
-          }
+  const loadActivity = useCallback(async () => {
+    try {
+      const res = await fetch('/activity-feed.json');
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.entries) {
+          setRecentEntries(
+            data.entries
+              .filter((e: ActivityEntry) => isRecent(e.timestamp))
+              .sort((a: ActivityEntry, b: ActivityEntry) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+          );
         }
-      } catch (err) {
-        console.error('Failed to load activity for bell:', err);
       }
+    } catch (err) {
+      console.error('Failed to load activity for bell:', err);
     }
+  }, []);
+
+  useEffect(() => {
     loadActivity();
     const interval = setInterval(loadActivity, 300000);
     return () => clearInterval(interval);
-  }, []);
+  }, [loadActivity]);
 
   // Click outside to close dropdown
   // Use a ref flag to prevent the opening click from immediately closing the dropdown

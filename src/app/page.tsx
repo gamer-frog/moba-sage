@@ -262,8 +262,8 @@ export default function Home() {
               </div>
 
               {/* Results */}
-              <div className="max-h-72 overflow-y-auto scrollbar-none">
-                {searchResults.length === 0 ? (
+              <div className="max-h-72 overflow-y-auto scrollbar-none" role="listbox" aria-label="Resultados de búsqueda">
+                {searchResults.length === 0 && globalSearchQuery.trim().length > 0 ? (
                   <div className="px-5 py-8 text-center">
                     <Search className="w-8 h-8 mx-auto mb-2 text-lol-gold-dark/30" />
                     <p className="text-xs text-lol-dim">No se encontraron campeones</p>
@@ -290,7 +290,7 @@ export default function Home() {
 
               {/* Footer hint */}
               <div className="px-5 py-2.5 flex items-center justify-between text-[10px] text-lol-dim border-t border-lol-gold-dark/10">
-                <span>{champions.length} campeones disponibles</span>
+                <span aria-live="polite">{searchResults.length} campeones disponibles</span>
                 <span>Enter para seleccionar · Esc para cerrar</span>
               </div>
             </motion.div>

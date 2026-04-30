@@ -73,14 +73,18 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
 
   useEffect(() => {
     if (champion.tier !== 'S') return;
-    fetch('/api/meta-builds?refresh=false')
+    const controller = new AbortController();
+    fetch('/api/meta-builds?refresh=false', { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
         if (data.builds && data.builds[champion.name]) {
           setMetaBuild(data.builds[champion.name]);
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.warn('Meta build fetch failed:', err);
+      });
+    return () => controller.abort();
   }, [champion.name, champion.tier]);
 
   const handleSkinError = (skinNum: number) => {
