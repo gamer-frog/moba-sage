@@ -11,6 +11,7 @@ import {
   severityConfig,
   ERROLO_COLORS,
 } from '@/data/coaching-data';
+import type { GameSelection } from '../types';
 
 // Group errors by elo
 function groupErrorsByElo(errors: { elo: string; severity: string; title: string; description: string }[]): Record<string, typeof errors> {
@@ -25,7 +26,7 @@ function groupErrorsByElo(errors: { elo: string; severity: string; title: string
 }
 
 // ============ COMPONENT ============
-export function CoachingTab({ selectedGame }: { selectedGame: string | null }) {
+export function CoachingTab({ selectedGame }: { selectedGame: GameSelection }) {
   const [openCategory, setOpenCategory] = useState<string | null>('fase-de-linea');
   const [openRoleCategory, setOpenRoleCategory] = useState<string | null>(null);
   const [openSection, setOpenSection] = useState<string | null>('mecanicas');
@@ -253,7 +254,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string | null }) {
                               </div>
                               <div className="space-y-1.5">
                                 {errs.map((err, i) => {
-                                  const sev = severityConfig[err.severity as keyof typeof severityConfig];
+                                  const sev = severityConfig[err.severity as keyof typeof severityConfig] ?? severityConfig.common;
                                   return (
                                     <motion.div
                                       key={i}

@@ -18,6 +18,7 @@ export function FloatingNotes() {
   const [isOpen, setIsOpen] = useState(false);
   const [notes, setNotes] = useState<Note[]>([]);
   const [authorName, setAuthorName] = useState('');
+  const [editingAuthor, setEditingAuthor] = useState(false);
   const [newNote, setNewNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -27,7 +28,7 @@ export function FloatingNotes() {
   // Load author name from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('moba-sage-notes-author');
-    if (saved) setAuthorName(saved);
+    if (saved) { setAuthorName(saved); setEditingAuthor(false); } else { setEditingAuthor(true); }
   }, []);
 
   const fetchNotes = useCallback(async () => {
@@ -286,15 +287,18 @@ export function FloatingNotes() {
                     <span>{submitError}</span>
                   </div>
                 )}
-                {/* Author name */}
-                {!authorName && (
+                {/* Author name — show input while editing, show name once saved */}
+                {editingAuthor && (
                   <div className="mb-2">
                     <Input
                       placeholder="Tu nombre (se guarda)"
                       value={authorName}
                       onChange={e => setAuthorName(e.target.value)}
+                      onBlur={() => { if (authorName.trim()) { localStorage.setItem('moba-sage-author', authorName); setEditingAuthor(false); } }}
+                      onKeyDown={e => { if (e.key === 'Enter' && authorName.trim()) { localStorage.setItem('moba-sage-author', authorName); setEditingAuthor(false); } }}
                       className="h-8 text-xs bg-lol-card/80 border-lol-gold-dark/30 text-lol-text placeholder:text-lol-dim rounded-lg"
                       maxLength={30}
+                      autoFocus={false}
                     />
                   </div>
                 )}
@@ -334,7 +338,7 @@ export function FloatingNotes() {
                   <p className="text-[10px] text-lol-dim mt-1.5 flex items-center gap-1">
                     <MessageSquare className="w-2.5 h-2.5" />
                     Publicando como <span className="text-lol-gold font-medium">{authorName}</span>
-                    <button onClick={() => { setAuthorName(''); localStorage.removeItem('moba-sage-notes-author'); }} className="ml-1 text-lol-danger/60 hover:text-lol-danger cursor-pointer">cambiar</button>
+                    <button onClick={() => { setAuthorName(''); setEditingAuthor(true); localStorage.removeItem('moba-sage-notes-author'); }} className="ml-1 text-lol-danger/60 hover:text-lol-danger cursor-pointer">cambiar</button>
                   </p>
                 )}
               </div>

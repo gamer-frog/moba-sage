@@ -104,15 +104,22 @@ type ChangeCategory = 'newItems' | 'removedItems' | 'reworkedItems' | 'reworkedR
 // ============================================================
 
 const ITEM_DESCRIPTIONS: Record<string, string> = {
-  "Doran's Bow": 'Starting item para ADC — on-hit damage scaling',
-  "Doran's Helm": 'Starting item para tanques — HP y resistencias bonus',
-  'Gluttonous Greaves': 'Botas con omnivamp — sustain para fighters',
-  'Immortal Path': 'Nuevo mythic para duelists — lifesteal + attack speed',
-  'Trailblazer': 'Jungle enchant — velocidad de movimiento en bush',
-  'Opportunity': 'Mythic ADC — crit scaling con execute',
-  'Dusk and Dawn': 'Item híbrido — transición día/noche dinámica',
-  'Dawnstone': 'Support mythic — shielding y haste para allies',
-  'Dawnstone (support mythic)': 'Support mythic — shielding y haste para allies',
+  // Season 2 — New Starting Items
+  "Doran's Bow": 'Starting item para ADC — on-hit damage scaling y vida desde nivel 1. Permite builds agresivos early.',
+  "Doran's Helm": 'Starting item para tanques y fighters — HP bonus y resistencias. Fortalece la fase de lanes.',
+  // Season 2 — New/Reworked Items
+  'Gluttonous Greaves': 'Botas con omnivamp integrado — sustain para fighters que necesitan mantenerse en lane.',
+  'Statikk Shiv': 'Rework on-hit — Ya no es crit puro. Escala con velocidad de ataque, ideal para builds alternativos ADC.',
+  'Dusk and Dawn': 'Rework con transición día/noche — Stats dinámicos según el estado del juego.',
+  // Removed Items (for reference in patch notes)
+  'Trailblazer': 'Jungle enchant eliminado — velocidad de movimiento en bush ya no disponible.',
+  'Opportunity': 'Mythic ADC eliminado — execute basado en vida del objetivo ya no disponible.',
+  'Phase Rush': 'Keyston eliminado — Era dominante para Gragas, Irelia, Shyvana. Migrar a Grasp o Comet.',
+  // Season 2 — Returning Runes
+  'Deathfire Touch': 'Keyston de Brujería — DoT basado en nivel + bonus vs low-HP. Dominante para mages de control.',
+  "Stormraider's Surge": 'Keyston de Brujería clásico — Movimiento masivo para engages sorpresa.',
+  // Reworked Runes
+  'Hail of Blades': 'Rework — Escala mejor con velocidad de ataque, synergiza con builds on-hit.',
 };
 
 function getChangeCategoryStyle(category: string): { color: string; bg: string; border: string; label: string; icon: typeof ArrowUp; isItem: boolean; isChampion: boolean } {
@@ -344,13 +351,15 @@ function getLoLChampionHighlights(patch: { sourceGame: string; version: string; 
   const nerfKeywords = ['reducido', 'nerf', 'disminuido', 'debilitado', 'recortado', 'ajustado a la baja'];
   const adjustKeywords = ['ajustado', 'retrabajado', 'cambiado', 'modificado', 'actualizado', 'rebalanceado'];
   const championNames = [
-    'Ahri', 'Akali', 'Aatrox', 'Amumu', 'Annie', 'Ashe', 'Blitzcrank', 'Brand', 'Braum',
-    'Caitlyn', 'Camille', 'Darius', 'Diana', 'Draven', 'Ekko', 'Elise', 'Ezreal', 'Fiora',
-    'Garen', 'Gragas', 'Graves', 'Irelia', 'Janna', 'Jarvan', 'Jax', 'Jayce', 'Jinx',
-    "Kai'Sa", 'Katarina', 'Lee Sin', 'Leona', 'Lulu', 'Lux', 'Malphite', 'Miss Fortune',
-    'Mordekaiser', 'Morgana', 'Nasus', 'Nautilus', 'Nidalee', 'Orianna', 'Pantheon',
-    'Pyke', 'Riven', 'Rengar', 'Senna', 'Sett', 'Sion', 'Sona', 'Syndra', 'Thresh',
-    'Tristana', 'Twitch', 'Varus', 'Vayne', 'Veigar', 'Vi', 'Yasuo', 'Yone', 'Zed', 'Zeri', 'Ziggs',
+    'Ahri', 'Akali', 'Aatrox', 'Ambessa', 'Amumu', 'Annie', 'Ashe', 'Aurora', 'Blitzcrank', 'Brand', 'Braum',
+    'Briar', 'Caitlyn', 'Camille', 'Darius', 'Diana', 'Draven', 'Ekko', 'Elise', 'Ezreal', 'Fiora',
+    'Garen', 'Gragas', 'Graves', 'Gwen', 'Hwei', 'Irelia', 'Janna', 'Jarvan', 'Jax', 'Jayce', 'Jinx',
+    "Kai'Sa", 'Kennen', 'Karthus', 'Katarina', "Kha'Zix", 'Lee Sin', 'Leona', 'Lulu', 'Lux', 'Malphite',
+    'Miss Fortune', 'Mordekaiser', 'Morgana', 'Nasus', 'Naafiri', 'Nautilus', 'Nidalee', 'Nami', 'Nilah',
+    'Orianna', 'Pantheon', 'Pyke', 'Renata', 'Rell', 'Riven', 'Rengar', 'Senna', 'Sett', 'Shyvana',
+    'Sion', 'Smolder', 'Sona', 'Syndra', 'Tahm Kench', 'Taliyah', 'Teemo', 'Thresh', 'Tristana',
+    'Twitch', 'Udyr', 'Varus', 'Vayne', 'Veigar', 'Vex', 'Vi', 'Viktor', 'Warwick', 'Xin Zhao',
+    'Yasuo', 'Yone', 'Yuumi', 'Zaahen', 'Zed', 'Zeri', 'Ziggs',
   ];
   const foundChampions = championNames.filter(name => text.includes(name.toLowerCase())).slice(0, 4);
   if (foundChampions.length === 0) {
@@ -810,8 +819,10 @@ export function PatchesMetaTab({
     const directions: string[] = [];
     if (buffs.length > nerfs.length) directions.push('Meta diversificándose — más campeones viables');
     if (nerfs.length >= 2) directions.push('Nerfs agresivos podrían cambiar el meta fuertemente');
-    if (selectedPatchHighlights.some(h => h.name === 'Jinx' || h.name === 'Vayne' || h.name === "Kog'Maw")) directions.push('Hyper carries podrían volverse dominantes');
-    if (selectedPatchHighlights.some(h => h.name === 'Darius' || h.name === 'Fiora' || h.name === "K'Sante")) directions.push('Bruisers top lane en el spotlight');
+    if (selectedPatchHighlights.some(h => h.name === 'Jinx' || h.name === 'Vayne' || h.name === 'Smolder' || h.name === 'Zeri')) directions.push('Hyper carries podrían volverse dominantes');
+    if (selectedPatchHighlights.some(h => h.name === 'Darius' || h.name === 'Fiora' || h.name === 'Nasus' || h.name === 'Camille')) directions.push('Bruisers top lane en el spotlight');
+    if (selectedPatchHighlights.some(h => h.name === 'Karthus' || h.name === 'Brand' || h.name === 'Malzahar')) directions.push('Mages de control con DFT podrían dominar mid lane');
+    if (selectedPatchHighlights.some(h => h.name === 'Warwick' || h.name === 'Viego' || h.name === 'Ezreal')) directions.push('Junglers con sustain y scaling en ascenso');
     if (directions.length === 0) directions.push('Ajustes menores — meta estable con ligeros cambios');
     return directions;
   }, [selectedPatchHighlights]);
@@ -879,9 +890,9 @@ export function PatchesMetaTab({
                   Patch {latestPatch?.version || patchAnalysis?.currentPatch || '26.9'}
                 </span>
               </div>
-              <p className="text-xs text-lol-muted leading-relaxed mb-2.5">La segunda temporada llega con temática de demonios. Nuevas runas, items y controles revolucionan la Grieta del Invocador.</p>
+              <p className="text-xs text-lol-muted leading-relaxed mb-2.5">La segunda temporada de 2026 llega con temática de demonios. Deathfire Touch y Stormraider's Surge regresan. Nuevos items starting, cambios masivos a runas, y reworks de items mythic definen un meta completamente nuevo.</p>
               <div className="flex flex-wrap gap-1.5">
-                {['DFT + Stormraider', 'Shiv on-hit', 'Hard Reset', 'WASD Ranked'].map(feature => (
+                {['DFT + Stormraider', 'Shiv on-hit', 'Role Quests', 'Doran Bow/Helm', 'Roaming Buff'].map(feature => (
                   <span key={feature} className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium" style={{ background: 'rgba(200,170,110,0.08)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.2)' }}>
                     <Gem className="w-2.5 h-2.5" />
                     {feature}

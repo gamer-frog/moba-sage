@@ -10,7 +10,9 @@ export function useGlobalSearch(selectedGame: GameSelection, champions: Champion
 
   // Filter champions by search query and selected game (memoized)
   const searchResults = useMemo(() => {
-    const filtered = champions.filter(c => !selectedGame || c.game === selectedGame);
+    const gameMap: Record<string, string> = { lol: 'LoL', wildrift: 'WR' };
+    const gameValue = selectedGame ? gameMap[selectedGame] : null;
+    const filtered = champions.filter(c => !gameValue || c.game === gameValue);
     return globalSearchQuery.trim().length > 0
       ? filtered.filter(c => c.name.toLowerCase().includes(globalSearchQuery.toLowerCase())).slice(0, 8)
       : filtered.slice(0, 8);

@@ -2,7 +2,7 @@
 // MOBA SAGE — Helper Functions
 // ============================================================
 
-let _ddVersion = '16.8.1'; // Auto-synced with Data Dragon API — v1.9.1 stable
+let _ddVersion = '16.9.1'; // Auto-synced with Data Dragon API — v1.9.2 stable
 export function updateDdVersion(v: string) { _ddVersion = v; }
 export function getDdVersion() { return _ddVersion; }
 
@@ -27,6 +27,20 @@ export const CHAMPION_NAME_MAP: Record<string, string> = {
   'Jarvan IV': 'JarvanIV',
   'Aatrox': 'Aatrox',
   'Zaahen': 'Zaahen',
+  'Ambessa': 'Ambessa',
+  'Smolder': 'Smolder',
+  'Vex': 'Vex',
+  'Aurora': 'Aurora',
+  'Hwei': 'Hwei',
+  'Naafiri': 'Naafiri',
+  'Ksante': 'KSante',
+  'Renata': 'Renata',
+  'Rell': 'Rell',
+  'Yuumi': 'Yuumi',
+  'Senna': 'Senna',
+  'Gwen': 'Gwen',
+  'Vex': 'Vex',
+  'Nilah': 'Nilah',
 };
 
 export function getChampionImageUrl(name: string): string {
@@ -93,6 +107,22 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Duskblade of Draktharr': '6691',
   'Immortal Shieldbow': '6673',
   'Immortal Path': '6673',
+  // Additional Season 2 items
+  'Eclipse (Mythic)': '6692',
+  'Black Cleaver': '3071',
+  'Frozen Heart': '3110',
+  'Randuin Omen': '3143',
+  'Force of Nature': '4401',
+  'Dead Man Plate': '3742',
+  'Spirit Visage': '3065',
+  'Abyssal Mask': '3001',
+  'Morellonomicon': '3165',
+  'Cosmic Drive': '4629',
+  'Rabadon Deathcap': '3089',
+  'Void Staff': '3135',
+  'Luden Companion': '3475',
+  'Malignance': '4645',
+  'Stormsurge': '4646',
 };
 
 export function getItemIconUrl(itemName: string): string | null {

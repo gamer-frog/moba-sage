@@ -45,6 +45,8 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Focus trap + Escape to close
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
   useEffect(() => {
     const modal = modalRef.current;
     if (!modal) return;
@@ -53,7 +55,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
     if (focusable) focusable.focus();
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Escape') { onCloseRef.current(); return; }
       if (e.key === 'Tab' && modal) {
         const focusableEls = Array.from(modal.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
         if (focusableEls.length === 0) return;
@@ -69,7 +71,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
     };
-  }, [onClose]);
+  }, []);
 
   useEffect(() => {
     if (champion.tier !== 'S') return;
