@@ -123,3 +123,21 @@ Work Log:
 Stage Summary:
 - 8 fixes across 8 files: floating-notes.tsx, tasks-tab.tsx, ddragon/champions/route.ts, ddragon/items/route.ts, ddragon/runes/route.ts, champion-modal.tsx, modal/helpers.ts, use-global-search.ts
 - Build passes clean, pushed as electronica-frog as commit 05312f8
+
+---
+Task ID: 11
+Agent: main
+Task: Round 11 — 7 codebase improvements
+
+Work Log:
+- P1: Fixed DDragon items filter — inStore is boolean not string, .toString().includes('false') was excluding purchasable items
+- P2: Added res.ok check in DDragon main route (getLatestVersion) — same pattern as sub-routes
+- P2: Removed admin secret from query string in notes DELETE endpoint — now header-only (x-admin-secret), prevents URL leaks in logs
+- P2: Consolidated GitHub config — notes API now imports GITHUB_CONFIG from lib/github-config.ts (was hardcoded)
+- P3: Added rate limit map size cap (10k entries) with eviction — prevents unbounded memory growth in serverless
+- P3: Replaced raw <img> with Next.js Image in combos-tab splash art (WebP/AVIF, srcset, fill mode)
+- P3: Added ARIA listbox attributes to comparison-tab dropdown (aria-expanded, aria-haspopup, role=listbox, role=option, aria-selected)
+
+Stage Summary:
+- 7 fixes across 5 files: ddragon/items/route.ts, ddragon/route.ts, api/notes/route.ts, combos-tab.tsx, comparison-tab.tsx
+- Build passes clean, pushed as electronica-frog as commit 789d8c9
