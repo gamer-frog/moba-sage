@@ -1,8 +1,7 @@
 'use client';
 
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Swords } from 'lucide-react';
 import { CollapsibleSection } from '../collapsible-section';
-import { Swords } from 'lucide-react';
 import type { Champion } from '../types';
 import { getCounterStrategies } from './counter-strategies';
 

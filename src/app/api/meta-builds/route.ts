@@ -32,6 +32,8 @@ const S_TIER_CHAMPIONS = [
   { name: 'Graves', slug: 'graves', role: 'Jungle' },
 ];
 
+interface SearchResultItem { snippet?: string; title?: string; url?: string; }
+
 async function searchBuild(champion: string, _slug: string): Promise<Partial<ScrapedBuild>> {
   try {
     const { default: ZAI } = await import('z-ai-web-dev-sdk');
@@ -42,8 +44,10 @@ async function searchBuild(champion: string, _slug: string): Promise<Partial<Scr
       num: 3,
     });
 
-    const results: any[] = Array.isArray(result) ? result : (result as any).data || [];
-    const snippets = results.map((r: any) => r.snippet || '').join(' ');
+    const results: SearchResultItem[] = Array.isArray(result)
+      ? result
+      : ((result as { data?: SearchResultItem[] }).data || []);
+    const snippets = results.map((r) => r.snippet || '').join(' ');
     const text = snippets.toLowerCase();
 
     const knownItems = [
