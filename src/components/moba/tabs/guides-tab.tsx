@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tag, Swords, X, Clock, FileText, Info } from 'lucide-react';
+import { Tag, Swords, X, Clock, FileText, Info, BookOpen, Loader2 } from 'lucide-react';
 import { ChampionIcon } from '../champion-icon';
 
 // ---- Local types for guides feed ----
@@ -26,10 +26,6 @@ interface GuidesFeed {
   guides: GuideEntry[];
 }
 
-// Only LoL guides — no Valorant
-const GAME_FILTERS = ['Todos', 'LoL'] as const;
-type GameFilter = typeof GAME_FILTERS[number];
-
 // ---- Guide Detail Modal ----
 function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void }) {
   return (
@@ -50,10 +46,9 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl scrollbar-none"
+        className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl scrollbar-none border border-lol-gold/25"
         style={{
           background: 'linear-gradient(180deg, #1e2328 0%, #0a0e1a 100%)',
-          border: '1px solid rgba(200,170,110,0.25)',
           boxShadow: '0 0 60px rgba(200,170,110,0.1), 0 25px 50px rgba(0,0,0,0.5)',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -78,8 +73,7 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
               {guide.champion !== 'General' ? (
                 <ChampionIcon name={guide.champion} tier="A" />
               ) : (
-                <div className="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center"
-                  style={{ border: '2.5px solid rgba(200,170,110,0.4)', background: 'rgba(200,170,110,0.1)' }}>
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center border-[2.5px] border-lol-gold/40 bg-lol-gold/10">
                   <Swords className="w-6 h-6 text-lol-gold" />
                 </div>
               )}
@@ -88,8 +82,7 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
               <h2 className="lol-title text-lg text-lol-text leading-tight mb-2">{guide.title}</h2>
               <div className="flex items-center gap-2 flex-wrap">
                 <span
-                  className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.3)' }}
+                  className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-lol-gold/10 text-lol-gold border border-lol-gold/30"
                 >
                   LoL
                 </span>
@@ -125,8 +118,7 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
                 transition={{ delay: i * 0.05 }}
                 className="flex items-start gap-2.5"
               >
-                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.2)' }}>
+                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-lol-gold/10 border border-lol-gold/20">
                   <span className="text-[10px] font-bold text-lol-gold">{i + 1}</span>
                 </div>
                 <span className="text-xs text-lol-muted leading-relaxed">{point}</span>
@@ -153,10 +145,8 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
         )}
 
         {/* Content coming soon */}
-        <div className="mx-6 mb-6 p-4 rounded-xl text-center"
-          style={{ background: 'rgba(200,170,110,0.04)', border: '1px solid rgba(200,170,110,0.1)' }}>
-          <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center"
-            style={{ background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.15)' }}>
+        <div className="mx-6 mb-6 p-4 rounded-xl text-center bg-lol-gold/[0.04] border border-lol-gold/10">
+          <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center bg-lol-gold/10 border border-lol-gold/15">
             <Clock className="w-5 h-5 text-lol-gold" />
           </div>
           <p className="text-xs font-semibold text-lol-text mb-1">Contenido en desarrollo</p>
@@ -167,9 +157,17 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
   );
 }
 
+// ---- Fallback placeholder cards for empty state ----
+const PLACEHOLDER_GUIDES = [
+  { icon: <Swords className="w-5 h-5 text-lol-gold" />, title: 'Guías de Campeones', desc: 'Builds, runas y matchups detallados para cada campeón del meta.' },
+  { icon: <BookOpen className="w-5 h-5 text-lol-gold" />, title: 'Guías de Macro', desc: 'Wave management, rotaciones, objetivas y planificación de partidas.' },
+  { icon: <Tag className="w-5 h-5 text-lol-gold" />, title: 'Guías de Roles', desc: 'Estrategias específicas para cada rol: Top, Jungla, Mid, ADC y Support.' },
+];
+
 export function GuidesTab() {
   const [guides, setGuides] = useState<GuideEntry[]>([]);
   const [selectedGuide, setSelectedGuide] = useState<GuideEntry | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchGuides() {
@@ -183,6 +181,8 @@ export function GuidesTab() {
         }
       } catch (err) {
         console.error('Error loading guides:', err);
+      } finally {
+        setLoading(false);
       }
     }
     fetchGuides();
@@ -194,11 +194,7 @@ export function GuidesTab() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center gap-2.5 px-3 py-2 rounded-lg"
-        style={{
-          background: 'rgba(200,170,110,0.06)',
-          border: '1px solid rgba(200,170,110,0.15)',
-        }}
+        className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-lol-gold/6 border border-lol-gold/15"
       >
         <Info className="w-3.5 h-3.5 text-lol-gold shrink-0" />
         <p className="text-[11px] text-lol-muted flex-1">
@@ -211,6 +207,118 @@ export function GuidesTab() {
           </button>
         </p>
       </motion.div>
+
+      {/* Section header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-lol-gold" />
+          <h3 className="lol-label text-xs font-semibold text-lol-text uppercase tracking-wider">
+            Guías Disponibles
+          </h3>
+        </div>
+        {!loading && guides.length > 0 && (
+          <span className="text-[10px] text-lol-dim font-mono">{guides.length} guías</span>
+        )}
+      </div>
+
+      {/* Loading state */}
+      {loading && (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-6 h-6 text-lol-gold animate-spin" />
+          <span className="text-xs text-lol-dim ml-2">Cargando guías...</span>
+        </div>
+      )}
+
+      {/* Guide Card Grid */}
+      {!loading && guides.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {guides.map((guide, idx) => (
+            <motion.div
+              key={guide.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.05 }}
+              onClick={() => setSelectedGuide(guide)}
+              className="glass-card rounded-xl p-4 cursor-pointer lol-card-hover border border-lol-gold-dark/15"
+            >
+              {/* Champion icon + title + badges */}
+              <div className="flex items-start gap-3 mb-3">
+                <div className="shrink-0">
+                  {guide.champion !== 'General' ? (
+                    <ChampionIcon name={guide.champion} tier="A" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lol-gold/10 border border-lol-gold/30">
+                      <Swords className="w-5 h-5 text-lol-gold" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-semibold text-lol-text leading-tight mb-1 line-clamp-2 lol-title">{guide.title}</h4>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] font-mono text-lol-dim">v{guide.patch}</span>
+                    {guide.role && (
+                      <span className="text-[10px] text-lol-muted">· {guide.role}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Summary */}
+              <p className="text-xs text-lol-muted leading-relaxed line-clamp-3 mb-3">{guide.summary}</p>
+
+              {/* Tags */}
+              {guide.tags && guide.tags.length > 0 && (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {guide.tags.slice(0, 3).map(tag => (
+                    <span
+                      key={tag}
+                      className="text-[10px] px-2 py-0.5 rounded-full text-lol-dim bg-lol-card border border-lol-gold-dark/10"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                  {guide.tags.length > 3 && (
+                    <span className="text-[10px] text-lol-dim">+{guide.tags.length - 3}</span>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {/* Empty / Coming Soon State */}
+      {!loading && guides.length === 0 && (
+        <div className="space-y-4">
+          <div className="glass-card rounded-xl p-8 text-center border border-lol-gold-dark/15">
+            <BookOpen className="w-10 h-10 mx-auto mb-3 text-lol-gold/30" />
+            <p className="text-sm font-semibold text-lol-text mb-1">Próximamente</p>
+            <p className="text-xs text-lol-dim max-w-sm mx-auto">
+              Las guías detalladas con builds, runas y estrategias estarán disponibles pronto.
+              Mientras tanto, explorá las demás pestañas.
+            </p>
+          </div>
+
+          {/* Placeholder category cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {PLACEHOLDER_GUIDES.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="glass-card rounded-xl p-4 border border-lol-gold-dark/10"
+              >
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-lol-gold/10 border border-lol-gold/20 mb-3">
+                  {item.icon}
+                </div>
+                <h4 className="text-sm font-semibold text-lol-text mb-1 lol-title">{item.title}</h4>
+                <p className="text-[11px] text-lol-dim leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Guide Detail Modal */}
       <AnimatePresence>

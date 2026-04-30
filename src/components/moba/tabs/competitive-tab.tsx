@@ -69,7 +69,7 @@ export function CompetitiveTab({
           {/* Desktop Table View */}
           <div className="hidden sm:block">
             <div className="glass-card rounded-xl overflow-hidden">
-              <div className="grid grid-cols-[2.5rem_1fr_4rem_5rem_3.5rem_3.5rem_3.5rem] gap-2 px-4 py-2 lol-label text-[10px] text-lol-dim" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
+              <div className="grid grid-cols-[2.5rem_1fr_4rem_5rem_3.5rem_3.5rem_3.5rem] gap-2 px-4 py-2 lol-label text-[10px] text-lol-dim border-b border-lol-gold-dark/15">
                 <div />
                 <div>Campeón</div>
                 <div>Rol</div>
@@ -90,7 +90,7 @@ export function CompetitiveTab({
                   ))}
                 </div>
               ) : (
-                <div className="divide-y divide-[#785a28]/10">
+                <div className="divide-y divide-lol-gold-dark/10">
                   {filteredPicks.map((pick, idx) => (
                     <motion.div
                       key={pick.id}
@@ -111,8 +111,8 @@ export function CompetitiveTab({
                       </div>
                       <div className="flex items-center gap-2.5 shrink-0 text-[11px] w-[10.5rem] justify-end">
                         <span className="font-mono font-semibold text-lol-success w-14 text-right">{pick.pickRate}%</span>
-                        <span className="font-mono font-semibold w-14 text-right" style={{ color: pick.banRate > 10 ? '#e84057' : '#a09b8c' }}>{pick.banRate}%</span>
-                        <span className="font-mono font-semibold w-14 text-right" style={{ color: pick.winRate >= 54 ? '#0acbe6' : pick.winRate >= 50 ? '#a09b8c' : '#e84057' }}>{pick.winRate}%</span>
+                        <span className={`font-mono font-semibold w-14 text-right ${pick.banRate > 10 ? 'text-lol-danger' : 'text-lol-muted'}`}>{pick.banRate}%</span>
+                        <span className={`font-mono font-semibold w-14 text-right ${pick.winRate >= 54 ? 'text-lol-success' : pick.winRate >= 50 ? 'text-lol-muted' : 'text-lol-danger'}`}>{pick.winRate}%</span>
                       </div>
                     </motion.div>
                   ))}
@@ -177,7 +177,7 @@ function ProPickCard({ pick, index }: { pick: ProPick; index: number }) {
       <div className="p-4">
         {/* Header: champion icon + name + badges */}
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0" style={{ border: '2px solid rgba(200,170,110,0.3)' }}>
+          <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border-2 border-lol-gold/30">
             <SplashArtIcon name={pick.champion} />
           </div>
           <div className="flex-1 min-w-0">
@@ -196,16 +196,16 @@ function ProPickCard({ pick, index }: { pick: ProPick; index: number }) {
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-2">
-          <div className="rounded-lg p-2 text-center" style={{ background: 'rgba(10,203,230,0.08)', border: '1px solid rgba(10,203,230,0.15)' }}>
+          <div className="rounded-lg p-2 text-center bg-lol-success/8 border border-lol-success/15">
             <p className="text-sm font-mono font-bold text-lol-success">{pick.pickRate}%</p>
             <p className="text-[10px] text-lol-dim uppercase tracking-wider mt-0.5">Pick</p>
           </div>
-          <div className="rounded-lg p-2 text-center" style={{ background: pick.banRate > 10 ? 'rgba(232,64,87,0.08)' : 'rgba(160,155,140,0.05)', border: `1px solid ${pick.banRate > 10 ? 'rgba(232,64,87,0.15)' : 'rgba(160,155,140,0.1)'}` }}>
-            <p className="text-sm font-mono font-bold" style={{ color: pick.banRate > 10 ? '#e84057' : '#a09b8c' }}>{pick.banRate}%</p>
+          <div className={`rounded-lg p-2 text-center border ${pick.banRate > 10 ? 'bg-lol-danger/8 border-lol-danger/15' : 'bg-lol-muted/5 border-lol-muted/10'}`}>
+            <p className={`text-sm font-mono font-bold ${pick.banRate > 10 ? 'text-lol-danger' : 'text-lol-muted'}`}>{pick.banRate}%</p>
             <p className="text-[10px] text-lol-dim uppercase tracking-wider mt-0.5">Ban</p>
           </div>
-          <div className="rounded-lg p-2 text-center" style={{ background: 'rgba(15,186,129,0.08)', border: '1px solid rgba(15,186,129,0.15)' }}>
-            <p className="text-sm font-mono font-bold" style={{ color: pick.winRate >= 54 ? '#0acbe6' : pick.winRate >= 50 ? '#a09b8c' : '#e84057' }}>{pick.winRate}%</p>
+          <div className="rounded-lg p-2 text-center bg-lol-green/8 border border-lol-green/15">
+            <p className={`text-sm font-mono font-bold ${pick.winRate >= 54 ? 'text-lol-success' : pick.winRate >= 50 ? 'text-lol-muted' : 'text-lol-danger'}`}>{pick.winRate}%</p>
             <p className="text-[10px] text-lol-dim uppercase tracking-wider mt-0.5">WR</p>
           </div>
         </div>
@@ -221,7 +221,7 @@ function ProPickCard({ pick, index }: { pick: ProPick; index: number }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 pt-1" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
+            <div className="px-4 pb-4 pt-1 border-t border-lol-gold-dark/10">
               <div className="grid grid-cols-2 gap-3 mt-2">
                 <div className="space-y-1">
                   <p className="text-[10px] text-lol-dim uppercase tracking-wider">Región</p>

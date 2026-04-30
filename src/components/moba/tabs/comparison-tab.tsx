@@ -32,20 +32,32 @@ function StatBar({ label, value1, value2, format = '%', higherIsBetter = true }:
     ? (value1 > value2 ? 1 : value2 > value1 ? 2 : 0)
     : (value1 < value2 ? 1 : value2 < value1 ? 2 : 0);
 
-  const barColor = (val: number) => {
-    if (label.includes('Ban')) return val > 5 ? '#e84057' : val > 2 ? '#f0c646' : '#a09b8c';
-    if (label.includes('WR')) return val >= 53 ? '#0fba81' : val >= 51 ? '#0acbe6' : val >= 49 ? '#f0c646' : '#e84057';
-    return '#f0c646';
+  const getBarClasses = (val: number): { text: string; bg: string } => {
+    if (label.includes('Ban')) {
+      if (val > 5) return { text: 'text-lol-danger', bg: 'bg-lol-danger' };
+      if (val > 2) return { text: 'text-lol-warning', bg: 'bg-lol-warning' };
+      return { text: 'text-lol-muted', bg: 'bg-lol-muted' };
+    }
+    if (label.includes('WR')) {
+      if (val >= 53) return { text: 'text-lol-green', bg: 'bg-lol-green' };
+      if (val >= 51) return { text: 'text-lol-success', bg: 'bg-lol-success' };
+      if (val >= 49) return { text: 'text-lol-warning', bg: 'bg-lol-warning' };
+      return { text: 'text-lol-danger', bg: 'bg-lol-danger' };
+    }
+    return { text: 'text-lol-warning', bg: 'bg-lol-warning' };
   };
+
+  const cls1 = getBarClasses(value1);
+  const cls2 = getBarClasses(value2);
 
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-mono font-bold" style={{ color: barColor(value1) }}>
+        <span className={`text-[11px] font-mono font-bold ${cls1.text}`}>
           {value1}{format}
         </span>
         <span className="text-[10px] text-lol-dim uppercase tracking-wider">{label}</span>
-        <span className="text-[11px] font-mono font-bold" style={{ color: barColor(value2) }}>
+        <span className={`text-[11px] font-mono font-bold ${cls2.text}`}>
           {value2}{format}
         </span>
       </div>
@@ -53,8 +65,8 @@ function StatBar({ label, value1, value2, format = '%', higherIsBetter = true }:
       <div className="flex items-center gap-1 h-2">
         <div className="flex-1 flex justify-end">
           <motion.div
-            className="h-full rounded-l-full"
-            style={{ background: barColor(value1), width: `${pct1}%`, minWidth: '4px' }}
+            className={`h-full rounded-l-full ${cls1.bg}`}
+            style={{ width: `${pct1}%`, minWidth: '4px' }}
             initial={{ width: 0 }}
             animate={{ width: `${pct1}%` }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -63,8 +75,8 @@ function StatBar({ label, value1, value2, format = '%', higherIsBetter = true }:
         <div className="w-px h-full bg-lol-gold-dark/30" />
         <div className="flex-1">
           <motion.div
-            className="h-full rounded-r-full"
-            style={{ background: barColor(value2), width: `${pct2}%`, minWidth: '4px' }}
+            className={`h-full rounded-r-full ${cls2.bg}`}
+            style={{ width: `${pct2}%`, minWidth: '4px' }}
             initial={{ width: 0 }}
             animate={{ width: `${pct2}%` }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -73,7 +85,7 @@ function StatBar({ label, value1, value2, format = '%', higherIsBetter = true }:
       </div>
       {/* Difference indicator */}
       {diff > 0 && winner > 0 && (
-        <p className="text-[10px] text-center" style={{ color: winner === 1 ? '#0fba81' : '#e84057' }}>
+        <p className={`text-[10px] text-center ${winner === 1 ? 'text-lol-green' : 'text-lol-danger'}`}>
           {winner === 1 ? '← ' : '→ '}{diff.toFixed(1)}{format}
         </p>
       )}
@@ -93,7 +105,7 @@ function ChampionSelector({
 }: {
   champions: Champion[];
   selected: Champion | null;
-  onSelect: (c: Champion) => void;
+  onSelect: (c: Champion | null) => void;
   placeholder: string;
   excludeId?: number;
 }) {
@@ -140,15 +152,13 @@ function ChampionSelector({
                 </span>
               </div>
             </div>
-            {selected && (
-              <button
-                onClick={(e) => { e.stopPropagation(); onSelect(null as unknown as Champion); }}
-                className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                aria-label="Limpiar selección"
-              >
-                <X className="w-3.5 h-3.5 text-lol-dim" />
-              </button>
-            )}
+            <button
+              onClick={(e) => { e.stopPropagation(); onSelect(null); }}
+              className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+              aria-label="Limpiar selección"
+            >
+              <X className="w-3.5 h-3.5 text-lol-dim" />
+            </button>
           </>
         ) : (
           <>
@@ -165,16 +175,15 @@ function ChampionSelector({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -5, scale: 0.97 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 left-0 right-0 rounded-xl overflow-hidden z-50 max-h-72 overflow-y-auto scrollbar-none"
+            className="absolute top-full mt-2 left-0 right-0 rounded-xl overflow-hidden z-50 max-h-72 overflow-y-auto scrollbar-none border border-lol-gold/25"
             style={{
               background: 'rgba(30,35,40,0.98)',
-              border: '1px solid rgba(200,170,110,0.25)',
               boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
               backdropFilter: 'blur(16px)',
             }}
           >
             {/* Search input */}
-            <div className="sticky top-0 z-10 px-3 py-2" style={{ background: 'rgba(30,35,40,0.98)', borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
+            <div className="sticky top-0 z-10 px-3 py-2 border-b border-lol-gold-dark/15" style={{ background: 'rgba(30,35,40,0.98)' }}>
               <div className="flex items-center gap-2">
                 <Search className="w-3.5 h-3.5 text-lol-dim" />
                 <input
@@ -273,7 +282,7 @@ function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 
 
       {/* Counters */}
       {counterNames.length > 0 && (
-        <div className="rounded-lg p-2.5" style={{ background: 'rgba(232,64,87,0.06)', border: '1px solid rgba(232,64,87,0.15)' }}>
+        <div className="rounded-lg p-2.5 bg-lol-danger/6 border border-lol-danger/15">
           <div className="flex items-center gap-1.5 mb-2">
             <Crosshair className="w-3 h-3 text-lol-danger" />
             <span className="text-[10px] font-semibold text-lol-danger uppercase tracking-wider">Counters</span>
@@ -291,7 +300,7 @@ function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 
 
       {/* Synergies */}
       {synNames.length > 0 && (
-        <div className="rounded-lg p-2.5" style={{ background: 'rgba(10,203,230,0.06)', border: '1px solid rgba(10,203,230,0.15)' }}>
+        <div className="rounded-lg p-2.5 bg-lol-success/6 border border-lol-success/15">
           <div className="flex items-center gap-1.5 mb-2">
             <Users className="w-3 h-3 text-lol-success" />
             <span className="text-[10px] font-semibold text-lol-success uppercase tracking-wider">Sinergias</span>
@@ -309,7 +318,7 @@ function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 
 
       {/* Broken Things */}
       {champion.brokenThings && champion.brokenThings.length > 0 && (
-        <div className="rounded-lg p-2.5" style={{ background: 'rgba(232,64,87,0.04)', border: '1px solid rgba(232,64,87,0.12)' }}>
+        <div className="rounded-lg p-2.5 bg-lol-danger/[0.04] border border-lol-danger/12">
           <div className="flex items-center gap-1.5 mb-1.5">
             <AlertTriangle className="w-3 h-3 text-lol-danger" />
             <span className="text-[10px] font-semibold text-lol-danger uppercase tracking-wider">Cosas Rotas</span>
@@ -326,7 +335,7 @@ function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 
 
       {/* AI Analysis */}
       {champion.aiAnalysis && (
-        <div className="rounded-lg p-2.5" style={{ background: 'rgba(200,170,110,0.04)', border: '1px solid rgba(200,170,110,0.15)' }}>
+        <div className="rounded-lg p-2.5 bg-lol-gold/[0.04] border border-lol-gold/15">
           <div className="flex items-center gap-1.5 mb-1.5">
             <Sparkles className="w-3 h-3 text-lol-gold" />
             <span className="text-[10px] font-semibold text-lol-gold uppercase tracking-wider">Análisis IA</span>
@@ -357,7 +366,7 @@ export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(200,170,110,0.12)', border: '1px solid rgba(200,170,110,0.25)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-lol-gold/12 border border-lol-gold/25">
           <GitCompare className="w-5 h-5 text-lol-gold" />
         </div>
         <div>
@@ -374,10 +383,9 @@ export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
           onSelect={c => setChamp1(c)}
           placeholder="Seleccionar campeón 1"
           excludeId={champ2?.id}
-          side="left"
         />
         <div className="flex items-center justify-center sm:justify-center">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(200,170,110,0.1)', border: '1.5px solid rgba(200,170,110,0.25)' }}>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-lol-gold/10 border-[1.5px] border-lol-gold/25">
             <span className="text-sm font-black text-lol-gold">VS</span>
           </div>
         </div>
@@ -387,7 +395,6 @@ export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
           onSelect={c => setChamp2(c)}
           placeholder="Seleccionar campeón 2"
           excludeId={champ1?.id}
-          side="right"
         />
       </div>
 
@@ -410,7 +417,7 @@ export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
             </div>
 
             {/* Stat Bars — centered comparison */}
-            <div className="glass-card rounded-xl p-5 space-y-4" style={{ border: '1px solid rgba(200,170,110,0.2)' }}>
+            <div className="glass-card rounded-xl p-5 space-y-4 border border-lol-gold/20">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <ChampionIcon name={champ1.name} tier={champ1.tier} />
@@ -431,7 +438,7 @@ export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
               )}
 
               {/* Role & Tier comparison */}
-              <div className="flex items-center justify-between pt-2 mt-2" style={{ borderTop: '1px solid rgba(120,90,40,0.15)' }}>
+              <div className="flex items-center justify-between pt-2 mt-2 border-t border-lol-gold-dark/15">
                 <div className="flex items-center gap-2">
                   <RoleBadge role={champ1.role} />
                   <span className="px-1.5 py-0.5 rounded text-[10px] font-black" style={{ backgroundColor: TIER_CONFIG[champ1.tier]?.color, color: '#0a0e1a' }}>
@@ -468,8 +475,7 @@ export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="glass-card rounded-xl p-12 text-center"
-            style={{ border: '1px solid rgba(120,90,40,0.15)' }}
+            className="glass-card rounded-xl p-12 text-center border border-lol-gold-dark/15"
           >
             <GitCompare className="w-12 h-12 mx-auto mb-4 text-lol-gold-dark/30" />
             <p className="text-sm text-lol-muted mb-2">Selecciona dos campeones para comparar</p>
