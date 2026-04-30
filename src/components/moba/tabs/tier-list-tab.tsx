@@ -106,6 +106,13 @@ export function TierListTab({
   const [sortBy, setSortBy] = useState<SortOption>('winRate');
   const [versionData, setVersionData] = useState<{ cdn: string; gamePatch: string; metaLastUpdated: string; fetchedAt: string } | null>(null);
 
+  // Debounced search — input feels instant, filtering is throttled
+  const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // Fetch tierlist-feed.json on mount
   useEffect(() => {
     async function fetchFeed() {
@@ -172,8 +179,8 @@ export function TierListTab({
   const filteredChampions = gameChampions.filter(c => {
     if (roleFilter === '★' && !favorites.has(c.id)) return false;
     if (roleFilter !== 'Todos' && roleFilter !== '★' && c.role !== roleFilter) return false;
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
+    if (debouncedQuery) {
+      const q = debouncedQuery.toLowerCase();
       return c.name.toLowerCase().includes(q) || c.title.toLowerCase().includes(q);
     }
     return true;
@@ -555,7 +562,7 @@ export function TierListTab({
         </motion.div>
       )}
       {/* Weekly Top Movers — Bar chart section */}
-      {!loading && weeklyTop.length > 0 && !searchQuery && roleFilter === 'Todos' && (
+      {!loading && weeklyTop.length > 0 && !debouncedQuery && roleFilter === 'Todos' && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -689,7 +696,7 @@ export function TierListTab({
       )}
 
       {/* Meta Overview — Stats consolidados */}
-      {!loading && !searchQuery && roleFilter === 'Todos' && (
+      {!loading && !debouncedQuery && roleFilter === 'Todos' && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -751,7 +758,7 @@ export function TierListTab({
       )}
 
       {/* Role Win Rate Summary Bar */}
-      {!loading && !searchQuery && roleFilter === 'Todos' && gameChampions.length > 0 && (() => {
+      {!loading && !debouncedQuery && roleFilter === 'Todos' && gameChampions.length > 0 && (() => {
         const roles = ['Top', 'Jungle', 'Mid', 'ADC', 'Support'] as const;
         const roleData = roles.map(role => {
           const champs = gameChampions.filter(c => c.role === role);
