@@ -686,6 +686,45 @@ function PatchAnalysisSection({ analysis }: { analysis: PatchAnalysis }) {
           ))}
         </div>
       </div>
+
+      {/* Item Impact */}
+      {(analysis.itemImpact.winners.length > 0 || analysis.itemImpact.losers.length > 0) && (
+        <div className="glass-card rounded-xl p-4" style={{ border: '1px solid rgba(120,90,40,0.15)' }}>
+          <div className="flex items-center gap-2 mb-3"><Gamepad2 className="w-4 h-4 text-lol-gold" /><span className="lol-label text-xs font-semibold text-lol-gold">Impacto en Items</span></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {analysis.itemImpact.winners.length > 0 && (
+              <div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <TrendingUp className="w-3.5 h-3.5 text-lol-green" />
+                  <span className="text-[10px] font-bold text-lol-green uppercase">Ganadores</span>
+                </div>
+                <div className="space-y-1">
+                  {analysis.itemImpact.winners.map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(15,186,129,0.04)', borderLeft: '2px solid #0fba81' }}>
+                      <span className="text-[11px] text-lol-muted">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {analysis.itemImpact.losers.length > 0 && (
+              <div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <TrendingDown className="w-3.5 h-3.5 text-lol-danger" />
+                  <span className="text-[10px] font-bold text-lol-danger uppercase">Perdedores</span>
+                </div>
+                <div className="space-y-1">
+                  {analysis.itemImpact.losers.map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(232,64,87,0.04)', borderLeft: '2px solid #e84057' }}>
+                      <span className="text-[11px] text-lol-muted">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -749,7 +788,10 @@ export function PatchesMetaTab({
             systemChanges: Array.isArray(raw.metaDirection) ? raw.metaDirection : [],
             brokenChampions: Array.isArray(raw.brokenChampions) ? raw.brokenChampions : [],
             fallenChampions: Array.isArray(raw.fallenChampions) ? raw.fallenChampions : [],
-            itemImpact: { winners: [], losers: [] },
+            itemImpact: {
+              winners: Array.isArray(raw.itemImpact?.winners) ? raw.itemImpact.winners : [],
+              losers: Array.isArray(raw.itemImpact?.losers) ? raw.itemImpact.losers : [],
+            },
             summary: raw.summary || '',
           };
           setPatchAnalysis(mapped);

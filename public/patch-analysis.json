@@ -62,6 +62,109 @@
     "Split push meta fortalecido — Nasus, Fiora, Camille se benefician de cambios en minion waves",
     "Briar/Ambessa nerfeados — Dos de los campeones más frustrantes ahora más tratables"
   ],
+  "brokenChampions": [
+    {
+      "name": "Taliyah",
+      "reason": "Mejoras en field check y utilidad — WR subiendo hacia 53%+ en mid lane",
+      "tier": "S"
+    },
+    {
+      "name": "Nasus",
+      "reason": "Ghost buff + split push meta — domina top lane con 54%+ WR",
+      "tier": "S"
+    },
+    {
+      "name": "Warwick",
+      "reason": "Sustain y clear speed mejorados — jungle dominante con build on-hit",
+      "tier": "S"
+    },
+    {
+      "name": "Viktor",
+      "reason": "Q damage buff — viable mid/support con DFT Season 2",
+      "tier": "S"
+    },
+    {
+      "name": "Zeri",
+      "reason": "Crit item adjustments la favorecen — 53%+ WR como ADC",
+      "tier": "A+"
+    },
+    {
+      "name": "Nami",
+      "reason": "Enchanter meta renacido — peel fuerte vs dive comps",
+      "tier": "A+"
+    },
+    {
+      "name": "Fiora",
+      "reason": "Conqueror synergy — duelist top con 53%+ WR en matchups de bruiser",
+      "tier": "A+"
+    },
+    {
+      "name": "Camille",
+      "reason": "Stabilize buff + good matchups — WR recuperando 51%+",
+      "tier": "A"
+    },
+    {
+      "name": "Tahm Kench",
+      "reason": "Support viabilidad aumentada — counter meta assassins",
+      "tier": "A"
+    },
+    {
+      "name": "Karthus",
+      "reason": "DFT rune nueva lo convierte en monstruo jungle — 54%+ WR",
+      "tier": "S"
+    }
+  ],
+  "fallenChampions": [
+    {
+      "name": "Briar",
+      "reason": "R sustain nerf significativo — pierde dominio jungle y ranked, WR cayó 3pp",
+      "tier": "B"
+    },
+    {
+      "name": "Ambessa",
+      "reason": "Burst + survivability nerfs — ya no one-shot, WR cayó por debajo de 48%",
+      "tier": "B"
+    },
+    {
+      "name": "Kha'Zix",
+      "reason": "Base damage nerf + lethality items nerfeados — doble golpe",
+      "tier": "B"
+    },
+    {
+      "name": "Pyke",
+      "reason": "Assassin item nerfs — support assassin pierde eficiencia",
+      "tier": "B"
+    },
+    {
+      "name": "Mordekaiser",
+      "reason": "Item nerfs indirectos + meta shift — menos viable en top",
+      "tier": "A"
+    },
+    {
+      "name": "Yasuo",
+      "reason": "Crit item adjustments — indirect nerf a su scaling",
+      "tier": "A"
+    }
+  ],
+  "itemImpact": {
+    "winners": [
+      "Statikk Shiv (rework on-hit)",
+      "Doran's Bow (nuevo)",
+      "Doran's Helm (nuevo)",
+      "Gluttonous Greaves (nuevo)",
+      "Immortal Path (nuevo)",
+      "Deathfire Touch (nueva runa)",
+      "Stormraider's Surge (nueva runa)",
+      "Dusk and Dawn (rework)"
+    ],
+    "losers": [
+      "Trailblazer (removido)",
+      "Opportunity (removido)",
+      "Phase Rush (removida)",
+      "Lethality items (nerfeados)",
+      "Hail of Blades (rework)"
+    ]
+  },
   "nextPatch": {
     "version": "26.10",
     "scheduledDate": "2026-05-13",
