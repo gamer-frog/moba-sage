@@ -52,3 +52,21 @@ Work Log:
 Stage Summary:
 - 7 fixes across 7 files: champion-card.tsx, sidebar-nav.tsx, page.tsx, use-game-data.ts, patches-meta-tab.tsx, weekly-wr-chart.tsx, copy-build-button.tsx
 - Build passes clean, pushed as electronica-frog as commit fd7a2bd
+
+---
+Task ID: 7
+Agent: main
+Task: Round 7 — 7 codebase improvements
+
+Work Log:
+- Fixed tab-content default case missing proPicks/proRegionFilter props (silent feature loss)
+- Extracted AppHeader IIFE notification popup into NotifDetailPopup component (React anti-pattern)
+- Removed dead imgError state + unused ROLE_CONFIG import in comparison-tab
+- Added htmlFor/id to profile-tab form labels (a11y — screen readers)
+- Cleaned up useGlobalSearch focus setTimeout on unmount (memory leak)
+- Pre-computed metaCategoryInsights/buffCategoryInsights — 6 inline .filter() calls replaced
+- Removed unreachable fallback in floating-notes (guard above makes it impossible)
+
+Stage Summary:
+- 7 fixes across 7 files: tab-content.tsx, app-header.tsx, comparison-tab.tsx, profile-tab.tsx, use-global-search.ts, patches-meta-tab.tsx, floating-notes.tsx
+- Build passes clean, pushed as electronica-frog as commit e98e7d3
