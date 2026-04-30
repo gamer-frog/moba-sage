@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, Trophy, Target, Star, Zap, Shield, Swords, ArrowDown, Crosshair, Users, ChevronLeft, CircleDot, Sparkles } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -221,11 +222,12 @@ function ComboDetailPanel({ combo }: { combo: BrokenCombo }) {
       <div className="relative w-full h-40 sm:h-52 md:h-60 overflow-hidden rounded-t-xl">
         {/* Splash art bg */}
         <div className="absolute inset-0">
-          <img
+          <Image
             src={splashUrl}
             alt={primaryChamp}
-            className="w-full h-full object-cover object-top"
-            loading="lazy"
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 640px) 100vw, 50vw"
           />
           {/* Dark overlay gradient */}
           <div className="absolute inset-0" style={{

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { GITHUB_CONFIG } from '@/lib/github-config';
 
 interface CommunityNote {
   id: string;
@@ -13,9 +14,9 @@ interface NotesStore {
   notes: CommunityNote[];
 }
 
-const REPO_OWNER = 'gamer-frog';
-const REPO_NAME = 'moba-sage';
-const NOTES_PATH = 'data/community-notes.json';
+const REPO_OWNER = GITHUB_CONFIG.owner;
+const REPO_NAME = GITHUB_CONFIG.repo;
+const NOTES_PATH = GITHUB_CONFIG.notesPath;
 
 // Rate limiting: max 5 notes per IP per hour
 const RATE_LIMIT_MAX = 5;
@@ -24,6 +25,14 @@ const rateLimitMap = new Map<string, { count: number; windowStart: number }>();
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+  // Evict stale entries when map grows too large (serverless safety)
+  if (rateLimitMap.size > 10000) {
+    for (const [key, entry] of rateLimitMap) {
+      if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+        rateLimitMap.delete(key);
+      }
+    }
+  }
   const entry = rateLimitMap.get(ip);
   if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
     rateLimitMap.set(ip, { count: 1, windowStart: now });
@@ -206,7 +215,7 @@ export async function DELETE(request: NextRequest) {
     if (!adminSecret) {
       return NextResponse.json({ error: 'Función no disponible' }, { status: 503 });
     }
-    const providedSecret = request.headers.get('x-admin-secret') || new URL(request.url).searchParams.get('secret') || '';
+    const providedSecret = request.headers.get('x-admin-secret') || '';
     if (providedSecret !== adminSecret) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }

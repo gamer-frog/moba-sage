@@ -134,6 +134,8 @@ function ChampionSelector({
     <div ref={ref} className="relative flex-1 min-w-0">
       <button
         onClick={() => { setIsOpen(!isOpen); setQuery(''); }}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left"
         style={{
           background: selected ? `linear-gradient(135deg, ${TIER_CONFIG[selected.tier]?.color || '#c8aa6e'}10, transparent)` : 'rgba(30,35,40,0.5)',
@@ -176,6 +178,7 @@ function ChampionSelector({
             exit={{ opacity: 0, y: -5, scale: 0.97 }}
             transition={{ duration: 0.15 }}
             className="absolute top-full mt-2 left-0 right-0 rounded-xl overflow-hidden z-50 max-h-72 overflow-y-auto scrollbar-none border border-lol-gold/25"
+            role="listbox"
             style={{
               background: 'rgba(30,35,40,0.98)',
               boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
@@ -205,6 +208,8 @@ function ChampionSelector({
               filtered.map(champ => (
                 <button
                   key={champ.id}
+                  role="option"
+                  aria-selected={selected?.id === champ.id}
                   onClick={() => { onSelect(champ); setIsOpen(false); setQuery(''); }}
                   className="w-full flex items-center gap-3 px-3 py-2 hover:bg-lol-gold/10 transition-colors"
                 >

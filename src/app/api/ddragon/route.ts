@@ -23,6 +23,7 @@ async function getLatestVersion(): Promise<string> {
     const res = await fetch('https://ddragon.leagueoflegends.com/api/versions.json', {
       next: { revalidate: 1800 }
     });
+    if (!res.ok) throw new Error(`DDragon versions failed: ${res.status}`);
     const versions: string[] = await res.json();
     // Get first version matching X.Y.Z pattern (game patch, not tournament)
     const gameVersion = versions.find(v => /^\d+\.\d+\.\d+$/.test(v)) || versions[0];

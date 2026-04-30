@@ -24,7 +24,7 @@ export async function GET() {
 
     // Only return real purchasable items (gold > 0, has name, not invisible)
     const items = Object.values(itemData.data)
-      .filter((item: any) => item.gold?.total > 0 && item.name && !item.inStore?.toString().includes('false'))
+      .filter((item: any) => item.gold?.total > 0 && item.name && item.inStore !== false)
       .map((item: any) => ({
         id: item.id,
         name: item.name,
