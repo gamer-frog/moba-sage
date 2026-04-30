@@ -120,6 +120,9 @@ const ITEM_DESCRIPTIONS: Record<string, string> = {
   "Stormraider's Surge": 'Keyston de Brujería clásico — Movimiento masivo para engages sorpresa.',
   // Reworked Runes
   'Hail of Blades': 'Rework — Escala mejor con velocidad de ataque, synergiza con builds on-hit.',
+  'Dawnstone': 'Support mythic con shielding y haste para allies. Item defensivo premium para supports que buscan protección activa.',
+  'First Strike': 'Runa experimental revamp. Mejora velocidad de rotación para combos rápidos en early game.',
+  'Dawnstone (support mythic)': 'Support mythic con shielding y haste para allies. Protección activa premium para supports.',
 };
 
 function getChangeCategoryStyle(category: string): { color: string; bg: string; border: string; label: string; icon: typeof ArrowUp; isItem: boolean; isChampion: boolean } {
@@ -712,8 +715,7 @@ export function PatchesMetaTab({
   const [analysisLoading, setAnalysisLoading] = useState(true);
   const [analysisError, setAnalysisError] = useState(false);
 
-  // --- Sub-section toggle ---
-  const [activeSection, setActiveSection] = useState<'meta' | 'history'>('meta');
+  // No sub-tabs — all content flows in one scrollable view
 
   // Fetch patches-feed.json
   useEffect(() => {
@@ -909,34 +911,8 @@ export function PatchesMetaTab({
         <MetaImpactSection latestPatch={latestPatch} />
       )}
 
-      {/* ===== SUB-SECTION TABS ===== */}
-      <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(10,14,26,0.5)', border: '1px solid rgba(200,170,110,0.15)' }}>
-        {[
-          { id: 'meta' as const, label: 'Análisis & Meta', icon: Brain },
-          { id: 'history' as const, label: 'Historial de Parches', icon: Clock },
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveSection(tab.id)}
-            className={`
-              flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer
-              ${activeSection === tab.id
-                ? 'text-lol-gold shadow-sm'
-                : 'text-lol-dim hover:text-lol-muted'
-              }
-            `}
-            style={activeSection === tab.id ? { background: 'rgba(200,170,110,0.1)', border: '1px solid rgba(200,170,110,0.25)' } : { background: 'transparent', border: '1px solid transparent' }}
-          >
-            <tab.icon className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{tab.label}</span>
-          </button>
-        ))}
-      </div>
-
       {/* ===== SECTION: ANÁLISIS & META ===== */}
-      {activeSection === 'meta' && (
-        <AnimatePresence mode="wait">
-          <motion.div key="meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
+      <div className="space-y-5">
             {/* Patch Analysis — LoL only */}
             {selectedGame !== 'wildrift' && (analysisLoading ? (
               <div className="space-y-3">
@@ -988,16 +964,12 @@ export function PatchesMetaTab({
                 </div>
               </motion.a>
             )}
-          </motion.div>
-        </AnimatePresence>
-      )}
+      </div>
 
       {/* ===== SECTION: HISTORIAL DE PARCHES ===== */}
-      {activeSection === 'history' && (
-        <AnimatePresence mode="wait">
-          <motion.div key="history" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
+      <div className="space-y-5">
             {/* Game Filter Buttons */}
-            {!showGameFilter && (
+            {showGameFilter && (
               <div className="flex items-center gap-2 flex-wrap">
                 <Filter className="w-3.5 h-3.5 text-lol-dim" />
                 {GAME_FILTERS.map(game => {
@@ -1087,7 +1059,7 @@ export function PatchesMetaTab({
             {/* Patch Count */}
             <div className="flex items-center gap-2 text-lol-dim">
               <span className="text-sm">{filteredPatches.length} parche(s) encontrado(s)</span>
-              {!showGameFilter && <span className="text-[10px] text-lol-gold-dark">· Fuentes: API + patches-feed.json</span>}
+              {showGameFilter && <span className="text-[10px] text-lol-gold-dark">· Fuentes: API + patches-feed.json</span>}
             </div>
 
             {/* Patch List */}
@@ -1153,9 +1125,7 @@ export function PatchesMetaTab({
                 );
               })
             )}
-          </motion.div>
-        </AnimatePresence>
-      )}
+      </div>
 
     </div>
   );

@@ -99,3 +99,22 @@ Complete audit of all 31+ source files. Found and fixed 8 bugs across 6 files.
 - `CoachingTab` type: changed `selectedGame: string` to `selectedGame: string | null`
 
 **Build: ✅ Clean. All routes compile successfully.**
+
+---
+
+Task ID: 2-a
+Agent: Main Agent (Round 13)
+Task: Remove patches sub-tabs, flatten content, fix game filter bug, add item descriptions
+
+Work Log:
+- Removed `activeSection` state from PatchesMetaTab component
+- Removed sub-tab switcher UI (Análisis & Meta / Historial de Parches)
+- Flattened all content into one scrollable view: RiotPatchNotesBanner → Season 2 Banner → MetaImpact → PatchAnalysis → TierSummary → GameFilters → Timeline → PatchList
+- Fixed game filter bug: changed `{!showGameFilter && (` to `{showGameFilter && (` so filters only show when no game is selected
+- Added missing item descriptions for Dawnstone, First Strike, and Hail of Blades
+- Build verified clean
+
+Stage Summary:
+- Patches tab is now a clean single-page scrollable view without confusing sub-tabs
+- Game filter buttons correctly appear only when no specific game is selected
+- All items in patch changes now have proper descriptions
