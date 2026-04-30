@@ -39,7 +39,6 @@ export const CHAMPION_NAME_MAP: Record<string, string> = {
   'Yuumi': 'Yuumi',
   'Senna': 'Senna',
   'Gwen': 'Gwen',
-  'Vex': 'Vex',
   'Nilah': 'Nilah',
 };
 
@@ -116,7 +115,6 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Dead Man Plate': '3742',
   'Spirit Visage': '3065',
   'Abyssal Mask': '3001',
-  'Morellonomicon': '3165',
   'Cosmic Drive': '4629',
   'Rabadon Deathcap': '3089',
   'Void Staff': '3135',

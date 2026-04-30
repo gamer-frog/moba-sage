@@ -6,10 +6,13 @@ import {
   ScrollText, Clock, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield,
   TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, Zap,
   Sparkles, Newspaper, ArrowUpCircle, ArrowDownCircle, Compass,
+  Flame, Star, Gem, AlertTriangle, Target,
 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 import { TinyChampionIcon, ChampionIcon } from '../champion-icon';
 import { ItemIcon } from '../item-icon';
-import type { Champion, PatchNote } from '../types';
+import type { Champion, PatchNote, AiInsight, GameSelection } from '../types';
 
 // ============================================================
 // LOCAL TYPES

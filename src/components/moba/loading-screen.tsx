@@ -99,7 +99,7 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
 
   // Fetch version data
   useEffect(() => {
-    fetch('/api/version').then(r => r.json()).then(d => setVersion(d)).catch(() => {});
+    fetch('/api/version').then(r => { if (!r.ok) throw new Error(`${r.status}`); return r.json(); }).then(d => { if (d && typeof d.lol === 'string') setVersion(d); }).catch(() => {});
   }, []);
 
   // Tip rotation — one render per 3.5s (was 20/s before)

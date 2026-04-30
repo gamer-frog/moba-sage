@@ -82,7 +82,9 @@ export function useGameData() {
     }
     if (versionData?.fetchedAt) {
       const d = new Date(versionData.fetchedAt);
-      setLastUpdate(`${d.getDate()} ${MONTHS_ES[d.getMonth()]} ${d.getFullYear()}`);
+      if (!isNaN(d.getTime())) {
+        setLastUpdate(`${d.getDate()} ${MONTHS_ES[d.getMonth()]} ${d.getFullYear()}`);
+      }
     }
   }, []);
 

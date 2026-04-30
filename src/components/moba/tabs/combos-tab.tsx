@@ -643,7 +643,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
       )}
 
       {/* ============ COMPOSICIONES PRO ============ */}
-      <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(120,90,40,0.2)' }}>
+      {selectedGame !== 'wildrift' && <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(120,90,40,0.2)' }}>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(200,170,110,0.12)', border: '1px solid rgba(200,170,110,0.25)' }}>
             <Users className="w-4 h-4 text-lol-gold" />
@@ -683,7 +683,7 @@ export function CombosTab({ combos, loading, selectedGame }: { combos: BrokenCom
             </motion.div>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

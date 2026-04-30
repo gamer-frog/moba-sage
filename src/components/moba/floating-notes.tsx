@@ -294,8 +294,8 @@ export function FloatingNotes() {
                       placeholder="Tu nombre (se guarda)"
                       value={authorName}
                       onChange={e => setAuthorName(e.target.value)}
-                      onBlur={() => { if (authorName.trim()) { localStorage.setItem('moba-sage-author', authorName); setEditingAuthor(false); } }}
-                      onKeyDown={e => { if (e.key === 'Enter' && authorName.trim()) { localStorage.setItem('moba-sage-author', authorName); setEditingAuthor(false); } }}
+                      onBlur={() => { if (authorName.trim()) { localStorage.setItem('moba-sage-notes-author', authorName); setEditingAuthor(false); } }}
+                      onKeyDown={e => { if (e.key === 'Enter' && authorName.trim()) { localStorage.setItem('moba-sage-notes-author', authorName); setEditingAuthor(false); } }}
                       className="h-8 text-xs bg-lol-card/80 border-lol-gold-dark/30 text-lol-text placeholder:text-lol-dim rounded-lg"
                       maxLength={30}
                       autoFocus={false}

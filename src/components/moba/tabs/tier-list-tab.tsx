@@ -135,8 +135,8 @@ export function TierListTab({
         if (res.ok) {
           const data = await res.json();
           setVersionData({
-            cdn: data.lol || '',
-            gamePatch: data.gamePatch || (data.lol ? data.lol.split('.').slice(0, 2).join('.') : ''),
+            cdn: typeof data.lol === 'string' ? data.lol : '',
+            gamePatch: data.gamePatch || (typeof data.lol === 'string' ? data.lol.split('.').slice(0, 2).join('.') : ''),
             metaLastUpdated: data.metaLastUpdated || '',
             fetchedAt: data.fetchedAt || new Date().toISOString(),
           });
@@ -258,7 +258,8 @@ export function TierListTab({
           {/* Row-style source list */}
           <div>
             {dataSources.map((source, i) => {
-              const diffMs = Date.now() - new Date(source.lastScraped).getTime();
+              const parsedDate = source.lastScraped ? new Date(source.lastScraped) : null;
+              const diffMs = parsedDate && !isNaN(parsedDate.getTime()) ? Date.now() - parsedDate.getTime() : NaN;
               const hours = diffMs / 3600000;
               const srcFreshness = freshnessColor(hours);
               return (
@@ -272,7 +273,7 @@ export function TierListTab({
                 >
                   <span className="flex-1 text-sm font-semibold text-lol-text truncate min-w-0">{source.name}</span>
                   <span className="text-[10px] text-lol-dim font-mono shrink-0 hidden sm:inline">
-                    {new Date(source.lastScraped).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                    {parsedDate && !isNaN(parsedDate.getTime()) ? parsedDate.toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
                   </span>
                   <span
                     className="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold"

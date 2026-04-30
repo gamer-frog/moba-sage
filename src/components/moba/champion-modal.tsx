@@ -79,8 +79,9 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
     fetch('/api/meta-builds?refresh=false', { signal: controller.signal })
       .then(res => { if (!res.ok) throw new Error(`Meta builds fetch failed: ${res.status}`); return res.json(); })
       .then(data => {
-        if (data.builds && data.builds[champion.name]) {
-          setMetaBuild(data.builds[champion.name]);
+        const build = data.builds?.[champion.name];
+        if (build && typeof build === 'object' && build !== null) {
+          setMetaBuild(build);
         }
       })
       .catch((err) => {

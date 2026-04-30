@@ -112,7 +112,8 @@ export default function Home() {
   useEffect(() => {
     function handleTabSwitch(e: Event) {
       const detail = (e as CustomEvent).detail;
-      if (typeof detail === 'string') setActiveTab(detail);
+      const VALID_TABS = ['tierlist', 'patches', 'combos', 'comparison', 'coaching', 'competitive', 'guides', 'profile', 'novedades', 'ideas', 'tasks', 'roadmap'];
+      if (typeof detail === 'string' && VALID_TABS.includes(detail)) setActiveTab(detail);
     }
     window.addEventListener('moba-sage-switch-tab', handleTabSwitch);
     return () => window.removeEventListener('moba-sage-switch-tab', handleTabSwitch);
@@ -154,6 +155,10 @@ export default function Home() {
         return;
       }
       const updated = await res.json();
+      if (typeof updated?.status !== 'string') {
+        console.error('Task update returned invalid status:', updated);
+        return;
+      }
       setTasks(prev => prev.map(t => t.id === task.id ? { ...t, status: updated.status } : t));
     } catch (err) {
       console.error('Task update error:', err);
