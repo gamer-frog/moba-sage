@@ -15,7 +15,7 @@ interface VersionInfo {
 const CACHE_DURATION = 1000 * 60 * 30; // 30 minutes
 
 let GAME_PATCH = '26.9';
-let META_LAST_UPDATED = '2026-04-25T12:00:00Z';
+let META_LAST_UPDATED = '2026-04-29T14:00:00Z';
 
 let cachedVersions: VersionInfo | null = null;
 let cacheTimestamp = 0;

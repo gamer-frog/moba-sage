@@ -823,6 +823,7 @@ export function TierListTab({
             onToggleFavorite={onToggleFavorite}
             trendMap={trendMap}
             showWeeklyChart={true}
+            gamePatch={versionData?.gamePatch}
           />
         ))
       ) : (

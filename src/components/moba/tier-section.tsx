@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { wrColor } from './theme-colors';
 import type { Champion } from './types';
 
-export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap, showWeeklyChart }: {
+export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap, showWeeklyChart, gamePatch }: {
   tier: string;
   champions: Champion[];
   onChampionClick: (c: Champion) => void;
@@ -16,6 +16,7 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
   onToggleFavorite: (id: number) => void;
   trendMap?: Record<string, 'rising' | 'falling'>;
   showWeeklyChart?: boolean;
+  gamePatch?: string;
 }) {
   const cfg = TIER_CONFIG[tier];
 
@@ -74,7 +75,7 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
       {/* Source attribution under tier header */}
       {tier === 'S' && (
         <div className="px-4 py-1" style={{ background: 'rgba(20, 24, 30, 0.6)', borderLeft: '1px solid rgba(120, 90, 40, 0.12)', borderRight: '1px solid rgba(120, 90, 40, 0.12)' }}>
-          <SourceBadge source="U.GG + OP.GG" patch="Patch 26.9" timestamp="2026-04-25T12:00:00Z" size="xs" />
+          <SourceBadge source="U.GG + OP.GG" patch={gamePatch ? `Patch ${gamePatch}` : undefined} timestamp={undefined} size="xs" />
         </div>
       )}
 
