@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Sparkles, Wrench, ChevronRight, Newspaper, TrendingUp, TrendingDown, Shield, Zap, Clock, ArrowUpCircle, ArrowDownCircle, Info, Star } from 'lucide-react';
+import { AlertTriangle, Sparkles, Newspaper, Shield, Zap, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,7 +10,6 @@ import Image from 'next/image';
 import { SplashArtIcon, ChampionIcon } from '../champion-icon';
 import { RoleBadge, CategoryBadge } from '../badges';
 import { ItemIcon } from '../item-icon';
-import { ChampionCard } from '../champion-card';
 import { parseBuildItems, getChampionSplashUrl } from '../helpers';
 import type { Champion, AiInsight, GameSelection } from '../types';
 

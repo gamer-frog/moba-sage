@@ -66,7 +66,7 @@ export interface LoadingScreenProps {
 
 export function LoadingScreen({ onSkip, dataStats }: LoadingScreenProps) {
   const [version, setVersion] = useState<VersionInfo | null>(null);
-  const [elapsed, setElapsed] = useState(0);
+  const [, setElapsed] = useState(0);
   const [mountedAt] = useState(() => Date.now());
   const [tipIdx, setTipIdx] = useState(0);
 
@@ -115,11 +115,6 @@ export function LoadingScreen({ onSkip, dataStats }: LoadingScreenProps) {
     const d = new Date(iso);
     const m = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
     return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;
-  };
-
-  const formatTime = (iso: string) => {
-    if (!iso) return '...';
-    return new Date(iso).toLocaleTimeString('es-AR', { timeZone: 'America/Buenos_Aires', hour: '2-digit', minute: '2-digit' });
   };
 
   // 7 data sources — staggered across 2s minimum display time

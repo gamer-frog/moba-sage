@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, TrendingUp, TrendingDown } from 'lucide-react';
 import { getChampionSplashUrl } from './helpers';

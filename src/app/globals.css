@@ -629,9 +629,6 @@ body > * {
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.safe-top {
-  padding-top: env(safe-area-inset-top, 0px);
-}
 
 /* Minimum touch target (44x44px per WCAG) */
 .touch-target {
@@ -640,12 +637,6 @@ body > * {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Constrain content width */
-.constrain-width {
-  max-width: 100%;
-  overflow-x: hidden;
 }
 
 /* Global overflow safety — prevent any element from causing horizontal scroll */

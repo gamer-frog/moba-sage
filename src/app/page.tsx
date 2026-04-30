@@ -36,7 +36,7 @@ export default function Home() {
   const [combos, setCombos] = useState<BrokenCombo[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [, setInitialLoadDone] = useState(false);
 
   // Loading screen: shows for ~12s animation, then user clicks "Entrar"
   const [showLoading, setShowLoading] = useState(true);
@@ -112,8 +112,6 @@ export default function Home() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     setFetchError(false);
-    const startMs = Date.now();
-
     const safeJson = async <T,>(url: string): Promise<T | null> => {
       try {
         const res = await fetch(url);

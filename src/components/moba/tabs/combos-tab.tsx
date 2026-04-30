@@ -8,7 +8,6 @@ import { ChampionIcon, SplashArtIcon, TinyChampionIcon, MicroChampionIcon } from
 import { getChampionSplashUrl } from '../helpers';
 import type { BrokenCombo, GameSelection } from '../types';
 import { proComps } from '@/data/combos-data';
-import type { CompEntry } from '@/data/combos-data';
 
 // Combo type detection from description keywords
 type ComboType = 'Burst' | 'Poke' | 'Engage' | 'Dive' | 'Peel' | null;

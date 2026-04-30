@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 
 // ============================================================
-// Data Dragon API — Centralized champion/item/rune data from Riot CDN
-// Cache strategy: In-memory with 30min TTL, serverless-safe
+// Data Dragon API — Centralized version from Riot CDN
 // ============================================================
 
 interface DDragonVersion {
@@ -10,35 +9,13 @@ interface DDragonVersion {
   fetchedAt: string;
 }
 
-interface ChampionData {
-  id: string;
-  name: string;
-  title: string;
-  image: { full: string; sprite: string };
-  skins: { id: string; name: string; num: number; chromas: boolean }[];
-  spells: { id: string; name: string; description: string; image: { full: string } }[];
-  tags: string[];
-  info: { attack: number; defense: number; magic: number; difficulty: number };
-  lore: string;
-}
-
-const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
-
 let cachedVersion: DDragonVersion | null = null;
 let versionCacheTime = 0;
-
-let cachedChampions: Record<string, ChampionData> | null = null;
-let championCacheTime = 0;
-
-let cachedItems: Record<string, { name: string; image: { full: string }; gold: { total: number }; description: string }> | null = null;
-let itemCacheTime = 0;
-
-let cachedRunes: any[] | null = null;
-let runeCacheTime = 0;
+const VERSION_TTL = 1000 * 60 * 30; // 30 minutes
 
 async function getLatestVersion(): Promise<string> {
   const now = Date.now();
-  if (cachedVersion && now - versionCacheTime < CACHE_TTL) {
+  if (cachedVersion && now - versionCacheTime < VERSION_TTL) {
     return cachedVersion.version;
   }
   
@@ -54,65 +31,6 @@ async function getLatestVersion(): Promise<string> {
     return gameVersion;
   } catch {
     return cachedVersion?.version || '16.8.1';
-  }
-}
-
-async function fetchChampions(version: string): Promise<Record<string, ChampionData>> {
-  const now = Date.now();
-  if (cachedChampions && now - championCacheTime < CACHE_TTL) {
-    return cachedChampions;
-  }
-  
-  try {
-    const res = await fetch(
-      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`,
-      { next: { revalidate: 1800 } }
-    );
-    const data = await res.json();
-    cachedChampions = data.data;
-    championCacheTime = now;
-    return data.data;
-  } catch {
-    return cachedChampions || {};
-  }
-}
-
-async function fetchItems(version: string) {
-  const now = Date.now();
-  if (cachedItems && now - itemCacheTime < CACHE_TTL) {
-    return cachedItems;
-  }
-  
-  try {
-    const res = await fetch(
-      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/item.json`,
-      { next: { revalidate: 1800 } }
-    );
-    const data = await res.json();
-    cachedItems = data.data;
-    itemCacheTime = now;
-    return data.data;
-  } catch {
-    return cachedItems || {};
-  }
-}
-
-async function fetchRunes(version: string) {
-  const now = Date.now();
-  if (cachedRunes && now - runeCacheTime < CACHE_TTL) {
-    return cachedRunes;
-  }
-  
-  try {
-    const res = await fetch(
-      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/runesReforged.json`,
-      { next: { revalidate: 1800 } }
-    );
-    cachedRunes = await res.json();
-    runeCacheTime = now;
-    return cachedRunes;
-  } catch {
-    return cachedRunes || [];
   }
 }
 

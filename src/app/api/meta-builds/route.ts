@@ -32,7 +32,7 @@ const S_TIER_CHAMPIONS = [
   { name: 'Graves', slug: 'graves', role: 'Jungle' },
 ];
 
-async function searchBuild(champion: string, slug: string): Promise<Partial<ScrapedBuild>> {
+async function searchBuild(champion: string, _slug: string): Promise<Partial<ScrapedBuild>> {
   try {
     const { default: ZAI } = await import('z-ai-web-dev-sdk');
     const zai = await ZAI.create();

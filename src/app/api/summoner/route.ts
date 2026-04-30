@@ -76,38 +76,6 @@ function getDemoData(summonerName: string): SummonerResponse {
   };
 }
 
-function getChampionImageUrl(name: string): string {
-  const nameMap: Record<string, string> = {
-    'Wukong': 'MonkeyKing',
-    "K'Sante": 'KSante',
-    'Aurelion Sol': 'AurelionSol',
-    "Cho'Gath": 'Chogath',
-    "Kha'Zix": 'Khazix',
-    "Rek'Sai": 'RekSai',
-    "Vel'Koz": 'Velkoz',
-    'LeBlanc': 'Leblanc',
-    'Miss Fortune': 'MissFortune',
-    'Lee Sin': 'LeeSin',
-    'Master Yi': 'MasterYi',
-    'Xin Zhao': 'XinZhao',
-    'Jarvan IV': 'JarvanIV',
-    'Twisted Fate': 'TwistedFate',
-    'Fiddlesticks': 'FiddleSticks',
-    "Bel'Veth": 'Belveth',
-    'Renata Glasc': 'Renata',
-  };
-  const mapped = nameMap[name];
-  if (mapped) {
-    return `https://ddragon.leagueoflegends.com/cdn/${getDdVersion()}/img/champion/${mapped}.png`;
-  }
-  const normalized = name
-    .replace(/'/g, '')
-    .replace(/ /g, '')
-    .replace(/\./g, '')
-    .replace(/&/g, '');
-  return `https://ddragon.leagueoflegends.com/cdn/${getDdVersion()}/img/champion/${normalized}.png`;
-}
-
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const name = searchParams.get('name') || '';

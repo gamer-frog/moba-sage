@@ -5,13 +5,6 @@ import { Map, Check, X, Clock, Sparkles, Wrench, BarChart3, Zap } from 'lucide-r
 
 type IdeaStatus = 'done' | 'cancelled' | 'pending';
 
-interface Idea {
-  id: string;
-  title: string;
-  desc: string;
-  status: IdeaStatus;
-}
-
 // Based on BRAINSTORM.md — cross-referenced with TASKS.md and actual codebase
 const roadmapCategories = [
   {

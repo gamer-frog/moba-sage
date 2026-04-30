@@ -15,22 +15,6 @@ function wrColor(wr: number): string {
   return '#e84057';
 }
 
-// Mini horizontal bar for stat visualization
-function MiniBar({ value, max, color }: { value: number; max: number; color: string }) {
-  const pct = Math.min((value / max) * 100, 100);
-  return (
-    <div className="w-14 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.12)' }}>
-      <motion.div
-        className="h-full rounded-full"
-        style={{ background: color, opacity: 0.7 }}
-        initial={{ width: 0 }}
-        animate={{ width: `${pct}%` }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-      />
-    </div>
-  );
-}
-
 // Trend icon based on pro pick rate
 function TrendIcon({ rate }: { rate: number }) {
   if (rate >= 15) return <TrendingUp className="w-3 h-3 text-lol-green" />;

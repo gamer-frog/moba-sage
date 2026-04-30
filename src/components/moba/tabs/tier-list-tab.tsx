@@ -101,7 +101,6 @@ export function TierListTab({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [feedData, setFeedData] = useState<TierlistFeed | null>(null);
   const [feedLoading, setFeedLoading] = useState(true);
-  const [showSources, setShowSources] = useState(false);
   const [expandedWeekly, setExpandedWeekly] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('winRate');
   const [versionData, setVersionData] = useState<{ cdn: string; gamePatch: string; metaLastUpdated: string; fetchedAt: string } | null>(null);
@@ -228,10 +227,6 @@ export function TierListTab({
     if (hours < 6) return { color: '#f0c646', label: 'Aceptable' };
     return { color: '#e84057', label: 'Antiguo' };
   })();
-  const lastCheckTime = versionData?.fetchedAt
-    ? new Date(versionData.fetchedAt).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
-    : '\u2014';
-
   return (
     <div className="space-y-5">
       {/* ===== DATA SOURCES BAR — Bloomberg Terminal Style ===== */}
@@ -978,8 +973,6 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
             {isSTier ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {tierChamps.map((champ, idx) => {
-                  const roleCfg = ROLE_CONFIG[champ.role];
-                  const roleColor = roleCfg?.color || '#5b5a56';
                   const isBroken = champ.winRate > 52 && champ.banRate > 4;
                   const isRoto = champ.winRate > 52 && !isBroken;
                   const isAltoBan = champ.banRate > 4 && !isBroken;

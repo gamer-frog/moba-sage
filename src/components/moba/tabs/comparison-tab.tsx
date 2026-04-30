@@ -11,9 +11,7 @@ import type { Champion, GameSelection } from '../types';
 
 interface ComparisonTabProps {
   champions: Champion[];
-  loading: boolean;
   selectedGame: GameSelection;
-  onChampionClick: (c: Champion) => void;
 }
 
 // ============================================================
@@ -92,14 +90,12 @@ function ChampionSelector({
   onSelect,
   placeholder,
   excludeId,
-  side,
 }: {
   champions: Champion[];
   selected: Champion | null;
   onSelect: (c: Champion) => void;
   placeholder: string;
   excludeId?: number;
-  side: 'left' | 'right';
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -226,8 +222,7 @@ function ChampionSelector({
 // ============================================================
 function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 'left' | 'right' }) {
   const cfg = TIER_CONFIG[champion.tier];
-  const roleCfg = ROLE_CONFIG[champion.role];
-  const [imgError, setImgError] = useState(false);
+  const [imgError] = useState(false);
   const splashUrl = getChampionSplashUrl(champion.name, 0);
 
   const counterNames = champion.counterPick
@@ -346,7 +341,7 @@ function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 
 // ============================================================
 // Main Comparison Tab
 // ============================================================
-export function ComparisonTab({ champions, loading, selectedGame, onChampionClick }: ComparisonTabProps) {
+export function ComparisonTab({ champions, selectedGame }: ComparisonTabProps) {
   const [champ1, setChamp1] = useState<Champion | null>(null);
   const [champ2, setChamp2] = useState<Champion | null>(null);
 

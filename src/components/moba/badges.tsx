@@ -3,7 +3,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Circle, Loader2, CheckCircle2, X } from 'lucide-react';
 import { ROLE_CONFIG, CATEGORY_CONFIG } from './constants';
-import type { LucideIcon } from 'lucide-react';
 
 export function RoleBadge({ role }: { role: string }) {
   const cfg = ROLE_CONFIG[role];

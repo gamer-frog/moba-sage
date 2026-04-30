@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { ExternalLink, Sparkles, Wrench, AlertTriangle, Eye, ShieldCheck, TrendingUp, X } from 'lucide-react';
 import { TIER_CONFIG } from './constants';
 import { getBuildExternalUrl, getItemIconUrl, parseBuildItems, getChampionSplashUrl } from './helpers';
-import { ChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
 import { CollapsibleSection } from './collapsible-section';
 import { CopyBuildButton } from './copy-build-button';

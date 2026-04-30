@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Rocket, Sparkles, Clock,
-  CheckCircle2, AlertTriangle, GitCommit, Eye, Bug, Palette,
+  CheckCircle2, AlertTriangle, GitCommit, Eye,
   ExternalLink
 } from 'lucide-react';
 

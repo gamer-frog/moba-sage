@@ -327,7 +327,6 @@ export function PatchesTab({ patches, loading, selectedGame }: { patches: PatchN
         const buffs = highlights.filter(h => h.type === 'buff').length;
         const nerfs = highlights.filter(h => h.type === 'nerf').length;
         const adjusts = highlights.filter(h => h.type === 'adjust').length;
-        const gameStyle = getGameStyle(latestPatch.sourceGame);
         const changes = latestPatch.changes || {};
         const newItemCount = (changes.newItems || []).length;
 

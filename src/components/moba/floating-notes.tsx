@@ -16,11 +16,11 @@ interface Note {
 export function FloatingNotes() {
   const [isOpen, setIsOpen] = useState(false);
   const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [authorName, setAuthorName] = useState('');
   const [newNote, setNewNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [expandedNote, setExpandedNote] = useState<string | null>(null);
+  const [, setExpandedNote] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -125,9 +125,6 @@ export function FloatingNotes() {
     for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
     return colors[Math.abs(hash) % colors.length];
   }
-
-  const ideaNotes = notes.filter(n => n.status === 'idea');
-  const statusNotes = notes.filter(n => n.status !== 'idea');
 
   return (
     <>

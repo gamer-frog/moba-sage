@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Swords, Eye, ChevronDown, ChevronUp, Zap, AlertOctagon, Target } from 'lucide-react';
+import { GraduationCap, Swords, Eye, ChevronDown, ChevronUp, AlertOctagon, Target } from 'lucide-react';
 import {
   mecanicasCategories,
   wardingTips,
@@ -178,7 +178,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                   })}
 
                   {/* TIPS POR ROL */}
-                  {section.id === 'roleTips' && roleTipsData.map((roleSection, ri) => (
+                  {section.id === 'roleTips' && roleTipsData.map((roleSection) => (
                     <div key={roleSection.role}>
                       <button
                         onClick={() => toggleRoleCategory(`role-${roleSection.role}`)}

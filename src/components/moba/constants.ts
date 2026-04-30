@@ -6,7 +6,7 @@ import {
   Sword, ScrollText, AlertTriangle,
   ChevronRight, Zap, Shield, Target, Crosshair,
   Trophy, User, Flame, Map, Crown, Sparkles, Lightbulb,
-  Rocket, Wrench, Settings, BookOpen, GraduationCap,
+  Rocket, Wrench, GraduationCap,
   GitCompare, BookMarked,
 } from 'lucide-react';
 

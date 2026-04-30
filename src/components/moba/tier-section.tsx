@@ -6,7 +6,6 @@ import { ChampionRow } from './champion-row';
 import { SourceBadge } from './source-badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Champion } from './types';
-import type { LucideIcon } from 'lucide-react';
 
 function wrColor(wr: number): string {
   if (wr >= 53) return '#0fba81';

@@ -169,8 +169,6 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
 
 export function GuidesTab() {
   const [guides, setGuides] = useState<GuideEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [gameFilter, setGameFilter] = useState<GameFilter>('Todos');
   const [selectedGuide, setSelectedGuide] = useState<GuideEntry | null>(null);
 
   useEffect(() => {
@@ -185,15 +183,10 @@ export function GuidesTab() {
         }
       } catch (err) {
         console.error('Error loading guides:', err);
-      } finally {
-        setLoading(false);
       }
     }
     fetchGuides();
   }, []);
-
-  // All guides are LoL now (Valorant filtered at fetch), no filter needed
-  const filteredGuides = guides;
 
   return (
     <div className="space-y-4">

@@ -59,7 +59,6 @@ setInterval(() => {
 
 // In-memory fallback when GITHUB_TOKEN is not set
 let memoryStore: NotesStore = { lastUpdated: '', notes: [] };
-let hasToken: boolean | null = null;
 
 function getToken(): string | null {
   const token = process.env.GITHUB_TOKEN || '';
