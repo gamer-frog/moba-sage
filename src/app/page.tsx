@@ -332,12 +332,12 @@ export default function Home() {
 
   // ============ RENDER ============
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundColor: '#0a0e1a', width: '100%' }}>
+    <div className="min-h-screen flex flex-col overflow-x-hidden bg-lol-bg" style={{ width: '100%' }}>
       {/* Skip to content — accessibility */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold"
-        style={{ background: 'linear-gradient(135deg, #c8aa6e, #785a28)', color: '#0a0e1a' }}
+        className="bg-gradient-to-br from-lol-gold to-lol-gold-dark text-lol-bg"
       >
         Ir al contenido principal
       </a>
@@ -384,7 +384,7 @@ export default function Home() {
             >
               {/* Search input */}
               <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: '1px solid rgba(120,90,40,0.15)' }}>
-                <Search className="w-5 h-5 text-[#c8aa6e] shrink-0" />
+                <Search className="w-5 h-5 text-lol-gold shrink-0" />
                 <input
                   ref={globalSearchRef}
                   type="text"
@@ -396,10 +396,10 @@ export default function Home() {
                     }
                   }}
                   placeholder="Buscar campeón..."
-                  className="flex-1 bg-transparent text-[#f0e6d2] text-lg placeholder:text-[#5b5a56] outline-none lol-title"
+                  className="flex-1 bg-transparent text-lol-text text-lg placeholder:text-lol-dim outline-none lol-title"
                   style={{ fontFamily: 'inherit', letterSpacing: '0.05em' }}
                 />
-                <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] text-[#5b5a56]" style={{ background: 'rgba(120,90,40,0.12)', border: '1px solid rgba(120,90,40,0.2)' }}>
+                <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] text-lol-dim bg-lol-gold-dark/10 border border-lol-gold-dark/20">
                   <span className="text-[10px]">⌘</span>K
                 </kbd>
               </div>
@@ -408,31 +408,31 @@ export default function Home() {
               <div className="max-h-72 overflow-y-auto scrollbar-none">
                 {searchResults.length === 0 ? (
                   <div className="px-5 py-8 text-center">
-                    <Search className="w-8 h-8 mx-auto mb-2 text-[#785a28]/30" />
-                    <p className="text-xs text-[#5b5a56]">No se encontraron campeones</p>
+                    <Search className="w-8 h-8 mx-auto mb-2 text-lol-gold-dark/30" />
+                    <p className="text-xs text-lol-dim">No se encontraron campeones</p>
                   </div>
                 ) : (
                   searchResults.map(champ => (
                     <motion.button
                       key={champ.id}
                       onClick={() => handleSearchSelect(champ)}
-                      className="w-full flex items-center gap-3 px-5 py-2.5 hover:bg-[#1e2328]/60 transition-colors cursor-pointer"
+                      className="w-full flex items-center gap-3 px-5 py-2.5 hover:bg-lol-card/60 transition-colors cursor-pointer"
                       whileTap={{ scale: 0.98 }}
                     >
                       <ChampionIcon name={champ.name} tier={champ.tier} />
                       <div className="flex-1 min-w-0 text-left">
-                        <p className="text-sm font-semibold text-[#f0e6d2] truncate">{champ.name}</p>
-                        <p className="text-[10px] text-[#5b5a56] truncate">{champ.title}</p>
+                        <p className="text-sm font-semibold text-lol-text truncate">{champ.name}</p>
+                        <p className="text-[10px] text-lol-dim truncate">{champ.title}</p>
                       </div>
                       <RoleBadge role={champ.role} />
-                      <span className="text-[10px] font-mono font-semibold" style={{ color: champ.winRate >= 52 ? '#0fba81' : '#a09b8c' }}>{champ.winRate}%</span>
+                      <span className={`text-[10px] font-mono font-semibold ${champ.winRate >= 52 ? 'text-lol-green' : 'text-lol-muted'}`}>{champ.winRate}%</span>
                     </motion.button>
                   ))
                 )}
               </div>
 
               {/* Footer hint */}
-              <div className="px-5 py-2.5 flex items-center justify-between text-[10px] text-[#5b5a56]" style={{ borderTop: '1px solid rgba(120,90,40,0.1)' }}>
+              <div className="px-5 py-2.5 flex items-center justify-between text-[10px] text-lol-dim border-t border-lol-gold-dark/10">
                 <span>{champions.length} campeones disponibles</span>
                 <span>Enter para seleccionar · Esc para cerrar</span>
               </div>
@@ -536,8 +536,8 @@ export default function Home() {
       <div className="lol-divider" />
 
       {/* Footer — hidden on mobile (sidebar covers it) */}
-      <footer className={`border-t border-[#785a28]/15 py-4 mt-auto ${selectedGame ? 'hidden lg:block' : ''}`} style={{ backgroundColor: 'rgba(10, 14, 26, 0.6)' }}>
-        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-[#785a28]">
+      <footer className={`border-t border-lol-gold-dark/15 py-4 mt-auto bg-lol-bg/60 ${selectedGame ? 'hidden lg:block' : ''}`}>
+        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-lol-gold-dark">
           <span>MOBA SAGE © 2026</span>
           <span className="flex items-center gap-1">
             <Brain className="w-3 h-3" />
@@ -564,7 +564,7 @@ export default function Home() {
             whileTap={{ scale: 0.9 }}
             aria-label="Volver arriba"
           >
-            <ArrowUp className="w-5 h-5 text-[#0a0e1a]" />
+            <ArrowUp className="w-5 h-5 text-lol-bg" />
           </motion.button>
         )}
       </AnimatePresence>

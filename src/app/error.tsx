@@ -26,7 +26,7 @@ export default function Error({
             boxShadow: '0 0 40px rgba(232,64,87,0.1)',
           }}
         >
-          <AlertTriangle className="w-10 h-10 text-[#e84057]" />
+          <AlertTriangle className="w-10 h-10 text-lol-danger" />
         </div>
 
         <h1
@@ -70,7 +70,7 @@ export default function Error({
         {/* Error details (collapsed) */}
         {error.message && (
           <details className="mt-8 text-left">
-            <summary className="text-[10px] text-[#5b5a56] cursor-pointer hover:text-[#a09b8c] transition-colors">
+            <summary className="text-[10px] text-lol-dim cursor-pointer hover:text-lol-muted transition-colors">
               Detalles del error
             </summary>
             <pre
