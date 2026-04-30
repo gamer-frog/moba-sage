@@ -70,3 +70,21 @@ Work Log:
 Stage Summary:
 - 7 fixes across 7 files: tab-content.tsx, app-header.tsx, comparison-tab.tsx, profile-tab.tsx, use-global-search.ts, patches-meta-tab.tsx, floating-notes.tsx
 - Build passes clean, pushed as electronica-frog as commit e98e7d3
+
+---
+Task ID: 8
+Agent: main
+Task: Round 8 — 7 codebase improvements
+
+Work Log:
+- Removed duplicate ROLES constant in tier-list-tab.tsx — imported from constants.ts (was shadowing export)
+- Memoized gameChampions with useMemo([champions, selectedGame]) — new array ref every render cascaded through sortedChampions/groupedChampions
+- Stabilized dataSources fallback with useMemo — was calling new Date().toISOString() 3x per render causing flickering timestamps
+- Reused champData in rising/falling onClick handlers — was redundantly calling gameChampions.find() a second time
+- Added keyboard a11y (role=button, tabIndex=0, onKeyDown) to En Ascenso/En Caída champion cards (~20 interactive divs)
+- Added keyboard a11y (role=button, tabIndex=0, onKeyDown) to ComboListCard clickable divs
+- Added feedError/analysisError state to patches-meta-tab with user-visible error message on fetch failure
+
+Stage Summary:
+- 7 fixes across 3 files: tier-list-tab.tsx, combos-tab.tsx, patches-meta-tab.tsx
+- Build passes clean, pushed as electronica-frog as commit 3831194
