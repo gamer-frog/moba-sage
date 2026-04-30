@@ -44,7 +44,8 @@ const _SplashCarousel = memo(function _SplashCarousel() {
 
 export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch, championCount: externalCount }: { onSelectGame: (game: GameSelection) => void; patchVersion?: string; championCount?: number }) {
   const now = new Date();
-  const formattedDate = `${now.getDate()} ${MONTHS_ES[now.getMonth()]} ${now.getFullYear()}`;
+  const argDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' }));
+  const formattedDate = `${argDate.getDate()} ${MONTHS_ES[argDate.getMonth()]} ${argDate.getFullYear()}`;
 
   // Use props from parent when available, fallback to safe defaults
   const patchVersion = externalPatch || '26.9';

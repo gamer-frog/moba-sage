@@ -759,7 +759,7 @@ export function PatchesMetaTab({
       if (!seenVersions.has(key)) { seenVersions.add(key); result.push(p); }
     }
     for (const fp of feedPatches) {
-      const normalizedGame = normalizeGame(fp.sourceGame || fp.game);
+      const normalizedGame = normalizeGame(fp.sourceGame || fp.game || '');
       if (normalizedGame === 'VAL') continue;
       const key = `${normalizedGame}-${fp.version}`;
       if (!seenVersions.has(key)) {
@@ -876,7 +876,7 @@ export function PatchesMetaTab({
                 <h3 className="lol-title text-sm font-bold text-lol-text">Season 2 — Pandemonium</h3>
                 <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black" style={{ background: 'rgba(200,80,50,0.15)', color: '#e85032', border: '1px solid rgba(200,80,50,0.3)' }}>
                   <Star className="w-2.5 h-2.5 mr-0.5" />
-                  Patch 26.9
+                  Patch {latestPatch?.version || patchAnalysis?.currentPatch || '26.9'}
                 </span>
               </div>
               <p className="text-xs text-lol-muted leading-relaxed mb-2.5">La segunda temporada llega con temática de demonios. Nuevas runas, items y controles revolucionan la Grieta del Invocador.</p>

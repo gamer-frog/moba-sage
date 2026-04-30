@@ -1,145 +1,88 @@
 {
   "version": "26.9",
   "patchFull": "16.9.1",
-  "date": "2026-04-29",
+  "date": "2026-04-28",
   "status": "current",
   "season": "Season 2 — Pandemonium",
   "previousPatch": "26.8",
-  "summary": "Patch 26.9 trae el inicio de Season 2 Pandemonium con nuevos items, controles WASD, y cambios significativos a campeones. Briar recibe nerfs a su sustain, Ambessa pierde burst + supervivencia, mientras que Taliyah, Warwick y Tahm Kench reciben buffs. El meta de split push se fortalece con Nasus, y los enchanters como Nami ganan terreno.",
-  "digest": "Season 2 Pandemonium llega con Patch 26.9. Meta shift hacia teamfighting y split push. Bruisers y enchanters fortalecidos. Assassins debilitados por nerfs a items lethality. Briar pierde su dominio en jungle.",
+  "summary": "Patch 26.9 lanza Season 2 Pandemonium con cambios masivos. Deathfire Touch y Stormraider's Surge regresan como keystones de Brujería, reemplazando Phase Rush. Nuevos items iniciales Doran's Bow y Doran's Helm. Statikk Shiv recibe rework a on-hit. Role Quests mejorados con roaming permitido y penalties reducidos. Arena recibe overhaul con Events. Briar y Ambessa nerfeados. AP Ezreal revivido.",
+  "digest": "Season 2 Pandemonium. DFT + Stormraider regresan. Phase Rush eliminada. Shiv on-hit rework. Doran's Bow/Helm nuevos. Role Quests roaming. Arena Events. Briar/Ambessa nerf. AP Ezreal revive. WASD ranked.",
   "highlights": [
-    "Inicio de Season 2 Pandemonium con temática de demonios",
-    "Briar nerf: R sustain reducido — pierde dominio en jungle y ranked bajo",
-    "Ambessa nerf: burst + survivability reducidos significativamente",
-    "Taliyah buff: mejoras en field check y utilidad en mid",
-    "Warwick buff: sustain y clear speed mejorados",
-    "Tahm Kench buff: viabilidad aumentada en support",
-    "Nasus rise: split push meta favorito con ghost buff",
-    "Viktor buff: Q damage aumentado — viable en mid/support",
-    "Zeri rise: ADC buffs por adjustments en items crit",
-    "Controles WASD opcionales — calidad de vida mejorada",
-    "Role quests ajustados — penalidades corregidas",
-    "Items mythic nuevos y reworks existentes"
+    "Season 2 Pandemonium — Temática demoníaca para toda la temporada con skins themed",
+    "Deathfire Touch regresa — Keyston dominante para mages de control: Karthus, Brand, Malzahar, Teemo",
+    "Stormraider's Surge regresa — Alternativa a Phase Rush para assassinos y mages",
+    "Phase Rush eliminada — Meta shift masivo para Gragas, Irelia, Shyvana, Pyke",
+    "Doran's Bow — ADCs pueden ser agresivos desde nivel 1, cambia early game",
+    "Doran's Helm — Tanques y fighters tienen más HP y resistencias en lane",
+    "Role Quests roaming permitido — 2 min lane = 1 min roaming sin penalidad",
+    "Ambessa R cast time 0.55→0.70s — Mayor ventana de counterplay",
+    "Briar HP growth 100→95 — Supervivencia reducida pero kill potential intacto",
+    "AP Ezreal revivido — Q 40% AP, W 90% AP, R 110% AP — Viable de nuevo",
+    "WASD controls en ranked — Opcional para jugadores que lo prefieren",
+    "Shiv on-hit rework — Cambia meta de ADC builds completamente",
+    "Arena overhaul con Events — Twist dinámicos que cambian cómo se juega Arena"
   ],
   "changes": {
     "buffs": [
-      {
-        "champion": "Taliyah",
-        "details": "Mejoras en field check, utilidad general aumentada",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Warwick",
-        "details": "Sustain y clear speed mejorados",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Tahm Kench",
-        "details": "Viabilidad aumentada, stats buffeadas",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Viktor",
-        "details": "Q damage aumentado",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Zeri",
-        "details": "ADC buffs por adjustments en items crit",
-        "severity": "LOW"
-      },
-      {
-        "champion": "Nami",
-        "details": "Enchanter renaissance — peel meta favorece",
-        "severity": "LOW"
-      },
-      {
-        "champion": "Fiora",
-        "details": "Conqueror buffs — duelistas top",
-        "severity": "LOW"
-      },
-      {
-        "champion": "Camille",
-        "details": "Stabilize buff — WR subiendo de 49.9%",
-        "severity": "LOW"
-      }
+      { "champion": "Gragas", "ability": "W - Body Slam", "details": "Mejorado frontline para teams. Impacto mayor en late-game teamfights. Gragas top adaptándose a la pérdida de Phase Rush.", "severity": "MEDIUM" },
+      { "champion": "Tahm Kench", "ability": "Base Stats", "details": "Stats buffeadas. Viabilidad aumentada como support tank. Engage más difícil de castigar.", "severity": "MEDIUM" },
+      { "champion": "Taliyah", "ability": "Field Check", "details": "Utilidad general aumentada. Viable mid/jungle con WR subiendo. Mejor synergia conDeathfire Touch.", "severity": "MEDIUM" },
+      { "champion": "Warwick", "ability": "Sustain + Clear", "details": "Sustain y clear speed mejorados. Jungle dominante. Synergia natural con DFT para daño sostenido.", "severity": "MEDIUM" },
+      { "champion": "Ezreal", "ability": "Q/W/R AP Ratios", "details": "Q 15%→40% AP, W 70-90%→90% AP, R 90%→110% AP. AP Ezreal revivido como mage skillshot viable.", "severity": "HIGH" },
+      { "champion": "Shyvana", "ability": "AD/AP Paths", "details": "Mejoras para diferenciar builds AD y AP. Más durable como Dragon. New item options le dan más flexibilidad.", "severity": "MEDIUM" },
+      { "champion": "Kennen", "ability": "On-hit Build", "details": "On-hit build mejorado. Synergia con Shiv rework on-hit y Doran's Bow. Kennen top/jungle viable.", "severity": "LOW" },
+      { "champion": "Fiora", "ability": "Conqueror", "details": "Conqueror buffs — duelistas top favorecidas. Fiora top sube con esta mejora.", "severity": "LOW" },
+      { "champion": "Camille", "ability": "Stabilize", "details": "WR subiendo de 49.9% — siendo estabilizada como pick top sólido.", "severity": "LOW" },
+      { "champion": "Nasus", "ability": "Ghost", "details": "Ghost buff + split push meta. Nasus top sube como pick sólido para Season 2.", "severity": "LOW" }
     ],
     "nerfs": [
-      {
-        "champion": "Briar",
-        "details": "R sustain nerf — sustain y supervivencia reducidos",
-        "severity": "HIGH"
-      },
-      {
-        "champion": "Ambessa",
-        "details": "Burst + survivability nerfs significativos",
-        "severity": "HIGH"
-      },
-      {
-        "champion": "Kha'Zix",
-        "details": "Base damage nerf",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Mordekaiser",
-        "details": "Item nerfs indirectos — meta shift",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Yasuo",
-        "details": "Crit item adjustments — indirect nerf",
-        "severity": "LOW"
-      },
-      {
-        "champion": "Pyke",
-        "details": "Assassin item nerfs",
-        "severity": "MEDIUM"
-      }
+      { "champion": "Ambessa", "ability": "R - Public Execution", "details": "Cast time 0.55→0.70s. Ventana de counterplay más amplia. La brutalidad se mantiene pero los oponentes tienen más tiempo de reaccionar.", "severity": "HIGH" },
+      { "champion": "Briar", "ability": "HP Growth", "details": "HP growth 100→95. Supervivencia reducida pero kill potential intacto. Mastery curve más accesible para novos jugadores.", "severity": "HIGH" },
+      { "champion": "Xin Zhao", "ability": "Stats", "details": "Ajustes generales. Menos dominante en lanes con las nuevas opciones de items y runas.", "severity": "MEDIUM" },
+      { "champion": "Teemo", "ability": "Shroom", "details": "Ajustes menores a shroom damage y duration.", "severity": "LOW" },
+      { "champion": "Udyr", "ability": "Stats", "details": "Ajustes de stats. Stance switching menos fuerte en el meta actual.", "severity": "LOW" },
+      { "champion": "Zeri", "ability": "Passive/Q/W/E/R", "details": "Ajustes a stats. Menos burst overall. Builds de items crit ajustados.", "severity": "MEDIUM" }
     ],
     "adjustments": [
-      {
-        "champion": "Items lethality",
-        "details": "Ajustes en items de crit — impacto en ADCs y assassins",
-        "severity": "MEDIUM"
-      },
-      {
-        "champion": "Role quests",
-        "details": "Penalidades corregidas — menos punish por dodge",
-        "severity": "LOW"
-      },
-      {
-        "champion": "Controles",
-        "details": "WASD opcionales como mejora de QoL",
-        "severity": "LOW"
-      }
+      { "area": "Role Quests - Penalties", "details": "Penalty reducida de -50% a -75% con decaimiento basado en Quest Progress. Menos castigado por roaming.", "severity": "HIGH" },
+      { "area": "Role Quests - Roaming", "details": "Roaming permitido: 2 minutos en lane = 1 minuto roaming sin penalidad. Passive points continúan durante roaming. Assassins y roamers beneficiados enormemente.", "severity": "HIGH" },
+      { "area": "Top Quest Reward - XP", "details": "+12.5% de todas las fuentes → +80 flat XP en champion takedowns + 11% otras fuentes. Mejor diferenciación entre sources.", "severity": "MEDIUM" },
+      { "area": "Mid Quest Reward", "details": "Empowered Recall (300s CD) reemplazado por +6% Bonus AD y +6% Bonus AP. Mejor fantasy de scaling para mid laners.", "severity": "HIGH" },
+      { "area": "Bot Quest Reward - Gold", "details": "Bonus Takedown Gold 50g→40g. Reducido snowball en late game para ADCs.", "severity": "MEDIUM" },
+      { "area": "Minion Waves", "details": "Melee minion HP 440→430, +35/90s. Minion Slayer reducido. Más tiempo fuera de lane para roam.", "severity": "MEDIUM" }
     ]
   },
   "metaDirection": [
-    "Teamfighting y split push meta se fortalecen — bruisers y enchanters suben",
-    "Assassins debilitados por nerfs a items lethality y Briar/Ambessa",
-    "Enchanters meta renacido: Nami, Soraka, Zyra ganan terreno",
-    "Top lane diversificación: Nasus, Fiora, Ornn como picks sólidos",
-    "Jungle control meta: Karthus, Nocturne, Viego mantienen dominance"
+    "Brujería meta resurge — DFT y Stormraider crean un ecosistema completamente nuevo para mages",
+    "Phase Rush eliminada — Fighters y assassins pierden su keyston principal, migra a Grasp/Comet",
+    "ADC meta diversificación — Shiv on-hit + Doran's Bow permiten builds alternativos interesantes",
+    "Roaming permitido — Role Quests cambiados para soportar roaming sin castigo severo",
+    "Engage support meta — Blitzcrank, Nautilus, Leona son picks premium en bot lane",
+    "AP carries viables — Ezreal AP revivido, Karthus/Brand/Malzahar con DFT son threats reales",
+    "Split push meta fortalecido — Nasus, Fiora, Camille se benefician de cambios en minion waves",
+    "Briar/Ambessa nerfeados — Dos de los campeones más frustrantes ahora más tratables"
   ],
   "nextPatch": {
     "version": "26.10",
     "scheduledDate": "2026-05-13",
     "pbeStatus": "active",
-    "source": "https://www.surrenderat20.net/pbe/changes/"
+    "pbeUpdateUrl": "https://www.surrenderat20.net/pbe/changes/"
   },
   "brokenChampions": [
-    { "name": "Taliyah", "reason": "Field check mejorado — viable mid/jg con WR 53.8%", "tier": "S" },
-    { "name": "Warwick", "reason": "Sustain y clear speed buffeados — jungle dominante", "tier": "S" },
-    { "name": "Nilah", "reason": "53.2% WR — highest ADC del parche", "tier": "S" },
-    { "name": "Zaahen", "reason": "8.3% pick rate — nuevo campeón dominant", "tier": "A+" },
-    { "name": "Nasus", "reason": "Ghost buff + split push meta — top lane threat", "tier": "A+" },
-    { "name": "Fiora", "reason": "Conqueror buffs — duelist top lane forte", "tier": "A+" }
+    { "name": "Taliyah", "reason": "Field check mejorado + synergia con DFT. Viable mid/jungle. WR subiendo a 53.8% como pick meta.", "tier": "S" },
+    { "name": "Karthus", "reason": "DFT broken — DoT scaling hace su R devastadora. Jungle Karthus con 53.7% WR y 6.1% pick. Ban rate alta.", "tier": "S" },
+    { "name": "Nasus", "reason": "Ghost buff + split push meta. Top lane threat con sustain y scaling ilimitado. Diferenciación de builds con nuevos items.", "tier": "S" },
+    { "name": "Warwick", "reason": "Sustain y clear speed buffeados. Jungle dominante. Synergia con DFT para daño sostenido. Meta bruiser jungle.", "tier": "S" },
+    { "name": "Zaahen", "reason": "8.3% pick rate — nuevo campeón con WR sólido. Brucer/hunter con kits completos y fuerte early game.", "tier": "A+" },
+    { "name": "Ezreal", "reason": "AP Ezreal revivido — Q 40% AP, R 110% AP. Mage skillshot viable de nuevo con DFT o Stormraider.", "tier": "A+" },
+    { "name": "Fiora", "reason": "Conqueror buffs — duelist top lane forte. Diferenciación de builds con Doran's Helm.", "tier": "A+" }
   ],
   "fallenChampions": [
-    { "name": "Briar", "reason": "R sustain nerf — pierde dominio jungle", "tier": "B" },
-    { "name": "Ambessa", "reason": "Burst + survivability nerfs — ya no viable top", "tier": "B" },
-    { "name": "Kha'Zix", "reason": "Base damage nerf — assassin indirecto", "tier": "A" },
-    { "name": "Yasuo", "reason": "Crit item adjustments — indirect nerf", "tier": "A" }
+    { "name": "Briar", "reason": "HP growth nerf 100→95. Pierde sustain que lo hacía frustrante de enfrentar. Sigue fuerte pero menos dominante.", "tier": "B" },
+    { "name": "Ambessa", "reason": "R cast time 0.55→0.70s. Ventana de counterplay enorme. Jugadores pueden reaccionar a su ult ahora.", "tier": "B" },
+    { "name": "Gragas", "reason": "Phase Rush eliminada. Sin su keyston principal, Gragas pierde mobility y engage. Debe migrar a Grasp/Comet.", "tier": "B" },
+    { "name": "Irelia", "reason": "Phase Rush eliminada. Irelia perdía su tool principal de engage y chase. Buscando nuevas runas.", "tier": "B" },
+    { "name": "Shyvana", "reason": "Phase Rush eliminada + adjustments. Shyvana pierde mobility considerable para dragon form engages.", "tier": "A" }
   ],
   "officialNotes": {
     "en": "https://www.leagueoflegends.com/en-us/news/game-updates/league-of-legends-patch-26-9-notes/",

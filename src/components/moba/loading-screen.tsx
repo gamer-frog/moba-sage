@@ -75,7 +75,8 @@ const TIPS = [
   'Sabias que el invocador con mas partidas tiene mas de 30,000 games?',
   'El porcentaje de winrate ideal para escalar es 54-56%.',
   'Wardear el bosque enemigo en los primeros 3 min puede prevenir ganks.',
-  'Los campeones con mas bans son Zeri, Yuumi e Irelia.',
+  'Aurelion Sol y Nasus son algunos de los mas baneados en ranked actual.',
+
   'CS > Kills. 15 minions = 1 kill de oro aproximadamente.',
   'El Flash tiene cooldown de 300s (5 min). Contalo en tu head.',
   'El Baron Nashor da 300g de experiencia al equipo.',

@@ -3,89 +3,108 @@
     "id": 1,
     "version": "26.9",
     "title": "Pandemonium — Season 2 Launch",
-    "summary": "Lanzamiento de Season 2 Pandemonium. DFT y Stormraider vuelven. Shiv rework on-hit. Nuevos items: Doran's Bow, Doran's Helm, Gluttonous Greaves. Hard reset ranked. Arena overhaul.",
-    "digest": "SEASON 2 · DFT + Stormraider · Shiv on-hit · Zaahen dominante · WASD ranked · Arena rework",
-    "date": "2026-04-29",
+    "summary": "Lanzamiento de Season 2 Pandemonium. Deathfire Touch y Stormraider's Surge regresan. Nuevos items iniciales: Doran's Bow y Doran's Helm. Shiv rework on-hit. Role Quests mejorados con roaming permitido. Arena overhaul con Events. WASD en ranked.",
+    "digest": "SEASON 2 · DFT + Stormraider · Shiv on-hit · Doran's Bow/Helm · Role Quests roaming · Arena Events · WASD ranked · Zaahen dominante",
+    "date": "2026-04-28",
     "sourceGame": "lol",
+    "url": "https://www.leagueoflegends.com/en-us/news/game-updates/league-of-legends-patch-26-9-notes/",
     "changes": {
       "newRunes": [
-        "Deathfire Touch",
-        "Stormraider's Surge"
+        "Deathfire Touch — Keyston de Brujería que regresa. Aplica DoT basado en nivel + daño bonus por targets low-HP. Ideal para mages de control de área: Karthus, Brand, Malzahar, Teemo.",
+        "Stormraider's Surge — Keyston de Brujería clásico regresa. Movimiento masivo a través del mapa para engages sorpresa. Alternativa a Phase Rush para assassinos y mages."
       ],
       "removedRunes": [
-        "Phase Rush"
-      ],
-      "reworkedItems": [
-        "Statikk Shiv",
-        "Dusk and Dawn"
+        "Phase Rush — Eliminada del juego. Era el keyston dominante para Gragas, Irelia, Shyvana y muchos fighters. Los jugadores deben migrar a Grasp of the Undying, Arcane Comet, o las runas que regresan."
       ],
       "reworkedRunes": [
-        "Hail of Blades"
+        "Hail of Blades — Rework significativo. Ahora escala mejor con velocidad de ataque y se adapta mejor a builds on-hit."
       ],
       "newItems": [
-        "Doran's Bow",
-        "Doran's Helm",
-        "Gluttonous Greaves",
-        "Immortal Path"
+        "Doran's Bow — Nuevo starting item para ADC. Da on-hit damage scaling y vida desde nivel 1. Permite builds agresivos desde el inicio sin sacrizar sustain.",
+        "Doran's Helm — Nuevo starting item para tanques y fighters. Otorga HP bonus y resistencias. Fortalece la fase de lanes de campeones resistentes.",
+        "Gluttonous Greaves — Nuevas botas con omnivamp integrado. Sustain para fighters que necesitan mantenerse en lane sin regresar a base constantemente."
+      ],
+      "reworkedItems": [
+        "Statikk Shiv — Rework completo a on-hit. Ya no es crit puro. Ahora funciona como item on-hit que escala con velocidad de ataque, ideal para builds alternativos en ADCs.",
+        "Dusk and Dawn — Rework que añade transición dinámica día/noche, dando diferentes stats según el estado del juego."
       ],
       "removedItems": [
-        "Trailblazer",
-        "Opportunity"
+        "Trailblazer — Jungle enchant eliminado. Los junglers pierden velocidad de movimiento en bush como efecto activo.",
+        "Opportunity — Mythic ADC eliminado. El execute basado en vida del objetivo ya no está disponible."
       ],
+      "newChampions": [],
       "buffs": [
-        "Gragas W",
-        "Tahm Kench",
-        "Taliyah",
-        "Warwick"
+        "Gragas — W (Body Slam) mejorado. Los jugadores pueden frontlinear mejor para sus equipos. Impacto mayor en late-game teamfights.",
+        "Tahm Kench — Stats buffeadas. Viabilidad aumentada como support tank. Más difícil de kill en lane.",
+        "Taliyah — Field check mejorado, utilidad general aumentada. Viable mid/jungle con WR subiendo.",
+        "Warwick — Sustain y clear speed mejorados. Jungle dominante con su synergia natural con DFT.",
+        "Ezreal — AP build revivido. Q 15%→40% AP, W 70-90% AP, R 90%→110% AP. AP Ezreal viable de nuevo como mage skillshot.",
+        "Shyvana — Mejoras para diferenciar builds AD y AP. Más durable como Dragon con nuevo itemization.",
+        "Kennen — On-hit build mejorado. Synergia con Shiv rework on-hit y Doran's Bow."
       ],
       "nerfs": [
-        "Ambessa (cast time ult)",
-        "Briar (HP growth)"
+        "Ambessa — R (Public Execution) cast time 0.55→0.70s. Ventana de counterplay más amplia. La brutalidad se mantiene pero la claridad mejora.",
+        "Briar — HP growth 100→95. Supervivencia reducida pero kill potential intacto. Sigue siendo fuerte pero menos frustrante de enfrentar.",
+        "Xin Zhao — Ajustes. Menos dominante en lanes con las nuevas opciones de items y runas.",
+        "Teemo — Ajustes menores. Shroom damage y duration ajustados.",
+        "Udyr — Ajustes de stats. Stance switching menos fuerte en el meta actual.",
+        "Zeri — Ajustes a passive/Q/W/E/R. Menos burst overall pero builds de items crit ajustados."
       ],
       "adjustments": [
-        "Zeri (passive/Q/W/E/R)",
-        "Shyvana",
-        "Ezreal (AP build)",
-        "Kennen (on-hit)",
-        "Teemo",
-        "Udyr",
-        "Xin Zhao"
+        "Role Quests — Penalties reducidos -50%→-75% con decaimiento. Roaming permitido: 2min en lane = 1min roaming. Passive points 0.333/s→1.5/s.",
+        "Top Quest Reward — XP +12.5%→+80 flat XP en takedowns +11% otras fuentes. Diferencia champion vs no-champion.",
+        "Mid Quest Reward — Empowered Recall reemplazado por +6% Bonus AD y 6% Bonus AP. Mejor fantasy de scaling.",
+        "Bot Quest Reward — Bonus Takedown Gold 50g→40g. Menos snowball en late game.",
+        "Minion Waves — Melee minion HP 440→430 (+35/90s). Minion Slayer reducido. Más tiempo fuera de lane."
       ]
     },
     "highlights": [
-      "DFT top: Karthus (BROKEN), Brand, Malzahar, Teemo",
-      "Hard reset Master+ — ranked soft reset S2",
-      "WASD controls entran a ranked",
-      "Nilah 53.2% WR — highest ADC",
-      "Zaahen 8.3% pick — new champ dominant",
-      "Sion/Garen Mid ~54.5% WR off-meta"
+      "Season 2 Pandemonium正式启动 — 新temática demoníaca para toda la temporada",
+      "Deathfire Touch regresa — Karthus, Brand, Malzahar, Teemo son inmediatos beneficiaries",
+      "Stormraider's Surge regresa — Alternativa a Phase Rush para engages sorpresa",
+      "Doran's Bow — ADCs pueden ser agresivos desde nivel 1 sin sacrificar sustain",
+      "Role Quests roaming permitido — Assassins y roamers por fin pueden roamear sin castigo severo",
+      "Shiv on-hit rework — Cambia el meta de ADC builds completamente",
+      "Zaahen 8.3% pick rate — Nuevo campeón dominante con WR sólido",
+      "Nilah 53.2% WR — Highest ADC del parche",
+      "WASD controls entran a ranked — Quality of life mejorada para jugadores que lo prefieren",
+      "Arena overhaul con Events — Twist dinámicos que cambian cómo se juega"
     ]
   },
   {
     "id": 2,
     "version": "26.8",
-    "title": "Mel nerf + AP Bot Lane meta",
-    "summary": "Mel nerf significativo. Meta AP Bot Lane emerge: Karthus 55.1%, Hwei +4.2pp. Zaahen nuevo campeón. K'Sante return to meta.",
-    "digest": "Mel nerf · AP Bot meta · Zaahen new · Karthus ADC 55.1%",
+    "title": "Mel Nerf + AP Bot Lane Meta",
+    "summary": "Mel nerf significativo. Meta AP Bot Lane emerge con Karthus 55.1% WR y Hwei +4.2pp. Zaahen nuevo campeón. K'Sante return to meta. Zeri/Zyra recibe nerfs.",
+    "digest": "Mel nerf · AP Bot meta · Zaahen new · Karthus ADC 55.1% · K'Sante return · Phase Rush meta shift",
     "date": "2026-04-01",
     "sourceGame": "lol",
     "changes": {
-      "nerfs": [
-        "Mel",
-        "Ambessa"
+      "newChampions": [
+        "Zaahen — Nuevo campeón. Bruiser/hunter con pick rate alto y WR dominante en ranked desde su release."
       ],
       "buffs": [
-        "K'Sante",
-        "Syndra"
+        "K'Sante — Buff significativo lo devuelve al meta top como tank/bruiser sólido.",
+        "Syndra — Buff de utilidad. Más viable como control mage en mid/support.",
+        "Hwei — +4.2pp WR. Buffs de scalings lo posicionan como meta pick mid."
       ],
-      "newChampions": [
-        "Zaahen"
+      "nerfs": [
+        "Mel — Nerf significativo. Pierde dominio en mid lane como control mage.",
+        "Ambessa — Nerf a burst y survivability. Menos viable en top y jungle.",
+        "Zeri — Nerfs a stats. Menos eficiente como ADC hypercarry.",
+        "Zyra — Nerf a E root duration. Menos lockdown en support."
+      ],
+      "adjustments": [
+        "Phase Rush — Meta shift importante. Gragas, Irelia, Shyvana pierden su keyston principal.",
+        "Role Quests — Ajustes de progreso. Menos dependencia de estar en lane.",
+        "Doran's Blade — AD reducido. Afecta builds agresivos en early game."
       ]
     },
     "highlights": [
-      "AP Bot Lane: Karthus 55.1%, Hwei +4.2pp",
-      "K'Sante back in top meta",
-      "Sion Mid 54.6%, Garen Mid 54.7%"
+      "AP Bot Lane meta emerge: Karthus 55.1%, Hwei +4.2pp",
+      "K'Sante back in top meta con buffs sólidos",
+      "Sion Mid 54.6%, Garen Mid 54.7% — Off-meta picks viables",
+      "Phase Rush meta shift afecta a Gragas, Irelia, Shyvana negativamente"
     ]
   },
   {
@@ -93,110 +112,104 @@
     "version": "26.7",
     "title": "Dawn of Heroes — Pre-Season Adjustments",
     "summary": "Ajustes pretemporada. Assassin itemización revisada. Tank jungle recibe buffs. ADC crit build reworked. Nuevas runas experimentales. Camille y Jinx dominan el meta con WR > 53%.",
-    "digest": "Camille buff a E shield ratio. Jinx Q attack speed buff. Ornn item upgrade CD reducido. Ekko jungle clear mejorado. Zyra E root duration nerf. Lulu W cooldown ajustado. Blitzcrank Q speed aumentado. Nautilus R cooldown reducido. Doran's Blade AD reducido. Long Sword precio ajustado.",
+    "digest": "Camille E shield buff. Jinx Q attack speed buff. Ornn upgrade CD reducido. Ekko jungle clear mejorado. Support meta shift engage > poke.",
     "date": "2026-04-15",
     "sourceGame": "lol",
     "changes": {
-      "newRunes": [
-        "First Strike (revamp)"
-      ],
-      "removedRunes": [],
-      "reworkedItems": [],
       "newItems": [
-        "Dawnstone (support mythic)"
+        "Dawnstone (support mythic) — Support mythic con shielding y haste para allies."
       ],
-      "removedItems": [],
+      "newRunes": [
+        "First Strike (revamp) — Runa experimental revamp para mejorar velocidad de rotación."
+      ],
       "buffs": [
-        "Camille E",
-        "Jinx Q",
-        "Ornn upgrades",
-        "Ekko E",
-        "Blitzcrank Q",
-        "Nautilus R"
+        "Camille — E shield ratio buff. Mejor trade potential en lane. 54.1% WR — best top laner.",
+        "Jinx — Q attack speed buff. 53.8% WR — ADC dominante del parche.",
+        "Ornn — Item upgrade CD reducido. Más impact en teamfights con items mejorados para el equipo.",
+        "Ekko — Jungle clear speed mejorado. Viable como AP jungler.",
+        "Blitzcrank — Q speed aumentado. Más reliable hooks en lane.",
+        "Nautilus — R cooldown reducido. Engage más frecuente.",
+        "Fiora — Conqueror buffs. Duelista top lane forte."
       ],
       "nerfs": [
-        "Zyra E",
-        "Lulu W",
-        "Doran's Blade",
-        "Long Sword"
+        "Zyra — E root duration nerf. Menos lockdown en support meta.",
+        "Lulu — W cooldown ajustado. Menos peel disponible para carries.",
+        "Doran's Blade — AD reducido. Impacto en early game trading.",
+        "Long Sword — Precio ajustado. Economía de items cambiada."
       ],
       "adjustments": [
-        "Master Yi (meditation)",
-        "Darius (passive)",
-        "Thresh (Q cooldown)",
-        "Morgana E",
-        "Ashe W"
+        "Master Yi — Meditation ajustado. Menos sustain en jungle.",
+        "Darius — Passive ajustado. Menos punishing en matchup.",
+        "Thresh — Q cooldown ajustado. Menos hooks disponibles.",
+        "Morgana — E ajustado.",
+        "Ashe — W ajustado."
       ]
     },
     "highlights": [
-      "Camille 54.1% WR — best top laner",
-      "Jinx 53.8% WR — ADC dominante",
-      "Support meta shift: engage > poke",
-      "Tank jungle viable de nuevo"
+      "Camille 54.1% WR — Best top laner del parche",
+      "Jinx 53.8% WR — ADC dominante con buffs de Q",
+      "Support meta shift: engage > poke — Blitzcrank, Nautilus, Leona suben",
+      "Tank jungle viable de nuevo con Ornn y buffs a tanks"
     ]
   },
   {
     "id": "patch-26-6",
     "version": "26.6",
     "title": "Rift Stability — Balance Pass",
-    "summary": "Parche de estabilidad. Múltiples ajustes de balance a campeones populares. AP junglers reciben atención. ADC items ajustados. Support items reworked parcialmente. Zaahen announced.",
-    "digest": "Katarina Q damage ajustado. Diana R shield buff. Malphite W CD reducido. Nocturne R speed buff. Ahri E charm duration nerf. Ezreal Q mana cost reducido. Vayne R cooldown ajustado. Caitlyn headshot ratio nerf.",
+    "summary": "Parche de estabilidad. Múltiples ajustes de balance a campeones populares. AP junglers reciben atención. ADC items ajustados. Support items reworked parcialmente. Zaahen announced para 26.9.",
+    "digest": "Katarina Q damage ajustado. Diana R shield buff. Malphite W CD reducido. Nocturne R speed buff. Ahri E charm duration nerf. Ezreal Q mana cost reducido.",
     "date": "2026-04-01",
     "sourceGame": "lol",
     "changes": {
-      "newRunes": [],
-      "removedRunes": [],
-      "reworkedItems": [],
-      "newItems": [],
-      "removedItems": [],
       "buffs": [
-        "Katarina Q",
-        "Diana R",
-        "Malphite W",
-        "Nocturne R",
-        "Ezreal Q"
+        "Katarina — Q damage ajustado. 53.2% WR — sube a S-tier.",
+        "Diana — R shield buff. Diana jungle viable de nuevo.",
+        "Malphite — W CD reducido. Top lane sólido vs AD.",
+        "Nocturne — R speed buff. Jungle assassin viable.",
+        "Ezreal — Q mana cost reducido. Más casts en lane."
       ],
       "nerfs": [
-        "Ahri E",
-        "Vayne R",
-        "Caitlyn passive"
+        "Ahri — E charm duration nerf. Menos tiempo de engage.",
+        "Vayne — R cooldown ajustado. Menos seguridad en late game.",
+        "Caitlyn — Passive headshot ratio nerf. Menos poke damage."
       ],
       "adjustments": [
-        "Orianna Q",
-        "Syndra E",
-        "Varus Q",
-        "Jhin W"
+        "Orianna — Q ajustado.",
+        "Syndra — E ajustado.",
+        "Varus — Q ajustado.",
+        "Jhin — W ajustado."
       ]
     },
     "highlights": [
       "Katarina sube a S-tier con WR 53.2%",
-      "Diana jungle viable",
+      "Diana jungle viable de nuevo",
       "ADC meta shift: Varus > Jinx temporalmente",
-      "Zaahen announced for 26.9"
+      "Zaahen announced for 26.9 — Nuevos campeones generan hype"
     ]
   },
   {
     "id": 3,
     "version": "6.9",
     "title": "WR 7.1c — ARAM Speed Buff",
-    "summary": "Wild Rift patch 7.1c live. ARAM speed buff. Jhin + MF best ADC. Vayne top highest WR. Roadmap: Cho'Gath, Hwei, Sylas para 7.2 (Julio).",
-    "digest": "WR 7.1c · ARAM buff · Jhin MF best · Vayne top WR",
+    "summary": "Wild Rift patch 7.1c live. ARAM speed buff para partidas más dinámicas. Jhin + MF best ADC duo. Vayne top highest WR subrepresentado. Roadmap: Cho'Gath, Hwei, Sylas para 7.2 (Julio).",
+    "digest": "WR 7.1c · ARAM speed buff · Jhin MF best · Vayne top WR · Cho'Gath Hwei Sylas 7.2",
     "date": "2026-04-15",
     "sourceGame": "wildrift",
     "changes": {
       "buffs": [
-        "ARAM speed"
+        "ARAM speed — Velocidad de partida aumentada para games más dinámicos y menos downtime."
       ],
       "meta": [
-        "Jhin + MF ADC",
-        "Vayne Top"
+        "Jhin + MF — Mejor duo ADC en WR 7.1c con Runaan's on-hit > crit Jhin.",
+        "Vayne Top — Highest WR pero subrepresentado. Fuerte en top lane.",
+        "ARAM — Speed buff mejora la experiencia general."
       ]
     },
     "highlights": [
       "Jhin + MF best ADC duo WR 7.1c",
-      "Runaan's on-hit > crit Jhin",
-      "Vayne Top Lane highest WR — subrepresentado",
-      "WR 7.2: Julio 2026 (Cho'Gath, Hwei, Sylas)"
+      "Runaan's on-hit > crit Jhin — Meta shift en build items",
+      "Vayne Top Lane highest WR — subrepresentado pero fuerte",
+      "WR 7.2 Roadmap: Julio 2026 — Cho'Gath, Hwei, Sylas"
     ]
   }
 ]
