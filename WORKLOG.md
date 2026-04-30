@@ -88,3 +88,21 @@ Work Log:
 Stage Summary:
 - 7 fixes across 3 files: tier-list-tab.tsx, combos-tab.tsx, patches-meta-tab.tsx
 - Build passes clean, pushed as electronica-frog as commit 3831194
+
+---
+Task ID: 9
+Agent: main
+Task: Round 9 — 7 codebase improvements
+
+Work Log:
+- Added aria-hidden=true to vision-map decorative SVG (screen reader noise from TOP/MID/BOT/DRAGON/BARON labels)
+- Added aria-controls + id to notification bell/dropdown (ARIA popup association)
+- Computed getAuthorColor() once per note in floating-notes .map() (was 3x per note)
+- Added user-visible error feedback on note submit failure (AlertTriangle + 3s auto-dismiss)
+- Replaced 3x .filter() with single-pass reduce + useMemo for task status counts
+- Memoized groupErrorsByElo() static data in coaching-tab (was re-grouped on every render via IIFE)
+- Replaced raw <img> with Next.js <Image> for 16 showcase splash images (WebP/AVIF, srcset, blur placeholder)
+
+Stage Summary:
+- 7 fixes across 6 files: vision-map.tsx, app-header.tsx, floating-notes.tsx, tasks-tab.tsx, coaching-tab.tsx, game-selector.tsx
+- Build passes clean, pushed as electronica-frog as commit 3201328
