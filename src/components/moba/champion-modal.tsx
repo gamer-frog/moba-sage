@@ -36,7 +36,7 @@ interface MetaBuild {
 // ============================================================
 
 export function ChampionModal({ champion, onClose }: { champion: Champion; onClose: () => void }) {
-  const cfg = TIER_CONFIG[champion.tier];
+  const cfg = TIER_CONFIG[champion.tier] || TIER_CONFIG['B'];
   const extUrls = getBuildExternalUrl(champion.name);
   const [imgError, setImgError] = useState(false);
   const [activeSkin, setActiveSkin] = useState(0);

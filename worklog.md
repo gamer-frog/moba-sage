@@ -48,3 +48,54 @@
 ---
 
 **All changes pass ESLint with zero new errors. Dev server compiles and renders successfully.**
+
+---
+
+## 2026-05-01 — Full App Error Audit & Fixes (Round 12)
+
+### Summary
+Complete audit of all 31+ source files. Found and fixed 8 bugs across 6 files.
+
+### Bug 1 (CRITICAL): patches-feed.json array not parsed
+**File:** `src/components/moba/tabs/patches-meta-tab.tsx:714`
+**Problem:** `patches-feed.json` is a bare JSON array `[...]`, but code cast it as `PatchesFeed` and did `data.patches || []`. Since arrays have no `.patches` property, feed patches never loaded — the timeline was always empty.
+**Fix:** `setFeedPatches(Array.isArray(raw) ? raw : (raw as PatchesFeed).patches || [])`
+
+### Bug 2 (CRITICAL): tierlist-feed.json missing `weeklyTop` field
+**File:** `public/tierlist-feed.json`
+**Problem:** Component reads `feedData?.lol?.weeklyTop || []` but the JSON had no `weeklyTop` key. The "Top Movimientos Semanales" section was always empty.
+**Fix:** Added `weeklyTop` array with 10 champions (5 rising, 5 falling) derived from existing rising/falling data.
+
+### Bug 3 (HIGH): ITEM_DESCRIPTIONS missing "Dawnstone" key
+**File:** `src/components/moba/tabs/patches-meta-tab.tsx:115`
+**Problem:** Feed item `"Dawnstone (support mythic)"` gets split to `"Dawnstone"` before lookup, but only `"Dawnstone (support mythic)"` existed as a key.
+**Fix:** Added both `"Dawnstone"` and `"Dawnstone (support mythic)"` keys.
+
+### Bug 4 (HIGH): `wrStatColor` label mismatch in champion modal
+**File:** `src/components/moba/modal/helpers.ts:5-8`
+**Problem:** Function checked for labels `'WR'` and `'Ban'`, but `champion-stats.tsx` passes `'Win Rate'`, `'Ban Rate'`, `'Pick Rate'`, `'Pro Pick'`. ALL modal stats rendered with wrong color (always `C.warning`).
+**Fix:** Changed to `label.includes('Win')`, `label.includes('Ban')`, `label.includes('Pick')`.
+
+### Bug 5 (MEDIUM): TIER_CONFIG crash on undefined tier
+**Files:** `tier-section.tsx:21`, `comparison-tab.tsx:238`
+**Problem:** `TIER_CONFIG[tier]` without null check — crashes if tier is 'D' or any unexpected value.
+**Fix:** Added fallback: `TIER_CONFIG[tier] || TIER_CONFIG['B']`
+
+### Bug 6 (MEDIUM): `isFiltering` always true
+**File:** `src/components/moba/tabs/patches-meta-tab.tsx:791`
+**Problem:** `const isFiltering = selectedGame !== null` was ALWAYS true when a game was selected, hiding game filter buttons permanently.
+**Fix:** Renamed to `showGameFilter = selectedGame === null` and updated references.
+
+### Bug 7 (LOW): Unused import `CategoryBadge`
+**File:** `src/components/moba/tabs/patches-meta-tab.tsx:15`
+**Fix:** Removed unused import.
+
+### Bug 8 (LOW): `key={i}` in rising/falling maps
+**File:** `src/components/moba/tabs/tier-list-tab.tsx:443,513`
+**Fix:** Changed to `key={name}` for stable reconciliation.
+
+### Also fixed:
+- `FeedPatch` interface: made `game` and `status` optional to match actual JSON data
+- `CoachingTab` type: changed `selectedGame: string` to `selectedGame: string | null`
+
+**Build: ✅ Clean. All routes compile successfully.**

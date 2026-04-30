@@ -18,7 +18,7 @@ export function TierSection({ tier, champions, onChampionClick, favorites, onTog
   showWeeklyChart?: boolean;
   gamePatch?: string;
 }) {
-  const cfg = TIER_CONFIG[tier];
+  const cfg = TIER_CONFIG[tier] || TIER_CONFIG['B'];
 
   // Compute tier averages
   const avgWR = champions.length > 0

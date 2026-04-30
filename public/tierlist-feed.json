@@ -220,6 +220,18 @@
       "Yasuo (crit item adjustments)",
       "Pyke (assassin item nerfs)"
     ],
+    "weeklyTop": [
+      { "name": "Nasus", "role": "Top", "currentWR": 52.4, "change": 2.1 },
+      { "name": "Taliyah", "role": "Mid", "currentWR": 53.8, "change": 1.8 },
+      { "name": "Fiora", "role": "Top", "currentWR": 50.6, "change": 1.5 },
+      { "name": "Vex", "role": "Mid", "currentWR": 51.2, "change": 1.3 },
+      { "name": "Camille", "role": "Top", "currentWR": 50.2, "change": 1.1 },
+      { "name": "Nami", "role": "Support", "currentWR": 50.9, "change": 0.9 },
+      { "name": "Briar", "role": "Jungle", "currentWR": 51.8, "change": -1.6 },
+      { "name": "Ambessa", "role": "Top", "currentWR": 49.1, "change": -2.3 },
+      { "name": "Kha'Zix", "role": "Jungle", "currentWR": 49.5, "change": -1.4 },
+      { "name": "Yasuo", "role": "Mid", "currentWR": 49.3, "change": -1.1 }
+    ],
     "bTier": [
       {
         "name": "Darius",

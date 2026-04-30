@@ -12,7 +12,6 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TinyChampionIcon, ChampionIcon } from '../champion-icon';
 import { ItemIcon } from '../item-icon';
-import { CategoryBadge } from '../badges';
 import type { Champion, PatchNote, AiInsight, GameSelection } from '../types';
 
 // ============================================================
@@ -24,9 +23,9 @@ interface FeedPatch {
   version: string;
   title: string;
   summary: string;
-  game: string;
+  game?: string;
   date: string;
-  status: string;
+  status?: string;
   digest?: string;
   url?: string;
   changes?: Record<string, string[]>;
@@ -112,6 +111,7 @@ const ITEM_DESCRIPTIONS: Record<string, string> = {
   'Trailblazer': 'Jungle enchant — velocidad de movimiento en bush',
   'Opportunity': 'Mythic ADC — crit scaling con execute',
   'Dusk and Dawn': 'Item híbrido — transición día/noche dinámica',
+  'Dawnstone': 'Support mythic — shielding y haste para allies',
   'Dawnstone (support mythic)': 'Support mythic — shielding y haste para allies',
 };
 
@@ -711,8 +711,11 @@ export function PatchesMetaTab({
     async function fetchFeed() {
       try {
         const res = await fetch('/patches-feed.json');
-        if (res.ok) { const data: PatchesFeed = await res.json(); setFeedPatches(data.patches || []); }
-        else setFeedError(true);
+        if (res.ok) {
+          const raw = await res.json();
+          // patches-feed.json can be a bare array or {patches:[...]}
+          setFeedPatches(Array.isArray(raw) ? raw : (raw as PatchesFeed).patches || []);
+        } else setFeedError(true);
       } catch (err) { console.error('Error loading patches feed:', err); setFeedError(true); }
       finally { setFeedLoading(false); }
     }
@@ -788,7 +791,8 @@ export function PatchesMetaTab({
     return true;
   });
 
-  const isFiltering = selectedGame !== null;
+  // Game filter is useful when no specific game is selected
+  const showGameFilter = selectedGame === null;
 
   const timelinePatches = useMemo(() => {
     return mergedPatches.slice(0, 4);
@@ -982,7 +986,7 @@ export function PatchesMetaTab({
         <AnimatePresence mode="wait">
           <motion.div key="history" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
             {/* Game Filter Buttons */}
-            {!isFiltering && (
+            {!showGameFilter && (
               <div className="flex items-center gap-2 flex-wrap">
                 <Filter className="w-3.5 h-3.5 text-lol-dim" />
                 {GAME_FILTERS.map(game => {
@@ -1072,7 +1076,7 @@ export function PatchesMetaTab({
             {/* Patch Count */}
             <div className="flex items-center gap-2 text-lol-dim">
               <span className="text-sm">{filteredPatches.length} parche(s) encontrado(s)</span>
-              {!isFiltering && <span className="text-[10px] text-lol-gold-dark">· Fuentes: API + patches-feed.json</span>}
+              {!showGameFilter && <span className="text-[10px] text-lol-gold-dark">· Fuentes: API + patches-feed.json</span>}
             </div>
 
             {/* Patch List */}

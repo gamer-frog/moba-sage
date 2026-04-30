@@ -2,8 +2,16 @@
 
 import { C } from '@/components/moba/theme-colors';
 
-export function wrStatColor(wr: number, label: string): string {
-  if (label === 'WR') return wr >= 53 ? C.green : wr >= 51 ? C.success : wr >= 49 ? C.warning : C.danger;
-  if (label === 'Ban') return wr > 5 ? C.danger : C.muted;
+export function wrStatColor(value: number, label: string): string {
+  // Use includes() so it matches 'Win Rate', 'WR', 'Ban Rate', 'Ban', etc.
+  if (label.includes('Win') || label === 'WR') {
+    return value >= 53 ? C.green : value >= 51 ? C.success : value >= 49 ? C.warning : C.danger;
+  }
+  if (label.includes('Ban')) {
+    return value > 5 ? C.danger : C.muted;
+  }
+  if (label.includes('Pick') || label.includes('Pro')) {
+    return value >= 10 ? C.green : value >= 5 ? C.success : C.muted;
+  }
   return C.warning;
 }

@@ -25,7 +25,7 @@ function groupErrorsByElo(errors: { elo: string; severity: string; title: string
 }
 
 // ============ COMPONENT ============
-export function CoachingTab({ selectedGame }: { selectedGame: string }) {
+export function CoachingTab({ selectedGame }: { selectedGame: string | null }) {
   const [openCategory, setOpenCategory] = useState<string | null>('fase-de-linea');
   const [openRoleCategory, setOpenRoleCategory] = useState<string | null>(null);
   const [openSection, setOpenSection] = useState<string | null>('mecanicas');

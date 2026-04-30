@@ -440,7 +440,7 @@ export function TierListTab({
                   const champData = gameChampions.find(c => c.name === name);
                   return (
                     <motion.div
-                      key={i}
+                      key={name}
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.06 }}
@@ -510,7 +510,7 @@ export function TierListTab({
                   const champData = gameChampions.find(c => c.name === name);
                   return (
                     <motion.div
-                      key={i}
+                      key={name}
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.06 }}

@@ -235,7 +235,7 @@ function ChampionSelector({
 // Champion Comparison Card (one side)
 // ============================================================
 function ChampionComparisonCard({ champion, side }: { champion: Champion; side: 'left' | 'right' }) {
-  const cfg = TIER_CONFIG[champion.tier];
+  const cfg = TIER_CONFIG[champion.tier] || TIER_CONFIG['B'];
   const splashUrl = getChampionSplashUrl(champion.name, 0);
 
   const counterNames = champion.counterPick
