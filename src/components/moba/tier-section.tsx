@@ -5,14 +5,8 @@ import { TIER_CONFIG } from './constants';
 import { ChampionRow } from './champion-row';
 import { SourceBadge } from './source-badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { wrColor } from './theme-colors';
 import type { Champion } from './types';
-
-function wrColor(wr: number): string {
-  if (wr >= 53) return '#0fba81';
-  if (wr >= 51) return '#0acbe6';
-  if (wr >= 49) return '#f0c646';
-  return '#e84057';
-}
 
 export function TierSection({ tier, champions, onChampionClick, favorites, onToggleFavorite, trendMap, showWeeklyChart }: {
   tier: string;

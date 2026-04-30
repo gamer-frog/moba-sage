@@ -7,6 +7,7 @@ import { getChampionSplashUrl } from './helpers';
 import { RoleBadge } from './badges';
 import { TIER_CONFIG } from './constants';
 import { WeeklyWRChart } from './weekly-wr-chart';
+import { wrColor } from './theme-colors';
 import type { Champion } from './types';
 
 interface ChampionCardProps {
@@ -17,13 +18,6 @@ interface ChampionCardProps {
   trend?: 'rising' | 'falling' | undefined;
   size?: 'sm' | 'lg' | 'xl';
   showWeeklyChart?: boolean;
-}
-
-function getWrColor(wr: number): string {
-  if (wr >= 53) return '#0fba81';
-  if (wr >= 51) return '#0acbe6';
-  if (wr >= 49) return '#f0c646';
-  return '#e84057';
 }
 
 export function ChampionCard({
@@ -38,7 +32,7 @@ export function ChampionCard({
   const { name, role, tier, winRate, pickRate, banRate } = champion;
   const cfg = TIER_CONFIG[tier] || TIER_CONFIG.B;
   const splashUrl = getChampionSplashUrl(name, 0);
-  const wrColor = getWrColor(winRate);
+  const wr = wrColor(winRate);
 
   // Size configs for LoL card-style
   const sizeConfig = {
@@ -198,7 +192,7 @@ export function ChampionCard({
         {/* Stats — WR / Pick / Ban */}
         <div className="flex items-center gap-2 mb-1">
           <div className="flex items-center gap-1">
-            <span className={`${sc.statSize} font-mono font-bold`} style={{ color: wrColor }}>{winRate}%</span>
+            <span className={`${sc.statSize} font-mono font-bold`} style={{ color: wr }}>{winRate}%</span>
             <span className="text-[10px] text-lol-dim uppercase">WR</span>
           </div>
           <div className="w-px h-2.5 bg-lol-gold-dark/30" />
@@ -221,7 +215,7 @@ export function ChampionCard({
         <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: 'rgba(120,90,40,0.15)' }}>
           <motion.div
             className="h-full rounded-full"
-            style={{ background: `linear-gradient(90deg, ${wrColor}80, ${wrColor})` }}
+            style={{ background: `linear-gradient(90deg, ${wr}80, ${wr})` }}
             initial={{ width: 0 }}
             animate={{ width: `${Math.min((winRate / 58) * 100, 100)}%` }}
             transition={{ duration: 0.8, ease: 'easeOut' }}

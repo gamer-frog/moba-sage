@@ -238,7 +238,7 @@ function ProgressBar({ data }: { data: { items: Idea[] }[] }) {
   );
 }
 
-function CategoryList({ data }: { data: { category: string; icon: typeof Lightbulb; color: string; items: Idea[] }[] }) {
+function CategoryList({ data, showCategory = true }: { data: { category: string; icon: typeof Lightbulb; color: string; items: Idea[] }[]; showCategory?: boolean }) {
   return (
     <div className="space-y-4">
       {data.map((cat, catIdx) => {

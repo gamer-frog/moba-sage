@@ -5,15 +5,8 @@ import { Star, ChevronDown, TrendingUp, Minus, TrendingDown } from 'lucide-react
 import { ChampionIcon, MicroChampionIcon } from './champion-icon';
 import { RoleBadge } from './badges';
 import { WeeklyWRChart } from './weekly-wr-chart';
+import { wrColor } from './theme-colors';
 import type { Champion } from './types';
-
-// Color coding for win rate: red (<48) → yellow (48-51) → cyan (51-53) → green (>53)
-function wrColor(wr: number): string {
-  if (wr >= 53) return '#0fba81';
-  if (wr >= 51) return '#0acbe6';
-  if (wr >= 49) return '#f0c646';
-  return '#e84057';
-}
 
 // Trend icon based on pro pick rate
 function TrendIcon({ rate }: { rate: number }) {

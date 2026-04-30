@@ -13,7 +13,7 @@ import { ROLE_CONFIG, TIER_CONFIG, TOURNAMENT_REGIONS } from '../constants';
 import { ItemIcon } from '../item-icon';
 import { parseBuildItems, getChampionImageUrl, getChampionSplashUrl } from '../helpers';
 import { WeeklyWRChart } from '../weekly-wr-chart';
-import { C, wrColor as themeWrColor, freshnessColor, roleWrColor } from '../theme-colors';
+import { C, wrColor, freshnessColor, roleWrColor } from '../theme-colors';
 import { StatCard } from '../stat-card';
 import type { Champion, GameSelection, ProPick } from '../types';
 
@@ -729,7 +729,7 @@ export function TierListTab({
               label="Mejor Win Rate"
               value={topWR[0]?.winRate ? `${topWR[0].winRate}%` : '—'}
               sub={topWR[0]?.name ?? ''}
-              color={themeWrColor(topWR[0]?.winRate ?? 0)}
+              color={wrColor(topWR[0]?.winRate ?? 0)}
               icon={<TrendingUp className="w-4 h-4" />}
             />
             <StatCard

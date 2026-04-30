@@ -59,7 +59,7 @@ export function TabContent() {
       );
       case 'patches': return <PatchesMetaTab patches={ctx.patches} champions={ctx.champions} insights={ctx.insights} loading={ctx.loading} selectedGame={ctx.selectedGame} />;
       case 'combos': return <CombosTab combos={ctx.combos} loading={ctx.loading} selectedGame={ctx.selectedGame} />;
-      case 'comparison': return <ComparisonTab champions={ctx.champions} selectedGame={ctx.selectedGame} onChampionClick={ctx.onChampionClick} />;
+      case 'comparison': return <ComparisonTab champions={ctx.champions} selectedGame={ctx.selectedGame} />;
       case 'coaching': return <CoachingTab selectedGame={ctx.selectedGame || ''} />;
       case 'competitive': return <CompetitiveTab proPicks={ctx.proPicks} loading={ctx.loading} selectedGame={ctx.selectedGame} proRegionFilter={ctx.proRegionFilter} onProRegionFilterChange={ctx.onProRegionFilterChange} />;
       case 'guides': return <GuidesTab />;

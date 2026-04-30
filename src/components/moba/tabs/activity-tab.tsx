@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Rocket, Sparkles, Clock, GitCommit, ExternalLink,
-  CheckCircle2, Loader2, Filter
+  CheckCircle2, Loader2, Filter, AlertTriangle
 } from 'lucide-react';
 import { ActivityEntry, ActivityFeed, TYPE_CONFIG } from '@/lib/activity';
 import { timeAgo } from '@/lib/time';
@@ -80,10 +80,10 @@ export function ActivityTab() {
 
   const formatDate = (ts: string) => {
     const d = new Date(ts);
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const hours = d.getHours().toString().padStart(2, '0');
-    const mins = d.getMinutes().toString().padStart(2, '0');
-    return `${d.getDate()} ${months[d.getMonth()]} ${hours}:${mins}`;
+    const day = d.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', day: 'numeric' });
+    const month = d.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', month: 'short' });
+    const time = d.toLocaleTimeString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
+    return `${day} ${month} ${time}`;
   };
 
   return (
