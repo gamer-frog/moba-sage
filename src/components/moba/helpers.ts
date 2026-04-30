@@ -92,6 +92,7 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Dawnstone': '4011',
   'Duskblade of Draktharr': '6691',
   'Immortal Shieldbow': '6673',
+  'Immortal Path': '6673',
 };
 
 export function getItemIconUrl(itemName: string): string | null {

@@ -127,6 +127,20 @@
     "pbeStatus": "active",
     "source": "https://www.surrenderat20.net/pbe/changes/"
   },
+  "brokenChampions": [
+    { "name": "Taliyah", "reason": "Field check mejorado — viable mid/jg con WR 53.8%", "tier": "S" },
+    { "name": "Warwick", "reason": "Sustain y clear speed buffeados — jungle dominante", "tier": "S" },
+    { "name": "Nilah", "reason": "53.2% WR — highest ADC del parche", "tier": "S" },
+    { "name": "Zaahen", "reason": "8.3% pick rate — nuevo campeón dominant", "tier": "A+" },
+    { "name": "Nasus", "reason": "Ghost buff + split push meta — top lane threat", "tier": "A+" },
+    { "name": "Fiora", "reason": "Conqueror buffs — duelist top lane forte", "tier": "A+" }
+  ],
+  "fallenChampions": [
+    { "name": "Briar", "reason": "R sustain nerf — pierde dominio jungle", "tier": "B" },
+    { "name": "Ambessa", "reason": "Burst + survivability nerfs — ya no viable top", "tier": "B" },
+    { "name": "Kha'Zix", "reason": "Base damage nerf — assassin indirecto", "tier": "A" },
+    { "name": "Yasuo", "reason": "Crit item adjustments — indirect nerf", "tier": "A" }
+  ],
   "officialNotes": {
     "en": "https://www.leagueoflegends.com/en-us/news/game-updates/league-of-legends-patch-26-9-notes/",
     "es": "https://www.leagueoflegends.com/es-es/news/game-updates/league-of-legends-patch-26-9-notes/"

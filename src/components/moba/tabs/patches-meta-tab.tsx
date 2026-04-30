@@ -6,6 +6,7 @@ import {
   ScrollText, Clock, Brain, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield,
   TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, Zap, Target,
   AlertTriangle, Sparkles, Newspaper, ArrowUpCircle, ArrowDownCircle, Compass,
+  Flame, Star, Gem,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -97,13 +98,29 @@ function getChangeTypeConfig(type: 'buff' | 'nerf' | 'adjust') {
 // CHANGE CATEGORY STYLING (for Cambios Detallados)
 // ============================================================
 
-type ChangeCategory = 'newItems' | 'removedItems' | 'reworkedItems' | 'newRunes' | 'removedRunes' | 'newChampions' | 'buffs' | 'nerfs' | 'adjustments' | 'meta';
+type ChangeCategory = 'newItems' | 'removedItems' | 'reworkedItems' | 'reworkedRunes' | 'newRunes' | 'removedRunes' | 'newChampions' | 'buffs' | 'nerfs' | 'adjustments' | 'meta';
+
+// ============================================================
+// ITEM DESCRIPTIONS (for new items premium cards)
+// ============================================================
+
+const ITEM_DESCRIPTIONS: Record<string, string> = {
+  "Doran's Bow": 'Starting item para ADC — on-hit damage scaling',
+  "Doran's Helm": 'Starting item para tanques — HP y resistencias bonus',
+  'Gluttonous Greaves': 'Botas con omnivamp — sustain para fighters',
+  'Immortal Path': 'Nuevo mythic para duelists — lifesteal + attack speed',
+  'Trailblazer': 'Jungle enchant — velocidad de movimiento en bush',
+  'Opportunity': 'Mythic ADC — crit scaling con execute',
+  'Dusk and Dawn': 'Item híbrido — transición día/noche dinámica',
+  'Dawnstone (support mythic)': 'Support mythic — shielding y haste para allies',
+};
 
 function getChangeCategoryStyle(category: string): { color: string; bg: string; border: string; label: string; icon: typeof ArrowUp; isItem: boolean; isChampion: boolean } {
   const map: Record<string, { color: string; bg: string; border: string; label: string; icon: typeof ArrowUp; isItem: boolean; isChampion: boolean }> = {
     newItems:       { color: '#0fba81', bg: 'rgba(15,186,129,0.08)', border: 'rgba(15,186,129,0.2)',  label: 'Nuevos Items',        icon: ArrowUpCircle, isItem: true, isChampion: false },
     removedItems:   { color: '#e84057', bg: 'rgba(232,64,87,0.08)', border: 'rgba(232,64,87,0.2)',  label: 'Items Eliminados',     icon: ArrowDownCircle, isItem: true, isChampion: false },
     reworkedItems:  { color: '#f0c646', bg: 'rgba(240,198,70,0.08)', border: 'rgba(240,198,70,0.2)',  label: 'Items Reworkeados',    icon: Sparkles, isItem: true, isChampion: false },
+    reworkedRunes:  { color: '#9d48e0', bg: 'rgba(157,72,224,0.08)', border: 'rgba(157,72,224,0.2)', label: 'Runas Reworkeadas', icon: Sparkles, isItem: false, isChampion: false },
     newRunes:       { color: '#c8aa6e', bg: 'rgba(200,170,110,0.08)', border: 'rgba(200,170,110,0.2)', label: 'Nuevas Runas',        icon: Sparkles, isItem: false, isChampion: false },
     removedRunes:   { color: '#e84057', bg: 'rgba(232,64,87,0.06)', border: 'rgba(232,64,87,0.15)', label: 'Runas Eliminadas',      icon: ArrowDownCircle, isItem: false, isChampion: false },
     newChampions:   { color: '#9d48e0', bg: 'rgba(157,72,224,0.08)', border: 'rgba(157,72,224,0.2)', label: 'Nuevos Campeones',     icon: Sparkles, isItem: false, isChampion: true },
@@ -124,6 +141,98 @@ function ChangeCategoryCard({ category, items }: { category: string; items: stri
   const Icon = style.icon;
   if (!items || items.length === 0) return null;
 
+  // Premium card layout for newItems
+  if (category === 'newItems') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl overflow-hidden"
+        style={{ background: style.bg, border: `1px solid ${style.border}` }}
+      >
+        <div className="flex items-center gap-2 px-3.5 py-2" style={{ borderBottom: `1px solid ${style.border}` }}>
+          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: `${style.color}18`, border: `1px solid ${style.color}30` }}>
+            <Icon className="w-3 h-3" style={{ color: style.color }} />
+          </div>
+          <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: style.color }}>{style.label}</span>
+          <span className="ml-auto text-[10px] font-mono" style={{ color: `${style.color}80` }}>{items.length}</span>
+        </div>
+        <div className="px-3.5 py-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {items.map((item, i) => {
+              const itemName = item.split(/[(\[]/)[0].trim();
+              const description = ITEM_DESCRIPTIONS[itemName] || ITEM_DESCRIPTIONS[item] || '';
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.95, y: 4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="flex items-start gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 hover:scale-[1.01] cursor-default group"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(15,186,129,0.06), rgba(10,14,26,0.5))',
+                    border: '1px solid rgba(15,186,129,0.2)',
+                    boxShadow: 'inset 0 1px 0 rgba(15,186,129,0.08)',
+                  }}
+                >
+                  <ItemIcon name={itemName} size={40} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="text-xs font-bold text-lol-text truncate">{itemName}</span>
+                      <span className="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider" style={{ background: 'rgba(15,186,129,0.15)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.3)' }}>Nuevo</span>
+                    </div>
+                    {description && <p className="text-[10px] text-lol-muted leading-snug">{description}</p>}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Enhanced tag layout for removedItems and reworkedItems with bigger icons
+  if (category === 'removedItems' || category === 'reworkedItems') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl overflow-hidden"
+        style={{ background: style.bg, border: `1px solid ${style.border}` }}
+      >
+        <div className="flex items-center gap-2 px-3.5 py-2" style={{ borderBottom: `1px solid ${style.border}` }}>
+          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: `${style.color}18`, border: `1px solid ${style.color}30` }}>
+            <Icon className="w-3 h-3" style={{ color: style.color }} />
+          </div>
+          <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: style.color }}>{style.label}</span>
+          <span className="ml-auto text-[10px] font-mono" style={{ color: `${style.color}80` }}>{items.length}</span>
+        </div>
+        <div className="px-3.5 py-2.5">
+          <div className="flex flex-wrap gap-2.5">
+            {items.map((item, i) => {
+              const itemName = item.split(/[(\[]/)[0].trim();
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.03 }}
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] font-medium transition-all duration-200 hover:scale-105 cursor-default"
+                  style={{ background: 'rgba(10,14,26,0.5)', border: `1px solid ${style.border}`, color: '#e0dcd4' }}
+                >
+                  {style.isItem && <ItemIcon name={itemName} size={32} />}
+                  <span className="truncate max-w-[200px]">{item}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Default tag layout for other categories
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
@@ -740,6 +849,45 @@ export function PatchesMetaTab({
 
       {/* ===== OFFICIAL RIOT PATCH NOTES LINK ===== */}
       <RiotPatchNotesBanner />
+
+      {/* ===== SEASON 2 PANDEMONIUM BANNER ===== */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl overflow-hidden relative"
+        style={{
+          background: 'linear-gradient(135deg, rgba(200,80,50,0.06), rgba(10,14,26,0.6) 40%, rgba(200,170,110,0.06))',
+          border: '1px solid rgba(200,170,110,0.2)',
+          boxShadow: 'inset 0 1px 0 rgba(200,170,110,0.1), inset 0 0 30px rgba(200,80,50,0.03)',
+        }}
+      >
+        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #c8aa6e, #e85032, #c8aa6e, transparent)' }} />
+        <div className="px-4 py-4 sm:py-5">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, rgba(200,80,50,0.15), rgba(200,170,110,0.15))', border: '1px solid rgba(200,170,110,0.3)' }}>
+              <Flame className="w-6 h-6" style={{ color: '#e85032' }} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <h3 className="lol-title text-sm font-bold text-lol-text">Season 2 — Pandemonium</h3>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black" style={{ background: 'rgba(200,80,50,0.15)', color: '#e85032', border: '1px solid rgba(200,80,50,0.3)' }}>
+                  <Star className="w-2.5 h-2.5 mr-0.5" />
+                  Patch 26.9
+                </span>
+              </div>
+              <p className="text-xs text-lol-muted leading-relaxed mb-2.5">La segunda temporada llega con temática de demonios. Nuevas runas, items y controles revolucionan la Grieta del Invocador.</p>
+              <div className="flex flex-wrap gap-1.5">
+                {['DFT + Stormraider', 'Shiv on-hit', 'Hard Reset', 'WASD Ranked'].map(feature => (
+                  <span key={feature} className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium" style={{ background: 'rgba(200,170,110,0.08)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.2)' }}>
+                    <Gem className="w-2.5 h-2.5" />
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* ===== META IMPACT — Latest Patch Overview ===== */}
       {!loading && !feedLoading && mergedPatches.length > 0 && latestPatch && (
