@@ -106,3 +106,20 @@ Work Log:
 Stage Summary:
 - 7 fixes across 6 files: vision-map.tsx, app-header.tsx, floating-notes.tsx, tasks-tab.tsx, coaching-tab.tsx, game-selector.tsx
 - Build passes clean, pushed as electronica-frog as commit 3201328
+
+---
+Task ID: 10
+Agent: main
+Task: Round 10 — 8 codebase error fixes
+
+Work Log:
+- P0: Fixed floating-notes.tsx missing </div> tag (broken JSX from Round 9 refactor — entire app was failing to build)
+- P0: Fixed tasks-tab.tsx TS error — useMemo reduce returned {running,done,pending} but destructured as {runningCount,doneCount,pendingCount}
+- P1: Added res.ok checks before .json() in 3 DDragon API routes (champions, items, runes — non-200 would throw confusing parse errors)
+- P1: Added res.ok check in champion-modal meta-build fetch (silent failure on 500)
+- P2: Removed unused timeAgoMeta re-export + dead timeAgo import in modal/helpers.ts
+- P2: Removed unused handleSearchSelect export + useCallback import in use-global-search.ts
+
+Stage Summary:
+- 8 fixes across 8 files: floating-notes.tsx, tasks-tab.tsx, ddragon/champions/route.ts, ddragon/items/route.ts, ddragon/runes/route.ts, champion-modal.tsx, modal/helpers.ts, use-global-search.ts
+- Build passes clean, pushed as electronica-frog as commit 05312f8
