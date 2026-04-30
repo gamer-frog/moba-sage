@@ -69,10 +69,9 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
         onClick={() => onSelectGame('lol')}
       >
         <div
-          className="rounded-xl p-4 sm:p-5 relative overflow-hidden"
+          className="rounded-xl p-4 sm:p-5 relative overflow-hidden border-2 border-lol-gold/35"
           style={{
             background: 'linear-gradient(135deg, rgba(200,170,110,0.12), rgba(200,170,110,0.03))',
-            border: '2px solid rgba(200,170,110,0.35)',
             boxShadow: '0 0 30px rgba(200,170,110,0.1), 0 0 60px rgba(200,170,110,0.05)',
           }}
         >
@@ -86,16 +85,15 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
             borderRadius: '12px',
           }} />
           <div className="relative flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-lol-gold/35" style={{
               background: 'linear-gradient(135deg, rgba(200,170,110,0.25), rgba(200,170,110,0.08))',
-              border: '1px solid rgba(200,170,110,0.35)',
             }}>
               <Trophy className="w-6 h-6 text-lol-gold" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <h3 className="text-sm sm:text-base font-bold text-lol-gold lol-title">Patch {patchVersion} — Meta Report</h3>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: 'rgba(15,186,129,0.15)', color: '#0fba81', border: '1px solid rgba(15,186,129,0.25)' }}>
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-lol-green/15 text-lol-green border border-lol-green/25">
                   <Zap className="w-2.5 h-2.5" />
                   LIVE
                 </span>
@@ -130,10 +128,9 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-2xl relative z-10">
         <motion.button
           onClick={() => onSelectGame('lol')}
-          className="group relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 text-left cursor-pointer transition-all duration-500"
+          className="group relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 text-left cursor-pointer transition-all duration-500 border border-lol-gold/20"
           style={{
             background: 'linear-gradient(135deg, rgba(200,170,110,0.08), rgba(200,170,110,0.02))',
-            border: '1px solid rgba(200,170,110,0.2)',
             backdropFilter: 'blur(20px)',
           }}
           initial={{ opacity: 0, x: -40 }}
@@ -156,10 +153,9 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
           />
           <div className="relative z-10">
             <motion.div
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-6"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-6 border border-lol-gold/30"
               style={{
                 background: 'linear-gradient(135deg, rgba(200,170,110,0.2), rgba(200,170,110,0.05))',
-                border: '1px solid rgba(200,170,110,0.3)',
                 boxShadow: '0 0 30px rgba(200,170,110,0.1)',
               }}
               whileHover={{ rotate: [-2, 2, 0] }}
@@ -179,16 +175,15 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
               <ChevronRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
-          <div className="absolute top-3 right-3 w-6 h-6" style={{ borderTop: '1px solid rgba(200,170,110,0.3)', borderRight: '1px solid rgba(200,170,110,0.3)' }} />
-          <div className="absolute bottom-3 left-3 w-6 h-6" style={{ borderBottom: '1px solid rgba(200,170,110,0.3)', borderLeft: '1px solid rgba(200,170,110,0.3)' }} />
+          <div className="absolute top-3 right-3 w-6 h-6 border-t border-r border-lol-gold/30" />
+          <div className="absolute bottom-3 left-3 w-6 h-6 border-b border-l border-lol-gold/30" />
         </motion.button>
 
         <motion.button
           onClick={() => onSelectGame('wildrift')}
-          className="group relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 text-left cursor-pointer transition-all duration-500"
+          className="group relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 text-left cursor-pointer transition-all duration-500 border border-lol-success/20"
           style={{
             background: 'linear-gradient(135deg, rgba(10,203,230,0.08), rgba(10,203,230,0.02))',
-            border: '1px solid rgba(10,203,230,0.2)',
             backdropFilter: 'blur(20px)',
           }}
           initial={{ opacity: 0, x: 40 }}
@@ -211,10 +206,9 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
           />
           <div className="relative z-10">
             <motion.div
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-6"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-6 border border-lol-success/30"
               style={{
                 background: 'linear-gradient(135deg, rgba(10,203,230,0.2), rgba(10,203,230,0.05))',
-                border: '1px solid rgba(10,203,230,0.3)',
                 boxShadow: '0 0 30px rgba(10,203,230,0.1)',
               }}
               whileHover={{ rotate: [-2, 2, 0] }}
@@ -234,8 +228,8 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
               <ChevronRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
-          <div className="absolute top-3 right-3 w-6 h-6" style={{ borderTop: '1px solid rgba(10,203,230,0.3)', borderRight: '1px solid rgba(10,203,230,0.3)' }} />
-          <div className="absolute bottom-3 left-3 w-6 h-6" style={{ borderBottom: '1px solid rgba(10,203,230,0.3)', borderLeft: '1px solid rgba(10,203,230,0.3)' }} />
+          <div className="absolute top-3 right-3 w-6 h-6 border-t border-r border-lol-success/30" />
+          <div className="absolute bottom-3 left-3 w-6 h-6 border-b border-l border-lol-success/30" />
         </motion.button>
       </div>
 
@@ -256,8 +250,7 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
               <button
                 key={`${champ}-${i}`}
                 onClick={() => onSelectGame('lol')}
-                className="shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all duration-300 hover:scale-110 hover:ring-2 hover:ring-lol-gold hover:shadow-[0_0_12px_rgba(200,170,110,0.4)]"
-                style={{ border: '1px solid rgba(120,90,40,0.25)' }}
+                className="shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all duration-300 hover:scale-110 hover:ring-2 hover:ring-lol-gold hover:shadow-[0_0_12px_rgba(200,170,110,0.4)] border border-lol-gold-dark/25"
                 title={champ}
                 aria-label={champ}
               >

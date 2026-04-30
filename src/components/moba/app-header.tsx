@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, AlertTriangle, Eye, Bug, Clock, X, ExternalLink, Search } from 'lucide-react';
+import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, AlertTriangle, Eye, Bug, Clock, X, ExternalLink, Search, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { GameSelection } from './types';
 
@@ -59,6 +59,8 @@ export function AppHeader({
   onBackToSelector,
   onDismissPatch,
   onMenuToggle,
+  onRefresh,
+  isRefreshing,
 }: {
   selectedGame: GameSelection;
   liveVersions: { lol: string; wr: string; gamePatch: string; metaLastUpdated: string };
@@ -67,6 +69,8 @@ export function AppHeader({
   onBackToSelector: () => void;
   onDismissPatch: () => void;
   onMenuToggle?: () => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [selectedNotif, setSelectedNotif] = useState<ActivityEntry | null>(null);
@@ -208,6 +212,17 @@ export function AppHeader({
           <span className="hidden md:inline text-[10px] text-lol-dim ml-1">
             Update: {lastUpdate || 'Cargando...'}
           </span>
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              className="flex items-center justify-center w-7 h-7 rounded-md transition-all duration-200 text-lol-muted hover:text-lol-gold hover:bg-lol-card/40 disabled:opacity-50"
+              aria-label="Actualizar datos"
+              title="Actualizar datos"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
+          )}
 
           {/* Search Button */}
           {selectedGame && (

@@ -78,6 +78,7 @@ export default function Home() {
   const [liveVersions, setLiveVersions] = useState<{ lol: string; wr: string; gamePatch: string; metaLastUpdated: string }>({ lol: '', wr: '', gamePatch: '', metaLastUpdated: '' });
   const [lastUpdate, setLastUpdate] = useState('');
   const [isNewPatch, setIsNewPatch] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Favorites (localStorage) — initialize empty to avoid hydration mismatch
   const [favorites, setFavorites] = useState<Set<number>>(new Set<number>());
@@ -175,6 +176,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  // Silent refresh — re-fetches data without full loading overlay
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await fetchData();
+    setIsRefreshing(false);
+  }, [fetchData]);
 
   // Scroll listener for Back to Top
   useEffect(() => {
@@ -469,6 +477,8 @@ export default function Home() {
         onBackToSelector={handleBackToSelector}
         onDismissPatch={() => setIsNewPatch(false)}
         onMenuToggle={() => setSidebarOpen(prev => !prev)}
+        onRefresh={handleRefresh}
+        isRefreshing={isRefreshing}
       />
 
       {/* Sidebar Navigation — desktop fixed + mobile drawer */}
