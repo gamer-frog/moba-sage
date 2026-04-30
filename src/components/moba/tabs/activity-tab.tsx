@@ -4,40 +4,18 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Rocket, Sparkles, Clock, GitCommit, ExternalLink,
-  AlertTriangle, CheckCircle2, Loader2, Bug, Palette, Eye, Filter
+  CheckCircle2, Loader2, Filter
 } from 'lucide-react';
-
-interface ActivityEntry {
-  id: string;
-  type: 'deploy' | 'feature' | 'audit' | 'fix' | 'improvement';
-  title: string;
-  description: string;
-  timestamp: string;
-  commit?: string;
-  category: string;
-}
-
-interface ActivityFeed {
-  version: string;
-  lastUpdated: string;
-  entries: ActivityEntry[];
-  highlights: string[];
-}
-
-const TYPE_CONFIG: Record<string, { icon: typeof Rocket; color: string; label: string; bg: string }> = {
-  deploy: { icon: Rocket, color: '#c8aa6e', label: 'Despliegue', bg: 'rgba(200,170,110,0.1)' },
-  feature: { icon: Sparkles, color: '#0fba81', label: 'Función', bg: 'rgba(15,186,129,0.1)' },
-  audit: { icon: Eye, color: '#0acbe6', label: 'Auditoría', bg: 'rgba(10,203,230,0.1)' },
-  fix: { icon: Bug, color: '#e84057', label: 'Corrección', bg: 'rgba(232,64,87,0.1)' },
-  improvement: { icon: Palette, color: '#f0c646', label: 'Mejora', bg: 'rgba(240,198,70,0.1)' },
-};
+import { ActivityEntry, ActivityFeed, TYPE_CONFIG } from '@/lib/activity';
+import { timeAgo } from '@/lib/time';
+import { C } from '@/components/moba/theme-colors';
 
 const FILTER_OPTIONS: Array<{ value: string; label: string; color: string; bg: string }> = [
-  { value: 'all', label: 'Todos', color: '#a09b8c', bg: 'rgba(160,155,140,0.15)' },
-  { value: 'feature', label: 'Función', color: '#0fba81', bg: 'rgba(15,186,129,0.15)' },
-  { value: 'fix', label: 'Corrección', color: '#e84057', bg: 'rgba(232,64,87,0.15)' },
-  { value: 'improvement', label: 'Mejora', color: '#f0c646', bg: 'rgba(240,198,70,0.15)' },
-  { value: 'deploy', label: 'Mantenimiento', color: '#c8aa6e', bg: 'rgba(200,170,110,0.15)' },
+  { value: 'all', label: 'Todos', color: C.muted, bg: `${C.muted}26` },
+  { value: 'feature', label: 'Función', color: C.green, bg: `${C.green}26` },
+  { value: 'fix', label: 'Corrección', color: C.danger, bg: `${C.danger}26` },
+  { value: 'improvement', label: 'Mejora', color: C.warning, bg: `${C.warning}26` },
+  { value: 'deploy', label: 'Mantenimiento', color: C.gold, bg: `${C.gold}26` },
 ];
 
 export function ActivityTab() {
@@ -108,17 +86,6 @@ export function ActivityTab() {
     return `${d.getDate()} ${months[d.getMonth()]} ${hours}:${mins}`;
   };
 
-  const timeAgo = (ts: string) => {
-    const diff = Date.now() - new Date(ts).getTime();
-    const mins = Math.floor(diff / 60000);
-    if (mins <= 0) return 'ahora';
-    if (mins < 60) return `hace ${mins}m`;
-    const hours = Math.floor(mins / 60);
-    if (hours < 24) return `hace ${hours}h`;
-    const days = Math.floor(hours / 24);
-    return `hace ${days}d`;
-  };
-
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
@@ -187,7 +154,7 @@ export function ActivityTab() {
               `}
               style={isActive
                 ? { backgroundColor: opt.bg, color: opt.color, border: `1px solid ${opt.color}30` }
-                : { color: '#5b5a56', backgroundColor: 'rgba(30,35,40,0.4)' }
+                : { color: C.dim, backgroundColor: `${C.card}66` }
               }
               aria-pressed={isActive}
             >

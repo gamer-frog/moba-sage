@@ -11,6 +11,7 @@ import { CollapsibleSection } from './collapsible-section';
 import { CopyBuildButton } from './copy-build-button';
 import { VisionMap } from './vision-map';
 import { WeeklyWRChart as SharedWeeklyWRChart } from './weekly-wr-chart';
+import { timeAgo } from '@/lib/time';
 import type { Champion } from './types';
 
 // Extracted sub-components
@@ -21,7 +22,14 @@ import { ExternalLinksSection } from './modal/external-links';
 import { CountersSynergyGrid } from './modal/counters-synergy';
 import { CounterStrategiesSection } from './modal/counter-strategies-section';
 import { EnhancedRunesDisplay } from './modal/rune-display';
-import { timeAgoMeta } from './modal/helpers';
+
+interface MetaBuild {
+  coreItems: string[];
+  boots?: string;
+  source: string;
+  patch: string;
+  scrapedAt?: string;
+}
 
 // ============================================================
 // Champion Modal — Enhanced LoL Card Design
@@ -33,7 +41,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
   const [imgError, setImgError] = useState(false);
   const [activeSkin, setActiveSkin] = useState(0);
   const [failedSkins, setFailedSkins] = useState<Set<number>>(new Set());
-  const [metaBuild, setMetaBuild] = useState<any>(null);
+  const [metaBuild, setMetaBuild] = useState<MetaBuild | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Focus trap + Escape to close
@@ -288,7 +296,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-lol-green animate-pulse" />
                     <span className="text-[10px] text-lol-green font-medium">
-                      {metaBuild.scrapedAt ? timeAgoMeta(metaBuild.scrapedAt) : 'En Vivo'}
+                      {metaBuild.scrapedAt ? timeAgo(metaBuild.scrapedAt) : 'En Vivo'}
                     </span>
                   </div>
                 </div>

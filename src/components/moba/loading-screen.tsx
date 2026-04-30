@@ -8,6 +8,8 @@ import {
   Lightbulb, Activity, Database, Radio, Clock
 } from 'lucide-react';
 import { APP_NAME, APP_VERSION } from '@/data/constants';
+import { C } from '@/components/moba/theme-colors';
+import { timeAgo, formatTime, formatDateShort } from '@/lib/time';
 
 /* ================================================================
    MOBA SAGE — Loading Screen v10.0
@@ -21,37 +23,7 @@ import { APP_NAME, APP_VERSION } from '@/data/constants';
    - Keyboard support (Enter / Escape)
    ================================================================ */
 
-// ---- Time formatting helpers (Argentina timezone) ----
-const TZ = 'America/Argentina/Buenos_Aires';
-
-function formatTime(iso: string): string {
-  try {
-    return new Date(iso).toLocaleTimeString('es-AR', {
-      timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false,
-    });
-  } catch {
-    return '--:--';
-  }
-}
-
-function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleDateString('es-AR', {
-      timeZone: TZ, day: 'numeric', month: 'short',
-    });
-  } catch {
-    return '';
-  }
-}
-
-function timeAgo(iso: string): string {
-  const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
-  if (mins < 1) return 'ahora mismo';
-  if (mins < 60) return `hace ${mins} min`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `hace ${hrs}h ${mins % 60}m`;
-  return `hace ${Math.floor(hrs / 24)}d`;
-}
+// ---- Animated counter hook ----
 
 interface VersionInfo {
   lol: string;
@@ -192,13 +164,13 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
 
   // ---- Freshness calculation ----
   const freshness = (() => {
-    if (!version?.fetchedAt) return { pct: 0, label: 'Cargando...', color: '#5b5a56' };
+    if (!version?.fetchedAt) return { pct: 0, label: 'Cargando...', color: C.dim };
     const hours = (now - new Date(version.fetchedAt).getTime()) / 3600000;
-    if (hours < 0.5) return { pct: 100, label: 'Ultra fresco', color: '#0fba81' };
-    if (hours < 2)   return { pct: 82,  label: 'Fresco',     color: '#0fba81' };
-    if (hours < 6)   return { pct: 55,  label: 'Aceptable',  color: '#f0c646' };
-    if (hours < 24)  return { pct: 28,  label: 'Antiguo',    color: '#e84057' };
-    return { pct: 10, label: 'Muy antiguo', color: '#e84057' };
+    if (hours < 0.5) return { pct: 100, label: 'Ultra fresco', color: C.green };
+    if (hours < 2)   return { pct: 82,  label: 'Fresco',     color: C.green };
+    if (hours < 6)   return { pct: 55,  label: 'Aceptable',  color: C.warning };
+    if (hours < 24)  return { pct: 28,  label: 'Antiguo',    color: C.danger };
+    return { pct: 10, label: 'Muy antiguo', color: C.danger };
   })();
 
   // ---- Big animated total counter ----
@@ -471,7 +443,7 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
                   <p className="text-[16px] font-bold font-mono text-lol-text leading-tight">{formatTime(version.fetchedAt)}</p>
                 </div>
                 <p className="text-[9px] font-mono mt-0.5 text-lol-dim">
-                  {formatDate(version.fetchedAt)} &middot; {timeAgo(version.fetchedAt)}
+                  {formatDateShort(version.fetchedAt)} &middot; {timeAgo(version.fetchedAt)}
                 </p>
               </div>
               <div className="rounded-lg px-2.5 py-2" style={{ background: 'rgba(10,14,26,0.5)' }}>
@@ -486,7 +458,7 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
                   </p>
                 </div>
                 <p className="text-[9px] font-mono mt-0.5 text-lol-dim">
-                  {version?.metaLastUpdated ? `${formatDate(version.metaLastUpdated)} · ${timeAgo(version.metaLastUpdated)}` : ''}
+                {version?.metaLastUpdated ? `${formatDateShort(version.metaLastUpdated)} · ${timeAgo(version.metaLastUpdated)}` : ''}
                 </p>
               </div>
             </div>

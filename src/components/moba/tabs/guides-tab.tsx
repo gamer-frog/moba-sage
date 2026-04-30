@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tag, Swords, X, Clock, FileText, Info, BookOpen, Loader2 } from 'lucide-react';
 import { ChampionIcon } from '../champion-icon';
@@ -36,6 +36,9 @@ function GuideModal({ guide, onClose }: { guide: GuideEntry; onClose: () => void
       transition={{ duration: 0.2 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Guía: ${guide.title}`}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
@@ -168,6 +171,20 @@ export function GuidesTab() {
   const [guides, setGuides] = useState<GuideEntry[]>([]);
   const [selectedGuide, setSelectedGuide] = useState<GuideEntry | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Escape to close guide modal
+  useEffect(() => {
+    if (!selectedGuide) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedGuide(null);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [selectedGuide]);
 
   useEffect(() => {
     async function fetchGuides() {

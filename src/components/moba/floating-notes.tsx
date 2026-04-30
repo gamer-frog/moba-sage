@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Lightbulb, X, Send, Trash2, Sparkles, MessageSquare } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { C } from '@/components/moba/theme-colors';
 
 interface Note {
   id: string;
@@ -119,7 +120,7 @@ export function FloatingNotes() {
   }
 
   function getAuthorColor(name: string): string {
-    const colors = ['#c8aa6e', '#0acbe6', '#e84057', '#f0c646', '#0fba81', '#9d48e0', '#5b8af5'];
+    const colors = [C.gold, C.success, C.danger, C.warning, C.green, '#9d48e0', C.pick];
     let hash = 0;
     for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
     return colors[Math.abs(hash) % colors.length];
@@ -313,6 +314,7 @@ export function FloatingNotes() {
                     }}
                     whileHover={newNote.trim() ? { scale: 1.05 } : {}}
                     whileTap={newNote.trim() ? { scale: 0.95 } : {}}
+                    aria-label="Enviar nota"
                   >
                     <Send className="w-4 h-4 text-lol-bg" />
                   </motion.button>

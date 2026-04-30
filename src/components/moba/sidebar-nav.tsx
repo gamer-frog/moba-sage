@@ -194,6 +194,8 @@ export function SidebarNav(props: SidebarNavProps) {
     <>
       {/* Desktop: always visible fixed sidebar */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-[57px] bottom-0 w-[220px] border-r border-lol-gold-dark/15 z-30"
+        role="navigation"
+        aria-label="Navegación principal"
         style={{ backgroundColor: 'rgba(10, 14, 26, 0.96)', backdropFilter: 'blur(20px)' }}>
         <SidebarContent {...props} />
       </aside>
@@ -213,6 +215,8 @@ export function SidebarNav(props: SidebarNavProps) {
             {/* Drawer panel */}
             <motion.aside
               className="fixed left-0 top-[57px] bottom-0 w-[260px] z-[46] border-r border-lol-gold-dark/15 lg:hidden"
+              role="navigation"
+              aria-label="Navegación principal"
               style={{ backgroundColor: 'rgba(10, 14, 26, 0.98)', backdropFilter: 'blur(20px)' }}
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}

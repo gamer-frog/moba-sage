@@ -4,42 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Rocket, Sparkles, Clock,
-  CheckCircle2, AlertTriangle, GitCommit, Eye,
-  ExternalLink
+  CheckCircle2, GitCommit, ExternalLink
 } from 'lucide-react';
-
-interface ActivityEntry {
-  id: string;
-  type: string;
-  title: string;
-  description: string;
-  timestamp: string;
-  commit?: string;
-  category: string;
-}
-
-interface ActivityFeed {
-  version: string;
-  lastUpdated: string;
-  entries: ActivityEntry[];
-  highlights: string[];
-}
-
-const TYPE_COLORS: Record<string, string> = {
-  deploy: '#c8aa6e',
-  feature: '#0fba81',
-  audit: '#0acbe6',
-  fix: '#e84057',
-  improvement: '#f0c646',
-};
-
-const TYPE_ICONS: Record<string, typeof Rocket> = {
-  deploy: Rocket,
-  feature: Sparkles,
-  audit: Eye,
-  fix: AlertTriangle,
-  improvement: Sparkles,
-};
+import { ActivityEntry, ActivityFeed, TYPE_COLORS, TYPE_ICONS } from '@/lib/activity';
+import { timeAgo } from '@/lib/time';
 
 export function ActivityPopup() {
   const [feed, setFeed] = useState<ActivityFeed | null>(null);
@@ -98,17 +66,6 @@ export function ActivityPopup() {
     .slice(0, 5) || [];
 
   const latestEntry = recentEntries[0];
-
-  const timeAgo = (ts: string) => {
-    const diff = Date.now() - new Date(ts).getTime();
-    const mins = Math.floor(diff / 60000);
-    if (mins <= 0) return 'ahora';
-    if (mins < 60) return `${mins}m`;
-    const hours = Math.floor(mins / 60);
-    if (hours < 24) return `${hours}h`;
-    const days = Math.floor(hours / 24);
-    return `${days}d`;
-  };
 
   // Always render AnimatePresence for exit animations
   if (!feed || !mounted) return null;

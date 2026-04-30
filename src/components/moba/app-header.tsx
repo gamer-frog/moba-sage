@@ -2,53 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, AlertTriangle, Eye, Bug, Clock, X, ExternalLink, Search, RefreshCw } from 'lucide-react';
+import { Sword, ArrowLeft, Bell, Menu, Rocket, Sparkles, Clock, X, ExternalLink, Search, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { GameSelection } from './types';
-
-interface ActivityEntry {
-  id: string;
-  type: string;
-  title: string;
-  description: string;
-  timestamp: string;
-  commit?: string;
-  category: string;
-}
-
-const TYPE_COLORS: Record<string, string> = {
-  deploy: '#c8aa6e',
-  feature: '#0fba81',
-  audit: '#0acbe6',
-  fix: '#e84057',
-  improvement: '#f0c646',
-  maintenance: '#785a28',
-};
-
-const TYPE_ICONS: Record<string, typeof Rocket> = {
-  deploy: Rocket,
-  feature: Sparkles,
-  audit: Eye,
-  fix: AlertTriangle,
-  improvement: Sparkles,
-  maintenance: Bug,
-};
+import { ActivityEntry, TYPE_COLORS, TYPE_ICONS } from '@/lib/activity';
+import { timeAgo, formatTimestamp } from '@/lib/time';
 
 function isRecent(ts: string): boolean {
   const diff = Date.now() - new Date(ts).getTime();
   const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
   return diff >= 0 && diff <= sevenDaysMs;
-}
-
-function timeAgo(ts: string): string {
-  const diff = Date.now() - new Date(ts).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins <= 0) return 'ahora';
-  if (mins < 60) return `hace ${mins}m`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `hace ${hours}h`;
-  const days = Math.floor(hours / 24);
-  return `hace ${days}d`;
 }
 
 export function AppHeader({
@@ -145,16 +108,6 @@ export function AppHeader({
   const notifCount = recentEntries.length;
   const hasNotifs = notifCount > 0;
   const visibleEntries = recentEntries.slice(0, 8);
-
-  function formatTimestamp(ts: string): string {
-    const d = new Date(ts);
-    const day = d.getDate();
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const month = months[d.getMonth()];
-    const hours = d.getHours().toString().padStart(2, '0');
-    const mins = d.getMinutes().toString().padStart(2, '0');
-    return `${day} ${month} ${d.getFullYear()} · ${hours}:${mins}`;
-  }
 
   function handleNotifClick(entry: ActivityEntry) {
     setSelectedNotif(entry);

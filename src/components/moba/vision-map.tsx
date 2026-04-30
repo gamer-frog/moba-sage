@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, X } from 'lucide-react';
+import { C } from '@/components/moba/theme-colors';
 
 // Pre-defined ward positions per role
 // Coordinates are in % of map size (0-100)
@@ -53,9 +54,9 @@ const WARD_POSITIONS: Record<string, WardPosition[]> = {
 };
 
 const WARD_TYPE_COLORS: Record<string, string> = {
-  common: '#0fba81',
-  deep: '#e84057',
-  objective: '#f0c646',
+  common: C.green,
+  deep: C.danger,
+  objective: C.warning,
 };
 
 const WARD_TYPE_LABELS: Record<string, string> = {
