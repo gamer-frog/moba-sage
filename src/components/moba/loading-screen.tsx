@@ -5,20 +5,53 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Sword, Shield, Swords, TrendingUp,
   Zap, Trophy, Flame, Sparkles, ChevronRight,
-  Lightbulb, Activity, Database, Radio
+  Lightbulb, Activity, Database, Radio, Clock
 } from 'lucide-react';
 import { APP_NAME, APP_VERSION } from '@/data/constants';
 
 /* ================================================================
-   MOBA SAGE — Loading Screen v9.0
+   MOBA SAGE — Loading Screen v10.0
    - Animated SVG progress ring around logo
    - Data stream bars with fill animation
    - Animated big number counter (0 → N)
    - Data freshness gauge (visual data age)
+   - REAL timestamps with hours/minutes (ARG timezone)
    - Cinematic staggered intro with grid BG + scan line
    - Real data integration (dataReady prop)
    - Keyboard support (Enter / Escape)
    ================================================================ */
+
+// ---- Time formatting helpers (Argentina timezone) ----
+const TZ = 'America/Argentina/Buenos_Aires';
+
+function formatTime(iso: string): string {
+  try {
+    return new Date(iso).toLocaleTimeString('es-AR', {
+      timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false,
+    });
+  } catch {
+    return '--:--';
+  }
+}
+
+function formatDate(iso: string): string {
+  try {
+    return new Date(iso).toLocaleDateString('es-AR', {
+      timeZone: TZ, day: 'numeric', month: 'short',
+    });
+  } catch {
+    return '';
+  }
+}
+
+function timeAgo(iso: string): string {
+  const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (mins < 1) return 'ahora mismo';
+  if (mins < 60) return `hace ${mins} min`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `hace ${hrs}h ${mins % 60}m`;
+  return `hace ${Math.floor(hrs / 24)}d`;
+}
 
 interface VersionInfo {
   lol: string;
@@ -397,13 +430,18 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
           style={{ background: 'linear-gradient(135deg, rgba(18,22,30,0.7), rgba(10,14,26,0.85))', border: '1px solid rgba(200,170,110,0.06)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.4 }}
         >
-          {/* Freshness header + bar */}
+          {/* Freshness header + live clock badge */}
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex items-center gap-1.5">
               <Activity className="w-3 h-3 text-lol-success" />
               <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-lol-gold-dark">Data Frescura</span>
             </div>
-            <span className="text-[10px] font-bold" style={{ color: freshness.color }}>{freshness.label}</span>
+            <div className="flex items-center gap-1.5">
+              <motion.div className="w-1.5 h-1.5 rounded-full"
+                style={{ background: freshness.color }}
+                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }} />
+              <span className="text-[10px] font-bold" style={{ color: freshness.color }}>{freshness.label}</span>
+            </div>
           </div>
 
           {/* Freshness gauge bar */}
@@ -414,6 +452,40 @@ export function LoadingScreen({ onSkip, dataReady = false, fetchError = false, d
               transition={{ duration: 1.8, ease: 'easeOut', delay: 0.6 }}
             />
           </div>
+
+          {/* Timestamp rows — actual hours of data freshness */}
+          {version?.fetchedAt && (
+            <div className="grid grid-cols-2 gap-2 mb-2">
+              <div className="rounded-lg px-2.5 py-2" style={{ background: 'rgba(10,14,26,0.5)' }}>
+                <p className="text-[9px] uppercase tracking-wider text-lol-dim mb-0.5 flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: '#0fba81' }} />
+                  Datos obtenidos
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3 h-3" style={{ color: '#0fba81' }} />
+                  <p className="text-[16px] font-bold font-mono text-lol-text leading-tight">{formatTime(version.fetchedAt)}</p>
+                </div>
+                <p className="text-[9px] font-mono mt-0.5 text-lol-dim">
+                  {formatDate(version.fetchedAt)} &middot; {timeAgo(version.fetchedAt)}
+                </p>
+              </div>
+              <div className="rounded-lg px-2.5 py-2" style={{ background: 'rgba(10,14,26,0.5)' }}>
+                <p className="text-[9px] uppercase tracking-wider text-lol-dim mb-0.5 flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: '#0acbe6' }} />
+                  Meta actualizada
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3 h-3" style={{ color: '#0acbe6' }} />
+                  <p className="text-[16px] font-bold font-mono text-lol-text leading-tight">
+                    {version?.metaLastUpdated ? formatTime(version.metaLastUpdated) : '...'}
+                  </p>
+                </div>
+                <p className="text-[9px] font-mono mt-0.5 text-lol-dim">
+                  {version?.metaLastUpdated ? `${formatDate(version.metaLastUpdated)} · ${timeAgo(version.metaLastUpdated)}` : ''}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Version grid */}
           <div className="grid grid-cols-3 gap-2">
