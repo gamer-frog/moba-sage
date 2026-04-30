@@ -612,10 +612,11 @@ export function PatchesMetaTab({
   const isFiltering = selectedGame !== null;
 
   const timelinePatches = useMemo(() => {
-    return [...mergedPatches].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 4);
+    return mergedPatches.slice(0, 4);
   }, [mergedPatches]);
 
-  const selectedPatchDetail = timelinePatches[selectedTimelinePatch];
+  const safeTimelineIdx = Math.min(selectedTimelinePatch, Math.max(0, timelinePatches.length - 1));
+  const selectedPatchDetail = timelinePatches.length > 0 ? timelinePatches[safeTimelineIdx] : null;
   const selectedPatchHighlights = selectedPatchDetail ? getLoLChampionHighlights(selectedPatchDetail) : [];
 
   const metaDirection = useMemo(() => {
@@ -632,7 +633,7 @@ export function PatchesMetaTab({
     return directions;
   }, [selectedPatchHighlights]);
 
-  const latestPatch = useMemo(() => [...mergedPatches].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0], [mergedPatches]);
+  const latestPatch = useMemo(() => mergedPatches[0] ?? null, [mergedPatches]);
 
   // --- Broken stuff data (from broken-stuff-tab) ---
   const gameChampions = champions.filter(c => {

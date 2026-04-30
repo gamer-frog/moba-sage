@@ -119,7 +119,10 @@ export function useGameData() {
     return () => controller.abort();
   }, [applyData]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    const cleanup = fetchData();
+    return () => cleanup?.();
+  }, [fetchData]);
 
   // Silent refresh (no loading overlay — no flicker)
   const handleRefresh = useCallback(async () => {

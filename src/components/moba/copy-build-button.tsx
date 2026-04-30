@@ -1,17 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Copy, Check } from 'lucide-react';
 
 export function CopyBuildButton({ buildName, itemsStr }: { buildName: string; itemsStr: string }) {
   const [copied, setCopied] = useState(false);
-  const handleCopy = async () => {
+
+  // Auto-dismiss "Copiado" after 2s, cleaned up on unmount
+  useEffect(() => {
+    if (!copied) return;
+    const timer = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [copied]);
+
+  const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(`${buildName}: ${itemsStr}`);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch { /* clipboard not available */ }
-  };
+  }, [buildName, itemsStr]);
   return (
     <button
       onClick={handleCopy}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
@@ -56,7 +57,8 @@ export function WeeklyWRChart({
   currentWR: number;
   compact?: boolean;
 }) {
-  const data = getWeeklyWRHistory(championName, currentWR);
+  const data = useMemo(() => getWeeklyWRHistory(championName, currentWR), [championName, currentWR]);
+  const gradientId = `wr-gradient-${championName.replace(/[^a-zA-Z0-9]/g, '')}`;
   const maxWR = Math.max(...data.map(d => d.wr));
   const minWR = Math.min(...data.map(d => d.wr));
   const range = Math.max(maxWR - minWR, 1.5);
@@ -131,7 +133,7 @@ export function WeeklyWRChart({
         <svg viewBox={`0 0 100 ${chartHeight}`} className="w-full" style={{ height: '80px' }} preserveAspectRatio="none">
           {/* Area fill gradient */}
           <defs>
-            <linearGradient id={`wr-gradient-${championName}`} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={trendColor} stopOpacity="0.3" />
               <stop offset="100%" stopColor={trendColor} stopOpacity="0.02" />
             </linearGradient>
@@ -140,7 +142,7 @@ export function WeeklyWRChart({
           {/* Area */}
           <motion.path
             d={areaPath}
-            fill={`url(#wr-gradient-${championName})`}
+            fill={`url(#${gradientId})`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}

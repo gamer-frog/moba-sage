@@ -73,7 +73,7 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
                 {/* Active indicator bar */}
                 {isActive && (
                   <motion.div
-                    layoutId="sidebar-active-indicator"
+                    layoutId="game-sidebar-active-indicator"
                     className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
                     style={{ background: 'linear-gradient(180deg, #c8aa6e, #785a28)' }}
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
@@ -129,6 +129,7 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
                     <button
                       key={tab.id}
                       onClick={() => handleTabClick(tab.id)}
+                      aria-current={isActive ? 'page' : undefined}
                       className={`
                         w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 group relative
                         ${isActive
@@ -139,7 +140,7 @@ function SidebarContent({ activeTab, onTabChange, gamePatch, onClose }: SidebarN
                     >
                       {isActive && (
                         <motion.div
-                          layoutId="sidebar-active-indicator"
+                          layoutId="dev-sidebar-active-indicator"
                           className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
                           style={{ background: 'linear-gradient(180deg, #0acbe6, #0a7a8f)' }}
                           transition={{ type: 'spring', stiffness: 500, damping: 35 }}

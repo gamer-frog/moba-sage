@@ -119,29 +119,29 @@ export default function Home() {
   }, []);
 
   // ---- Game selection ----
-  const handleSelectGame = (game: GameSelection) => {
+  const handleSelectGame = useCallback((game: GameSelection) => {
     setFlashColor(game === 'lol' ? 'rgba(200,170,110,0.15)' : 'rgba(10,203,230,0.15)');
     setTimeout(() => setFlashColor(null), 400);
     setSelectedGame(game);
     setActiveTab('tierlist');
-  };
+  }, []);
 
-  const handleBackToSelector = () => setSelectedGame(null);
+  const handleBackToSelector = useCallback(() => setSelectedGame(null), []);
 
   // ---- Champion toggle (modal) ----
-  const handleToggleChampion = (champion: Champion) => {
+  const handleToggleChampion = useCallback((champion: Champion) => {
     setSelectedChampion(prev => prev?.id === champion.id ? null : champion);
-  };
+  }, []);
 
   // ---- Search select (global command palette) ----
-  const handleSearchSelect = (champ: Champion) => {
+  const handleSearchSelect = useCallback((champ: Champion) => {
     setSelectedChampion(champ);
     setGlobalSearchOpen(false);
     setGlobalSearchQuery('');
-  };
+  }, []);
 
   // ---- Task status toggle ----
-  const handleToggleTask = async (task: TaskItem) => {
+  const handleToggleTask = useCallback(async (task: TaskItem) => {
     const nextStatus = task.status === 'pending' ? 'running' : task.status === 'running' ? 'done' : 'pending';
     try {
       const res = await fetch('/api/tasks', {
@@ -158,7 +158,7 @@ export default function Home() {
     } catch (err) {
       console.error('Task update error:', err);
     }
-  };
+  }, []);
 
   // ---- Build context value (memoized — prevents unnecessary re-renders in all consumers) ----
   const contextValue = useMemo(() => ({

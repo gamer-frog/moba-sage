@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, TrendingUp, TrendingDown } from 'lucide-react';
-import { getChampionSplashUrl } from './helpers';
+import { getChampionSplashUrl, CHAMPION_NAME_MAP } from './helpers';
 import { RoleBadge } from './badges';
 import { TIER_CONFIG } from './constants';
 import { WeeklyWRChart } from './weekly-wr-chart';
@@ -169,7 +169,7 @@ export function ChampionCard({
             }}
           >
             <Image
-              src={`https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${name.replace(/['\s.]/g, '')}_0.jpg`}
+              src={`https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${CHAMPION_NAME_MAP[name] || name.replace(/['\s.]/g, '')}_0.jpg`}
               alt={name}
               width={32}
               height={32}
