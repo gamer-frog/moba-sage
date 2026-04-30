@@ -10,6 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TinyChampionIcon, ChampionIcon } from '../champion-icon';
+import { ItemIcon } from '../item-icon';
 import { CategoryBadge } from '../badges';
 import type { Champion, PatchNote, AiInsight, GameSelection } from '../types';
 
@@ -90,6 +91,76 @@ function getChangeTypeConfig(type: 'buff' | 'nerf' | 'adjust') {
     case 'nerf': return { color: '#e84057', bg: 'rgba(232,64,87,0.1)', border: 'rgba(232,64,87,0.3)', label: 'Nerf', icon: TrendingDown };
     case 'adjust': return { color: '#f0c646', bg: 'rgba(240,198,70,0.1)', border: 'rgba(240,198,70,0.3)', label: 'Ajuste', icon: Minus };
   }
+}
+
+// ============================================================
+// CHANGE CATEGORY STYLING (for Cambios Detallados)
+// ============================================================
+
+type ChangeCategory = 'newItems' | 'removedItems' | 'reworkedItems' | 'newRunes' | 'removedRunes' | 'newChampions' | 'buffs' | 'nerfs' | 'adjustments' | 'meta';
+
+function getChangeCategoryStyle(category: string): { color: string; bg: string; border: string; label: string; icon: typeof ArrowUp; isItem: boolean; isChampion: boolean } {
+  const map: Record<string, { color: string; bg: string; border: string; label: string; icon: typeof ArrowUp; isItem: boolean; isChampion: boolean }> = {
+    newItems:       { color: '#0fba81', bg: 'rgba(15,186,129,0.08)', border: 'rgba(15,186,129,0.2)',  label: 'Nuevos Items',        icon: ArrowUpCircle, isItem: true, isChampion: false },
+    removedItems:   { color: '#e84057', bg: 'rgba(232,64,87,0.08)', border: 'rgba(232,64,87,0.2)',  label: 'Items Eliminados',     icon: ArrowDownCircle, isItem: true, isChampion: false },
+    reworkedItems:  { color: '#f0c646', bg: 'rgba(240,198,70,0.08)', border: 'rgba(240,198,70,0.2)',  label: 'Items Reworkeados',    icon: Sparkles, isItem: true, isChampion: false },
+    newRunes:       { color: '#c8aa6e', bg: 'rgba(200,170,110,0.08)', border: 'rgba(200,170,110,0.2)', label: 'Nuevas Runas',        icon: Sparkles, isItem: false, isChampion: false },
+    removedRunes:   { color: '#e84057', bg: 'rgba(232,64,87,0.06)', border: 'rgba(232,64,87,0.15)', label: 'Runas Eliminadas',      icon: ArrowDownCircle, isItem: false, isChampion: false },
+    newChampions:   { color: '#9d48e0', bg: 'rgba(157,72,224,0.08)', border: 'rgba(157,72,224,0.2)', label: 'Nuevos Campeones',     icon: Sparkles, isItem: false, isChampion: true },
+    buffs:          { color: '#0fba81', bg: 'rgba(15,186,129,0.06)', border: 'rgba(15,186,129,0.15)', label: 'Buffs',                icon: TrendingUp, isItem: false, isChampion: true },
+    nerfs:          { color: '#e84057', bg: 'rgba(232,64,87,0.06)', border: 'rgba(232,64,87,0.15)', label: 'Nerfs',                icon: TrendingDown, isItem: false, isChampion: true },
+    adjustments:    { color: '#f0c646', bg: 'rgba(240,198,70,0.06)', border: 'rgba(240,198,70,0.15)', label: 'Ajustes',              icon: Minus, isItem: false, isChampion: true },
+    meta:           { color: '#0acbe6', bg: 'rgba(10,203,230,0.06)', border: 'rgba(10,203,230,0.15)', label: 'Meta',                 icon: Compass, isItem: false, isChampion: false },
+  };
+  return map[category] || { color: '#a09b8c', bg: 'rgba(160,155,140,0.06)', border: 'rgba(160,155,140,0.15)', label: category, icon: Minus, isItem: false, isChampion: false };
+}
+
+// ============================================================
+// CHANGE CATEGORY CARD (for Cambios Detallados)
+// ============================================================
+
+function ChangeCategoryCard({ category, items }: { category: string; items: string[] }) {
+  const style = getChangeCategoryStyle(category);
+  const Icon = style.icon;
+  if (!items || items.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-xl overflow-hidden"
+      style={{ background: style.bg, border: `1px solid ${style.border}` }}
+    >
+      <div className="flex items-center gap-2 px-3.5 py-2" style={{ borderBottom: `1px solid ${style.border}` }}>
+        <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: `${style.color}18`, border: `1px solid ${style.color}30` }}>
+          <Icon className="w-3 h-3" style={{ color: style.color }} />
+        </div>
+        <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: style.color }}>{style.label}</span>
+        <span className="ml-auto text-[10px] font-mono" style={{ color: `${style.color}80` }}>{items.length}</span>
+      </div>
+      <div className="px-3.5 py-2.5">
+        <div className="flex flex-wrap gap-2">
+          {items.map((item, i) => {
+            const champName = item.split(/[(\[]/)[0].trim();
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.03 }}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-all duration-200 hover:scale-105 cursor-default"
+                style={{ background: 'rgba(10,14,26,0.5)', border: `1px solid ${style.border}`, color: '#e0dcd4' }}
+              >
+                {style.isItem && <ItemIcon name={champName} />}
+                {style.isChampion && <TinyChampionIcon name={champName} />}
+                <span className="truncate max-w-[180px]">{item}</span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 function getGameIcon(game: string) {
@@ -524,7 +595,7 @@ export function PatchesMetaTab({
   const [analysisError, setAnalysisError] = useState(false);
 
   // --- Sub-section toggle ---
-  const [activeSection, setActiveSection] = useState<'meta' | 'history' | 'broken'>('meta');
+  const [activeSection, setActiveSection] = useState<'meta' | 'history'>('meta');
 
   // Fetch patches-feed.json
   useEffect(() => {
@@ -576,7 +647,7 @@ export function PatchesMetaTab({
       if (!seenVersions.has(key)) { seenVersions.add(key); result.push(p); }
     }
     for (const fp of feedPatches) {
-      const normalizedGame = normalizeGame(fp.game);
+      const normalizedGame = normalizeGame(fp.sourceGame || fp.game);
       if (normalizedGame === 'VAL') continue;
       const key = `${normalizedGame}-${fp.version}`;
       if (!seenVersions.has(key)) {
@@ -640,12 +711,6 @@ export function PatchesMetaTab({
     if (selectedGame === 'wildrift') return c.game === 'WR';
     return true;
   });
-  const metaInsights = insights.filter(i => {
-    const champInGame = gameChampions.some(c => c.name === i.champion);
-    return (i.category === 'meta' || i.category === 'buff') && champInGame;
-  });
-  const metaCategoryInsights = metaInsights.filter(i => i.category === 'meta');
-  const buffCategoryInsights = metaInsights.filter(i => i.category === 'buff');
   const tierCounts = useMemo(() => {
     const s = gameChampions.filter(c => c.tier === 'S' || c.tier === 'S+').length;
     const a = gameChampions.filter(c => c.tier === 'A' || c.tier === 'A+').length;
@@ -686,7 +751,6 @@ export function PatchesMetaTab({
         {[
           { id: 'meta' as const, label: 'Análisis & Meta', icon: Brain },
           { id: 'history' as const, label: 'Historial de Parches', icon: Clock },
-          { id: 'broken' as const, label: 'Meta Insights', icon: Sparkles },
         ].map(tab => (
           <button
             key={tab.id}
@@ -918,10 +982,7 @@ export function PatchesMetaTab({
                       <div className="mb-4">
                         <div className="flex items-center gap-2 mb-2.5"><Zap className="w-3.5 h-3.5 text-lol-gold" /><h4 className="lol-label text-xs font-semibold text-lol-gold">Cambios Detallados</h4></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">{Object.entries(patch.changes).map(([category, items]) => (
-                          <div key={category} className="rounded-lg p-3" style={{ background: 'rgba(120,90,40,0.06)', border: '1px solid rgba(120,90,40,0.15)' }}>
-                            <span className="text-[10px] font-bold text-lol-gold uppercase tracking-wider">{category}</span>
-                            <div className="mt-1.5 space-y-1">{(items as string[]).slice(0, 5).map((item, i) => <p key={i} className="text-[11px] text-lol-muted leading-snug">• {item}</p>)}</div>
-                          </div>
+                          <ChangeCategoryCard key={category} category={category} items={items as string[]} />
                         ))}</div>
                       </div>
                     )}
@@ -933,117 +994,6 @@ export function PatchesMetaTab({
         </AnimatePresence>
       )}
 
-      {/* ===== SECTION: META INSIGHTS ===== */}
-      {activeSection === 'broken' && (
-        <AnimatePresence mode="wait">
-          <motion.div key="broken" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
-            {metaInsights.length > 0 && (
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Sparkles className="w-4 h-4 text-lol-warning" />
-                  <span className="lol-label text-xs font-semibold text-lol-muted">Insights de IA</span>
-                  <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(240,198,70,0.2), transparent)' }} />
-                  <span className="text-[10px] text-lol-dim">{metaInsights.length} insights</span>
-                </div>
-                <div className="space-y-6">
-                  {/* Combos Rotos */}
-                  {metaCategoryInsights.length > 0 && (
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge className="bg-lol-danger/15 text-lol-danger border border-lol-danger/30 text-[11px] px-2 py-0.5 font-bold gap-1"><Zap className="w-3 h-3" />Combos Rotos</Badge>
-                        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.2), transparent)' }} />
-                        <span className="text-[10px] text-lol-dim">{metaCategoryInsights.length}</span>
-                      </div>
-                      <div className="space-y-3">
-                        {metaCategoryInsights.map((insight, i) => {
-                          const confidencePct = Math.min(insight.confidence * 100, 100);
-                          return (
-                            <motion.div key={insight.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: i * 0.04 }} className="glass-card rounded-xl p-3 sm:p-4 border-l-4 hover:border-lol-danger/40 transition-colors" style={{ borderLeftColor: '#e84057', background: 'linear-gradient(135deg, rgba(232,64,87,0.03), rgba(30,35,40,0.5))' }}>
-                              <div className="flex items-start gap-3">
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                    <ChampionIcon name={insight.champion} tier={gameChampions.find(c => c.name === insight.champion)?.tier || 'A'} />
-                                    <div>
-                                      <div className="flex items-center gap-1.5">
-                                        <span className="font-semibold text-lol-text text-sm">{insight.champion}</span>
-                                        <Badge className="bg-lol-danger/20 text-lol-danger border border-lol-danger/30 text-[10px] px-1.5 py-0"><AlertTriangle className="w-3 h-3 mr-0.5" />ROTO</Badge>
-                                      </div>
-                                      <CategoryBadge category={insight.category} />
-                                    </div>
-                                  </div>
-                                  <p className="text-sm text-lol-muted leading-relaxed mb-3">{insight.content}</p>
-                                  <div className="flex items-center gap-3">
-                                    <span className="text-[10px] text-lol-dim shrink-0">Confianza</span>
-                                    <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(232,64,87,0.12)' }}>
-                                      <motion.div className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, rgba(232,64,87,0.4), #e84057)', boxShadow: '0 0 6px rgba(232,64,87,0.3)' }} initial={{ width: 0 }} animate={{ width: `${confidencePct}%` }} transition={{ duration: 0.8, delay: i * 0.1 }} />
-                                    </div>
-                                    <span className="text-[10px] font-mono font-bold text-lol-danger shrink-0">{confidencePct.toFixed(0)}%</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                  {/* Items & Buffs */}
-                  {buffCategoryInsights.length > 0 && (
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge className="bg-lol-success/15 text-lol-success border border-lol-success/30 text-[11px] px-2 py-0.5 font-bold gap-1"><ArrowUp className="w-3 h-3" />Items & Buffs</Badge>
-                        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, rgba(10,203,230,0.2), transparent)' }} />
-                        <span className="text-[10px] text-lol-dim">{buffCategoryInsights.length}</span>
-                      </div>
-                      <div className="space-y-3">
-                        {buffCategoryInsights.map((insight, i) => {
-                          const confidencePct = Math.min(insight.confidence * 100, 100);
-                          return (
-                            <motion.div key={insight.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: i * 0.04 }} className="glass-card rounded-xl p-3 sm:p-4 border-l-4 hover:border-lol-success/40 transition-colors" style={{ borderLeftColor: '#0acbe6', background: 'linear-gradient(135deg, rgba(10,203,230,0.03), rgba(30,35,40,0.5))' }}>
-                              <div className="flex items-start gap-3">
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                    <ChampionIcon name={insight.champion} tier={gameChampions.find(c => c.name === insight.champion)?.tier || 'A'} />
-                                    <div>
-                                      <div className="flex items-center gap-1.5"><span className="font-semibold text-lol-text text-sm">{insight.champion}</span><Badge className="bg-lol-success/20 text-lol-success border border-lol-success/30 text-[10px] px-1.5 py-0">BUFF</Badge></div>
-                                      <CategoryBadge category={insight.category} />
-                                    </div>
-                                  </div>
-                                  <p className="text-sm text-lol-muted leading-relaxed mb-3">{insight.content}</p>
-                                  <div className="flex items-center gap-3">
-                                    <span className="text-[10px] text-lol-dim shrink-0">Confianza</span>
-                                    <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(10,203,230,0.12)' }}>
-                                      <motion.div className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, rgba(10,203,230,0.4), #0acbe6)', boxShadow: '0 0 6px rgba(10,203,230,0.3)' }} initial={{ width: 0 }} animate={{ width: `${confidencePct}%` }} transition={{ duration: 0.8, delay: i * 0.1 }} />
-                                    </div>
-                                    <span className="text-[10px] font-mono font-bold text-lol-success shrink-0">{confidencePct.toFixed(0)}%</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            {!loading && metaInsights.length === 0 && (
-              <div className="text-center py-12 text-lol-dim">
-                <Sparkles className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                <p className="text-sm">No hay insights disponibles para este filtro</p>
-              </div>
-            )}
-            {/* AI Disclaimer */}
-            <div className="mt-4 px-4 py-2.5 rounded-lg text-center" style={{ background: 'rgba(120,90,40,0.06)', border: '1px solid rgba(120,90,40,0.1)' }}>
-              <p className="text-[10px] text-lol-dim leading-relaxed">
-                <Sparkles className="w-3 h-3 inline-block mr-1 text-lol-gold/40" />
-                Análisis generado por IA — Verificá con fuentes oficiales antes de tomar decisiones
-              </p>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      )}
     </div>
   );
 }

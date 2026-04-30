@@ -82,6 +82,16 @@ export const ITEM_NAME_MAP: Record<string, string> = {
   'Última Piedad': '3036', 'Muramana': '3004',
   'Ángel Guardián': '3026',
   'El Protegido': '3193', 'Llamarada de Pecado': '6698',
+  // Season 2 — Pandemonium (26.9)
+  "Doran's Bow": '1086', "Doran's Helm": '1120',
+  'Gluttonous Greaves': '3008',
+  'Trailblazer': '3002',
+  'Opportunity': '6701',
+  'Dusk and Dawn': '2510',
+  'Statikk Shiv': '3087',
+  'Dawnstone': '4011',
+  'Duskblade of Draktharr': '6691',
+  'Immortal Shieldbow': '6673',
 };
 
 export function getItemIconUrl(itemName: string): string | null {
