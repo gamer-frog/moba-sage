@@ -16,3 +16,21 @@ Work Log:
 Stage Summary:
 - 7 fixes across 7 files: lib/time.ts, floating-notes.tsx, gold-particles.tsx, champion-modal.tsx, use-global-search.ts, app-header.tsx, page.tsx
 - Build passes clean, pushed as electronica-frog
+
+---
+Task ID: 5
+Agent: main
+Task: Round 5 — 7 codebase improvements
+
+Work Log:
+- Fixed LoadingScreen getGreeting() to use ARG timezone (was using local getHours)
+- Cleaned up ActivityPopup auto-dismiss setTimeout on unmount (memory leak)
+- Fixed FloatingNotes formatTime to use ARG timezone for date display
+- Memoized tier-list-tab meta overview stats (3 expensive sorts on 160+ champions)
+- Guarded useGameData fetchData/handleRefresh against state-after-unmount
+- Fixed page.tsx contextValue useMemo deps (removed duplicate fetchError, added handleToggleTask)
+- Replaced ErrorBoundary emoji fallback with Lucide Sword icon
+
+Stage Summary:
+- 7 fixes across 7 files: loading-screen.tsx, activity-popup.tsx, floating-notes.tsx, tier-list-tab.tsx, use-game-data.ts, page.tsx, error-boundary.tsx
+- Build passes clean, pushed as electronica-frog as commit a4949d8
