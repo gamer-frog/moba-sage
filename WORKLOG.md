@@ -141,3 +141,23 @@ Work Log:
 Stage Summary:
 - 7 fixes across 5 files: ddragon/items/route.ts, ddragon/route.ts, api/notes/route.ts, combos-tab.tsx, comparison-tab.tsx
 - Build passes clean, pushed as electronica-frog as commit 789d8c9
+
+---
+Task ID: 12
+Agent: main
+Task: Major refactor — patch update, unified tier list, polished patches tab
+
+Work Log:
+- Removed duplicate S/A/B tier champion grids from Patches "Análisis & Meta" tab (was same data as Tier List tab)
+- Replaced with compact Tier Summary Banner showing counts + CTA link to Tier List
+- Renamed "Situación del Meta" sub-tab to "Meta Insights" with Sparkles icon
+- Replaced emoji section headers (💥🔧) with styled Badge components + Lucide icons
+- Simplified insight cards — removed duplicate Meta Impact bar, kept single Confianza bar
+- Added AI disclaimer footer to Meta Insights tab
+- Updated META_LAST_UPDATED to 2026-04-29 (patch 26.9 release date)
+- Made SourceBadge patch number dynamic (reads from /api/version instead of hardcoded "Patch 26.9")
+- Cleaned up 8 unused imports from patches-meta-tab (Image, SplashArtIcon, RoleBadge, ItemIcon, etc.)
+
+Stage Summary:
+- Major refactor across 4 files: patches-meta-tab.tsx, tier-section.tsx, tier-list-tab.tsx, version/route.ts
+- Build passes clean, pushed as electronica-frog as commit 708359d
