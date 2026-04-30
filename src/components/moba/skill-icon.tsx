@@ -173,7 +173,6 @@ export const SkillIcon = memo(function SkillIcon({ championName, skill, size = 3
           height={size}
           className="w-full h-full object-cover"
           loading="lazy"
-          unoptimized
           onError={() => setImgError(true)}
         />
       ) : (

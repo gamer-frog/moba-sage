@@ -158,13 +158,13 @@ export function AppHeader({
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b-2 border-[#785a28]/30" style={{ backgroundColor: 'rgba(10, 14, 26, 0.94)', backdropFilter: 'blur(20px) saturate(1.2)' }}>
+    <header className="sticky top-0 z-40 border-b-2 border-lol-gold-dark/30" style={{ backgroundColor: 'rgba(10, 14, 26, 0.94)', backdropFilter: 'blur(20px) saturate(1.2)' }}>
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
         {/* Hamburger menu — mobile/tablet only */}
         {selectedGame && onMenuToggle && (
           <button
             onClick={onMenuToggle}
-            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-[#785a28] hover:text-[#c8aa6e] hover:bg-[#1e2328]/40 transition-all duration-200 -ml-1"
+            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-lol-gold-dark hover:text-lol-gold hover:bg-lol-card/40 transition-all duration-200 -ml-1"
             aria-label="Abrir menú"
           >
             <Menu className="w-5 h-5" />
@@ -176,36 +176,36 @@ export function AppHeader({
           className={`flex items-center gap-2 ${selectedGame ? 'cursor-pointer group' : ''}`}
         >
           <div className="w-8 h-8 rounded flex items-center justify-center lol-pulse" style={{ background: 'linear-gradient(135deg, #c8aa6e, #785a28)', boxShadow: '0 0 15px rgba(200,170,110,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
-            <Sword className="w-4 h-4 text-[#0a0e1a]" />
+            <Sword className="w-4 h-4 text-lol-bg" />
           </div>
           <div className="hidden sm:block">
             <h1 className="lol-title text-lg leading-none" style={{ color: '#c8aa6e', textShadow: '0 0 30px rgba(200,170,110,0.4), 0 2px 4px rgba(0,0,0,0.8)' }}>MOBA SAGE</h1>
-            <p className="lol-subtitle text-[9px] text-[#5b5a56] leading-none mt-0.5">Analytics con IA</p>
+            <p className="lol-subtitle text-[9px] text-lol-dim leading-none mt-0.5">Analytics con IA</p>
           </div>
           {selectedGame && (
             <motion.div initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="ml-1">
-              <ArrowLeft className="w-3 h-3 text-[#785a28] group-hover:text-[#c8aa6e] transition-colors" />
+              <ArrowLeft className="w-3 h-3 text-lol-gold-dark group-hover:text-lol-gold transition-colors" />
             </motion.div>
           )}
         </button>
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2 flex-wrap">
           {selectedGame === 'lol' && (
-            <Badge variant="outline" className="lol-label text-[10px] border-[#c8aa6e]/30 text-[#c8aa6e] hidden sm:inline-flex">League of Legends</Badge>
+            <Badge variant="outline" className="lol-label text-[10px] border-lol-gold/30 text-lol-gold hidden sm:inline-flex">League of Legends</Badge>
           )}
           {selectedGame === 'wildrift' && (
-            <Badge variant="outline" className="lol-label text-[10px] border-[#0acbe6]/30 text-[#0acbe6] hidden sm:inline-flex">Wild Rift</Badge>
+            <Badge variant="outline" className="lol-label text-[10px] border-lol-success/30 text-lol-success hidden sm:inline-flex">Wild Rift</Badge>
           )}
-          <Badge variant="outline" className="lol-label text-[10px] border-[#785a28]/30 text-[#5b5a56]">{selectedGame === 'wildrift' ? `Patch ${liveVersions.wr || '6.4'}` : `Patch ${liveVersions.gamePatch || liveVersions.lol || '16.8'}`}</Badge>
+          <Badge variant="outline" className="lol-label text-[10px] border-lol-gold-dark/30 text-lol-dim">{selectedGame === 'wildrift' ? `Patch ${liveVersions.wr || '6.4'}` : `Patch ${liveVersions.gamePatch || liveVersions.lol || '16.8'}`}</Badge>
           {isNewPatch && (
-            <Badge className="lol-new-patch-badge lol-label bg-[#0fba81]/15 text-[#0fba81] border border-[#0fba81]/40 text-[10px] cursor-pointer" onClick={onDismissPatch}>
+            <Badge className="lol-new-patch-badge lol-label bg-lol-green/15 text-lol-green border border-lol-green/40 text-[10px] cursor-pointer" onClick={onDismissPatch}>
               NUEVO PARCHE
             </Badge>
           )}
-          <Badge className="lol-live-badge lol-label bg-[#c8aa6e]/10 text-[#c8aa6e] border border-[#c8aa6e]/25 text-[10px] hidden sm:inline-flex">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0fba81] mr-1.5 animate-pulse" />
+          <Badge className="lol-live-badge lol-label bg-lol-gold/10 text-lol-gold border border-lol-gold/25 text-[10px] hidden sm:inline-flex">
+            <span className="w-1.5 h-1.5 rounded-full bg-lol-green mr-1.5 animate-pulse" />
             En vivo
           </Badge>
-          <span className="hidden md:inline text-[9px] text-[#5b5a56] ml-1">
+          <span className="hidden md:inline text-[9px] text-lol-dim ml-1">
             Update: {lastUpdate || 'Cargando...'}
           </span>
 
@@ -213,7 +213,7 @@ export function AppHeader({
           {selectedGame && (
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('moba-sage-open-search'))}
-              className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 hover:bg-[#1e2328]/40"
+              className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 hover:bg-lol-card/40"
               style={{ color: '#a09b8c' }}
               aria-label="Buscar campeón (Ctrl+K)"
               title="Buscar campeón (Ctrl+K)"
@@ -263,14 +263,14 @@ export function AppHeader({
                   }}
                 >
                   {/* Dropdown header */}
-                  <div className="px-4 py-3 border-b border-[#785a28]/15 flex items-center justify-between">
-                    <span className="lol-label text-[10px] text-[#c8aa6e]">Actividad Reciente</span>
+                  <div className="px-4 py-3 border-b border-lol-gold-dark/15 flex items-center justify-between">
+                    <span className="lol-label text-[10px] text-lol-gold">Actividad Reciente</span>
                     <button
                       onClick={() => setNotifOpen(false)}
                       className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
                       aria-label="Cerrar"
                     >
-                      <X className="w-3 h-3 text-[#5b5a56]" />
+                      <X className="w-3 h-3 text-lol-dim" />
                     </button>
                   </div>
 
@@ -278,8 +278,8 @@ export function AppHeader({
                   <div className="max-h-72 overflow-y-auto scrollbar-none">
                     {visibleEntries.length === 0 ? (
                       <div className="px-4 py-8 text-center">
-                        <Bell className="w-8 h-8 mx-auto mb-2 text-[#785a28]/30" />
-                        <p className="text-xs text-[#5b5a56]">Sin actividad en los últimos 7 días</p>
+                        <Bell className="w-8 h-8 mx-auto mb-2 text-lol-gold-dark/30" />
+                        <p className="text-xs text-lol-dim">Sin actividad en los últimos 7 días</p>
                       </div>
                     ) : (
                       visibleEntries.map((entry) => {
@@ -289,7 +289,7 @@ export function AppHeader({
                           <div
                             key={entry.id}
                             onClick={() => handleNotifClick(entry)}
-                            className="flex items-start gap-2.5 px-4 py-2.5 border-b border-[#785a28]/8 hover:bg-[#1e2328]/60 transition-colors cursor-pointer"
+                            className="flex items-start gap-2.5 px-4 py-2.5 border-b border-lol-gold-dark/8 hover:bg-lol-card/60 transition-colors cursor-pointer"
                             role="button"
                             tabIndex={0}
                             onKeyDown={(e) => { if (e.key === 'Enter') handleNotifClick(entry); }}
@@ -299,9 +299,9 @@ export function AppHeader({
                               <Icon className="w-3 h-3" style={{ color }} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-[11px] font-medium text-[#f0e6d2] truncate">{entry.title}</p>
-                              <p className="text-[9px] text-[#5b5a56] truncate">{entry.description}</p>
-                              <div className="flex items-center gap-1.5 mt-0.5 text-[8px] text-[#5b5a56]">
+                              <p className="text-[11px] font-medium text-lol-text truncate">{entry.title}</p>
+                              <p className="text-[9px] text-lol-dim truncate">{entry.description}</p>
+                              <div className="flex items-center gap-1.5 mt-0.5 text-[8px] text-lol-dim">
                                 <Clock className="w-2 h-2" />
                                 {timeAgo(entry.timestamp)}
                               </div>
@@ -314,14 +314,14 @@ export function AppHeader({
 
                   {/* Footer */}
                   {visibleEntries.length > 0 && (
-                    <div className="px-4 py-2 border-t border-[#785a28]/15">
+                    <div className="px-4 py-2 border-t border-lol-gold-dark/15">
                       <button
                         onClick={() => {
                           setNotifOpen(false);
                           // Dispatch custom event for parent to switch tab
                           window.dispatchEvent(new CustomEvent('moba-sage-switch-tab', { detail: 'novedades' }));
                         }}
-                        className="w-full text-center text-[10px] text-[#c8aa6e] hover:text-[#f0e6d2] transition-colors py-1 lol-label"
+                        className="w-full text-center text-[10px] text-lol-gold hover:text-lol-text transition-colors py-1 lol-label"
                       >
                         Ver todas
                       </button>
@@ -364,7 +364,7 @@ export function AppHeader({
                 {/* Detail Header */}
                 <div className="p-6 pb-4" style={{ borderBottom: `1px solid ${notifColor}15` }}>
                   <button onClick={() => setSelectedNotif(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Cerrar">
-                    <X className="w-4 h-4 text-[#a09b8c]" />
+                    <X className="w-4 h-4 text-lol-muted" />
                   </button>
 
                   {/* Type icon + badge */}
@@ -380,15 +380,15 @@ export function AppHeader({
                   </div>
 
                   {/* Title */}
-                  <h2 className="text-lg font-bold text-[#f0e6d2] lol-title mb-2" style={{ color: notifColor === '#c8aa6e' ? '#c8aa6e' : '#f0e6d2' }}>
+                  <h2 className="text-lg font-bold text-lol-text lol-title mb-2" style={{ color: notifColor === '#c8aa6e' ? '#c8aa6e' : '#f0e6d2' }}>
                     {selectedNotif.title}
                   </h2>
 
                   {/* Timestamp */}
-                  <div className="flex items-center gap-2 text-[10px] text-[#5b5a56]">
+                  <div className="flex items-center gap-2 text-[10px] text-lol-dim">
                     <Clock className="w-3 h-3" />
                     <span>{formatTimestamp(selectedNotif.timestamp)}</span>
-                    <span className="text-[#785a28]">·</span>
+                    <span className="text-lol-gold-dark">·</span>
                     <span>{timeAgo(selectedNotif.timestamp)}</span>
                   </div>
                 </div>
@@ -397,12 +397,12 @@ export function AppHeader({
                 <div className="p-6 space-y-4">
                   {/* Description */}
                   <div className="rounded-xl p-4" style={{ background: 'rgba(30,35,40,0.5)', border: '1px solid rgba(120,90,40,0.12)' }}>
-                    <p className="text-sm text-[#a09b8c] leading-relaxed">{selectedNotif.description}</p>
+                    <p className="text-sm text-lol-muted leading-relaxed">{selectedNotif.description}</p>
                   </div>
 
                   {/* Category badge */}
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-[#5b5a56] uppercase tracking-wider">Categoría:</span>
+                    <span className="text-[10px] text-lol-dim uppercase tracking-wider">Categoría:</span>
                     <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(200,170,110,0.08)', color: '#c8aa6e', border: '1px solid rgba(200,170,110,0.15)' }}>
                       {selectedNotif.category}
                     </span>
@@ -411,10 +411,10 @@ export function AppHeader({
                   {/* Commit link */}
                   {selectedNotif.commit && (
                     <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(15,186,129,0.06)', border: '1px solid rgba(15,186,129,0.15)' }}>
-                      <Rocket className="w-4 h-4 text-[#0fba81] shrink-0" />
+                      <Rocket className="w-4 h-4 text-lol-green shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[10px] text-[#5b5a56] uppercase tracking-wider">Commit</p>
-                        <p className="text-xs text-[#a09b8c] font-mono truncate">{selectedNotif.commit}</p>
+                        <p className="text-[10px] text-lol-dim uppercase tracking-wider">Commit</p>
+                        <p className="text-xs text-lol-muted font-mono truncate">{selectedNotif.commit}</p>
                       </div>
                       <a
                         href={`https://github.com/gamer-frog/moba-sage/commit/${selectedNotif.commit}`}

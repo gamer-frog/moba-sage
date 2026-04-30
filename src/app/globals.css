@@ -46,6 +46,10 @@
   --color-lol-danger: #e84057;
   --color-lol-success: #0acbe6;
   --color-lol-warning: #f0c646;
+  --color-lol-muted: #a09b8c;
+  --color-lol-dim: #5b5a56;
+  --color-lol-green: #0fba81;
+  --color-lol-teal: #0a7a8f;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -150,7 +154,7 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0e1a;
+  background: linear-gradient(180deg, #0a0e1a, #0d1220);
 }
 ::-webkit-scrollbar-thumb {
   background: #785a28;
@@ -303,11 +307,6 @@ body > * {
   background: linear-gradient(135deg, rgba(200,170,110,0.15), rgba(200,170,110,0.05));
   border: 1px solid rgba(200,170,110,0.25);
   color: #c8aa6e;
-}
-
-/* Scrollbar - gold themed */
-::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #0a0e1a, #0d1220);
 }
 
 /* Pulse animation for "En vivo" */

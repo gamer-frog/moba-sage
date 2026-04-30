@@ -27,7 +27,6 @@ export const ChampionIcon = memo(function ChampionIcon({ name, tier }: { name: s
           height={44}
           className="w-full h-full object-cover"
           loading="lazy"
-          unoptimized
           onError={() => setImgError(true)}
         />
       ) : (
@@ -57,7 +56,6 @@ export const SmallChampionIcon = memo(function SmallChampionIcon({ name }: { nam
           height={40}
           className="w-full h-full object-cover"
           loading="lazy"
-          unoptimized
           onError={() => setImgError(true)}
         />
       ) : (
@@ -80,7 +78,6 @@ export const SplashArtIcon = memo(function SplashArtIcon({ name }: { name: strin
         className="w-full h-full object-cover"
         sizes="(max-width: 768px) 100vw, 512px"
         loading="lazy"
-        unoptimized
         onError={() => setImgError(true)}
       />
     ) : (
@@ -106,7 +103,6 @@ export const TinyChampionIcon = memo(function TinyChampionIcon({ name }: { name:
           height={32}
           className="w-full h-full object-cover"
           loading="lazy"
-          unoptimized
           onError={() => setImgError(true)}
         />
       ) : (
@@ -133,7 +129,6 @@ export const MicroChampionIcon = memo(function MicroChampionIcon({ name }: { nam
           height={16}
           className="w-full h-full object-cover"
           loading="lazy"
-          unoptimized
           onError={() => setImgError(true)}
         />
       ) : (

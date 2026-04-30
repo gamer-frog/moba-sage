@@ -526,7 +526,6 @@ export function BrokenStuffTab({
                       fill
                       className="object-cover"
                       style={{ filter: 'brightness(0.65) saturate(1.2)' }}
-                      unoptimized
                       sizes="180px"
                     />
                     <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 15%, rgba(10,14,26,0.6) 50%, rgba(10,14,26,0.97) 100%)' }} />

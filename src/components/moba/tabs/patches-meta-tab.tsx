@@ -733,7 +733,7 @@ export function PatchesMetaTab({
                     return (
                       <motion.div key={champ.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="shrink-0 w-[160px] sm:w-[180px] h-[220px] rounded-xl overflow-hidden relative group" style={{ border: '2px solid rgba(200,170,110,0.3)', boxShadow: '0 0 20px rgba(200,170,110,0.1)' }}>
                         <div className="absolute inset-0">
-                          <Image src={getChampionSplashUrl(champ.name, 0)} alt={champ.name} fill className="object-cover" style={{ filter: 'brightness(0.65) saturate(1.2)' }} unoptimized sizes="180px" />
+                          <Image src={getChampionSplashUrl(champ.name, 0)} alt={champ.name} fill className="object-cover" style={{ filter: 'brightness(0.65) saturate(1.2)' }} sizes="180px" />
                           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 15%, rgba(10,14,26,0.6) 50%, rgba(10,14,26,0.97) 100%)' }} />
                         </div>
                         {champ.winRate >= 53 && <div className="absolute top-2 left-2 z-10"><Badge className="bg-[#e84057]/90 text-white border border-[#e84057] text-[8px] px-1.5 py-0.5 font-black">ROTO OP</Badge></div>}

@@ -468,7 +468,6 @@ export function TierListTab({
                           height={40}
                           className="w-full h-full object-cover"
                           loading="lazy"
-                          unoptimized
                         />
                         {/* Trend badge */}
                         <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black" style={{ background: '#0fba81', color: '#fff', boxShadow: '0 0 6px rgba(15,186,129,0.5)' }}>
@@ -536,7 +535,6 @@ export function TierListTab({
                           height={40}
                           className="w-full h-full object-cover"
                           loading="lazy"
-                          unoptimized
                         />
                         {/* Trend badge */}
                         <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black" style={{ background: '#e84057', color: '#fff', boxShadow: '0 0 6px rgba(232,64,87,0.5)' }}>
@@ -1067,7 +1065,6 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                                   height={56}
                                   className="w-full h-full object-cover"
                                   loading="lazy"
-                                  unoptimized
                                 />
                               </div>
                               <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black z-10"
@@ -1242,7 +1239,6 @@ function BoardView({ champions, favorites, onChampionClick, onToggleFavorite, tr
                                   height={portraitSize}
                                   className="w-full h-full object-cover"
                                   loading="lazy"
-                                  unoptimized
                                 />
                               </div>
                               {trendMap?.[champ.name] && (

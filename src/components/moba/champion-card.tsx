@@ -81,7 +81,6 @@ export function ChampionCard({
           fill
           className="object-cover object-center transition-all duration-500 group-hover:scale-110"
           style={{ filter: 'brightness(0.6) saturate(1.2) contrast(1.1)' }}
-          unoptimized
           sizes={size === 'xl' ? '220px' : size === 'lg' ? '185px' : '140px'}
         />
         {/* Dark gradient overlay — LoL card bottom panel */}
@@ -176,7 +175,6 @@ export function ChampionCard({
               width={32}
               height={32}
               className="w-full h-full object-cover"
-              unoptimized
               loading="lazy"
               onError={e => {
                 const img = e.target as HTMLImageElement;

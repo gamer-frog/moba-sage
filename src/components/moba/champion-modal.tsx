@@ -856,7 +856,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
                             return (
                               <div key={j} className="relative group/item flex flex-col items-center gap-0.5">
                                 {iconUrl ? (
-                                  <Image src={iconUrl} alt={item} width={28} height={28} className="w-7 h-7 rounded" style={{ border: '1px solid rgba(200,170,110,0.2)' }} loading="lazy" unoptimized />
+                                  <Image src={iconUrl} alt={item} width={28} height={28} className="w-7 h-7 rounded" style={{ border: '1px solid rgba(200,170,110,0.2)' }} loading="lazy" />
                                 ) : (
                                   <div className="w-7 h-7 rounded bg-[#1e2328] flex items-center justify-center text-[8px] text-[#5b5a56] border border-[#785a28]/20">
                                     {item[0]}
