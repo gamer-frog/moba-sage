@@ -3,16 +3,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ScrollText, Clock, Brain, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield,
-  TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, Zap, Target,
-  AlertTriangle, Sparkles, Newspaper, ArrowUpCircle, ArrowDownCircle, Compass,
-  Flame, Star, Gem,
+  ScrollText, Clock, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield,
+  TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, Zap,
+  Sparkles, Newspaper, ArrowUpCircle, ArrowDownCircle, Compass,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
 import { TinyChampionIcon, ChampionIcon } from '../champion-icon';
 import { ItemIcon } from '../item-icon';
-import type { Champion, PatchNote, AiInsight, GameSelection } from '../types';
+import type { Champion, PatchNote } from '../types';
 
 // ============================================================
 // LOCAL TYPES
@@ -315,9 +312,9 @@ function TierBadge({ tier }: { tier: string }) {
   const colors: Record<string, { bg: string; color: string; border: string }> = {
     'S': { bg: 'rgba(200,170,110,0.15)', color: '#c8aa6e', border: 'rgba(200,170,110,0.4)' },
     'S+': { bg: 'rgba(200,170,110,0.2)', color: '#c8aa6e', border: 'rgba(200,170,110,0.5)' },
-    'A+': { bg: 'rgba(200,170,110,0.1)', color: '#c8aa6e', border: 'rgba(200,170,110,0.3)' },
+    'A+': { bg: 'rgba(10,203,230,0.08)', color: '#0acbe6', border: 'rgba(10,203,230,0.25)' },
     'A': { bg: 'rgba(10,203,230,0.1)', color: '#0acbe6', border: 'rgba(10,203,230,0.3)' },
-    'B': { bg: 'rgba(232,64,87,0.1)', color: '#e84057', border: 'rgba(232,64,87,0.3)' },
+    'B': { bg: 'rgba(15,186,129,0.1)', color: '#0fba81', border: 'rgba(15,186,129,0.3)' },
     'C': { bg: 'rgba(91,90,86,0.1)', color: '#5b5a56', border: 'rgba(91,90,86,0.3)' },
   };
   const c = colors[tier] || colors['A'];
