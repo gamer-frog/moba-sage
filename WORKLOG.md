@@ -161,3 +161,22 @@ Work Log:
 Stage Summary:
 - Major refactor across 4 files: patches-meta-tab.tsx, tier-section.tsx, tier-list-tab.tsx, version/route.ts
 - Build passes clean, pushed as electronica-frog as commit 708359d
+
+---
+Task ID: 13
+Agent: main
+Task: Round 12 — 7 codebase improvements
+
+Work Log:
+- P0: Removed cron auth bypass — ?manual=true query param no longer grants unauthorized access to cron pipeline
+- P0: Removed hardcoded CRON_SECRET fallback ('moba-sage-cron-2026') — requires env var, fails closed
+- P0: Removed auth instructions from 401 error message (was leaking bypass info to attackers)
+- P1: Added 8s AbortSignal.timeout to both Riot API calls in summoner route
+- P1: Removed dead getDdVersion import in summoner route
+- P2: Added keyboard a11y (role=button, tabIndex=0, onKeyDown) to guide cards in guides-tab
+- P2: Eliminated duplicate RoadmapTab — roadmap sidebar tab now renders IdeasTab with initialSubTab='roadmap'
+- Fix: Added missing Compass import in patches-meta-tab
+
+Stage Summary:
+- 8 fixes across 6 files: cron/route.ts, summoner/route.ts, tab-content.tsx, guides-tab.tsx, ideas-tab.tsx, patches-meta-tab.tsx
+- Build passes clean, pushed as electronica-frog as commit e19a187
