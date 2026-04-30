@@ -255,6 +255,9 @@ export function GuidesTab() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedGuide(guide); } }}
               onClick={() => setSelectedGuide(guide)}
               className="glass-card rounded-xl p-4 cursor-pointer lol-card-hover border border-lol-gold-dark/15"
             >

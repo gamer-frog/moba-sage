@@ -37,7 +37,6 @@ const GuidesTab = dynamic(() => import('@/components/moba/tabs/guides-tab').then
 const TasksTab = dynamic(() => import('@/components/moba/tabs/tasks-tab').then(m => ({ default: m.TasksTab })), { loading: () => <TabSkeleton /> });
 const IdeasTab = dynamic(() => import('@/components/moba/tabs/ideas-tab').then(m => ({ default: m.IdeasTab })), { loading: () => <TabSkeleton /> });
 const ActivityTab = dynamic(() => import('@/components/moba/tabs/activity-tab').then(m => ({ default: m.ActivityTab })), { loading: () => <TabSkeleton /> });
-const RoadmapTab = dynamic(() => import('@/components/moba/tabs/roadmap-tab').then(m => ({ default: m.RoadmapTab })), { loading: () => <TabSkeleton /> });
 
 // ============ TAB CONTENT RENDERER (Context-driven) ============
 export function TabContent() {
@@ -67,7 +66,7 @@ export function TabContent() {
       case 'novedades': return <ActivityTab />;
       case 'ideas': return <IdeasTab />;
       case 'tasks': return <TasksTab tasks={ctx.tasks} loading={ctx.loading} onRefresh={ctx.fetchData} onToggleTask={ctx.handleToggleTask} />;
-      case 'roadmap': return <RoadmapTab />;
+      case 'roadmap': return <IdeasTab initialSubTab="roadmap" />;
       default: return (
         <TierListTab
           champions={ctx.champions} loading={ctx.loading} selectedGame={ctx.selectedGame}

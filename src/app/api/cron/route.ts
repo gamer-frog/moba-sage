@@ -45,11 +45,10 @@ interface CronReport {
 
 // ===== AUTH =====
 function verifyAuth(req: NextRequest): boolean {
-  const secret = process.env.CRON_SECRET || 'moba-sage-cron-2026';
+  const secret = process.env.CRON_SECRET;
   const authHeader = req.headers.get('authorization');
-  if (authHeader === `Bearer ${secret}`) return true;
+  if (secret && authHeader === `Bearer ${secret}`) return true;
   if (req.headers.get('x-vercel-cron') === 'true') return true;
-  if (req.nextUrl.searchParams.get('manual') === 'true') return true;
   return false;
 }
 
@@ -514,7 +513,7 @@ export async function GET(req: NextRequest) {
 
   if (!verifyAuth(req)) {
     return NextResponse.json(
-      { error: 'Unauthorized. Provide CRON_SECRET or use ?manual=true.' },
+      { error: 'Unauthorized' },
       { status: 401 }
     );
   }

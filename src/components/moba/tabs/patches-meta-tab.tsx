@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ScrollText, Clock, Brain, ExternalLink, Filter, Gamepad2, Swords, Crosshair, Shield,
   TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, Zap, Target,
-  AlertTriangle, Sparkles, Newspaper, ArrowUpCircle, ArrowDownCircle,
+  AlertTriangle, Sparkles, Newspaper, ArrowUpCircle, ArrowDownCircle, Compass,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';

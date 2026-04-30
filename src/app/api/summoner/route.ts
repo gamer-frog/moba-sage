@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDdVersion } from '@/components/moba/helpers';
 
 const REGION_TO_PLATFORM: Record<string, string> = {
   NA: 'na1',
@@ -98,6 +97,7 @@ export async function GET(request: NextRequest) {
         `https://${platformId}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(name)}`,
         {
           headers: { 'X-Riot-Token': apiKey },
+          signal: AbortSignal.timeout(8000),
         }
       );
 
@@ -119,6 +119,7 @@ export async function GET(request: NextRequest) {
         `https://${platformId}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerData.id}`,
         {
           headers: { 'X-Riot-Token': apiKey },
+          signal: AbortSignal.timeout(8000),
         }
       );
 

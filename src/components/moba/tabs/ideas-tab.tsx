@@ -218,8 +218,8 @@ function CategoryList({ data, showCategory = true }: { data: { category: string;
   );
 }
 
-export function IdeasTab() {
-  const [subTab, setSubTab] = useState<SubTab>('ideas');
+export function IdeasTab({ initialSubTab }: { initialSubTab?: 'ideas' | 'roadmap' } = {}) {
+  const [subTab, setSubTab] = useState<SubTab>(initialSubTab || 'ideas');
 
   const totalDone = ideasData.reduce((sum, cat) => sum + cat.items.filter(i => i.status === 'done').length, 0);
   const totalAll = ideasData.reduce((sum, cat) => sum + cat.items.length, 0);
