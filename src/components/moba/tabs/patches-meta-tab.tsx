@@ -518,12 +518,14 @@ export function PatchesMetaTab({
   // --- Patch feed state (from patches-tab) ---
   const [feedPatches, setFeedPatches] = useState<FeedPatch[]>([]);
   const [feedLoading, setFeedLoading] = useState(true);
+  const [feedError, setFeedError] = useState(false);
   const [gameFilter, setGameFilter] = useState<PatchGameFilter>('Todos');
   const [selectedTimelinePatch, setSelectedTimelinePatch] = useState<number>(0);
 
   // --- Patch analysis state (from broken-stuff-tab) ---
   const [patchAnalysis, setPatchAnalysis] = useState<PatchAnalysis | null>(null);
   const [analysisLoading, setAnalysisLoading] = useState(true);
+  const [analysisError, setAnalysisError] = useState(false);
 
   // --- Sub-section toggle ---
   const [activeSection, setActiveSection] = useState<'meta' | 'history' | 'broken'>('meta');
@@ -534,7 +536,8 @@ export function PatchesMetaTab({
       try {
         const res = await fetch('/patches-feed.json');
         if (res.ok) { const data: PatchesFeed = await res.json(); setFeedPatches(data.patches || []); }
-      } catch (err) { console.error('Error loading patches feed:', err); }
+        else setFeedError(true);
+      } catch (err) { console.error('Error loading patches feed:', err); setFeedError(true); }
       finally { setFeedLoading(false); }
     }
     fetchFeed();
@@ -560,8 +563,8 @@ export function PatchesMetaTab({
             summary: raw.summary || '',
           };
           setPatchAnalysis(mapped);
-        }
-      } catch (err) { console.error('Error loading patch analysis:', err); }
+        } else setAnalysisError(true);
+      } catch (err) { console.error('Error loading patch analysis:', err); setAnalysisError(true); }
       finally { setAnalysisLoading(false); }
     }
     fetchAnalysis();
@@ -719,6 +722,12 @@ export function PatchesMetaTab({
               </div>
             ) : patchAnalysis ? (
               <PatchAnalysisSection analysis={patchAnalysis} />
+            ) : analysisError ? (
+              <div className="glass-card rounded-xl p-6 text-center" style={{ border: '1px solid rgba(232,64,87,0.2)' }}>
+                <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-lol-danger" />
+                <p className="text-sm text-lol-muted mb-1">No se pudo cargar el análisis del parche</p>
+                <p className="text-xs text-lol-gold-dark">Intenta recargar la página</p>
+              </div>
             ) : null)}
 
             {/* S TIER Champions */}

@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ChampionIcon } from '../champion-icon';
 import { RoleBadge } from '../badges';
 import { TierSection, TierSectionSkeleton } from '../tier-section';
-import { ROLE_CONFIG, TIER_CONFIG, TOURNAMENT_REGIONS } from '../constants';
+import { ROLE_CONFIG, TIER_CONFIG, TOURNAMENT_REGIONS, ROLES } from '../constants';
 
 import { ItemIcon } from '../item-icon';
 import { parseBuildItems, getChampionImageUrl, getChampionSplashUrl } from '../helpers';
@@ -62,7 +62,7 @@ interface TierListTabProps {
   onProRegionFilterChange?: (r: string) => void;
 }
 
-const ROLES = ['Todos', 'Top', 'Jungle', 'Mid', 'ADC', 'Support'];
+// ROLES imported from constants.ts (single source of truth)
 
 // wrColor is imported from theme-colors.ts now
 
@@ -159,11 +159,11 @@ export function TierListTab({
     }
   }
 
-  const gameChampions = champions.filter(c => {
+  const gameChampions = useMemo(() => champions.filter(c => {
     if (selectedGame === 'lol' && c.game !== 'LoL') return false;
     if (selectedGame === 'wildrift' && c.game !== 'WR') return false;
     return true;
-  });
+  }), [champions, selectedGame]);
 
   const searchSuggestions = searchQuery.length >= 1
     ? gameChampions.filter(c => {
@@ -207,12 +207,13 @@ export function TierListTab({
   // Weekly top movers
   const weeklyTop = feedData?.lol?.weeklyTop || [];
 
-  // Data sources
-  const dataSources = feedData?.sources || [
-    { name: 'U.GG', url: 'https://u.gg', lastScraped: new Date().toISOString() },
-    { name: 'OP.GG', url: 'https://op.gg', lastScraped: new Date().toISOString() },
-    { name: 'Mobalytics', url: 'https://mobalytics.com', lastScraped: new Date().toISOString() },
-  ];
+  // Data sources (stable fallback — avoids new Date() on every render)
+  const FALLBACK_SOURCES = useMemo(() => [
+    { name: 'U.GG', url: 'https://u.gg', lastScraped: '' },
+    { name: 'OP.GG', url: 'https://op.gg', lastScraped: '' },
+    { name: 'Mobalytics', url: 'https://mobalytics.com', lastScraped: '' },
+  ], []);
+  const dataSources = useMemo(() => feedData?.sources || FALLBACK_SOURCES, [feedData?.sources, FALLBACK_SOURCES]);
 
   const feedLastUpdated = feedData?.lastUpdated
     ? new Date(feedData.lastUpdated).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
@@ -449,7 +450,10 @@ export function TierListTab({
                         border: '1.5px solid rgba(15,186,129,0.15)',
                         minWidth: '120px',
                       }}
-                      onClick={() => { const c = gameChampions.find(ch => ch.name === name); if (c) onChampionClick(c); }}
+                      onClick={() => { if (champData) onChampionClick(champData); }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (champData) onChampionClick(champData); } }}
                     >
                       {/* Champion portrait */}
                       <div
@@ -516,7 +520,10 @@ export function TierListTab({
                         border: '1.5px solid rgba(232,64,87,0.15)',
                         minWidth: '120px',
                       }}
-                      onClick={() => { const c = gameChampions.find(ch => ch.name === name); if (c) onChampionClick(c); }}
+                      onClick={() => { if (champData) onChampionClick(champData); }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (champData) onChampionClick(champData); } }}
                     >
                       {/* Champion portrait */}
                       <div

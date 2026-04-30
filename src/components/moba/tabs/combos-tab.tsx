@@ -84,6 +84,9 @@ function ComboListCard({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.03, duration: 0.25 }}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
       className={`
         relative cursor-pointer rounded-lg overflow-hidden transition-all duration-200 group
         ${isSelected
