@@ -87,7 +87,7 @@ export function VisionMap({ role }: { role: string }) {
         aspectRatio: '1 / 1',
       }}>
         {/* Map background layers */}
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           {/* Map base */}
           <rect x="0" y="0" width="100" height="100" fill="#0d1f15" rx="4" />
 

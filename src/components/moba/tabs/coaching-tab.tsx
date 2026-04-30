@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Swords, Eye, ChevronDown, ChevronUp, AlertOctagon, Target } from 'lucide-react';
 import {
@@ -29,6 +29,9 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
   const [openCategory, setOpenCategory] = useState<string | null>('fase-de-linea');
   const [openRoleCategory, setOpenRoleCategory] = useState<string | null>(null);
   const [openSection, setOpenSection] = useState<string | null>('mecanicas');
+
+  // Static grouping — avoid re-grouping on every render
+  const groupedErrores = useMemo(() => groupErrorsByElo(erroresData), []);
 
   const toggleCategory = (id: string) => setOpenCategory(prev => prev === id ? null : id);
   const toggleRoleCategory = (id: string) => setOpenRoleCategory(prev => prev === id ? null : id);
@@ -227,7 +230,6 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
 
                   {/* ERRORES A EVITAR — POR ELO */}
                   {section.id === 'errores' && (() => {
-                    const grouped = groupErrorsByElo(erroresData);
                     return (
                       <>
                         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap px-1 mb-3">
@@ -238,7 +240,7 @@ export function CoachingTab({ selectedGame }: { selectedGame: string }) {
                             </div>
                           ))}
                         </div>
-                        {Object.entries(grouped).map(([elo, errs]) => {
+                        {Object.entries(groupedErrores).map(([elo, errs]) => {
                           const eloCfg = ERROLO_COLORS[elo] || ERROLO_COLORS['Oro'];
                           return (
                             <div key={elo} className="mb-3">

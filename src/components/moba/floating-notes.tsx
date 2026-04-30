@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Lightbulb, X, Send, Trash2, Sparkles, MessageSquare } from 'lucide-react';
+import { Lightbulb, X, Send, Trash2, Sparkles, MessageSquare, AlertTriangle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { C } from '@/components/moba/theme-colors';
 
@@ -20,6 +20,7 @@ export function FloatingNotes() {
   const [authorName, setAuthorName] = useState('');
   const [newNote, setNewNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -84,6 +85,8 @@ export function FloatingNotes() {
       }
     } catch (err) {
       console.error('Failed to submit note:', err);
+      setSubmitError('No se pudo guardar la nota');
+      setTimeout(() => setSubmitError(''), 3000);
     } finally {
       setSubmitting(false);
     }
@@ -225,7 +228,9 @@ export function FloatingNotes() {
                     </div>
                   )}
 
-                  {notes.map((note, i) => (
+                  {notes.map((note, i) => {
+                    const authorColor = getAuthorColor(note.author);
+                    return (
                     <motion.div
                       key={note.id}
                       initial={{ opacity: 0, x: 20 }}
@@ -242,9 +247,9 @@ export function FloatingNotes() {
                         <div
                           className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
                           style={{
-                            background: `${getAuthorColor(note.author)}18`,
-                            color: getAuthorColor(note.author),
-                            border: `1px solid ${getAuthorColor(note.author)}30`,
+                            background: `${authorColor}18`,
+                            color: authorColor,
+                            border: `1px solid ${authorColor}30`,
                           }}
                         >
                           {note.author[0]?.toUpperCase()}
@@ -268,12 +273,18 @@ export function FloatingNotes() {
                         </button>
                       </div>
                     </motion.div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
 
               {/* Input area */}
               <div className="px-3 pb-3 pt-2" style={{ borderTop: '1px solid rgba(120, 90, 40, 0.15)' }}>
+                {submitError && (
+                  <div className="flex items-center gap-1.5 mb-2 text-[10px] text-lol-danger">
+                    <AlertTriangle className="w-3 h-3 shrink-0" />
+                    <span>{submitError}</span>
+                  </div>
+                )}
                 {/* Author name */}
                 {!authorName && (
                   <div className="mb-2">

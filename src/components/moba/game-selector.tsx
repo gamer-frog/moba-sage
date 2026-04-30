@@ -3,6 +3,7 @@
 import { useState, useEffect, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Sword, Monitor, Smartphone, Gamepad2, ChevronRight, Database, Clock, Shield, GraduationCap, Trophy, Zap } from 'lucide-react';
+import Image from 'next/image';
 import { GAME_TAB_ITEMS, DEV_TAB_ITEMS } from './constants';
 import type { GameSelection } from './types';
 
@@ -255,9 +256,11 @@ export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch,
                 title={champ}
                 aria-label={champ}
               >
-                <img
+                <Image
                   src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champ}_0.jpg`}
                   alt={champ}
+                  width={48}
+                  height={48}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />

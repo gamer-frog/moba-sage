@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ListTodo, Clock, RefreshCw, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,9 +14,10 @@ export function TasksTab({ tasks, loading, onRefresh, onToggleTask }: {
   onRefresh: () => void;
   onToggleTask: (task: TaskItem) => void;
 }) {
-  const runningCount = tasks.filter(t => t.status === 'running').length;
-  const doneCount = tasks.filter(t => t.status === 'done').length;
-  const pendingCount = tasks.filter(t => t.status === 'pending').length;
+  const { runningCount, doneCount, pendingCount } = useMemo(() => tasks.reduce((acc, t) => {
+    acc[t.status === 'running' ? 'running' : t.status === 'done' ? 'done' : 'pending']++;
+    return acc;
+  }, { running: 0, done: 0, pending: 0 }), [tasks]);
 
   return (
     <div className="space-y-4">
