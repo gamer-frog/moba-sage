@@ -275,6 +275,7 @@ export function FloatingNotes() {
                     </motion.div>
                   );
                 })}
+                </div>
               </div>
 
               {/* Input area */}

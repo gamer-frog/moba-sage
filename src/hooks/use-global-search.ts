@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import type { Champion, GameSelection } from '@/components/moba/types';
 
 export function useGlobalSearch(selectedGame: GameSelection, champions: Champion[]) {
@@ -52,16 +52,9 @@ export function useGlobalSearch(selectedGame: GameSelection, champions: Champion
     }
   }, [globalSearchOpen]);
 
-  const handleSearchSelect = useCallback((champ: Champion, onSelect: (c: Champion) => void) => {
-    onSelect(champ);
-    setGlobalSearchOpen(false);
-    setGlobalSearchQuery('');
-  }, []);
-
   return {
     globalSearchOpen, setGlobalSearchOpen,
     globalSearchQuery, setGlobalSearchQuery,
     globalSearchRef, searchResults,
-    handleSearchSelect,
   };
 }

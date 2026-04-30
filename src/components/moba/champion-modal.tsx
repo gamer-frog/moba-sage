@@ -75,7 +75,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
     if (champion.tier !== 'S') return;
     const controller = new AbortController();
     fetch('/api/meta-builds?refresh=false', { signal: controller.signal })
-      .then(res => res.json())
+      .then(res => { if (!res.ok) throw new Error(`Meta builds fetch failed: ${res.status}`); return res.json(); })
       .then(data => {
         if (data.builds && data.builds[champion.name]) {
           setMetaBuild(data.builds[champion.name]);

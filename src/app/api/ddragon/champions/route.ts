@@ -13,6 +13,7 @@ export async function GET() {
   try {
     // Get latest version
     const verRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+    if (!verRes.ok) throw new Error(`DDragon versions failed: ${verRes.status}`);
     const versions: string[] = await verRes.json();
     const version = versions.find(v => /^\d+\.\d+\.\d+$/.test(v)) || versions[0];
 
@@ -20,6 +21,7 @@ export async function GET() {
     const champRes = await fetch(
       `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
     );
+    if (!champRes.ok) throw new Error(`DDragon champions failed: ${champRes.status}`);
     const champData = await champRes.json();
 
     // Transform to lightweight format

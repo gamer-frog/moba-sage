@@ -12,12 +12,14 @@ export async function GET() {
 
   try {
     const verRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+    if (!verRes.ok) throw new Error(`DDragon versions failed: ${verRes.status}`);
     const versions: string[] = await verRes.json();
     const version = versions.find(v => /^\d+\.\d+\.\d+$/.test(v)) || versions[0];
 
     const itemRes = await fetch(
       `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/item.json`
     );
+    if (!itemRes.ok) throw new Error(`DDragon items failed: ${itemRes.status}`);
     const itemData = await itemRes.json();
 
     // Only return real purchasable items (gold > 0, has name, not invisible)

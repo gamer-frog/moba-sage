@@ -12,12 +12,14 @@ export async function GET() {
 
   try {
     const verRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+    if (!verRes.ok) throw new Error(`DDragon versions failed: ${verRes.status}`);
     const versions: string[] = await verRes.json();
     const version = versions.find(v => /^\d+\.\d+\.\d+$/.test(v)) || versions[0];
 
     const runeRes = await fetch(
       `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/runesReforged.json`
     );
+    if (!runeRes.ok) throw new Error(`DDragon runes failed: ${runeRes.status}`);
     const runeData = await runeRes.json();
 
     // Flatten rune trees into usable format

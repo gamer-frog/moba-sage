@@ -14,7 +14,7 @@ export function TasksTab({ tasks, loading, onRefresh, onToggleTask }: {
   onRefresh: () => void;
   onToggleTask: (task: TaskItem) => void;
 }) {
-  const { runningCount, doneCount, pendingCount } = useMemo(() => tasks.reduce((acc, t) => {
+  const { running: runningCount, done: doneCount, pending: pendingCount } = useMemo(() => tasks.reduce((acc, t) => {
     acc[t.status === 'running' ? 'running' : t.status === 'done' ? 'done' : 'pending']++;
     return acc;
   }, { running: 0, done: 0, pending: 0 }), [tasks]);
