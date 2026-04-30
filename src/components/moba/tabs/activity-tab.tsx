@@ -18,6 +18,14 @@ const FILTER_OPTIONS: Array<{ value: string; label: string; color: string; bg: s
   { value: 'deploy', label: 'Mantenimiento', color: C.gold, bg: `${C.gold}26` },
 ];
 
+function formatDate(ts: string) {
+  const d = new Date(ts);
+  const day = d.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', day: 'numeric' });
+  const month = d.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', month: 'short' });
+  const time = d.toLocaleTimeString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
+  return `${day} ${month} ${time}`;
+}
+
 export function ActivityTab() {
   const [feed, setFeed] = useState<ActivityFeed | null>(null);
   const [loading, setLoading] = useState(true);
@@ -77,14 +85,6 @@ export function ActivityTab() {
       </div>
     );
   }
-
-  const formatDate = (ts: string) => {
-    const d = new Date(ts);
-    const day = d.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', day: 'numeric' });
-    const month = d.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', month: 'short' });
-    const time = d.toLocaleTimeString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
-    return `${day} ${month} ${time}`;
-  };
 
   return (
     <div className="space-y-5">

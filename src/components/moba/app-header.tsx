@@ -25,6 +25,9 @@ function NotifDetailPopup({ notif, onClose }: { notif: ActivityEntry; onClose: (
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Detalle de notificación: ${notif.title}`}
     >
       <motion.div
         initial={{ scale: 0.85, opacity: 0 }}

@@ -232,6 +232,9 @@ export default function Home() {
               exit={{ scale: 0.95, opacity: 0, y: -10 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
               className="w-full max-w-lg rounded-2xl overflow-hidden"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Buscar campeón"
               style={{
                 background: 'linear-gradient(180deg, rgba(30,35,40,0.98), rgba(10,14,26,0.98))',
                 border: '1.5px solid rgba(200,170,110,0.3)',
@@ -255,6 +258,8 @@ export default function Home() {
                   placeholder="Buscar campeon..."
                   className="flex-1 bg-transparent text-lol-text text-lg placeholder:text-lol-dim outline-none lol-title"
                   style={{ fontFamily: 'inherit', letterSpacing: '0.05em' }}
+                  role="searchbox"
+                  aria-label="Buscar campeón"
                 />
                 <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] text-lol-dim bg-lol-gold-dark/10 border border-lol-gold-dark/20">
                   <span className="text-[10px]">&#8984;</span>K
@@ -274,6 +279,8 @@ export default function Home() {
                       key={champ.id}
                       onClick={() => handleSearchSelect(champ)}
                       className="w-full flex items-center gap-3 px-5 py-2.5 hover:bg-lol-card/60 transition-colors cursor-pointer"
+                      role="option"
+                      aria-selected={false}
                       whileTap={{ scale: 0.98 }}
                     >
                       <ChampionIcon name={champ.name} tier={champ.tier} />

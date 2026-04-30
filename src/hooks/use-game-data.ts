@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { updateDdVersion } from '@/components/moba/helpers';
 import type {
   Champion, PatchNote, AiInsight, TaskItem,
@@ -24,28 +24,29 @@ interface VersionData {
 
 const MONTHS_ES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-// Shared safeJson fetcher
-const safeJson = async <T,>(url: string): Promise<T | null> => {
+// Shared safeJson fetcher — accepts AbortSignal for cancellation
+const safeJson = async <T,>(url: string, signal?: AbortSignal): Promise<T | null> => {
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal });
     if (!res.ok) throw new Error(`${res.status}`);
     return await res.json() as T;
   } catch (e) {
+    if (signal?.aborted) return null;
     console.warn(`[MOBA SAGE] Failed: ${url}`, e);
     return null;
   }
 };
 
 // Deduplicated fetch-all helper — single source of truth for endpoints
-async function fetchAllEndpoints() {
+async function fetchAllEndpoints(signal?: AbortSignal) {
   return Promise.all([
-    safeJson<Champion[]>('/api/champions'),
-    safeJson<PatchNote[]>('/api/patches'),
-    safeJson<AiInsight[]>('/api/insights'),
-    safeJson<TaskItem[]>('/api/tasks'),
-    safeJson<ProPick[]>('/api/pro-picks'),
-    safeJson<BrokenCombo[]>('/api/combos'),
-    safeJson<VersionData | null>('/api/version'),
+    safeJson<Champion[]>('/api/champions', signal),
+    safeJson<PatchNote[]>('/api/patches', signal),
+    safeJson<AiInsight[]>('/api/insights', signal),
+    safeJson<TaskItem[]>('/api/tasks', signal),
+    safeJson<ProPick[]>('/api/pro-picks', signal),
+    safeJson<BrokenCombo[]>('/api/combos', signal),
+    safeJson<VersionData | null>('/api/version', signal),
   ]) as Promise<[Champion[] | null, PatchNote[] | null, AiInsight[] | null, TaskItem[] | null, ProPick[] | null, BrokenCombo[] | null, VersionData | null]>;
 }
 
@@ -99,38 +100,49 @@ export function useGameData() {
     return !champsData && !patchesData && !insightsData && !tasksData && !proData && !combosData && !versionData;
   }, [processVersionData]);
 
+  // AbortController ref for initial fetch (survives re-renders)
+  const initialControllerRef = useRef<AbortController | null>(null);
+
   // Initial data fetch (with loading overlay)
-  const fetchData = useCallback(async () => {
-    const controller = new AbortController();
+  const fetchData = useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     setFetchError(false);
     try {
-      const data = await fetchAllEndpoints();
-      if (controller.signal.aborted) return;
+      const data = await fetchAllEndpoints(signal);
+      if (signal?.aborted) return;
       const allFailed = applyData(data);
       if (allFailed) setFetchError(true);
     } catch (err) {
-      if (controller.signal.aborted) return;
+      if (signal?.aborted) return;
       console.error('Unexpected error in fetchData:', err);
       setFetchError(true);
     } finally {
-      if (!controller.signal.aborted) setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
-    return () => controller.abort();
   }, [applyData]);
 
   useEffect(() => {
-    const cleanup = fetchData();
-    return () => cleanup?.();
+    const controller = new AbortController();
+    initialControllerRef.current = controller;
+    fetchData(controller.signal);
+    return () => {
+      controller.abort();
+      initialControllerRef.current = null;
+    };
   }, [fetchData]);
+
+  // AbortController ref for refresh
+  const refreshControllerRef = useRef<AbortController | null>(null);
 
   // Silent refresh (no loading overlay — no flicker)
   const handleRefresh = useCallback(async () => {
+    refreshControllerRef.current?.abort();
     const controller = new AbortController();
+    refreshControllerRef.current = controller;
     setIsRefreshing(true);
     setFetchError(false);
     try {
-      const data = await fetchAllEndpoints();
+      const data = await fetchAllEndpoints(controller.signal);
       if (controller.signal.aborted) return;
       await applyData(data);
     } catch (err) {
@@ -139,8 +151,10 @@ export function useGameData() {
     } finally {
       if (!controller.signal.aborted) setIsRefreshing(false);
     }
-    return () => controller.abort();
   }, [applyData]);
+
+  // Cleanup refresh controller on unmount
+  useEffect(() => () => refreshControllerRef.current?.abort(), []);
 
   return {
     champions, patches, insights, tasks, proPicks, combos,

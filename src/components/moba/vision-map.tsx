@@ -160,6 +160,11 @@ export function VisionMap({ role }: { role: string }) {
                 left: `${ward.x}%`,
                 top: `${ward.y}%`,
                 transform: 'translate(-50%, -50%)',
+                minWidth: '44px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
               onClick={() => setSelectedWard(selectedWard?.id === ward.id ? null : ward)}
               whileHover={{ scale: 1.3 }}

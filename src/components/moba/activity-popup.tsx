@@ -173,7 +173,7 @@ export function ActivityPopup() {
             )}
 
             {/* Highlights */}
-            {feed.highlights.length > 0 && (
+            {feed.highlights?.length > 0 && (
               <div className="px-5 py-2">
                 <div className="rounded-lg p-3" style={{ background: 'rgba(15,186,129,0.04)', border: '1px solid rgba(15,186,129,0.1)' }}>
                   <p className="lol-label text-[10px] text-lol-green mb-2">La app tiene</p>

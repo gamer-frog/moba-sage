@@ -8,6 +8,8 @@ import type { GameSelection } from './types';
 
 const TOTAL_TABS = GAME_TAB_ITEMS.length + DEV_TAB_ITEMS.length;
 
+const MONTHS_ES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
 const SPLASH_CHAMPIONS = ['Yasuo', 'Jinx', 'Ahri', 'LeeSin'];
 const SHOWCASE_CHAMPIONS = ['Jinx', 'Ahri', 'Yasuo', 'LeeSin', 'Katarina', 'Thresh', 'Darius', 'Vi'];
 
@@ -41,8 +43,7 @@ const _SplashCarousel = memo(function _SplashCarousel() {
 
 export function GameSelectorLanding({ onSelectGame, patchVersion: externalPatch, championCount: externalCount }: { onSelectGame: (game: GameSelection) => void; patchVersion?: string; championCount?: number }) {
   const now = new Date();
-  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-  const formattedDate = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  const formattedDate = `${now.getDate()} ${MONTHS_ES[now.getMonth()]} ${now.getFullYear()}`;
 
   // Use props from parent when available, fallback to safe defaults
   const patchVersion = externalPatch || '26.9';

@@ -34,5 +34,5 @@ export function useFavorites() {
     });
   }, []);
 
-  return { favorites, toggleFavorite };
+  return { favorites, toggleFavorite, favoritesHydrated };
 }

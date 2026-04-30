@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tag, Swords, X, Clock, FileText, Info, BookOpen, Loader2 } from 'lucide-react';
 import { ChampionIcon } from '../champion-icon';
