@@ -13,6 +13,8 @@ import { ROLE_CONFIG, TIER_CONFIG, TOURNAMENT_REGIONS } from '../constants';
 import { ItemIcon } from '../item-icon';
 import { parseBuildItems, getChampionImageUrl, getChampionSplashUrl } from '../helpers';
 import { WeeklyWRChart } from '../weekly-wr-chart';
+import { C, wrColor as themeWrColor, freshnessColor, roleWrColor } from '../theme-colors';
+import { StatCard } from '../stat-card';
 import type { Champion, GameSelection, ProPick } from '../types';
 
 // ---- Local types for tierlist feed ----
@@ -62,12 +64,7 @@ interface TierListTabProps {
 
 const ROLES = ['Todos', 'Top', 'Jungle', 'Mid', 'ADC', 'Support'];
 
-function wrColor(wr: number): string {
-  if (wr >= 53) return '#0fba81';
-  if (wr >= 51) return '#0acbe6';
-  if (wr >= 49) return '#f0c646';
-  return '#e84057';
-}
+// wrColor is imported from theme-colors.ts now
 
 // Extract champion name from feed entry (e.g. "Taliyah (buff 26.9)" → "Taliyah")
 function extractChampName(entry: string): string {
@@ -220,12 +217,10 @@ export function TierListTab({
 
   // Color-coded freshness
   const freshnessInfo = (() => {
-    if (!versionData?.fetchedAt) return { color: '#5b5a56', label: 'Desconocido' };
+    if (!versionData?.fetchedAt) return { color: C.dim, label: 'Desconocido' };
     const diffMs = Date.now() - new Date(versionData.fetchedAt).getTime();
     const hours = diffMs / 3600000;
-    if (hours < 1) return { color: '#0fba81', label: 'Fresco' };
-    if (hours < 6) return { color: '#f0c646', label: 'Aceptable' };
-    return { color: '#e84057', label: 'Antiguo' };
+    return freshnessColor(hours);
   })();
   return (
     <div className="space-y-5">
@@ -261,7 +256,7 @@ export function TierListTab({
             {dataSources.map((source, i) => {
               const diffMs = Date.now() - new Date(source.lastScraped).getTime();
               const hours = diffMs / 3600000;
-              const srcFreshness = hours < 1 ? { color: '#0fba81', label: 'Fresco' } : hours < 6 ? { color: '#f0c646', label: 'Aceptable' } : { color: '#e84057', label: 'Antiguo' };
+              const srcFreshness = freshnessColor(hours);
               return (
                 <a
                   key={source.name}
@@ -599,7 +594,7 @@ export function TierListTab({
               const champ = gameChampions.find(c => c.name === mover.name);
               if (!champ) return null;
               const isPositive = mover.change > 0;
-              const barColor = isPositive ? '#0fba81' : '#e84057';
+              const barColor = isPositive ? C.green : C.danger;
               const barWidth = Math.min(Math.abs(mover.change) * 12, 85);
               const isExpanded = expandedWeekly === mover.name;
 
@@ -711,14 +706,14 @@ export function TierListTab({
               label="Total Campeones"
               value={`${gameChampions.length}`}
               sub="en el sistema"
-              color="#c8aa6e"
+              color={C.gold}
               icon={<Database className="w-4 h-4" />}
             />
             <StatCard
               label="Tier S"
               value={`${sTiers.length} campeones`}
               sub="Dioses del meta"
-              color="#c8aa6e"
+              color={C.gold}
               icon={<Trophy className="w-4 h-4" />}
             />
             <StatCard
@@ -727,28 +722,28 @@ export function TierListTab({
                 ? (gameChampions.reduce((s, c) => s + c.winRate, 0) / gameChampions.length).toFixed(1) + '%'
                 : '—'}
               sub="todos los campeones"
-              color="#0acbe6"
+              color={C.success}
               icon={<BarChart3 className="w-4 h-4" />}
             />
             <StatCard
               label="Mejor Win Rate"
               value={topWR[0]?.winRate ? `${topWR[0].winRate}%` : '—'}
               sub={topWR[0]?.name ?? ''}
-              color={wrColor(topWR[0]?.winRate ?? 0)}
+              color={themeWrColor(topWR[0]?.winRate ?? 0)}
               icon={<TrendingUp className="w-4 h-4" />}
             />
             <StatCard
               label="Más Baneado"
               value={topBan[0]?.banRate ? `${topBan[0].banRate}%` : '—'}
               sub={topBan[0]?.name ?? ''}
-              color="#e84057"
+              color={C.danger}
               icon={<BarChart3 className="w-4 h-4" />}
             />
             <StatCard
               label="Más Pickeados"
               value={topPick[0]?.pickRate ? `${topPick[0].pickRate}%` : '—'}
               sub={topPick[0]?.name ?? ''}
-              color="#5b8af5"
+              color={C.pick}
               icon={<BarChart3 className="w-4 h-4" />}
             />
           </div>
@@ -773,7 +768,7 @@ export function TierListTab({
             <p className="lol-label text-[10px] text-lol-gold mb-3">Promedio WR por Rol</p>
             <div className="flex flex-wrap items-center gap-3">
               {roleData.map(({ role, avg, count }) => {
-                const color = avg > 51 ? '#0fba81' : avg > 50 ? '#c8aa6e' : '#e84057';
+                const color = roleWrColor(avg);
                 return (
                   <div
                     key={role}
