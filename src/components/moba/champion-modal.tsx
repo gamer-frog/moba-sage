@@ -29,6 +29,9 @@ interface MetaBuild {
   source: string;
   patch: string;
   scrapedAt?: string;
+  runes?: string[];
+  skillOrder?: string;
+  winRate?: number;
 }
 
 // ============================================================
@@ -76,6 +79,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
   useEffect(() => {
     if (champion.tier !== 'S') return;
     const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
     fetch('/api/meta-builds?refresh=false', { signal: controller.signal })
       .then(res => { if (!res.ok) throw new Error(`Meta builds fetch failed: ${res.status}`); return res.json(); })
       .then(data => {
@@ -87,7 +91,7 @@ export function ChampionModal({ champion, onClose }: { champion: Champion; onClo
       .catch((err) => {
         if (err.name !== 'AbortError') console.warn('Meta build fetch failed:', err);
       });
-    return () => controller.abort();
+    return () => { clearTimeout(timeoutId); controller.abort(); };
   }, [champion.name, champion.tier]);
 
   const handleSkinError = (skinNum: number) => {

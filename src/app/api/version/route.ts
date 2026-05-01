@@ -54,7 +54,11 @@ export async function GET() {
       attribution: '© Riot Games, Inc.',
     };
     cacheTimestamp = now;
-    return NextResponse.json(cachedVersions);
+    return NextResponse.json(cachedVersions, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
+      },
+    });
   } catch (error) {
     return NextResponse.json({
       lol: '16.9.1', lolFull: '16.9.1', wr: '6.9',

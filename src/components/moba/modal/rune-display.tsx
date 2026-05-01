@@ -132,7 +132,14 @@ export function RuneTreeIcon({ tree, size = 16 }: { tree: string; size?: number 
 // Enhanced Runes Display Component
 // ============================================================
 
-export function EnhancedRunesDisplay({ champion, metaBuild }: { champion: Champion; metaBuild?: any }) {
+interface MetaBuildData {
+  runes?: string[];
+  coreItems?: string[];
+  boots?: string;
+  [key: string]: unknown;
+}
+
+export function EnhancedRunesDisplay({ champion, metaBuild }: { champion: Champion; metaBuild?: MetaBuildData }) {
   let runePage: ParsedRunePage | null = null;
 
   // Priority: meta-build runes array > champion.runes string data

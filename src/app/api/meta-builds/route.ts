@@ -40,7 +40,7 @@ async function searchBuild(champion: string, _slug: string): Promise<Partial<Scr
     const zai = await ZAI.create();
 
     const result = await zai.functions.invoke('web_search', {
-      query: `${champion} best build items runes patch 2026 lol meta`,
+      query: `${champion} best build items runes patch 26.9 lol meta`,
       num: 3,
     });
 
@@ -102,7 +102,7 @@ async function searchBuild(champion: string, _slug: string): Promise<Partial<Scr
     return {
       champion,
       source: 'web-search',
-      patch: '26.8',
+      patch: '26.9',
       winRate,
       coreItems: coreItems.map(capitalize),
       boots: capitalize(boots),
@@ -130,6 +130,10 @@ export async function GET(request: Request) {
       cached: true,
       lastScraped: new Date(cacheTimestamp).toISOString(),
       cacheExpiresAt: new Date(cacheTimestamp + CACHE_DURATION).toISOString(),
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
+      },
     });
   }
 
@@ -144,7 +148,7 @@ export async function GET(request: Request) {
         cachedBuilds[result.champion] = {
           champion: result.champion || '',
           source: result.source || 'unknown',
-          patch: result.patch || '26.8',
+          patch: result.patch || '26.9',
           winRate: result.winRate || 0,
           coreItems: result.coreItems || [],
           boots: result.boots || '',
@@ -163,6 +167,10 @@ export async function GET(request: Request) {
       cached: false,
       lastScraped: new Date(cacheTimestamp).toISOString(),
       cacheExpiresAt: new Date(cacheTimestamp + CACHE_DURATION).toISOString(),
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
+      },
     });
   } catch (err) {
     console.error('Meta builds scrape error:', err);

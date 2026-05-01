@@ -9,6 +9,7 @@ export function getDdVersion() { return _ddVersion; }
 export const CHAMPION_NAME_MAP: Record<string, string> = {
   'Wukong': 'MonkeyKing',
   'Nunu': 'Nunu',
+  'Nunu & Willump': 'Nunu',
   'Fiddlesticks': 'FiddleSticks',
   "Bel'Veth": 'Belveth',
   "K'Sante": 'KSante',
