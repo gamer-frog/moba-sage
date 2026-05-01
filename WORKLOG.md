@@ -180,3 +180,21 @@ Work Log:
 Stage Summary:
 - 8 fixes across 6 files: cron/route.ts, summoner/route.ts, tab-content.tsx, guides-tab.tsx, ideas-tab.tsx, patches-meta-tab.tsx
 - Build passes clean, pushed as electronica-frog as commit e19a187
+
+---
+Task ID: 14
+Agent: main
+Task: Round 13 — 7 codebase improvements
+
+Work Log:
+- P1: Fixed metaBuild 'any' type → proper MetaBuildData interface in rune-display.tsx (type safety)
+- P1: Added Cache-Control headers to /api/version (s-maxage=1800, stale-while-revalidate=3600)
+- P1: Added 10s timeout to champion-modal meta-builds fetch (prevents hanging requests on slow AI search)
+- P2: Added Cache-Control headers to /api/meta-builds (consistent with other API routes)
+- P2: Updated stale patch reference 26.8 → 26.9 in meta-builds route (search query + fallback)
+- P2: Added 'Nunu & Willump' to CHAMPION_NAME_MAP (DDragon key is 'Nunu')
+- P3: Expanded MetaBuild interface with runes/skillOrder/winRate fields (matches API response shape)
+
+Stage Summary:
+- 7 fixes across 5 files: rune-display.tsx, version/route.ts, champion-modal.tsx, meta-builds/route.ts, helpers.ts
+- Build passes clean, pushed as electronica-frog as commit 1c51d26
