@@ -105,23 +105,57 @@ type ChangeCategory = 'newItems' | 'removedItems' | 'reworkedItems' | 'reworkedR
 
 const ITEM_DESCRIPTIONS: Record<string, string> = {
   // Season 2 — New Starting Items
-  "Doran's Bow": 'Starting item para ADC — on-hit damage scaling y vida desde nivel 1. Permite builds agresivos early.',
-  "Doran's Helm": 'Starting item para tanques y fighters — HP bonus y resistencias. Fortalece la fase de lanes.',
+  "Doran's Bow": 'Starting item para ADC — on-hit damage scaling y vida desde nivel 1. Permite builds agresivos early. Core en Doran Bow → Shiv → Kraken combo.',
+  "Doran's Helm": 'Starting item para tanques y fighters — HP bonus y resistencias. Fortalece la fase de lanes. Mejora sustain vs poke lanes.',
   // Season 2 — New/Reworked Items
-  'Gluttonous Greaves': 'Botas con omnivamp integrado — sustain para fighters que necesitan mantenerse en lane.',
-  'Statikk Shiv': 'Rework on-hit — Ya no es crit puro. Escala con velocidad de ataque, ideal para builds alternativos ADC.',
-  'Dusk and Dawn': 'Rework con transición día/noche — Stats dinámicos según el estado del juego.',
-  // Removed Items (for reference in patch notes)
-  'Trailblazer': 'Jungle enchant eliminado — velocidad de movimiento en bush ya no disponible.',
-  'Opportunity': 'Mythic ADC eliminado — execute basado en vida del objetivo ya no disponible.',
-  'Phase Rush': 'Keyston eliminado — Era dominante para Gragas, Irelia, Shyvana. Migrar a Grasp o Comet.',
-  // Season 2 — Returning Runes
-  'Deathfire Touch': 'Keyston de Brujería — DoT basado en nivel + bonus vs low-HP. Dominante para mages de control.',
-  "Stormraider's Surge": 'Keyston de Brujería clásico — Movimiento masivo para engages sorpresa.',
-  // Reworked Runes
-  'Hail of Blades': 'Rework — Escala mejor con velocidad de ataque, synergiza con builds on-hit.',
-  'Dawnstone': 'Support mythic con shielding y haste para allies. Item defensivo premium para supports que buscan protección activa.',
+  'Gluttonous Greaves': 'Botas con omnivamp integrado — sustain para fighters que necesitan mantenerse en lane. Synergiza con Conqueror bruisers.',
+  'Statikk Shiv': 'Rework on-hit — Ya no es crit puro. Escala con velocidad de ataque, ideal para builds alternativos ADC. Core en builds on-hit con Kennen, Zeri.',
+  'Dusk and Dawn': 'Rework con transición día/noche — Stats dinámicos según el estado del juego. Adaptabilidad en teamfights largos.',
+  'Immortal Path': 'Nuevo mythic ADC — reemplazo de Kraken Slayer. Execute scaling con vida del objetivo. Core para carriesADC en Season 2.',
+  'Immortal Shieldbow': 'Shieldbow renombrado a Immortal Shieldbow — mismo escudo defensivo pero con stats ajustados para Season 2 meta.',
+  'Black Cleaver': 'Armor shred clásico para bruisers. Synergiza con las nuevas opciones de fighter items. Excelente en team comps con daño físico.',
+  'Frozen Heart': 'Core anti-ADC para tanks — reduce attack speed de enemigos cercanos. Sinergia natural con Randuin Omen.',
+  'Randuin Omen': 'Crit reduction + armor — mejor item vs ADCs y Yasuo. Passive de slow en auto-attacks.',
+  'Force of Nature': 'Magic resist premium — movimientos rápidos hacia campeones enemigos. Counter pick vs mages pesados.',
+  'Dead Man Plate': 'Movimiento + armor — tank initiatior dream. Synergiza con engage comps y champions que buscan fights.',
+  'Spirit Visage': 'Heal/shield amplification — core para supports enchanters y tanks con sustain propio. Mejora todas las formas de curación.',
+  'Abyssal Mask': 'MR + magic penetration — item dual para tanks mages. Galio, Amumu y Singed se benefician enormemente.',
+  'Cosmic Drive': 'AP + movement speed — item versátil para mages que necesitan mobility. Synergiza con DFT Season 2 mages.',
+  'Rabadon Deathcap': 'Max AP amplification — sigue siendo core para mages de burst. Escala exponencialmente con otros items AP.',
+  'Void Staff': 'Magic penetration — necesario cuando enemigos stackan MR. Counter a Force of Nature.',
+  'Luden Companion': 'Ludens renovado con companion system — daño AoE en spells. Core para mages de waveclear.',
+  'Malignance': 'AP + mana regeneration — reemplaza Morellonomicon en ciertos builds. Mejor para mages con alto mana usage.',
+  'Stormsurge': 'Nuevo item AP Season 2 — execute mágico basado en daño reciente. Core para mages burst en mid-late game.',
+  // Season 2 Runes
+  'Deathfire Touch': 'Keyston de Brujería — DoT basado en nivel + bonus vs low-HP. Dominante para Karthus, Brand, Malzahar, Teemo. Broken en jungle Karthus.',
+  "Stormraider's Surge": 'Keyston de Brujería clásico — Movimiento masivo para engages sorpresa. Alternativa a Comet para mages roamers.',
+  'Hail of Blades': 'Rework — Escala mejor con velocidad de ataque, synergiza con builds on-hit. Kennen y Zeri se benefician.',
   'First Strike': 'Runa experimental revamp. Mejora velocidad de rotación para combos rápidos en early game.',
+  // Removed Items (for reference in patch notes)
+  'Trailblazer': 'Jungle enchant eliminado — velocidad de movimiento en bush ya no disponible. Junglers pierden roaming speed.',
+  'Opportunity': 'Mythic ADC eliminado — execute basado en vida del objetivo ya no disponible. Reemplazado por Immortal Path.',
+  'Phase Rush': 'Keyston eliminado — Era dominante para Gragas, Irelia, Shyvana. Migrar a Grasp o Comet. Cambio meta masivo.',
+  // Season 2 — Returning Items
+  'Duskblade of Draktharr': 'Lethality + invisibilidad post-kill — regresa con stats ajustados. Viable para assassins AD en Season 2.',
+  // Classic items referenced in builds
+  'Filo de la Noche': 'Lethality mythic — core para assassins AD. Execute bonus vs low HP targets.',
+  'Eclipse': 'Lethality + spell vamp — versátil para fighters y assassins. Shield en engage.',
+  'Jak\'Sho': 'Tank mythic escalable — más resistencias en combate prolongado. Core en cualquier tank.',
+  'Filo Divino': 'Crit + lifesteal — sustain ADC mythic. Fuera de meta en Season 2 pero viable.',
+  'La Séptima': 'Nuevo mitico season 2 — executes encadenados. Alternativa agresiva para carries ADC.',
+  'El Colector': 'Lethality + execute — snowball item para assassins. Ideal para Rengar, Kha\'Zix.',
+  'Mandato Imperial': 'Support enchanter mythic — haste y shielding para allies. Core para Nami, Lulu, Janna.',
+  'Hidra Titánica': 'Cleave AOE para bruisers — sustain en fights contra múltiples enemigos. Core en Darius, Garen.',
+  'Fuerza de la Trinidad': 'Sheen proc + stats versátiles — Jax, Irelia, Hecarim core item.',
+  'Filo Infinito': 'Crit amplification — esencial para crit ADCs en late game. Jinx, Caitlyn, Ashe.',
+  'Huracán de Runaan': 'AoE auto-attacks — para ADCs en teamfights. Synergiza con on-hit Shiv builds.',
+  'Sombrero de Rabadón': 'Amplificación AP máxima — item definitive para mages burst en late game.',
+  'Reloj de Zhonya': 'Stasis invulnerable — counter a burst mages y assassins. Core en casi todo mage.',
+  'Morellonomicon': 'Anti-heal AP — necesario vs sustain comps. Grievous wounds en abilities.',
+  'Cetro de Rylai': 'Slow on abilities — utilidad y kite para mages. Synergiza con DFT DoT application.',
+  'Redención': 'AoE heal activable — core support para enchanter meta. Teamfight healing masivo.',
+  'Centro de Gravedad': 'Zone control — reduce MR de enemigos en área. Synergiza con mage AoE comps.',
+  'Dawnstone': 'Support mythic con shielding y haste para allies. Item defensivo premium para supports que buscan protección activa.',
   'Dawnstone (support mythic)': 'Support mythic con shielding y haste para allies. Protección activa premium para supports.',
 };
 
@@ -363,6 +397,10 @@ function getLoLChampionHighlights(patch: { sourceGame: string; version: string; 
     'Sion', 'Smolder', 'Sona', 'Syndra', 'Tahm Kench', 'Taliyah', 'Teemo', 'Thresh', 'Tristana',
     'Twitch', 'Udyr', 'Varus', 'Vayne', 'Veigar', 'Vex', 'Vi', 'Viktor', 'Warwick', 'Xin Zhao',
     'Yasuo', 'Yone', 'Yuumi', 'Zaahen', 'Zed', 'Zeri', 'Ziggs',
+    // Season 2 additions
+    'Galio', 'Maokai', 'Zac', 'Poppy', 'Ornn', 'Ivern', 'Nunu', 'Kindred', 'Kled', 'Ivern',
+    'Qiyana', 'Neeko', 'Sylas', 'Pyke', 'Senna', 'Aphelios', 'Rell', 'Vex', 'Naafiri',
+    'Chogath', 'Cho\'Gath', 'Malzahar', 'Twisted Fate', 'Cassiopeia', 'Azir',
   ];
   const foundChampions = championNames.filter(name => text.includes(name.toLowerCase())).slice(0, 4);
   if (foundChampions.length === 0) {
